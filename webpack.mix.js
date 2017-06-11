@@ -11,5 +11,26 @@ const { mix } = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/bootstrap.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+/*
+    Webpack Typescript Config
+*/
+mix.webpackConfig({
+    module: {
+        rules: [
+            {
+                test: /.tsx?$/,
+                loader: 'ts-loader',
+                exclude: /node_modules/,
+                options: {
+                    appendTsSuffixTo: [/\.vue$/]
+                }
+            }
+        ]
+    },
+    resolve: {
+        extensions: ['*', '.js', '.jsx', '.vue', '.ts', '.tsx']
+    }
+})
+.js('resources/assets/js/bootstrap.js', 'public/js')
+.js('resources/assets/js/app.tsx', 'public/js')
+.sass('resources/assets/sass/app.scss')

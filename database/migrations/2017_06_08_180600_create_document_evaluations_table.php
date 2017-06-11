@@ -13,12 +13,12 @@ class CreateDocumentEvaluationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('document_evaluatios', function (Blueprint $table) {
+        Schema::create('document_evaluations', function (Blueprint $table) {
             $table->increments('id');
             $table->boolean('checked');
             $table->text('observacion');
-            $table->integer('document_id');
-            $table->integer('user_id');
+            $table->integer('document_id')->unsigned();
+            $table->integer('user_id')->unsigned();
             $table->timestamps();
 
             $table->foreign('document_id')->references('id')->on('documents')
@@ -37,6 +37,6 @@ class CreateDocumentEvaluationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('document_evaluatios');
+        Schema::dropIfExists('document_evaluations');
     }
 }

@@ -39,7 +39,9 @@ class RouteServiceProvider extends ServiceProvider
 
         $this->mapWebRoutes();
 
-        //
+        $this->mapAdminRoutes();
+        $this->mapStudentRoutes();
+        $this->mapEvaluatorRoutes();
     }
 
     /**
@@ -69,5 +71,34 @@ class RouteServiceProvider extends ServiceProvider
              ->middleware('api')
              ->namespace($this->namespace)
              ->group(base_path('routes/api.php'));
+    }
+
+    /**
+     * Rutas de Administrador
+     *
+     * @return void
+     */
+    protected function mapAdminRoutes()
+    {
+        Route::prefix('admin')
+            ->middleware(['web', 'auth', 'role:admin'])
+            ->namespace($this->namespace . '\Admin')
+            ->group(base_path('routes/admin.php'));
+    }
+
+    protected function mapStudentRoutes()
+    {
+        Route::prefix('student')
+            ->middleware(['web', 'auth', 'role:student'])
+            ->namespace($this->namespace . '\Student')
+            ->group(base_path('routes/student.php'));
+    }
+
+    protected function mapEvaluatorRoutes()
+    {
+         Route::prefix('evaluator')
+            ->middleware(['web', 'auth', 'role:evaluator'])
+            ->namespace($this->namespace . '\Evaluator')
+            ->group(base_path('routes/evaluator.php'));
     }
 }

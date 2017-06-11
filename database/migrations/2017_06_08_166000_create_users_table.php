@@ -19,7 +19,7 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('state', ['active', 'request', 'disabled'])->default('disabled');
-            $table->enum('role', ['admin', 'student', 'evaluator']);
+            $table->enum('role', ['admin', 'student', 'evaluator'])->defualt('student');
             $table->integer('project_id')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
