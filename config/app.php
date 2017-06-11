@@ -12,7 +12,8 @@ return [
     | any other location as required by the application or its packages.
     */
 
-    'name' => env('APP_NAME', 'Laravel'),
+    'name' => 'Calisoft',
+    'description' => 'Plataforma de evaluacion de calidad de software',
 
     /*
     |--------------------------------------------------------------------------

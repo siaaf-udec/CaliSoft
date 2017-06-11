@@ -32,5 +32,4 @@ mix.webpackConfig({
     }
 })
 .js('resources/assets/js/bootstrap.js', 'public/js')
-.js('resources/assets/js/app.tsx', 'public/js')
-.sass('resources/assets/sass/app.scss')
+.sass('resources/assets/sass/app.scss', 'public/css')
