@@ -73,7 +73,7 @@
                                 <div class="col-xs-6">
                                     @component('components.email', [
                                         'name' => 'email',
-                                        'attributes' => "required autofocus maxlength='60' autocomplete='off'",
+                                        'attributes' => "required autofocus",
                                         'label' => 'Correo',
                                         'help' => 'Digita el correo'
                                     ])

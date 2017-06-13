@@ -1,6 +1,4 @@
-@extends('layouts.master')
-
-
-@section('content')
+@extends('layouts.dash')
+@section('main')
     
 @endsection
