@@ -13,22 +13,22 @@ class CreateProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('projects', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
-            $table->integer('investigation_group_id')->unsigned();
-            $table->integer('semillero_id')->unsigned();
-            $table->integer('category_id')->unsigned();
+        Schema::create('TBL_Proyectos', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->string('nombre')->unique();
+            $table->integer('FK_GrupoDeInvestigacionId')->unsigned();
+            $table->integer('FK_SemilleroId')->unsigned();
+            $table->integer('FK_CategoriaId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('investigation_group_id')->references('id')
-                ->on('investigation_groups')->onDelete('cascade');
+            $table->foreign('FK_GrupoDeInvestigacionId')->references('PK_id')
+                ->on('TBL_GruposDeInvestigacion')->onDelete('cascade');
 
-            $table->foreign('semillero_id')->references('id')
-                ->on('semilleros')->onDelete('cascade');
+            $table->foreign('FK_SemilleroId')->references('PK_id')
+                ->on('TBL_Semilleros')->onDelete('cascade');
 
-            $table->foreign('category_id')->references('id')
-                ->on('categories')->onDelete('cascade');
+            $table->foreign('FK_CategoriaId')->references('PK_id')
+                ->on('TBL_Categorias')->onDelete('cascade');
         });
     }
 

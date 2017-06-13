@@ -13,9 +13,9 @@ class CreateSemillerosTable extends Migration
      */
     public function up()
     {
-        Schema::create('semilleros', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
+        Schema::create('TBL_Semilleros', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->string('nombre')->unique();
             $table->timestamps();
         });
     }

@@ -13,18 +13,18 @@ class CreateDocumentEvaluationsTable extends Migration
      */
     public function up()
     {
-        Schema::create('document_evaluations', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('TBL_EvaluacionDocumento', function (Blueprint $table) {
+            $table->increments('PK_id');
             $table->boolean('checked');
             $table->text('observacion');
-            $table->integer('document_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->integer('FK_DocumentoId')->unsigned();
+            $table->integer('FK_UsuarioId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('document_id')->references('id')->on('documents')
+            $table->foreign('FK_DocumentoId')->references('id')->on('TBL_Documentos')
                 ->onDelete('cascade');
 
-            $table->foreign('user_id')->references('id')->on('users')
+            $table->foreign('FK_UsuarioId')->references('PK_id')->on('TBL_Usuarios')
                 ->onDelete('cascade');
             
         });

@@ -13,13 +13,13 @@ class CreateTestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('tests', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
-            $table->integer('test_case_id')->unsigned();
+        Schema::create('TBL_Pruebas', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->string('nombre');
+            $table->integer('FK_CasoPruebaId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('test_case_id')->references('id')->on('test_cases')
+            $table->foreign('FK_CasoPruebaId')->references('PK_id')->on('TBL_CasoPrueba')
                 ->onDelete('cascade');
         });
     }

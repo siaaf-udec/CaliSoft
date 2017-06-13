@@ -13,16 +13,16 @@ class CreateLoadTestDeliveriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('load_test_deliveries', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('TBL_EntregaPruebaCarga', function (Blueprint $table) {
+            $table->increments('PK_id');
             $table->integer('numero');
             $table->boolean('approved')->nullable();
             $table->text('observacion')->nullable();
             $table->text('tiempos');
-            $table->integer('load_test_id')->unsigned();
+            $table->integer('FK_PruebaCargaId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('load_test_id')->references('id')->on('load_tests')
+            $table->foreign('FK_PruebaCargaId')->references('PK_id')->on('TBL_PruebaCarga')
                 ->onDelete('cascade');
         });
     }

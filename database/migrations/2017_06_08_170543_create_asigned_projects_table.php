@@ -13,14 +13,14 @@ class CreateAsignedProjectsTable extends Migration
      */
     public function up()
     {
-        Schema::create('asigned_projets', function (Blueprint $table) {
-            $table->integer('user_id')->unsigned();
-            $table->integer('project_id')->unsigned();
+        Schema::create('TBL_ProyectosAsignados', function (Blueprint $table) {
+            $table->integer('FK_UsuarioId')->unsigned();
+            $table->integer('FK_ProyectoId')->unsigned();
             $table->timestamps();
 
-            $table->primary(['user_id', 'project_id']);
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->primary(['FK_UsuarioId', 'FK_ProyectoId']);
+            $table->foreign('FK_UsuarioId')->references('PK_id')->on('TBL_Usuarios')->onDelete('cascade');
+            $table->foreign('FK_ProyectoId')->references('PK_id')->on('TBL_Proyectos')->onDelete('cascade');
         });
     }
 
