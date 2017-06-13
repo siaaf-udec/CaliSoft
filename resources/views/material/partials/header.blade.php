@@ -1,6 +1,6 @@
 <div class="page-header navbar navbar-fixed-top">
     {{-- BEGIN HEADER INNER --}}
-    <div class="page-header-inner container">
+    <div class="page-header-inner">
         {{-- BEGIN LOGO --}}
         <div class="page-logo">
             <a href="javascript:;">
@@ -106,69 +106,6 @@
                                             </span> Server #12 overloaded. </span>
                                         </a>
                                     </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="time">10 mins</span>
-                                            <span class="details">
-                                            <span class="label label-sm label-icon label-warning">
-                                                <i class="fa fa-bell-o"></i>
-                                            </span> Server #2 not responding. </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="time">14 hrs</span>
-                                            <span class="details">
-                                            <span class="label label-sm label-icon label-info">
-                                                <i class="fa fa-bullhorn"></i>
-                                            </span> Application error. </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="time">2 days</span>
-                                            <span class="details">
-                                            <span class="label label-sm label-icon label-danger">
-                                                <i class="fa fa-bolt"></i>
-                                            </span> Database overloaded 68%. </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="time">3 days</span>
-                                            <span class="details">
-                                            <span class="label label-sm label-icon label-danger">
-                                                <i class="fa fa-bolt"></i>
-                                            </span> A user IP blocked. </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="time">4 days</span>
-                                            <span class="details">
-                                            <span class="label label-sm label-icon label-warning">
-                                                <i class="fa fa-bell-o"></i>
-                                            </span> Storage Server #4 not responding dfdfdfd. </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="time">5 days</span>
-                                            <span class="details">
-                                            <span class="label label-sm label-icon label-info">
-                                                <i class="fa fa-bullhorn"></i>
-                                            </span> System Error. </span>
-                                        </a>
-                                    </li>
-                                    <li>
-                                        <a href="javascript:;">
-                                            <span class="time">9 days</span>
-                                            <span class="details">
-                                            <span class="label label-sm label-icon label-danger">
-                                                <i class="fa fa-bolt"></i>
-                                            </span> Storage server failed. </span>
-                                        </a>
-                                    </li>
                                 </ul>
                             </li>
                         </ul>
@@ -176,7 +113,7 @@
                     {{-- END NOTIFICATION DROPDOWN --}}
                     {{-- BEGIN INBOX DROPDOWN --}}
                     {{-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte --}}
-                    <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
+                    {{-- <li class="dropdown dropdown-extended dropdown-inbox" id="header_inbox_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="icon-envelope-open"></i>
                             <span class="badge badge-default"> 4 </span>
@@ -243,11 +180,11 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     {{-- END INBOX DROPDOWN --}}
                     {{-- BEGIN TODO DROPDOWN --}}
                     {{-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte --}}
-                    <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
+                    {{-- <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="icon-calendar"></i>
                             <span class="badge badge-default"> 3 </span>
@@ -354,7 +291,7 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>
+                    </li> --}}
                     {{-- END TODO DROPDOWN --}}
                     {{-- BEGIN USER LOGIN DROPDOWN --}}
                     {{-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte --}}
@@ -368,41 +305,24 @@
                             <li>
                                 <a href="javascript:;"><i class="icon-user"></i> My Profile </a>
                             </li>
-                            <li>
-                                <a href="javascript:;"><i class="icon-calendar"></i> My Calendar </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-envelope-open"></i> My Inbox
-                                    <span class="badge badge-danger"> 3 </span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="javascript:;">
-                                    <i class="icon-rocket"></i> My Tasks
-                                    <span class="badge badge-success"> 7 </span>
-                                </a>
-                            </li>
                             <li class="divider"> </li>
                             <li>
-                                <a href="javascript:;"><i class="icon-lock"></i> Lock Screen </a>
-                            </li>
-                            <li>
-                                <a href="{{ route('logout') }}" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
-                                    <i class="icon-key"></i> Salir </a>
+                                <a href="#" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                    <i class="icon-key"></i> Salir
                                 </a>
-                                {!! Form::open(['id' => 'logout-form', 'method' => 'POST', 'url' => route('logout')]) !!}
-                                {!! Form::close() !!}
+                                <form id="logout-form" action="{{ route('logout') }}" method="post" >
+                                    {{ csrf_field() }}
+                                </form>
                             </li>
                         </ul>
                     </li>
                     {{-- END USER LOGIN DROPDOWN --}}
                     {{-- BEGIN QUICK SIDEBAR TOGGLER --}}
                     {{-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte --}}
-                    <li class="dropdown dropdown-extended quick-sidebar-toggler">
+                    {{-- <li class="dropdown dropdown-extended quick-sidebar-toggler">
                         <span class="sr-only">Toggle Quick Sidebar</span>
                         <i class="icon-logout"></i>
-                    </li>
+                    </li> --}}
                     {{-- END QUICK SIDEBAR TOGGLER --}}
                 </ul>
             </div>

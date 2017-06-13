@@ -1,11 +1,9 @@
 <!DOCTYPE html>
-<!--[if IE 8]> <html lang="{{ config('app.locale') }}" class="ie8"> <![endif]-->
-<!--[if IE 9]> <html lang="{{ config('app.locale') }}" class="ie9"> <![endif]-->
-<!--[if !IE]><!--> <html lang="{{ config('app.locale') }}"> <!--<![endif]-->
-{{-- BEGIN HEAD --}}
+<html lang="{{ config('app.locale') }}">
+
 <head>
     <meta charset="utf-8"/>
-    <title>{{ config( 'app.name' ) }} @yield('title')</title>
+    <title>{{ config( 'app.name' ) }} | @yield('title')</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="{{ config( 'app.description' ) }}" name="description"/>
@@ -27,7 +25,7 @@
     {{-- BEGIN HEADER & CONTENT DIVIDER --}}
         <div class="clearfix"> </div>
     {{-- END HEADER & CONTENT DIVIDER --}}
-        <div class="container">
+        <div class="">
             {{-- BEGIN PAGE CONTAINER --}}
             <div class="page-container">
                 {{-- BEGIN SIDEBAR --}}
@@ -60,7 +58,7 @@
                 </div>
                 {{-- END CONTENT --}}
                 {{-- BEGIN QUICK SIDEBAR --}}
-                @include('material.partials.quick-sidebar')
+                {{-- @include('material.partials.quick-sidebar') --}}
                 {{-- END QUICK SIDEBAR --}}
             </div>
             {{-- END PAGE CONTAINER --}}
@@ -69,7 +67,7 @@
             {{-- END FOOTER --}}
         </div>
     {{-- BEGIN SCRIPTS --}}
-        @include('material.partials.scripts')
+        @include('material.partials.dash-scripts')
     {{-- END SCRIPTS --}}
     {{-- BEGIN CUSTOM FUNCTIONS --}}
         @stack('functions')

@@ -29,7 +29,7 @@
 {{-- END PAGE LEVEL PLUGINS --}}
 {{-- BEGIN THEME GLOBAL STYLES --}}
 <link href="{{ asset('assets/global/css/components-md.min.css') }}" rel="stylesheet" id="style_components" type="text/css" />
-<link href="{{ asset('assets/global/css/plugins-md.min.css') }}" rel="stylesheet" type="text/css" /> 
+<link href="{{ asset('assets/global/css/plugins-md.min.css') }}" rel="stylesheet" type="text/css" />
 {{-- END THEME GLOBAL STYLES --}}
 
 <link rel="shortcut icon" href="favicon.ico" />
