@@ -33,5 +33,14 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-   
+    
+    public function home()
+    {
+        return route($this->role);
+    }
+
+    public function goHome()
+    {
+        return redirect()->route($this->role);
+    }
 }

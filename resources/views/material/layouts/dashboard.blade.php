@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="utf-8"/>
-    <title>{{ config( 'app.name' ) }} | @yield('title')</title>
+    <title>{{ config( 'app.name' ) }}</title>
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="{{ config( 'app.description' ) }}" name="description"/>
@@ -29,7 +29,22 @@
             {{-- BEGIN PAGE CONTAINER --}}
             <div class="page-container">
                 {{-- BEGIN SIDEBAR --}}
-                @include('material.partials.sidebar')
+                <div class="page-sidebar-wrapper">
+                    <div class="page-sidebar navbar-collapse collapse">
+                        {{-- BEGIN SIDEBAR MENU --}}
+                        <ul class="page-sidebar-menu  page-header-fixed" data-keep-expanded="true" data-auto-scroll="true" data-slide-speed="200">
+                            @component('components.nav-link', [
+                                'icon' => 'icon-home',
+                                'title' => 'Home',
+                                'link' => Auth::user()->home()
+                            ])
+                            @endcomponent
+                            @yield('links')
+                        </ul>
+                        {{-- END SIDEBAR MENU --}}
+                    </div>
+                    {{-- END SIDEBAR --}}
+                </div>
                 {{-- END SIDEBAR --}}
                 {{-- BEGIN CONTENT --}}
                 <div class="page-content-wrapper">
