@@ -11,3 +11,4 @@
 |
 */
 
+Route::resource('usuario', 'EvaluadorController');
