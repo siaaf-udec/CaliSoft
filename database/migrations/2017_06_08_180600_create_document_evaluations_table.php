@@ -21,7 +21,7 @@ class CreateDocumentEvaluationsTable extends Migration
             $table->integer('FK_UsuarioId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('FK_DocumentoId')->references('id')->on('TBL_Documentos')
+            $table->foreign('FK_DocumentoId')->references('PK_id')->on('TBL_Documentos')
                 ->onDelete('cascade');
 
             $table->foreign('FK_UsuarioId')->references('PK_id')->on('TBL_Usuarios')
@@ -37,6 +37,6 @@ class CreateDocumentEvaluationsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('document_evaluations');
+        Schema::dropIfExists('TBL_EvaluacionDocumento');
     }
 }

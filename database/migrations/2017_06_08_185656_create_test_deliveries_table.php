@@ -21,7 +21,7 @@ class CreateTestDeliveriesTable extends Migration
             $table->integer('FK_PruebasId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('FK_PruebasId')->references('id')->on('TBL_Pruebas')
+            $table->foreign('FK_PruebasId')->references('PK_id')->on('TBL_Pruebas')
                 ->onDelete('cascade');
         });
     }
@@ -33,6 +33,6 @@ class CreateTestDeliveriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_deliveries');
+        Schema::dropIfExists('TBL_EntregaPrueba');
     }
 }

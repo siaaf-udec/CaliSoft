@@ -42,6 +42,6 @@ class CreateTestCasesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_cases');
+        Schema::dropIfExists('TBL_CasoPrueba');
     }
 }

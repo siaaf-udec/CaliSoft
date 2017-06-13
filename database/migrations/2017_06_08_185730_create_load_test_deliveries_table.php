@@ -34,6 +34,6 @@ class CreateLoadTestDeliveriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('load_test_deliveries');
+        Schema::dropIfExists('TBL_EntregaPruebaCarga');
     }
 }

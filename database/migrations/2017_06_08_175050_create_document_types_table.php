@@ -28,6 +28,6 @@ class CreateDocumentTypesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('document_types');
+        Schema::dropIfExists('TBL_TiposDocumento');
     }
 }

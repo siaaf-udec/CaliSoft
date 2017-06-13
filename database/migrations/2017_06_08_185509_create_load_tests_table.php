@@ -32,6 +32,6 @@ class CreateLoadTestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('load_tests');
+        Schema::dropIfExists('TBL_PruebaCarga');
     }
 }

@@ -24,7 +24,7 @@ class CreateUsersTable extends Migration
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreign('FK_ProyectoId')->references('id')->on('TBL_Proyectos');
+            $table->foreign('FK_ProyectoId')->references('PK_id')->on('TBL_Proyectos');
         });
     }
 
@@ -35,6 +35,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('TBL_Usuarios');
     }
 }

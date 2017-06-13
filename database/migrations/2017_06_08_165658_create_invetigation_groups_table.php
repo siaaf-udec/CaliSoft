@@ -27,6 +27,6 @@ class CreateInvetigationGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('investigation_groups');
+        Schema::dropIfExists('TBL_GruposDeInvestigacion');
     }
 }

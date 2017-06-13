@@ -31,6 +31,6 @@ class CreateAsignedProjectsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('asigned_projets');
+        Schema::dropIfExists('TBL_ProyectosAsignados');
     }
 }

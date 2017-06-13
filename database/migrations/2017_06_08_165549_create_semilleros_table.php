@@ -27,6 +27,6 @@ class CreateSemillerosTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('semilleros');
+        Schema::dropIfExists('TBL_Semilleros');
     }
 }

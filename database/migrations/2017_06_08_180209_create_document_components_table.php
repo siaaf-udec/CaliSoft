@@ -33,6 +33,6 @@ class CreateDocumentComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('document_components');
+        Schema::dropIfExists('TBL_ComponentesDocumento');
     }
 }
