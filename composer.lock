@@ -4,7 +4,11 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
+<<<<<<< Updated upstream
     "content-hash": "75ba431fb4ccf48ce8a358d938bb8d86",
+=======
+    "content-hash": "96098e473b028cdb2529580554a1ae3e",
+>>>>>>> Stashed changes
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -426,6 +430,7 @@
                 "psysh"
             ],
             "time": "2017-06-01T16:31:26+00:00"
+<<<<<<< Updated upstream
         },
         {
             "name": "laravelcollective/html",
@@ -480,6 +485,8 @@
             "description": "HTML and Form Builders for the Laravel Framework",
             "homepage": "http://laravelcollective.com",
             "time": "2017-05-22T06:35:07+00:00"
+=======
+>>>>>>> Stashed changes
         },
         {
             "name": "league/flysystem",
