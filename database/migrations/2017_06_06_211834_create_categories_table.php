@@ -13,9 +13,9 @@ class CreateCategoriesTable extends Migration
      */
     public function up()
     {
-        Schema::create('categories', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
+        Schema::create('TBL_Categorias', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->string('nombre')->unique();
             $table->integer('plataforma');
             $table->integer('modelado');
             $table->integer('clases');
@@ -35,6 +35,6 @@ class CreateCategoriesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('categories');
+        Schema::dropIfExists('TBL_Categorias');
     }
 }

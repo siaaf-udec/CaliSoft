@@ -13,15 +13,15 @@ class CreateDocumentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('documents', function (Blueprint $table) {
-            $table->increments('id');
+        Schema::create('TBL_Documentos', function (Blueprint $table) {
+            $table->increments('PK_id');
             $table->string('url');
-            $table->integer('project_id')->unsigned();
-            $table->integer('document_type_id')->unsigned();
+            $table->integer('FK_ProyectoId')->unsigned();
+            $table->integer('FK_TipoDocumentoId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
-            $table->foreign('document_type_id')->references('id')->on('document_types')->onDelete('cascade');
+            $table->foreign('FK_ProyectoId')->references('PK_id')->on('TBL_Proyectos')->onDelete('cascade');
+            $table->foreign('FK_TipoDocumentoId')->references('PK_id')->on('TBL_TiposDocumento')->onDelete('cascade');
         });
     }
 
@@ -32,6 +32,6 @@ class CreateDocumentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('documents');
+        Schema::dropIfExists('TBL_Documentos');
     }
 }

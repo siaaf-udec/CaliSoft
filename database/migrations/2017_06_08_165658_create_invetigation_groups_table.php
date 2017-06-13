@@ -13,9 +13,9 @@ class CreateInvetigationGroupsTable extends Migration
      */
     public function up()
     {
-        Schema::create('investigation_groups', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name')->unique();
+        Schema::create('TBL_GruposDeInvestigacion', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->string('nombre')->unique();
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateInvetigationGroupsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('investigation_groups');
+        Schema::dropIfExists('TBL_GruposDeInvestigacion');
     }
 }

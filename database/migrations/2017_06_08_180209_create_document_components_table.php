@@ -13,16 +13,16 @@ class CreateDocumentComponentsTable extends Migration
      */
     public function up()
     {
-        Schema::create('document_components', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+        Schema::create('TBL_ComponentesDocumento', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->string('nombre');
             $table->boolean('required');
-            $table->text('description');
-            $table->integer('document_type_id')->unsigned();
+            $table->text('descripcion');
+            $table->integer('FK_TipoDocumentoId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('document_type_id')->references('id')
-                ->on('document_types')->onDelete('cascade');
+            $table->foreign('FK_TipoDocumentoId')->references('PK_id')
+                ->on('TBL_TiposDocumento')->onDelete('cascade');
         });
     }
 
@@ -33,6 +33,6 @@ class CreateDocumentComponentsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('document_components');
+        Schema::dropIfExists('TBL_ComponentesDocumento');
     }
 }

@@ -13,18 +13,18 @@ class CreateUsersTable extends Migration
      */
     public function up()
     {
-        Schema::create('users', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+        Schema::create('TBL_Usuarios', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->string('nombre');
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('state', ['active', 'request', 'disabled'])->default('disabled');
             $table->enum('role', ['admin', 'student', 'evaluator'])->defualt('student');
-            $table->integer('project_id')->unsigned()->nullable();
+            $table->integer('FK_ProyectoId')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
 
-            $table->foreign('project_id')->references('id')->on('projects');
+            $table->foreign('FK_ProyectoId')->references('PK_id')->on('TBL_Proyectos');
         });
     }
 
@@ -35,6 +35,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('TBL_Usuarios');
     }
 }

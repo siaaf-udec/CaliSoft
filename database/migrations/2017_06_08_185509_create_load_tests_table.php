@@ -13,14 +13,14 @@ class CreateLoadTestsTable extends Migration
      */
     public function up()
     {
-        Schema::create('load_tests', function (Blueprint $table) {
-            $table->increments('id');
-            $table->integer('users');
+        Schema::create('TBL_PruebaCarga', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->integer('usuarios');
             $table->string('url');
-            $table->integer('test_case_id')->unsigned();
+            $table->integer('FK_CasoPruebaId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('test_case_id')->references('id')->on('test_cases')
+            $table->foreign('FK_CasoPruebaId')->references('PK_id')->on('TBL_CasoPrueba')
                 ->onDelete('cascade');
         });
     }
@@ -32,6 +32,6 @@ class CreateLoadTestsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('load_tests');
+        Schema::dropIfExists('TBL_PruebaCarga');
     }
 }

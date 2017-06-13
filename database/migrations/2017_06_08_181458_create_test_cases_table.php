@@ -13,9 +13,9 @@ class CreateTestCasesTable extends Migration
      */
     public function up()
     {
-        Schema::create('test_cases', function (Blueprint $table) {
-            $table->increments('id');
-            $table->string('name');
+        Schema::create('TBL_CasoPrueba', function (Blueprint $table) {
+            $table->increments('PK_id');
+            $table->string('nombre');
             $table->text('proposito');
             $table->text('alcance');
             $table->text('resultado_esperado');
@@ -26,12 +26,12 @@ class CreateTestCasesTable extends Migration
             $table->text('observacion');
             $table->enum('estado', ['evaluar', 'carga', 'terminado']);
             $table->integer('entrega');
-            $table->integer('project_id')->unsigned();
-            $table->integer('user_id')->unsigned();
+            $table->integer('FK_ProyectoId')->unsigned();
+            $table->integer('FK_UsuarioId')->unsigned();
             $table->timestamps();
 
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
-            $table->foreign('project_id')->references('id')->on('projects')->onDelete('cascade');
+            $table->foreign('FK_UsuarioId')->references('PK_id')->on('TBL_Usuarios')->onDelete('cascade');
+            $table->foreign('FK_ProyectoId')->references('PK_id')->on('TBL_Proyectos')->onDelete('cascade');
         });
     }
 
@@ -42,6 +42,6 @@ class CreateTestCasesTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('test_cases');
+        Schema::dropIfExists('TBL_CasoPrueba');
     }
 }

@@ -11,8 +11,8 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('users')->insert([
-            'name' => 'Code Freestyle',
+        DB::table('tbl_usuarios')->insert([
+            'nombre' => 'Code Freestyle',
             'email' => 'root@app.com',
             'role' => 'admin',
             'password' => bcrypt('root')
