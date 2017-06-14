@@ -1,1 +1,1 @@
-@extends('material.layouts.dashboard')
+@extends('layouts.admin-dash')

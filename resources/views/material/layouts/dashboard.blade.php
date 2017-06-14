@@ -36,7 +36,7 @@
                             @component('components.nav-link', [
                                 'icon' => 'icon-home',
                                 'title' => 'Home',
-                                'link' => Auth::user()->home()
+                                'link' => '/'
                             ])
                             @endcomponent
                             @yield('links')
