@@ -15,7 +15,7 @@ class CreateUsersTable extends Migration
     {
         Schema::create('TBL_Usuarios', function (Blueprint $table) {
             $table->increments('PK_id');
-            $table->string('nombre');
+            $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('state', ['active', 'request', 'disabled'])->default('disabled');

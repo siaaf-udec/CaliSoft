@@ -9,6 +9,9 @@ class User extends Authenticatable
 {
     use Notifiable;
 
+    protected $table = "TBL_Usuarios";
+    protected $primaryKey = "PK_id";
+
      /**
      *  Roles de el usuario
      * @var array
