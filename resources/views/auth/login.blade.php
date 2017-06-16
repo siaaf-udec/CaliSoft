@@ -90,6 +90,8 @@
                                 </div>
                             </div>
                         </div>
+
+                        
                      
                         <div class="row">
                             <div class="col-sm-6">
@@ -99,6 +101,11 @@
                                         'label' => 'Recordarme'
                                     ])
                                     @endcomponent
+                                </div>
+                                <div class="row text-danger text-center">
+                                    @foreach($errors->all() as $error)
+                                        {{ $error }}
+                                    @endforeach
                                 </div>
                             </div>
                             <div class="col-sm-6 text-right">
@@ -116,6 +123,7 @@
 
                     <!-- BEGIN FORGOT PASSWORD FORM -->
                     <form action="{{ route('password.request') }}" id="form-forget" role="form" novalidate method="POST" class="forget-form">
+                        {{ csrf_field() }}
                         <h3 class="font-green">¿Se te olvidó tu contraseña ?</h3>
                         <p>Introduzca su dirección de correo electrónico a continuación para restablecer su contraseña. </p>
                         @component('components.email', [
