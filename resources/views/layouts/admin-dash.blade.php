@@ -16,4 +16,10 @@
     @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => '#', 'title' => 'Documentos'])
     @endcomponent
 
+    @component('components.nav-link', [
+        'icon' => 'fa fa-gears', 
+        'link' => route('semilleros'), 
+        'title' => 'Semilleros'])
+    @endcomponent
+
 @endsection
