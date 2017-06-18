@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
 
 class SemilleroController extends Controller
-{   
+{
 
     function __construct()
     {
@@ -28,7 +28,7 @@ class SemilleroController extends Controller
         return Semillero::all();
     }
 
-   
+
     /**
      * Store a newly created resource in storage.
      *
@@ -36,7 +36,7 @@ class SemilleroController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
-    {   
+    {
         $this->validate($request, ['nombre' => 'required|string|unique:TBL_Semilleros']);
         return Semillero::create(['nombre' => $request->nombre]);
     }
@@ -51,7 +51,7 @@ class SemilleroController extends Controller
      */
     public function update(Request $request, Semillero $semillero)
     {
-        
+
         $this->validate($request, [
             'nombre' => [
                 'string',

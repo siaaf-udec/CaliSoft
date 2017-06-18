@@ -49,17 +49,17 @@ class GrupoDeInvestigacionController extends Controller
      * @param  \App\GrupoDeInvestigacion  $grupoDeInvestigacion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GrupoDeInvestigacion $grupoDeInvestigacion)
+    public function update(Request $request, GrupoDeInvestigacion $grupos_de_investigacion)
     {
         $this->validate($request, [
             'nombre' => [
-                'string', 
-                Rule::unique('TBL_GruposDeInvestigacion')->ignore($grupoDeInvestigacion->PK_id, 'Pk_id')
+                'string',
+                Rule::unique('TBL_GruposDeInvestigacion')->ignore($grupos_de_investigacion->PK_id, 'Pk_id')
             ]
         ]);
 
-        $grupoDeInvestigacion->nombre = $request->nombre;
-        $grupoDeInvestigacion->save();
+        $grupos_de_investigacion->nombre = $request->nombre;
+        $grupos_de_investigacion->save();
     }
 
     /**
@@ -68,9 +68,8 @@ class GrupoDeInvestigacionController extends Controller
      * @param  \App\GrupoDeInvestigacion  $grupoDeInvestigacion
      * @return \Illuminate\Http\Response
      */
-    public function destroy(GrupoDeInvestigacion $grupoDeInvestigacion)
+    public function destroy($id)
     {
-        return $grupoDeInvestigacion;
-        //$grupoDeInvestigacion->delete();
+        GrupoDeInvestigacion::destroy($id);
     }
 }

@@ -27,7 +27,7 @@
             <template v-else>
                 <form class="form-inline text-center" @submit.prevent="update" >
                     <div class="input-group" >
-                        <input type="text" class="form-control" v-model="editable.nombre" required 
+                        <input type="text" class="form-control" v-model="editable.nombre" required
                             v-focus="true">
                         <div class="input-group-btn">
                             <button type="submit" class="btn btn-info">
@@ -67,8 +67,8 @@ export default {
     methods: {
         store(){
             axios.post(this.rest, this.newItem)
-                .then(res => { 
-                    this.items = [...this.items, res.data]
+                .then(res => {
+                    this.items.push(res.data);
                     this.newItem = this.errors = {};
                 })
                 .catch(error => this.error = error.response.data.nombre[0]);
@@ -91,7 +91,7 @@ export default {
                     this.editable = {};
                 })
                 .catch(error => this.updateError = error.response.data.nombre[0]);
-            
+
         }
     }
 }
