@@ -2,33 +2,24 @@
 
 namespace App\Http\Controllers\Admin;
 
+
+
 use App\Http\Controllers\Controller;
-use App\Categorias;
+use App\User;
 use Illuminate\Http\Request;
-use App\Categorias As Categoria;
-use Illuminate\Routing\Route;
+use Illuminate\Validation\Rule;
 
-class CategoriasController extends Controller
+class RegisterEvaluadorController extends Controller
 {
-    function __construct()
-    {
-        $this->middleware('auth');
-        $this->middleware('role:admin', [
-            'except' => ['index']
-        ]);
-    }
-    
-
-    /*
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-     
     public function index()
     {
-         return Categoria::all();
-         
+      $users = User::All();
+      return view('admin.register-evaluador',compact('users'));
     }
 
     /**
@@ -36,6 +27,10 @@ class CategoriasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function create()
+    {
+        //
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -51,25 +46,33 @@ class CategoriasController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Categorias  $categorias
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function show($id)
+    {
+        //
+    }
 
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Categorias  $categorias
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+    public function edit($id)
+    {
+        //
+    }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Categorias  $categorias
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categorias $categorias)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -77,10 +80,10 @@ class CategoriasController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Categorias  $categorias
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categorias $categorias)
+    public function destroy($id)
     {
         //
     }

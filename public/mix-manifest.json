@@ -3,5 +3,6 @@
   "/css/app.css": "/css/app.css",
   "/js/app.js": "/js/app.js",
   "/mix.js": "/mix.js",
-  "/js/semilleros.js": "/js/semilleros.js"
+  "/js/semilleros.js": "/js/semilleros.js",
+  "/js/categorias.js": "/js/categorias.js"
 }
