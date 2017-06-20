@@ -7,6 +7,7 @@ use App\Categorias;
 use Illuminate\Http\Request;
 use App\Categorias As Categoria;
 use Illuminate\Routing\Route;
+use Illuminate\Validation\Rule;
 
 class CategoriasController extends Controller
 {
@@ -45,7 +46,16 @@ class CategoriasController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request,[
+            'nombre'=>'required',
+            'plataforma'=>'required|integer',
+            'modelado'=>'required|integer',
+            'despliegue'=>'required|integer',
+            'entidad_relacion'=>'required|integer',
+            'clases'=>'required|integer',
+            'actividades'=>'required|integer',
+            'uso'=>'required|integer',
+        ]);
     }
 
     /**
