@@ -9,15 +9,14 @@ use Illuminate\Validation\Rule;
 
 class SemilleroController extends Controller
 {
-
-    function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role:admin', [
             'except' => ['index']
         ]);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -51,7 +50,6 @@ class SemilleroController extends Controller
      */
     public function update(Request $request, Semillero $semillero)
     {
-
         $this->validate($request, [
             'nombre' => [
                 'string',
