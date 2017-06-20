@@ -101,9 +101,13 @@
                                         'label' => 'Recordarme'
                                     ])
                                     @endcomponent
+                                    
+                                    <div class="row text-danger text-center">
+                                        @foreach($errors->all() as $error)
+                                            {{ $error }}
+                                        @endforeach
+                                    </div>
                                 </div>
-                            
-                                
                             </div>
                             <div class="col-sm-6 text-right">
                                 <input class="btn green" type="submit" value="Ingresar">
