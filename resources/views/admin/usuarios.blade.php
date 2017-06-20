@@ -4,7 +4,7 @@
             <h3 class="text-center">Usuarios </h3>
     </div>
     <div>
-      <button type="submit" data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary">Crear Evaluador</button>
+      <button type="submit" data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary">Crear Usuario</button>
     </div>
     <div id="app">
       <div class="table-responsive">
