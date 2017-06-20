@@ -1,17 +1,11 @@
 @extends('material.layouts.dashboard')
 
 @section('links')
-    @component('components.nav-dropdown', ['icon' => 'fa fa-users', 'link' => '#', 'title' => 'Usuarios'])
-
-                @component('components.nav-link', ['icon' => 'fa fa-users', 'link' => route('register-evaluador'), 'title' => 'Registrar evaluadores'])
-                @endcomponent
-
-                @component('components.nav-link', ['icon' => 'fa fa-bar-chart-o', 'link' => '#', 'title' => 'Lo que quieran poner'])
-                @endcomponent
-
-                @component('components.nav-link', ['icon' => 'fa fa-cubes', 'link' => '#', 'title' => 'Lo que quieran poner'])
-                @endcomponent
-
+    @component('components.nav-link', [
+        'icon' => 'fa fa-users', 
+        'title' => 'Usuarios',
+        'link' => route('usuarios')
+    ])
     @endcomponent
 
     @component('components.nav-link', ['icon' => 'fa fa-university', 'link' => '#', 'title' => 'Peticiones'])
@@ -29,7 +23,8 @@
     @component('components.nav-link', [
         'icon' => 'fa fa-gears',
         'link' => route('semilleros'),
-        'title' => 'Semilleros'])
+        'title' => 'Semilleros'
+    ])
     @endcomponent
 
 @endsection
