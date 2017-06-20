@@ -69,63 +69,63 @@
                         <label for="title">Nombre </label>
                         <input type="text" name="nombre" class="form-control" v-model="newCategoria.nombre"/>
                         <span v-if="formErrors['nombre']" class="error text-danger">
-                            @{{formErrors['nombre']}}
+                            @{{formErrors.nombre[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Plataforma</label>
                         <input type="text" name="plataforma" class="form-control" v-model="newCategoria.plataforma"/>
                         <span v-if="formErrors['plataforma']" class="error text-danger">
-                            @{{formErrors['plataforma']}}
+                            @{{formErrors.plataforma[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Modelado</label>
                         <input type="text" name="modelado" class="form-control" v-model="newCategoria.modelado"/>
                         <span v-if="formErrors['modelado']" class="error text-danger">
-                            @{{formErrors['modelado']}}
+                            @{{formErrors.modelado[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Despliegue</label>
                         <input type="text" name="despliegue" class="form-control" v-model="newCategoria.despliegue"/>
                         <span v-if="formErrors['despliegue']" class="error text-danger">
-                            @{{formErrors['despliegue']}}
+                            @{{formErrors.despliegue[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Entidad/relación</label>
                         <input type="text" name="entidad_relacion" class="form-control" v-model="newCategoria.entidad_relacion"/>
                         <span v-if="formErrors['entidad_relacion']" class="error text-danger">
-                            @{{formErrors['entidad_relacion']}}
+                            @{{formErrors.entidad_relacion[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Clases</label>
                         <input type="text" name="clases" class="form-control" v-model="newCategoria.clases"/>
                         <span v-if="formErrors['clases']" class="error text-danger">
-                            @{{formErrors['clases']}}
+                            @{{formErrors.clases[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Actividades</label>
                         <input type="text" name="actividades" class="form-control" v-model="newCategoria.actividades"/>
                         <span v-if="formErrors['actividades']" class="error text-danger">
-                            @{{formErrors['actividades']}}
+                            @{{formErrors.actividades[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Secuencia</label>
                         <input type="text" name="sequencia" class="form-control" v-model="newCategoria.sequencia"/>
                         <span v-if="formErrors['sequencia']" class="error text-danger">
-                            @{{formErrors['sequencia']}}
+                            @{{formErrors.sequencia[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Uso</label>
                         <input type="text" name="uso" class="form-control" v-model="newCategoria.uso"/>
                         <span v-if="formErrors['uso']" class="error text-danger">
-                            @{{formErrors['uso']}}
+                            @{{formErrors.uso[0]}}
                         </span>
                     </div>
                     <div class="form-group">
@@ -153,63 +153,63 @@
                         <label for="title">Nombre </label>
                         <input type="text" name="nombre" class="form-control" v-model="fillCategoria.nombre"/>
                         <span v-if="formErrorsUpdate['nombre']" class="error text-danger">
-                            @{{formErrorsUpdate['nombre']}}
+                            @{{formErrorsUpdate.nombre[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Plataforma</label>
                         <input type="text" name="plataforma" class="form-control" v-model="fillCategoria.plataforma"/>
                         <span v-if="formErrorsUpdate['plataforma']" class="error text-danger">
-                            @{{formErrorsUpdate['plataforma']}}
+                            @{{formErrorsUpdate.plataforma[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Modelado</label>
                         <input type="text" name="modelado" class="form-control" v-model="fillCategoria.modelado"/>
                         <span v-if="formErrorsUpdate['modelado']" class="error text-danger">
-                            @{{formErrorsUpdate['modelado']}}
+                            @{{formErrorsUpdate.modelado[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Despliegue</label>
                         <input type="text" name="despliegue" class="form-control" v-model="fillCategoria.despliegue"/>
                         <span v-if="formErrorsUpdate['despliegue']" class="error text-danger">
-                            @{{formErrorsUpdate['despliegue']}}
+                            @{{formErrorsUpdate.despliegue[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Entidad/relación</label>
                         <input type="text" name="entidad_relacion" class="form-control" v-model="fillCategoria.entidad_relacion"/>
                         <span v-if="formErrorsUpdate['entidad_relacion']" class="error text-danger">
-                            @{{formErrorsUpdate['entidad_relacion']}}
+                            @{{formErrorsUpdate.entidad_relacion[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Clases</label>
                         <input type="text" name="clases" class="form-control" v-model="fillCategoria.clases"/>
                         <span v-if="formErrorsUpdate['clases']" class="error text-danger">
-                            @{{formErrorsUpdate['clases']}}
+                            @{{formErrorsUpdate.clases[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Actividades</label>
                         <input type="text" name="actividades" class="form-control" v-model="fillCategoria.actividades"/>
                         <span v-if="formErrorsUpdate['actividades']" class="error text-danger">
-                            @{{formErrorsUpdate['actividades']}}
+                            @{{formErrorsUpdate.actividades[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Secuencia</label>
                         <input type="text" name="sequencia" class="form-control" v-model="fillCategoria.sequencia"/>
                         <span v-if="formErrors['sequencia']" class="error text-danger">
-                            @{{formErrors['sequencia']}}
+                            @{{formErrorsUpdate.sequencia[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Uso</label>
                         <input type="text" name="uso" class="form-control" v-model="fillCategoria.uso"/>
                         <span v-if="formErrorsUpdate['uso']" class="error text-danger">
-                            @{{formErrorsUpdate['uso']}}
+                            @{{formErrorsUpdate.uso[0]}}
                         </span>
                     </div>
                     <div class="form-group">

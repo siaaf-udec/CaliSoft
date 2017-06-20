@@ -11571,6 +11571,8 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 _this2.categorias.push(response.data);
                 _this2.newCategoria = {};
                 $("#crear-categoria").modal("hide");
+            }).catch(function (error) {
+                return _this2.formErrors = error.response.data;
             });
         },
         openEditModal: function openEditModal(categoria) {
@@ -11586,12 +11588,14 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 });
                 _this3.fillCategoria = {};
                 $("#editar-categoria").modal("hide");
+            }).catch(function (error) {
+                return _this3.formErrorsUpdate = error.response.data;
             });
         },
         destroy: function destroy(categoria) {
             var _this4 = this;
 
-            axios.delete('/api/categorias/' + this.categorias.PK_id).then(function () {
+            axios.delete('/api/categorias/' + categoria.PK_id).then(function () {
                 _this4.categorias = _this4.categorias.filter(function (value) {
                     return value != categoria;
                 });

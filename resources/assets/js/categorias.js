@@ -26,7 +26,8 @@ new Vue({
                     this.newCategoria = {};
                     $("#crear-categoria").modal("hide");
 
-                });
+                })
+                .catch(error => this.formErrors = error.response.data);
         },
         openEditModal(categoria) {
             this.fillCategoria = Object.assign({}, categoria);
@@ -40,14 +41,18 @@ new Vue({
                     });
                     this.fillCategoria = {};
                     $("#editar-categoria").modal("hide");
-                });
+                })
+                .catch(error => this.formErrorsUpdate = error.response.data);
         },
+
         destroy(categoria) {
-            axios.delete('/api/categorias/' + this.categorias.PK_id)
+            axios.delete('/api/categorias/' + categoria.PK_id)
                 .then(() => {
                     this.categorias = this.categorias.filter(value => value != categoria);
                 });
+
         }
+
 
 
     }
