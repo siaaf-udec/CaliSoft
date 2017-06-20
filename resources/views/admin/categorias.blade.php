@@ -38,7 +38,7 @@
                 <td v-text="categoria.sequencia"></td>
                 <td v-text="categoria.uso"></td>
                 <td>
-                <button class="editar-categoria btn btn-warning" @click.prevent="editarCategoria(categoria)">
+                <button class="editar-categoria btn btn-warning" @click.prevent="openEditModal(categoria)">
                 <span class="glyphicon glyphicon-edit"></span>Editar
                 </button>
                 </td>
@@ -51,7 +51,7 @@
         </tbody>
     </table>
     </div>
-    </div>
+    
 
 <!--creacion de el modal -->
 <div class="modal fade " id="crear-categoria" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
@@ -64,66 +64,66 @@
                 <h4 class="modal-title" id="myModalLabel">Crear Nueva Categoría</h4>
             </div>
             <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" v-on:submit.prevent="crearCategoria">
+                <form method="post" enctype="multipart/form-data" v-on:submit.prevent="store()">
                     <div class="form-group">
                         <label for="title">Nombre </label>
-                        <input type="text" name="nombre" class="form-control" v-model="categoria.nombre"/>
+                        <input type="text" name="nombre" class="form-control" v-model="newCategoria.nombre"/>
                         <span v-if="formErrors['nombre']" class="error text-danger">
                             @{{formErrors['nombre']}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Plataforma</label>
-                        <input type="text" name="plataforma" class="form-control" v-model="categoria.plataforma"/>
+                        <input type="text" name="plataforma" class="form-control" v-model="newCategoria.plataforma"/>
                         <span v-if="formErrors['plataforma']" class="error text-danger">
                             @{{formErrors['plataforma']}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Modelado</label>
-                        <input type="text" name="modelado" class="form-control" v-model="categoria.modelado"/>
+                        <input type="text" name="modelado" class="form-control" v-model="newCategoria.modelado"/>
                         <span v-if="formErrors['modelado']" class="error text-danger">
                             @{{formErrors['modelado']}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Despliegue</label>
-                        <input type="text" name="despliegue" class="form-control" v-model="categoria.despliegue"/>
+                        <input type="text" name="despliegue" class="form-control" v-model="newCategoria.despliegue"/>
                         <span v-if="formErrors['despliegue']" class="error text-danger">
                             @{{formErrors['despliegue']}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Entidad/relación</label>
-                        <input type="text" name="entidad_relacion" class="form-control" v-model="categoria.entidad_relacion"/>
+                        <input type="text" name="entidad_relacion" class="form-control" v-model="newCategoria.entidad_relacion"/>
                         <span v-if="formErrors['entidad_relacion']" class="error text-danger">
                             @{{formErrors['entidad_relacion']}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Clases</label>
-                        <input type="text" name="clases" class="form-control" v-model="categoria.clases"/>
+                        <input type="text" name="clases" class="form-control" v-model="newCategoria.clases"/>
                         <span v-if="formErrors['clases']" class="error text-danger">
                             @{{formErrors['clases']}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Actividades</label>
-                        <input type="text" name="actividades" class="form-control" v-model="categoria.actividades"/>
+                        <input type="text" name="actividades" class="form-control" v-model="newCategoria.actividades"/>
                         <span v-if="formErrors['actividades']" class="error text-danger">
                             @{{formErrors['actividades']}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Secuencia</label>
-                        <input type="text" name="sequencia" class="form-control" v-model="categoria.sequencia"/>
+                        <input type="text" name="sequencia" class="form-control" v-model="newCategoria.sequencia"/>
                         <span v-if="formErrors['sequencia']" class="error text-danger">
                             @{{formErrors['sequencia']}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Uso</label>
-                        <input type="text" name="uso" class="form-control" v-model="categoria.uso"/>
+                        <input type="text" name="uso" class="form-control" v-model="newCategoria.uso"/>
                         <span v-if="formErrors['uso']" class="error text-danger">
                             @{{formErrors['uso']}}
                         </span>
@@ -219,6 +219,7 @@
             </div>
         </div>
     </div>
+</div>
 </div>
 
 

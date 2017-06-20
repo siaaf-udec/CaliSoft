@@ -56,8 +56,7 @@ class CategoriasController extends Controller
             'actividades'=>'required|integer',
             'uso'=>'required|integer',
         ]);
-        $categorias->create($request->all());
-        return $categorias;
+        return Categoria::create($request->all());
     }
 
     /**

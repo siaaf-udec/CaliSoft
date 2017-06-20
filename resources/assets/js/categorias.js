@@ -8,29 +8,9 @@ new Vue({
         offset: 4,
         formErrors: {},
         formErrorsUpdate: {},
-        crearCategoria: {
-            'nombre': '',
-            'plataforma': '',
-            'modelado': '',
-            'despliegue': '',
-            'entidad_relacion': '',
-            'clases': '',
-            'actividades': '',
-            'secuencia': '',
-            'uso': ''
-        },
-        fillCategoria: {
-            'PK_id': '',
-            'nombre': '',
-            'plataforma': '',
-            'modelado': '',
-            'despliegue': '',
-            'entidad_relacion': '',
-            'clases': '',
-            'actividades': '',
-            'secuencia': '',
-            'uso': ''
-        }
+        newCategoria: {},
+        fillCategoria: {},
+
     },
     created() {
         axios.get('/api/categorias')
@@ -38,11 +18,21 @@ new Vue({
                 this.categorias = response.data;
             });
     },
-    ready: function() {
-        this.getValueCategorias: function(page) {
+    methods: {
+        store() {
+            axios.post('/api/categorias', this.newCategoria)
+                .then(response => {
+                    this.categorias.push(response.data);
+                    this.newCategoria = {};
+                    $("#crear-categoria").modal("hide");
 
+                });
+        },
+        openEditModal(categoria) {
+            this.fillCategoria = Object.assign({}, categoria);
+            $('#editar-categoria').modal("show");
         }
-    }
 
+    }
 
 });
