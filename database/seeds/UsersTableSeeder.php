@@ -13,25 +13,22 @@ class UsersTableSeeder extends Seeder
     {
         DB::table('TBL_Usuarios')->insert([
             [
-                'nombre' => 'Code Freestyle',
+                'name' => 'Code Freestyle',
                 'email' => 'root@app.com',
                 'role' => 'admin',
-                'password' => bcrypt('12345'),
-                'state' => 'active'
+                'password' => bcrypt('12345')
             ],
             [
-                'nombre' => 'Paisa',
+                'name' => 'Paisa',
                 'email' => 'paisa@mail.com',
                 'role' => 'evaluator',
-                'password' => bcrypt('12345'),
-                'state' => 'active',
+                'password' => bcrypt('12345')
             ],
             [
-                'nombre' => 'Fredo',
+                'name' => 'Fredo',
                 'email' => 'fredo@joya.joya',
                 'role' => 'student',
-                'password' => bcrypt('12345'),
-                'state' => 'active'
+                'password' => bcrypt('12345')
             ]
         ]);
     }

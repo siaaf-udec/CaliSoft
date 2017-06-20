@@ -18,8 +18,7 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
-            $table->enum('state', ['active', 'request', 'disabled'])->default('disabled');
-            $table->enum('role', ['admin', 'student', 'evaluator'])->defualt('student');
+            $table->enum('role', ['admin', 'student', 'evaluator'])->default('student');
             $table->integer('FK_ProyectoId')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
