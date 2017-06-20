@@ -22,7 +22,7 @@ Route::resource('grupos-de-investigacion', 'Admin\GrupoDeInvestigacionController
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
 Route::resource('categorias', 'Admin\CategoriasController', [
-    'only' => ['index', 'store', 'update', 'destroy']
+    'only' => ['index', 'store', 'update', 'destroy','listing','find']
 ]);
 Route::resource('usuarios', 'Admin\UsuariosController', [
     'only' => ['index', 'store', 'update', 'destroy']

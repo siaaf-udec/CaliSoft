@@ -17,7 +17,7 @@ class SemilleroController extends Controller
             'except' => ['index']
         ]);
     }
-
+    
     /**
      * Display a listing of the resource.
      *

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Categorias As Categoria;
 
 class AdminController extends Controller
 {
@@ -18,7 +19,8 @@ class AdminController extends Controller
     }
     public function categorias()
     {
-        return view('admin.categorias');
+        $catego=Categoria::pluck('nombre','PK_id');
+        return view('admin.categorias',compact('catego'));
     }
     public function usuarios()
     {

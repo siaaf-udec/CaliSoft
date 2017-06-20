@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Categorias;
 use Illuminate\Http\Request;
+use App\Categorias As Categoria;
 
 class CategoriasController extends Controller
 {
@@ -14,6 +15,9 @@ class CategoriasController extends Controller
             'except' => ['index']
         ]);
     }
+    public function find(Route $route){
+
+    }
 
     /**
      * Display a listing of the resource.
@@ -22,7 +26,8 @@ class CategoriasController extends Controller
      */
     public function index()
     {
-        return view('admin.categorias');
+        $catego=Categoria::pluck('nombre','PK_id');
+        return view('admin.categorias',compact('catego'));
     }
 
     /**
