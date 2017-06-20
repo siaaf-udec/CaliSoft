@@ -22,4 +22,7 @@
     @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => '#', 'title' => 'Porcentajes'])
     @endcomponent
 
+    @component('components.nav-link', ['icon' => 'fa fa-pencil-square', 'link' => Route('proyectos'), 'title' => 'Registro Proyecto'])
+    @endcomponent
+
 @endsection
