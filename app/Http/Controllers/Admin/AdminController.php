@@ -15,4 +15,7 @@ class AdminController extends Controller
     public function semilleros(){
         return view('admin.semilleros');
     }
+    public function categorias(){
+        return view('admin.categorias');
+    }
 }

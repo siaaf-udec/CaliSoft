@@ -10,7 +10,7 @@
     @component('components.nav-link', ['icon' => 'fa fa-folder-open', 'link' => '#', 'title' => 'Proyectos'])
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-pie-chart', 'link' => '#', 'title' => 'Categorias'])
+    @component('components.nav-link', ['icon' => 'fa fa-pie-chart', 'link' => route('categorias'), 'title' => 'Categorias'])
     @endcomponent
 
     @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => '#', 'title' => 'Documentos'])
