@@ -4,15 +4,8 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-<<<<<<< HEAD
     "hash": "7461d9af283dc0a356b3b7a2b67d9a39",
-=======
-<<<<<<< Updated upstream
->>>>>>> b6133942e5020db93ee51371376ebb7bb9e64a04
     "content-hash": "75ba431fb4ccf48ce8a358d938bb8d86",
-=======
-    "content-hash": "96098e473b028cdb2529580554a1ae3e",
->>>>>>> Stashed changes
     "packages": [
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -245,16 +238,16 @@
         },
         {
             "name": "laravel/framework",
-            "version": "v5.4.26",
+            "version": "v5.4.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/laravel/framework.git",
-                "reference": "a7ebbfab64111e24f8e584db64e2be9279ded357"
+                "reference": "66f5e1b37cbd66e730ea18850ded6dc0ad570404"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/laravel/framework/zipball/a7ebbfab64111e24f8e584db64e2be9279ded357",
-                "reference": "a7ebbfab64111e24f8e584db64e2be9279ded357",
+                "url": "https://api.github.com/repos/laravel/framework/zipball/66f5e1b37cbd66e730ea18850ded6dc0ad570404",
+                "reference": "66f5e1b37cbd66e730ea18850ded6dc0ad570404",
                 "shasum": ""
             },
             "require": {
@@ -370,7 +363,7 @@
                 "framework",
                 "laravel"
             ],
-            "time": "2017-06-13 18:58:49"
+            "time": "2017-06-15 19:08:25"
         },
         {
             "name": "laravel/tinker",
@@ -433,12 +426,7 @@
                 "laravel",
                 "psysh"
             ],
-<<<<<<< HEAD
             "time": "2017-06-01 16:31:26"
-=======
-            "time": "2017-06-01T16:31:26+00:00"
-<<<<<<< Updated upstream
->>>>>>> b6133942e5020db93ee51371376ebb7bb9e64a04
         },
         {
             "name": "laravelcollective/html",
@@ -492,13 +480,7 @@
             ],
             "description": "HTML and Form Builders for the Laravel Framework",
             "homepage": "http://laravelcollective.com",
-<<<<<<< HEAD
             "time": "2017-05-22 06:35:07"
-=======
-            "time": "2017-05-22T06:35:07+00:00"
-=======
->>>>>>> Stashed changes
->>>>>>> b6133942e5020db93ee51371376ebb7bb9e64a04
         },
         {
             "name": "league/flysystem",

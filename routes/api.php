@@ -13,6 +13,11 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::middleware('auth:api')->get('/user', function (Request $request) {
-    return $request->user();
-});
+
+Route::resource('semilleros', 'Admin\SemilleroController', [
+    'only' => ['index', 'store', 'update', 'destroy']
+]);
+
+Route::resource('grupos-de-investigacion', 'Admin\GrupoDeInvestigacionController', [
+    'only' => ['index', 'store', 'update', 'destroy']
+]);

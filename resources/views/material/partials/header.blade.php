@@ -303,7 +303,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
-                                <a href="javascript:;"><i class="icon-user"></i> My Profile </a>
+                                <a href="javascript:;"><i class="icon-user"></i> Mi Perfil </a>
                             </li>
                             <li class="divider"> </li>
                             <li>
