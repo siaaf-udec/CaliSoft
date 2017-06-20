@@ -56,6 +56,8 @@ class CategoriasController extends Controller
             'actividades'=>'required|integer',
             'uso'=>'required|integer',
         ]);
+        $categorias->create($request->all());
+        return $categorias;
     }
 
     /**
@@ -81,7 +83,18 @@ class CategoriasController extends Controller
      */
     public function update(Request $request, Categorias $categorias)
     {
-        //
+        $this->validate($request,[
+            'nombre'=>'required',
+            'plataforma'=>'required|integer',
+            'modelado'=>'required|integer',
+            'despliegue'=>'required|integer',
+            'entidad_relacion'=>'required|integer',
+            'clases'=>'required|integer',
+            'actividades'=>'required|integer',
+            'uso'=>'required|integer',
+        ]);
+        $categorias->update($request->all());
+        return $categorias;
     }
 
     /**
@@ -92,6 +105,7 @@ class CategoriasController extends Controller
      */
     public function destroy(Categorias $categorias)
     {
-        //
+        $categorias->delete();
+        return $categorias;
     }
 }
