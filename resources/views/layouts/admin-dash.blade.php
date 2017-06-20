@@ -2,7 +2,7 @@
 
 @section('links')
     @component('components.nav-link', [
-        'icon' => 'fa fa-users', 
+        'icon' => 'fa fa-users',
         'title' => 'Usuarios',
         'link' => route('usuarios')
     ])
@@ -17,7 +17,7 @@
     @component('components.nav-link', ['icon' => 'fa fa-pie-chart', 'link' => route('categorias'), 'title' => 'Categorias'])
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => '#', 'title' => 'Documentos'])
+    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => '/admin/tdocumento', 'title' => 'Documentos'])
     @endcomponent
 
     @component('components.nav-link', [
