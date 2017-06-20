@@ -27,3 +27,4 @@ Route::resource('categorias', 'Admin\CategoriasController', [
 Route::resource('usuarios', 'Admin\UsuariosController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
+
