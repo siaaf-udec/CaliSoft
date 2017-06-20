@@ -52,126 +52,89 @@
 |
 | @endsection
 --}}
-@section('content')
-    <!-- BEGIN : LOGIN PAGE 5-1 -->
-    <div class="user-login-5">
-        <div class="row bs-reset">
-            <div class="col-md-6 bs-reset mt-login-5-bsfix">
-                <div class="login-bg" style="background-image:url({{ asset('assets/pages/img/login/bg1.jpg') }})">
-                    <img class="login-logo" src="{{ asset('assets/pages/img/login/siaaf.png') }}" /> 
+@section('content')   
+    <form action="{{ route('login') }}" id="form-login" role="form" method="post" novalidate>
+        {{ csrf_field() }}
+        <div class="form-body">
+            <div class="row">
+                <div class="col-xs-6">
+                    @component('components.email', [
+                        'name' => 'email',
+                        'attributes' => "required autofocus",
+                        'label' => 'Correo',
+                        'help' => 'Digita el correo'
+                    ])
+                    @endcomponent
                 </div>
-            </div>
-            <div class="col-md-6 login-container bs-reset mt-login-5-bsfix">
-                <div class="login-content">
-                    <h1>{{ $title or config('app.name') }}</h1>
-                    <p> {{ $description or config('app.description') }} </p>
-                    
-                    <form action="{{ route('login') }}" id="form-login" role="form" method="post" novalidate>
-                        {{ csrf_field() }}
-                        <div class="form-body">
-                            <div class="row">
-                                <div class="col-xs-6">
-                                    @component('components.email', [
-                                        'name' => 'email',
-                                        'attributes' => "required autofocus",
-                                        'label' => 'Correo',
-                                        'help' => 'Digita el correo'
-                                    ])
-                                    @endcomponent
-                                </div>
-                                <div class="col-xs-6">
-                                    @component('components.password', [
-                                        'name' => 'password',
-                                        'attributes' => "required",
-                                        'label' => 'Contraseña',
-                                        'help' => 'Digita la contraseña'
-                                    ])
-                                    @endcomponent
-                                </div>
-                            </div>
-                        </div>
-
-                        
-                     
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <div class="rem-password">
-                                    @component('components.checkbox', [
-                                        'name' => 'remember',
-                                        'label' => 'Recordarme'
-                                    ])
-                                    @endcomponent
-                                    
-                                    <div class="row text-danger text-center">
-                                        @foreach($errors->all() as $error)
-                                            {{ $error }}
-                                        @endforeach
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-sm-6 text-right">
-                                <input class="btn green" type="submit" value="Ingresar">
-                            </div>
-                            <div class="col-sm-12 text-right">
-                                <div class="forgot-password">
-                                    <a href="javascript:;" id="forget-password" class="forget-password">
-                                        ¿Se te olvidó tu contraseña?</a>
-                                </div>
-                            </div>
-                        </div>
-                    </form>
-                    <!-- END : LOGIN PAGE 5-1 -->
-
-                    <!-- BEGIN FORGOT PASSWORD FORM -->
-                    <form action="{{ route('password.request') }}" id="form-forget" role="form" novalidate method="POST" class="forget-form">
-                        {{ csrf_field() }}
-                        <h3 class="font-green">¿Se te olvidó tu contraseña ?</h3>
-                        <p>Introduzca su dirección de correo electrónico a continuación para restablecer su contraseña. </p>
-                        @component('components.email', [
-                            'name' => 'email',
-                            'attributes' => 'required autofocus autocomplete=off',
-                            'label' => 'Correo',
-                            'help' => 'Digita el correo'
-                        ])
-                        @endcomponent
-                        <div class="form-actions">
-                            <button id="back-btn" class="btn green btn-outline" type="button">Cancelar</button>
-                            <input class="btn btn-success uppercase pull-right" type="submit" value="Enviar">
-                        </div>
-                    </form>
-                    <!-- END FORGOT PASSWORD FORM -->
-                </div>
-                <div class="login-footer">
-                    <div class="row bs-reset">
-                        <div class="col-xs-5 bs-reset">
-                            <ul class="login-social">
-                                <li>
-                                    <a href="javascript:;">
-                                        <i class="icon-social-facebook"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <i class="icon-social-twitter"></i>
-                                    </a>
-                                </li>
-                                <li>
-                                    <a href="javascript:;">
-                                        <i class="icon-social-dribbble"></i>
-                                    </a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="col-xs-7 bs-reset">
-                            <div class="login-copyright text-right">
-                                <p>Copyright © {{ $footer or config('app.author') }}</p>
-                            </div>
-                        </div>
-                    </div>
+                <div class="col-xs-6">
+                    @component('components.password', [
+                        'name' => 'password',
+                        'attributes' => "required",
+                        'label' => 'Contraseña',
+                        'help' => 'Digita la contraseña'
+                    ])
+                    @endcomponent
                 </div>
             </div>
         </div>
-    </div>
+
+        
+        
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="rem-password">
+                    @component('components.checkbox', [
+                        'name' => 'remember',
+                        'label' => 'Recordarme'
+                    ])
+                    @endcomponent
+                    
+                    <div class="row text-danger text-center">
+                        @foreach($errors->all() as $error)
+                            {{ $error }}
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+            <div class="col-sm-6 text-right">
+                <input class="btn green" type="submit" value="Ingresar">
+            </div>
+            <div class="col-sm-12 text-right">
+                <div class="forgot-password">
+                    <a href="javascript:;" id="forget-password" class="forget-password">
+                        ¿Se te olvidó tu contraseña?
+                    </a>
+                    <br> 
+                    <a href="{{ route('register') }}" class="font-blue-dark">
+                        Registrarse
+                    </a>
+                </div>
+            </div>
+        </div>
+    </form>
+    <!-- END : LOGIN PAGE 5-1 -->
+
+    <!-- BEGIN FORGOT PASSWORD FORM -->
+    <form action="{{ route('password.request') }}" id="form-forget" role="form" novalidate method="POST" class="forget-form">
+        {{ csrf_field() }}
+        <h3 class="font-green">¿Se te olvidó tu contraseña ?</h3>
+        
+        <p>Introduzca su dirección de correo electrónico a continuación para restablecer su contraseña. </p>
+        @component('components.email', [
+            'name' => 'email',
+            'attributes' => 'required autofocus autocomplete=off',
+            'label' => 'Correo',
+            'help' => 'Digita el correo'
+        ])
+        @endcomponent
+        <div class="form-actions">
+            <button id="back-btn" class="btn green btn-outline" type="button">Cancelar</button>
+            <input class="btn btn-success uppercase pull-right" type="submit" value="Enviar">
+        </div>
+    </form>
+    <!-- END FORGOT PASSWORD FORM -->
+
+
 @endsection
 
 {{--
