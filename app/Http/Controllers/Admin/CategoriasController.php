@@ -47,7 +47,7 @@ class CategoriasController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'nombre'=>'required',
+            'nombre'=>'required|string',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
             'despliegue'=>'required|integer',
@@ -56,6 +56,8 @@ class CategoriasController extends Controller
             'actividades'=>'required|integer',
             'uso'=>'required|integer',
         ]);
+
+        return Categoria::create($request->all());
     }
 
     /**
