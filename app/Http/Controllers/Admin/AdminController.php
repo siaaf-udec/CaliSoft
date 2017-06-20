@@ -25,4 +25,8 @@ class AdminController extends Controller
     {
         return view('admin.usuarios');
     }
+    public function tipoDocumento()
+    {
+        return view('admin.documento.tipo-documento');
+    }
 }

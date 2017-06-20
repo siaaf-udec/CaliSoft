@@ -43,7 +43,7 @@
                 </button>
                 </td>
                 <td>
-                <button class="editar-modal btn btn-danger" @click.prevent="eliminarCategoria(categoria)">
+                <button class="editar-modal btn btn-danger" @click.prevent="destroy(categoria)">
                 <span class="glyphicon glyphicon-trash"></span>Eliminar
                 </button>
                 </td>
@@ -148,7 +148,7 @@
                 <h4 class="modal-title" id="myModalLabel">Editar Categoría</h4>
             </div>
             <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" v-on:submit.prevent="editarCategoria(fillCategoria.PK_id)">
+                <form method="post" enctype="multipart/form-data" v-on:submit.prevent="update(fillCategoria.PK_id)">
                     <div class="form-group">
                         <label for="title">Nombre </label>
                         <input type="text" name="nombre" class="form-control" v-model="fillCategoria.nombre"/>

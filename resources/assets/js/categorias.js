@@ -31,7 +31,24 @@ new Vue({
         openEditModal(categoria) {
             this.fillCategoria = Object.assign({}, categoria);
             $('#editar-categoria').modal("show");
+        },
+        update() {
+            axios.put('/api/categorias/' + this.fillCategoria.PK_id, this.fillCategoria)
+                .then(response => {
+                    this.categorias = this.categorias.map(value => {
+                        return value.PK_id == this.fillCategoria.PK_id ? this.fillCategoria : value;
+                    });
+                    this.fillCategoria = {};
+                    $("#editar-categoria").modal("hide");
+                });
+        },
+        destroy(categoria) {
+            axios.delete('/api/categorias/' + this.categorias.PK_id)
+                .then(() => {
+                    this.categorias = this.categorias.filter(value => value != categoria);
+                });
         }
+
 
     }
 
