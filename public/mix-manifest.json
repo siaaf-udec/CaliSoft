@@ -4,6 +4,5 @@
   "/js/app.js": "/js/app.js",
   "/mix.js": "/mix.js",
   "/js/semilleros.js": "/js/semilleros.js",
-  "/js/categorias.js": "/js/categorias.js",
-  "/js/usuarios.js": "/js/usuarios.js"
+  "/js/categorias.js": "/js/categorias.js"
 }

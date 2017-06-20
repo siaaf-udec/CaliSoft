@@ -25,6 +25,7 @@ new Vue({
                     this.categorias.push(response.data);
                     this.newCategoria = {};
                     $("#crear-categoria").modal("hide");
+                    $("#mensaje-bien").fadeIn();
 
                 })
                 .catch(error => this.formErrors = error.response.data);
@@ -41,6 +42,7 @@ new Vue({
                     });
                     this.fillCategoria = {};
                     $("#editar-categoria").modal("hide");
+                    $("#mensaje-editado").fadeIn();
                 })
                 .catch(error => this.formErrorsUpdate = error.response.data);
         },
@@ -49,6 +51,7 @@ new Vue({
             axios.delete('/api/categorias/' + categoria.PK_id)
                 .then(() => {
                     this.categorias = this.categorias.filter(value => value != categoria);
+                    $("#mensaje-eliminado").fadeIn();
                 });
 
         }

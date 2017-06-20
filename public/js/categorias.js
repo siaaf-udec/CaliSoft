@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 38);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11571,6 +11571,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 _this2.categorias.push(response.data);
                 _this2.newCategoria = {};
                 $("#crear-categoria").modal("hide");
+                $("#mensaje-bien").fadeIn();
             }).catch(function (error) {
                 return _this2.formErrors = error.response.data;
             });
@@ -11588,6 +11589,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 });
                 _this3.fillCategoria = {};
                 $("#editar-categoria").modal("hide");
+                $("#mensaje-editado").fadeIn();
             }).catch(function (error) {
                 return _this3.formErrorsUpdate = error.response.data;
             });
@@ -11599,6 +11601,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 _this4.categorias = _this4.categorias.filter(function (value) {
                     return value != categoria;
                 });
+                $("#mensaje-eliminado").fadeIn();
             });
         }
     }
@@ -11614,8 +11617,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */,
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(29);
