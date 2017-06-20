@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 38);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11532,8 +11532,7 @@ module.exports = g;
 
 
 /***/ }),
-/* 29 */,
-/* 30 */
+/* 29 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11542,422 +11541,34 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_list_group_crud__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_list_group_crud___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_list_group_crud__);
-
 
 
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
-    components: { ListGroupCrud: __WEBPACK_IMPORTED_MODULE_2__components_list_group_crud___default.a }
-});
-
-/***/ }),
-/* 31 */,
-/* 32 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_focus__ = __webpack_require__(33);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_focus___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_focus__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-
-    directives: { focus: __WEBPACK_IMPORTED_MODULE_0_vue_focus__["focus"] },
-
-    props: {
-        rest: {
-            type: String,
-            required: true
-        }
-    },
-
-    data: function data() {
-        return { items: [], newItem: {}, error: "", updateError: "", editable: {} };
-    },
+    data: { categorias: [] },
     created: function created() {
         var _this = this;
 
-        axios.get(this.rest).then(function (res) {
-            return _this.items = res.data;
+        axios.get('/api/categorias').then(function (response) {
+            _this.categorias = response.data;
         });
-    },
-
-    methods: {
-        store: function store() {
-            var _this2 = this;
-
-            axios.post(this.rest, this.newItem).then(function (res) {
-                _this2.items.push(res.data);
-                _this2.newItem = _this2.errors = {};
-            }).catch(function (error) {
-                return _this2.error = error.response.data.nombre[0];
-            });
-        },
-        destroy: function destroy(item) {
-            var _this3 = this;
-
-            axios.delete(this.rest + item.PK_id).then(function () {
-                _this3.items = _this3.items.filter(function (value) {
-                    return value != item;
-                });
-            });
-        },
-        selectEditable: function selectEditable(item) {
-            this.editable = Object.assign({}, item);
-        },
-        update: function update() {
-            var _this4 = this;
-
-            axios.put(this.rest + this.editable.PK_id, this.editable).then(function (res) {
-                _this4.items = _this4.items.map(function (value) {
-                    return value.PK_id == _this4.editable.PK_id ? _this4.editable : value;
-                });
-                _this4.editable = {};
-            }).catch(function (error) {
-                return _this4.updateError = error.response.data.nombre[0];
-            });
-        }
     }
 });
 
 /***/ }),
-/* 33 */
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-var Vue = __webpack_require__(27);
-Vue = 'default' in Vue ? Vue['default'] : Vue;
-
-var version = '2.1.0';
-
-var compatible = (/^2\./).test(Vue.version);
-if (!compatible) {
-  Vue.util.warn('VueFocus ' + version + ' only supports Vue 2.x, and does not support Vue ' + Vue.version);
-}
-
-var focus = {
-  inserted: function(el, binding) {
-    if (binding.value) el.focus();
-    else el.blur();
-  },
-
-  componentUpdated: function(el, binding) {
-    if (binding.modifiers.lazy) {
-      if (Boolean(binding.value) === Boolean(binding.oldValue)) {
-        return;
-      }
-    }
-
-    if (binding.value) el.focus();
-    else el.blur();
-  },
-};
-
-var mixin = {
-  directives: {
-    focus: focus,
-  },
-};
-
-exports.version = version;
-exports.focus = focus;
-exports.mixin = mixin;
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(35)(
-  /* script */
-  __webpack_require__(32),
-  /* template */
-  __webpack_require__(36),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\components\\list-group-crud.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] list-group-crud.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-66317e56", Component.options)
-  } else {
-    hotAPI.reload("data-v-66317e56", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports) {
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  scopeId,
-  cssModules
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  // inject cssModules
-  if (cssModules) {
-    var computed = Object.create(options.computed || null)
-    Object.keys(cssModules).forEach(function (key) {
-      var module = cssModules[key]
-      computed[key] = function () { return module }
-    })
-    options.computed = computed
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
-/* 36 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('section', [_c('ul', {
-    staticClass: "list-group text-center"
-  }, [_c('li', {
-    staticClass: "list-group-item list-group-item-info"
-  }, [_c('form', {
-    staticClass: "form-inline text-center",
-    on: {
-      "submit": function($event) {
-        $event.preventDefault();
-        _vm.store($event)
-      }
-    }
-  }, [_c('div', {
-    staticClass: "input-group"
-  }, [_c('input', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.newItem.nombre),
-      expression: "newItem.nombre"
-    }],
-    staticClass: "form-control",
-    attrs: {
-      "type": "text",
-      "required": ""
-    },
-    domProps: {
-      "value": (_vm.newItem.nombre)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.newItem.nombre = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _vm._m(0)]), _vm._v(" "), _c('span', {
-    directives: [{
-      name: "show",
-      rawName: "v-show",
-      value: (_vm.error),
-      expression: "error"
-    }],
-    staticClass: "help-block text-danger"
-  }, [_vm._v(_vm._s(_vm.error))])])]), _vm._v(" "), _vm._l((_vm.items), function(item) {
-    return _c('li', {
-      staticClass: "list-group-item"
-    }, [(item.PK_id != _vm.editable.PK_id) ? [_c('a', {
-      staticClass: "pull-left",
-      on: {
-        "click": function($event) {
-          _vm.selectEditable(item)
-        }
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-edit text-info"
-    })]), _vm._v("\n            " + _vm._s(item.nombre) + "\n            "), _c('a', {
-      staticClass: "pull-right"
-    }, [_c('i', {
-      staticClass: "fa fa-remove text-danger",
-      on: {
-        "click": function($event) {
-          _vm.destroy(item)
-        }
-      }
-    })])] : [_c('form', {
-      staticClass: "form-inline text-center",
-      on: {
-        "submit": function($event) {
-          $event.preventDefault();
-          _vm.update($event)
-        }
-      }
-    }, [_c('div', {
-      staticClass: "input-group"
-    }, [_c('input', {
-      directives: [{
-        name: "model",
-        rawName: "v-model",
-        value: (_vm.editable.nombre),
-        expression: "editable.nombre"
-      }, {
-        name: "focus",
-        rawName: "v-focus",
-        value: (true),
-        expression: "true"
-      }],
-      staticClass: "form-control",
-      attrs: {
-        "type": "text",
-        "required": ""
-      },
-      domProps: {
-        "value": (_vm.editable.nombre)
-      },
-      on: {
-        "input": function($event) {
-          if ($event.target.composing) { return; }
-          _vm.editable.nombre = $event.target.value
-        }
-      }
-    }), _vm._v(" "), _c('div', {
-      staticClass: "input-group-btn"
-    }, [_c('button', {
-      staticClass: "btn btn-info",
-      attrs: {
-        "type": "submit"
-      }
-    }, [_c('i', {
-      staticClass: "fa fa-save"
-    })])])]), _vm._v(" "), _c('span', {
-      directives: [{
-        name: "show",
-        rawName: "v-show",
-        value: (_vm.updateError),
-        expression: "updateError"
-      }],
-      staticClass: "help-block text-danger"
-    }, [_vm._v(_vm._s(_vm.updateError))])])]], 2)
-  })], 2)])
-},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "input-group-btn"
-  }, [_c('button', {
-    staticClass: "btn btn-info",
-    attrs: {
-      "type": "submit"
-    }
-  }, [_c('i', {
-    staticClass: "fa fa-plus"
-  })])])
-}]}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-66317e56", module.exports)
-  }
-}
-
-/***/ }),
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
+/* 36 */,
 /* 37 */,
-/* 38 */,
-/* 39 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(30);
+module.exports = __webpack_require__(29);
 
 
 /***/ })

@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Categorias;
 use Illuminate\Http\Request;
 use App\Categorias As Categoria;
+use Illuminate\Routing\Route;
 
 class CategoriasController extends Controller
 {
@@ -15,19 +17,18 @@ class CategoriasController extends Controller
             'except' => ['index']
         ]);
     }
-    public function find(Route $route){
+    
 
-    }
-
-    /**
+    /*
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
+     
     public function index()
     {
-        $catego=Categoria::pluck('nombre','PK_id');
-        return view('admin.categorias',compact('catego'));
+         return Categoria::all();
+         
     }
 
     /**
@@ -35,10 +36,6 @@ class CategoriasController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
-    {
-        //
-    }
 
     /**
      * Store a newly created resource in storage.
@@ -57,10 +54,6 @@ class CategoriasController extends Controller
      * @param  \App\Categorias  $categorias
      * @return \Illuminate\Http\Response
      */
-    public function show(Categorias $categorias)
-    {
-        //
-    }
 
     /**
      * Show the form for editing the specified resource.
@@ -68,10 +61,6 @@ class CategoriasController extends Controller
      * @param  \App\Categorias  $categorias
      * @return \Illuminate\Http\Response
      */
-    public function edit(Categorias $categorias)
-    {
-        //
-    }
 
     /**
      * Update the specified resource in storage.

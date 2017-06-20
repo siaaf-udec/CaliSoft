@@ -19,8 +19,7 @@ class AdminController extends Controller
     }
     public function categorias()
     {
-        $catego=Categoria::pluck('nombre','PK_id');
-        return view('admin.categorias',compact('catego'));
+        return view('admin.categorias');
     }
     public function usuarios()
     {
