@@ -11576,6 +11576,26 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         openEditModal: function openEditModal(categoria) {
             this.fillCategoria = Object.assign({}, categoria);
             $('#editar-categoria').modal("show");
+        },
+        update: function update() {
+            var _this3 = this;
+
+            axios.put('/api/categorias/' + this.fillCategoria.PK_id, this.fillCategoria).then(function (response) {
+                _this3.categorias = _this3.categorias.map(function (value) {
+                    return value.PK_id == _this3.fillCategoria.PK_id ? _this3.fillCategoria : value;
+                });
+                _this3.fillCategoria = {};
+                $("#editar-categoria").modal("hide");
+            });
+        },
+        destroy: function destroy(categoria) {
+            var _this4 = this;
+
+            axios.delete('/api/categorias/' + this.categorias.PK_id).then(function () {
+                _this4.categorias = _this4.categorias.filter(function (value) {
+                    return value != categoria;
+                });
+            });
         }
     }
 
