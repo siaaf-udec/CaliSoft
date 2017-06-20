@@ -7,15 +7,21 @@ use App\Http\Controllers\Controller;
 
 class AdminController extends Controller
 {
-    
-    public function index(){
+    public function index()
+    {
         return view('admin.admin-home');
     }
 
-    public function semilleros(){
+    public function semilleros()
+    {
         return view('admin.semilleros');
     }
-    public function categorias(){
+    public function categorias()
+    {
         return view('admin.categorias');
+    }
+    public function usuarios()
+    {
+        return view('admin.usuarios');
     }
 }
