@@ -11546,14 +11546,39 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
-    data: { categorias: [] },
+    data: {
+        categorias: [],
+        offset: 4,
+        formErrors: {},
+        formErrorsUpdate: {},
+        newCategoria: {},
+        fillCategoria: {}
+
+    },
     created: function created() {
         var _this = this;
 
         axios.get('/api/categorias').then(function (response) {
             _this.categorias = response.data;
         });
+    },
+
+    methods: {
+        store: function store() {
+            var _this2 = this;
+
+            axios.post('/api/categorias', this.newCategoria).then(function (response) {
+                _this2.categorias.push(response.data);
+                _this2.newCategoria = {};
+                $("#crear-categoria").modal("hide");
+            });
+        },
+        openEditModal: function openEditModal(categoria) {
+            this.fillCategoria = Object.assign({}, categoria);
+            $('#editar-categoria').modal("show");
+        }
     }
+
 });
 
 /***/ }),
