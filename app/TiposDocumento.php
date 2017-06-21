@@ -12,7 +12,7 @@ class TiposDocumento extends Model
      *
      * @var string
      */
-    protected $table = 'tbl_tiposdocumento';
+    protected $table = 'TBL_TiposDocumento';
 
     /**
      * The name of the primary key.
@@ -33,5 +33,9 @@ class TiposDocumento extends Model
     protected $hidden = [
         'created_at', 'updated_at'
     ];
+
+    public function componentes(){
+        return $this->hasMany(Componente::class, 'FK_TipoDocumentoId', 'PK_id');
+    }
 
 }

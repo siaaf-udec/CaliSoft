@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Documentos extends Model
 {
-    protected $table = "tbl_documentos";
+    protected $table = "TBL_Documentos";
     protected $primaryKey = "PK_id";
     protected $fillable = ['Url','FK_ProyectoId','FK_TipoDocumentoId'];
     protected $hidden = [

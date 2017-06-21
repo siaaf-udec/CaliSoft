@@ -33,6 +33,11 @@
                         <tr>
                           <td>{{$tdocumento->nombre}}</td>
                           <td>{{$tdocumento->required}}</td>
+                          <td>
+                              <a href="{{ route('componentes', ['documento' => $tdocumento->PK_id]) }}" class="btn btn-primary">
+                                  Componentes
+                              </a>
+                          </td>
                         </tr>
                         @endforeach
                       </tbody>
