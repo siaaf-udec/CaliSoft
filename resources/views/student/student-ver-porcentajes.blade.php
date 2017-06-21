@@ -45,11 +45,16 @@
 
 <div class="form-group row add" >
     <div class="col-md-12">
-            <h3 class="text-center">PORCENTAJES DE EVALUACION (PLATAFORMA Y MODELADO)</h3>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo">PORCENTAJES DE EVALUACION (PLATAFORMA Y MODELADO)</button>
+            <div id="demo" class="collapse">
             <h4 class="text-justify">Los porcentajes de evaluación se configuran de manera que se le da un porcentaje a la evaluación de la plataforma y a la evaluación de modelado, de manera que si equivalen lo mismo cada uno tendrá un porcentaje de 50% y 50%, en caso de que la evaluación de la plataforma sea más importante se le agregara un porcentaje mayor y se les restará a la evaluación del modelado respectivamente y viceversa.</h4>
+            </div>
 
-            <h3 class="text-center">PORCENTAJES DE EVALUACION DEL MODELADO</h3>
+            <button type="button" class="btn btn-info" data-toggle="collapse" data-target="#demo2">PORCENTAJES DE EVALUACION DEL MODELADO</button>
+            <div id="demo2" class="collapse">
             <h4 class="text-justify">En esta parte de la configuración de los porcentajes se busca dar un valor a cada uno de los diagramas, el total de los porcentajes deben sumarme el 100%.</h4>
+            </div>
+
     </div>
     </div>
 

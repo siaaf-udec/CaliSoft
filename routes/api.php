@@ -29,3 +29,6 @@ Route::resource('usuarios', 'Admin\UserController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
 
+Route::resource('documentacion', 'Student\DocumentosController', [
+    'only' => ['index', 'store', 'update', 'destroy']
+]);

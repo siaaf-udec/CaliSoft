@@ -19,5 +19,10 @@ class StudentController extends Controller
 
         return view('student.student-ver-porcentajes');
     }
+
+    public function subirDocumentacion(){
+
+        return view('student.student-subir-documentacion');
+    }
 }
 
