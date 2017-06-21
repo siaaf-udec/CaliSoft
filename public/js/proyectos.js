@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 39);
+/******/ 	return __webpack_require__(__webpack_require__.s = 40);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11532,7 +11532,8 @@ module.exports = g;
 
 
 /***/ }),
-/* 29 */
+/* 29 */,
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11546,18 +11547,35 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
-    data: { categorias: [] },
+    data: { categorias: [],
+        semilleros: [],
+        grupos: [],
+        proyecto: {},
+        error: " " },
     created: function created() {
         var _this = this;
 
-        axios.get('/api/categorias').then(function (response) {
-            _this.categorias = response.data;
+        axios.all([axios.get('/api/proyectos/categorias'), axios.get('/api/proyectos/semilleros'), axios.get('/api/proyectos/grupos')]).then(axios.spread(function (cat, sem, gru) {
+            _this.categorias = cat.data;
+            _this.semilleros = sem.data;
+            _this.grupos = gru.data;
+        })).catch(function (e) {
+            _this.error = e.message;
         });
+    },
+
+    methods: {
+        store: function store() {
+            axios.post('/api/proyectos/', this.proyecto).then(function (res) {
+                console.log(res.data);
+            }).catch(function (e) {
+                return console.log(e);
+            });
+        }
     }
 });
 
 /***/ }),
-/* 30 */,
 /* 31 */,
 /* 32 */,
 /* 33 */,
@@ -11566,10 +11584,11 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 36 */,
 /* 37 */,
 /* 38 */,
-/* 39 */
+/* 39 */,
+/* 40 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(29);
+module.exports = __webpack_require__(30);
 
 
 /***/ })
