@@ -19,7 +19,7 @@
 
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => '#', 'title' => 'Porcentajes'])
+    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => Route('porcentajes'),'title' => 'Porcentajes'])
     @endcomponent
 
     @component('components.nav-link', ['icon' => 'fa fa-pencil-square', 'link' => Route('proyectos'), 'title' => 'Registro Proyecto'])

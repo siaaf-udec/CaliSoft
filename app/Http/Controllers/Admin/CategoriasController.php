@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Categorias;
 use Illuminate\Http\Request;
-use App\Categorias As Categoria;
 use Illuminate\Routing\Route;
 use Illuminate\Validation\Rule;
 
@@ -28,7 +27,7 @@ class CategoriasController extends Controller
      
     public function index()
     {
-         return Categoria::all();
+         return Categorias::all();
          
     }
 
@@ -47,17 +46,17 @@ class CategoriasController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'nombre'=>'required',
+            'nombre'=>'required|string',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
             'despliegue'=>'required|integer',
             'entidad_relacion'=>'required|integer',
             'clases'=>'required|integer',
             'actividades'=>'required|integer',
+            
             'uso'=>'required|integer',
         ]);
-        $categorias->create($request->all());
-        return $categorias;
+        return Categorias::create($request->all());
     }
 
     /**
@@ -81,7 +80,7 @@ class CategoriasController extends Controller
      * @param  \App\Categorias  $categorias
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categorias $categorias)
+    public function update(Request $request, Categorias $categoria)
     {
         $this->validate($request,[
             'nombre'=>'required',
@@ -91,10 +90,12 @@ class CategoriasController extends Controller
             'entidad_relacion'=>'required|integer',
             'clases'=>'required|integer',
             'actividades'=>'required|integer',
+            
             'uso'=>'required|integer',
         ]);
-        $categorias->update($request->all());
-        return $categorias;
+        $categoria->fill($request->all());
+        $categoria->save();
+        
     }
 
     /**
@@ -103,9 +104,8 @@ class CategoriasController extends Controller
      * @param  \App\Categorias  $categorias
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categorias $categorias)
+    public function destroy(Categorias $categoria)
     {
-        $categorias->delete();
-        return $categorias;
+        $categoria->delete();
     }
 }

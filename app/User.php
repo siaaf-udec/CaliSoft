@@ -16,7 +16,7 @@ class User extends Authenticatable
      *  Roles de el usuario
      * @var array
      */
-    const ROLES = ['admin', 'student', 'teacher'];
+    const ROLES = ['admin', 'student', 'evaluator'];
 
     /**
      * The attributes that are mass assignable.
@@ -24,7 +24,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','role',
     ];
 
     /**
@@ -36,7 +36,7 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    
+
     public function home()
     {
         return route($this->role);

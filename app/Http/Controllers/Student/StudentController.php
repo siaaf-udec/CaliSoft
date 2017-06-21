@@ -14,5 +14,10 @@ class StudentController extends Controller
     public function proyectos(){
         return view('student.student-register-pro');
     }
+
+    public function verPorcentajes(){
+
+        return view('student.student-ver-porcentajes');
+    }
 }
 
