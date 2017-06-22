@@ -53,7 +53,7 @@ class CategoriasController extends Controller
             'entidad_relacion'=>'required|integer',
             'clases'=>'required|integer',
             'actividades'=>'required|integer',
-            
+            'sequencia'=>'required|integer',
             'uso'=>'required|integer',
         ]);
         return Categorias::create($request->all());
@@ -83,14 +83,14 @@ class CategoriasController extends Controller
     public function update(Request $request, Categorias $categoria)
     {
         $this->validate($request,[
-            'nombre'=>'required',
+            'nombre'=>'required|max:255|string',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
             'despliegue'=>'required|integer',
             'entidad_relacion'=>'required|integer',
             'clases'=>'required|integer',
             'actividades'=>'required|integer',
-            
+            'sequencia'=>'required|integer',
             'uso'=>'required|integer',
         ]);
         $categoria->fill($request->all());

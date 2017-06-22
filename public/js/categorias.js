@@ -11567,7 +11567,10 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         store: function store() {
             var _this2 = this;
 
+            if (!this.sumaPorcentajes()) return;
+
             axios.post('/api/categorias', this.newCategoria).then(function (response) {
+
                 _this2.categorias.push(response.data);
                 _this2.newCategoria = {};
                 $("#crear-categoria").modal("hide");
@@ -11603,7 +11606,15 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 });
                 toastr.info('Categoría eliminada correctamente');
             });
-        }
+        },
+        sumaPorcentajes: function sumaPorcentajes() {
+            if (this.newCategoria.modelado + this.newCategoria.plataforma != 100) {
+                this.formErrors.modelado = "la suma de el porcentaje de plataforma y modelado debe ser igual a 100%";
+                alert(this.formErrors.modelado);
+                return false;
+            }
+        },
+        sumaDiagramas: function sumaDiagramas() {}
     }
 
 });

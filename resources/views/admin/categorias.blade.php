@@ -11,11 +11,36 @@
         <div class="panel-body">
             <!-- Table de categorias -->
             <div class="table-responsive">
-                <table class="table table-bordered table-condensed">
+                <table class="table table-hover table-bordered table-condensed">
                     <thead>
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Plataforma</th>
-                        <th class="text-center">Modelado</th>
+                        <th class="text-center">Modelado</th>                  
+                        <th class="text-center">Operaciones</th>
+                    </thead>
+                    <tbody>
+                        <tr v-for="categoria in categorias" class="text-center">
+                            <td v-text="categoria.nombre"></td>
+                            <td v-text="categoria.plataforma" ></td>
+                            <td v-text="categoria.modelado" ></td>
+                           
+                            <td class="text-center">
+                                <div class="btn-group">
+                                    <button class="editar-categoria btn btn-warning btn-xs" @click.prevent="openEditModal(categoria)">
+                                        <span class="glyphicon glyphicon-edit"></span>
+                                    </button>
+                                    <button class="editar-modal btn btn-danger btn-xs" @click.prevent="destroy(categoria)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+                <div class="table-responsive">
+                <table class="table table-hover table-bordered table-condensed">
+                    <thead>
+                        <th class="text-center">Nombre</th>
                         <th class="text-center">Despliegue</th>
                         <th class="text-center">Entidad/relación</th>
                         <th class="text-center">Clases</th>
@@ -27,14 +52,12 @@
                     <tbody>
                         <tr v-for="categoria in categorias" class="text-center">
                             <td v-text="categoria.nombre"></td>
-                            <td v-text="categoria.plataforma" class="bg-green"></td>
-                            <td v-text="categoria.modelado" class="bg-green"></td>
-                            <td v-text="categoria.despliegue" class="bg-red-pink"></td>
-                            <td v-text="categoria.entidad_relacion" class="bg-red-pink"></td>
-                            <td v-text="categoria.clases" class="bg-red-pink"></td>
-                            <td v-text="categoria.actividades" class="bg-red-pink"></td>
-                            <td v-text="categoria.sequencia" class="bg-red-pink"></td>
-                            <td v-text="categoria.uso" class="bg-red-pink"></td>
+                            <td v-text="categoria.despliegue" ></td>
+                            <td v-text="categoria.entidad_relacion" ></td>
+                            <td v-text="categoria.clases" ></td>
+                            <td v-text="categoria.actividades" ></td>
+                            <td v-text="categoria.sequencia" ></td>
+                            <td v-text="categoria.uso" ></td>
                             <td class="text-center">
                                 <div class="btn-group">
                                     <button class="editar-categoria btn btn-warning btn-xs" @click.prevent="openEditModal(categoria)">

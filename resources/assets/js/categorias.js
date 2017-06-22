@@ -20,8 +20,11 @@ new Vue({
     },
     methods: {
         store() {
+            if (!this.sumaPorcentajes()) return;
+
             axios.post('/api/categorias', this.newCategoria)
                 .then(response => {
+
                     this.categorias.push(response.data);
                     this.newCategoria = {};
                     $("#crear-categoria").modal("hide");
@@ -54,10 +57,22 @@ new Vue({
                     toastr.info('Categoría eliminada correctamente');
                 });
 
+        },
+        sumaPorcentajes() {
+            if (this.newCategoria.modelado + this.newCategoria.plataforma != 100) {
+                this.formErrors.modelado = "la suma de el porcentaje de plataforma y modelado debe ser igual a 100%";
+                alert(this.formErrors.modelado)
+                return false;
+            }
+        },
+        sumaDiagramas() {
+
         }
 
 
 
+
     }
+
 
 });
