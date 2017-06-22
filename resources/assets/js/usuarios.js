@@ -6,12 +6,11 @@ new Vue({
     data: {
         newUser: {},
         usuarios: [],
-        errors: {}
+        errors: {},
+        paginacion:{},
     },
     created() {
-        axios.get('/api/usuarios').then(response => {
-            this.usuarios = response.data;
-        });
+        this.refresh('/api/usuarios');
     },
     methods: {
         store() {
@@ -20,6 +19,7 @@ new Vue({
                     this.usuarios.push(response.data);
                     this.newUser = {};
                     $("#crear-evaluador").modal("hide");
+                    toastr.success('Usuario Creado Correctamente');
                 })
                 .catch(error => {
                     this.errors = error.response.data
@@ -29,7 +29,15 @@ new Vue({
             axios.delete('/api/usuarios/' + user.PK_id)
                 .then(() => {
                     this.usuarios = this.usuarios.filter(value => value != user);
+                    toastr.info('Usuario Eliminado Correctamente');
                 });
+        },
+        refresh(url){
+          if(!url) return;
+          axios.get(url).then(response => {
+              this.paginacion = response.data;
+              this.usuarios = this.paginacion.data;
+          });
         }
     }
 

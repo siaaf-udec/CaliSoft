@@ -241,6 +241,7 @@
 </div>
 
 
-@endsection @push('functions')
+@endsection
+@push('functions')
 <script src="/js/categorias.js"></script>
 @endpush

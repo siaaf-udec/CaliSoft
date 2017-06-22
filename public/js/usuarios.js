@@ -11553,35 +11553,43 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     data: {
         newUser: {},
         usuarios: [],
-        errors: {}
+        errors: {},
+        paginacion: {}
     },
     created: function created() {
-        var _this = this;
-
-        axios.get('/api/usuarios').then(function (response) {
-            _this.usuarios = response.data;
-        });
+        this.refresh('/api/usuarios');
     },
 
     methods: {
         store: function store() {
-            var _this2 = this;
+            var _this = this;
 
             axios.post('/api/usuarios', this.newUser).then(function (response) {
-                _this2.usuarios.push(response.data);
-                _this2.newUser = {};
+                _this.usuarios.push(response.data);
+                _this.newUser = {};
                 $("#crear-evaluador").modal("hide");
+                toastr.success('Usuario Creado Correctamente');
             }).catch(function (error) {
-                _this2.errors = error.response.data;
+                _this.errors = error.response.data;
             });
         },
         destroy: function destroy(user) {
-            var _this3 = this;
+            var _this2 = this;
 
             axios.delete('/api/usuarios/' + user.PK_id).then(function () {
-                _this3.usuarios = _this3.usuarios.filter(function (value) {
+                _this2.usuarios = _this2.usuarios.filter(function (value) {
                     return value != user;
                 });
+                toastr.info('Usuario Eliminado Correctamente');
+            });
+        },
+        refresh: function refresh(url) {
+            var _this3 = this;
+
+            if (!url) return;
+            axios.get(url).then(function (response) {
+                _this3.paginacion = response.data;
+                _this3.usuarios = _this3.paginacion.data;
             });
         }
     }
