@@ -105,7 +105,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="title">Porcentaje de evaluación de la plataforma</label>
-                                    <input type="number" name="plataforma" class="form-control" v-model="newCategoria.plataforma" min="0" max="100" required/>
+                                    <input type="number"  name="plataforma" class="form-control" v-model="newCategoria.plataforma" min="0" max="100" required/>
                                     <span v-if="formErrors['plataforma']" class="error text-danger">
                                 @{{formErrors.plataforma[0]}}
                             </span>
@@ -135,7 +135,7 @@
                             <div class="col-sm-6">
                                 <div class="form-group">
                                     <label for="title">Porcentaje de evaluación del modelado</label>
-                                    <input type="number" name="modelado" class="form-control" v-model="newCategoria.modelado" min="0" max="100" required/>
+                                    <input type="number"  name="modelado" class="form-control" v-model="newCategoria.modelado" min="0" max="100" required/>
                                     <span v-if="formErrors['modelado']" class="error text-danger">
                                 @{{formErrors.modelado[0]}}
                             </span>

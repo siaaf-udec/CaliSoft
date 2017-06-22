@@ -11615,6 +11615,14 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             }
         },
         sumaDiagramas: function sumaDiagramas() {}
+    },
+    watch: {
+        "newCategoria.plataforma": function newCategoriaPlataforma(val) {
+            this.newCategoria.modelado = 100 - val;
+        },
+        "newCategoria.modelado": function newCategoriaModelado(val) {
+            this.newCategoria.plataforma = 100 - val;
+        }
     }
 
 });

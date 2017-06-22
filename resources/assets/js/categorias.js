@@ -67,11 +67,21 @@ new Vue({
         },
         sumaDiagramas() {
 
+        },
+
+
+
+
+
+    },
+    watch: {
+        "newCategoria.plataforma": function(val) {
+            this.newCategoria.modelado = 100 - val
+
+        },
+        "newCategoria.modelado": function(val) {
+            this.newCategoria.plataforma = 100 - val
         }
-
-
-
-
     }
 
 
