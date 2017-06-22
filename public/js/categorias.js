@@ -11571,7 +11571,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 _this2.categorias.push(response.data);
                 _this2.newCategoria = {};
                 $("#crear-categoria").modal("hide");
-                $("#mensaje-bien").fadeIn();
+                toastr.success('Categoría creada correctamente');
             }).catch(function (error) {
                 return _this2.formErrors = error.response.data;
             });
@@ -11589,7 +11589,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 });
                 _this3.fillCategoria = {};
                 $("#editar-categoria").modal("hide");
-                $("#mensaje-editado").fadeIn();
+                toastr.info('Categoría editada correctamente');
             }).catch(function (error) {
                 return _this3.formErrorsUpdate = error.response.data;
             });
@@ -11601,7 +11601,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 _this4.categorias = _this4.categorias.filter(function (value) {
                     return value != categoria;
                 });
-                $("#mensaje-eliminado").fadeIn();
+                toastr.info('Categoría eliminada correctamente');
             });
         }
     }

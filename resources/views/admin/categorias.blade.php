@@ -1,18 +1,7 @@
-@extends('layouts.admin-dash') @section('content')
+@extends('layouts.admin-dash') 
+@section('content')
 
-<div style="display:none" id="mensaje-bien" class="alert alert-success alert-dismissable" role="alert">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Categoría creada</strong>
-</div>
 
-<div style="display:none" id="mensaje-editado" class="alert alert-warning alert-dismissable" role="alert">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Categoría editada</strong>
-</div>
-<div style="display:none" id="mensaje-eliminado" class="alert alert-danger alert-dismissable" role="alert">
-    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-    <strong>Categoría eliminada</strong>
-</div>
 
 <div id="app" class="col-md-10 col-md-offset-1">
     <div class="panel panel-primary">
@@ -265,6 +254,11 @@
 </div>
 
 
-@endsection @push('functions')
+@endsection 
+@push('styles')
+  <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
+@endpush
+@push('functions')
+<script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
 <script src="/js/categorias.js"></script>
 @endpush
