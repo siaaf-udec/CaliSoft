@@ -9,9 +9,9 @@
 
     <div class="row">
         <form class="form-horizontal">
-           <div class="form-group col-sm-2">
-               <label class="control-label col-sm-2" for="role">Rol:</label>
-               <div class="col-sm-10">
+           <div class="form-group col-xs-12 col-md-6 col-lg-4">
+               <label class="control-label col-md-2 hidden-xs" for="role">Rol:</label>
+               <div class="col-md-10">
                    <select class="form-control" v-model="role">
                        <option value="">Todos</option>
                        <option value="admin">Administrador</option>
@@ -48,26 +48,43 @@
               </tr>
             </tbody>
         </table>
-        <ul class="pagination pager pull-right" >
-            <li>
-              <a :class="{disabled: !paginacion.prev_page_url}"  @click="refresh(paginacion.prev_page_url)">
-                <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-              </a>
-            </li>
-            <li v-for="index in paginacion.last_page">
-                  <a @click="refresh('/api/usuarios?page='+index)">@{{index}}</a>
-            </li>
-            <li>
-              <a :class="{disabled: !paginacion.next_page_url}"  @click="refresh(paginacion.next_page_url)">
-                <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-              </a>
-            </li>
-        </ul>
     </div>
     <!-- End Table -->
-    <button data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary center-block">
-        Crear Usuario
-    </button>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <button data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary center-block">
+                <i class="fa fa-plus"></i>
+                Crear Usuario
+            </button>
+        </div>
+
+        <!-- Pagination Buttons-->
+        <div class="col-sm-6">
+            <ul class="pagination pager pull-right">
+                <li>
+                  <a :class="{disabled: !paginacion.prev_page_url}"  @click="refresh(paginacion.prev_page_url)">
+                    <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                  </a>
+                </li>
+                <li v-for="index in paginacion.last_page">
+                      <a @click="refresh('/api/usuarios?page='+index)">@{{index}}</a>
+                </li>
+                <li>
+                  <a :class="{disabled: !paginacion.next_page_url}"  @click="refresh(paginacion.next_page_url)">
+                    <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                  </a>
+                </li>
+            </ul>
+        </div>
+        <!-- End Pagination Buttons-->
+
+    </div>
+
+
+
+
 
 
         <div class="modal fade" tabindex="-1" role="dialog" id="crear-evaluador">
