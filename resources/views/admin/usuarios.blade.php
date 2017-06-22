@@ -6,17 +6,26 @@
 
     <h3 class="text-center">Usuarios </h3>
 
-       <div class="col-md-2">
-         <label for="cargo">Seleccionar Usuario:</label>
-       </div>
-       <div>
-         <select class="bs-select form-control input-small" data-style="btn-primary" id="cargo">
-             <option value="admin">Administrador</option>
-             <option value="evaluator">Evaluador</option>
-             <option value="role">Estudiante</option>
-         </select>
-       </div>
-       <br>
+
+    <div class="row">
+        <form class="form-horizontal">
+           <div class="form-group col-sm-2">
+               <label class="control-label col-sm-2" for="role">Rol:</label>
+               <div class="col-sm-10">
+                   <select class="form-control" v-model="role">
+                       <option value="">Todos</option>
+                       <option value="admin">Administrador</option>
+                       <option value="evaluator">Evaluador</option>
+                       <option value="student">Estudiante</option>
+                   </select>
+               </div>
+           </div>
+        </form>
+    </div>
+
+
+
+
     <!-- Table -->
     <div class="table-responsive">
         <table class="table table-hover table-bordered table-condensed">
@@ -27,7 +36,7 @@
                 <th class="text-center">Operacion</th>
             </thead>
             <tbody>
-              <tr v-for="user in usuarios" class="text-center">
+              <tr v-for="user in searchedUsers" class="text-center">
                 <td v-text="user.name" ></td>
                 <td v-text="user.email"></td>
                 <td v-text="user.role"></td>

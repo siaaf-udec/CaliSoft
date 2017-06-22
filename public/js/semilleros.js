@@ -11733,7 +11733,7 @@ var Component = __webpack_require__(38)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\components\\list-group-crud.vue"
+Component.options.__file = "/home/stevenson/Documentos/ModuloCentral/resources/assets/components/list-group-crud.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] list-group-crud.vue: functional components are not supported with templates, they should use render functions.")}
 

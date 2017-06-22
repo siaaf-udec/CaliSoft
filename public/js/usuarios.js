@@ -11554,7 +11554,8 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         newUser: {},
         usuarios: [],
         errors: {},
-        paginacion: {}
+        paginacion: {},
+        role: ""
     },
     created: function created() {
         this.refresh('/api/usuarios');
@@ -11590,6 +11591,17 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             axios.get(url).then(function (response) {
                 _this3.paginacion = response.data;
                 _this3.usuarios = _this3.paginacion.data;
+            });
+        }
+    },
+
+    computed: {
+        searchedUsers: function searchedUsers() {
+            var _this4 = this;
+
+            if (!this.role) return this.usuarios;
+            return this.usuarios.filter(function (usuario) {
+                return usuario.role == _this4.role;
             });
         }
     }

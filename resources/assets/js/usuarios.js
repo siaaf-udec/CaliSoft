@@ -8,6 +8,7 @@ new Vue({
         usuarios: [],
         errors: {},
         paginacion:{},
+        role: ""
     },
     created() {
         this.refresh('/api/usuarios');
@@ -38,6 +39,13 @@ new Vue({
               this.paginacion = response.data;
               this.usuarios = this.paginacion.data;
           });
+        }
+    },
+
+    computed: {
+        searchedUsers(){
+            if(!this.role) return this.usuarios;
+            return this.usuarios.filter(usuario => usuario.role == this.role);
         }
     }
 
