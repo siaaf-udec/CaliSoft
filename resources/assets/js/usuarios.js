@@ -20,6 +20,13 @@ new Vue(
           this.newUser = {};
           $("#crear-evaluador").modal("hide");
         });
+      },
+      destroy(user) {
+          axios.delete('/api/usuarios/' + user.PK_id)
+              .then(() => {
+                  this.usuarios = this.usuarios.filter(value => value != user);
+              });
+
       }
     }
 

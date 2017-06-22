@@ -11569,6 +11569,15 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         _this2.newUser = {};
         $("#crear-evaluador").modal("hide");
       });
+    },
+    destroy: function destroy(user) {
+      var _this3 = this;
+
+      axios.delete('/api/usuarios/' + user.PK_id).then(function () {
+        _this3.usuarios = _this3.usuarios.filter(function (value) {
+          return value != user;
+        });
+      });
     }
   }
 
