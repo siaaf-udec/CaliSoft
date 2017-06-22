@@ -3,12 +3,19 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\TiposDocumento;
 use Illuminate\Http\Request;
-use App\TiposDocumento As TiposDocumento;
 
 
 class TiposDocumentoController extends Controller
 {
+
+    function __construct(){
+        $this->middleware('auth');
+        $this->middleware('role:admin', [
+            'except' => ['index']
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -107,4 +114,14 @@ class TiposDocumentoController extends Controller
          return redirect('/contratista')->with('success','Operador Eliminado Correctamente');
          */
      }
+
+    /**
+    * Obtiene los componentes del documento
+    * @param TiposDocumento $documento
+    * @return \Illuminate\Http\Response  Arreglo con los componentes
+    */
+    public function getComponents(TiposDocumento $documento)
+    {
+        return $documento->componentes;
+    }
 }

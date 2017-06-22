@@ -39,7 +39,7 @@ class UserController extends Controller
           'email'=>'required|string|email|max:255|unique:TBL_Usuarios',
           'password'=>'required|string|min:7|confirmed',
           'role'=>'required|string|in:admin,evaluator',
-      ]);
+        ]);
         return User::create([
           'name' => $request['name'],
           'email' => $request['email'],

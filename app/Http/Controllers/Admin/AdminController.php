@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Categorias As Categoria;
+use App\TiposDocumento;
 
 class AdminController extends Controller
 {
@@ -17,16 +17,23 @@ class AdminController extends Controller
     {
         return view('admin.semilleros');
     }
+
     public function categorias()
     {
         return view('admin.categorias');
     }
+
     public function usuarios()
     {
         return view('admin.usuarios');
     }
+
     public function tipoDocumento()
     {
         return view('admin.documento.tipo-documento');
+    }
+
+    public function componentes(TiposDocumento $documento){
+        return view('admin.componentes', compact('documento'));
     }
 }

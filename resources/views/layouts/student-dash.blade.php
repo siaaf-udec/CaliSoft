@@ -1,7 +1,7 @@
 @extends('material.layouts.dashboard')
 
 @section('links')
-    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => '#', 'title' => 'Documentacion'])
+    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => Route('documentacion'), 'title' => 'Documentacion'])
     @endcomponent
 
     @component('components.nav-dropdown', ['icon' => 'fa fa-check', 'title' => 'Evaluación'])
@@ -19,7 +19,7 @@
 
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => '#', 'title' => 'Porcentajes'])
+    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => Route('porcentajes'),'title' => 'Porcentajes'])
     @endcomponent
 
     @component('components.nav-link', ['icon' => 'fa fa-pencil-square', 'link' => Route('proyectos'), 'title' => 'Registro Proyecto'])

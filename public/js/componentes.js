@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 41);
+/******/ 	return __webpack_require__(__webpack_require__.s = 42);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11532,7 +11532,8 @@ module.exports = g;
 
 
 /***/ }),
-/* 29 */
+/* 29 */,
+/* 30 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11545,71 +11546,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
-    el: '#app',
-    data: {
-        categorias: [],
-        offset: 4,
-        formErrors: {},
-        formErrorsUpdate: {},
-        newCategoria: {},
-        fillCategoria: {}
-
-    },
+    el: "#app",
+    data: { componentes: [], documento: window.documentId },
     created: function created() {
         var _this = this;
 
-        axios.get('/api/categorias').then(function (response) {
-            _this.categorias = response.data;
+        axios.get("/api/tdocumentos/" + this.documento + "/componentes").then(function (res) {
+            return _this.componentes = res.data;
         });
-    },
-
-    methods: {
-        store: function store() {
-            var _this2 = this;
-
-            axios.post('/api/categorias', this.newCategoria).then(function (response) {
-                _this2.categorias.push(response.data);
-                _this2.newCategoria = {};
-                $("#crear-categoria").modal("hide");
-                $("#mensaje-bien").fadeIn();
-            }).catch(function (error) {
-                return _this2.formErrors = error.response.data;
-            });
-        },
-        openEditModal: function openEditModal(categoria) {
-            this.fillCategoria = Object.assign({}, categoria);
-            $('#editar-categoria').modal("show");
-        },
-        update: function update() {
-            var _this3 = this;
-
-            axios.put('/api/categorias/' + this.fillCategoria.PK_id, this.fillCategoria).then(function (response) {
-                _this3.categorias = _this3.categorias.map(function (value) {
-                    return value.PK_id == _this3.fillCategoria.PK_id ? _this3.fillCategoria : value;
-                });
-                _this3.fillCategoria = {};
-                $("#editar-categoria").modal("hide");
-                $("#mensaje-editado").fadeIn();
-            }).catch(function (error) {
-                return _this3.formErrorsUpdate = error.response.data;
-            });
-        },
-        destroy: function destroy(categoria) {
-            var _this4 = this;
-
-            axios.delete('/api/categorias/' + categoria.PK_id).then(function () {
-                _this4.categorias = _this4.categorias.filter(function (value) {
-                    return value != categoria;
-                });
-                $("#mensaje-eliminado").fadeIn();
-            });
-        }
     }
-
 });
 
 /***/ }),
-/* 30 */,
 /* 31 */,
 /* 32 */,
 /* 33 */,
@@ -11620,10 +11568,11 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 38 */,
 /* 39 */,
 /* 40 */,
-/* 41 */
+/* 41 */,
+/* 42 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(29);
+module.exports = __webpack_require__(30);
 
 
 /***/ })
