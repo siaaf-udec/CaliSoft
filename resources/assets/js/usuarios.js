@@ -1,34 +1,37 @@
 import "./bootstrap";
 import Vue from "vue";
 
-new Vue(
-  {
-    el:'#app',
-    data:{
-      newUser:{},
-      usuarios:[],
+new Vue({
+    el: '#app',
+    data: {
+        newUser: {},
+        usuarios: [],
+        errors: {}
     },
-    created(){
-      axios.get('/api/usuarios').then(response=>{
-        this.usuarios=response.data;
-      });
-    },
-    methods:{
-      store(){
-        axios.post('/api/usuarios',this.newUser).then(response=>{
-          this.usuarios.push(response.data);
-          this.newUser = {};
-          $("#crear-evaluador").modal("hide");
+    created() {
+        axios.get('/api/usuarios').then(response => {
+            this.usuarios = response.data;
         });
-      },
-      destroy(user) {
-          axios.delete('/api/usuarios/' + user.PK_id)
-              .then(() => {
-                  this.usuarios = this.usuarios.filter(value => value != user);
-              });
-
-      }
+    },
+    methods: {
+        store() {
+            axios.post('/api/usuarios', this.newUser)
+                .then(response => {
+                    this.usuarios.push(response.data);
+                    this.newUser = {};
+                    $("#crear-evaluador").modal("hide");
+                })
+                .catch(error => {
+                    this.errors = error.response.data
+                });
+        },
+        destroy(user) {
+            axios.delete('/api/usuarios/' + user.PK_id)
+                .then(() => {
+                    this.usuarios = this.usuarios.filter(value => value != user);
+                });
+        }
     }
 
 
-  });
+});

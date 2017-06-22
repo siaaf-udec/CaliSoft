@@ -5,5 +5,7 @@
   "/mix.js": "/mix.js",
   "/js/semilleros.js": "/js/semilleros.js",
   "/js/categorias.js": "/js/categorias.js",
-  "/js/usuarios.js": "/js/usuarios.js"
+  "/js/proyectos.js": "/js/proyectos.js",
+  "/js/usuarios.js": "/js/usuarios.js",
+  "/js/componentes.js": "/js/componentes.js"
 }

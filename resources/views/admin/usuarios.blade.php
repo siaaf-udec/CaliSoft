@@ -1,25 +1,22 @@
 
 @extends('layouts.admin-dash') @section('content')
-<div style="">
+<div id="app" class="note note-default">
+
     <h3 class="text-center">Usuarios </h3>
-</div>
-<div>
-    <button type="submit" data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary">Crear Usuario</button>
-</div>
-<div id="app">
+
 
     <!-- Table -->
     <div class="table-responsive">
-        <table class="table table-striped table-hover table-bordered table-condensed">
+        <table class="table table-hover table-bordered table-condensed">
             <thead>
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Rol</th>
-                <th>Operacion</th>
+                <th class="text-center">Nombre</th>
+                <th class="text-center">Correo</th>
+                <th class="text-center">Rol</th>
+                <th class="text-center">Operacion</th>
             </thead>
             <tbody>
-              <tr v-for="user in usuarios">
-                <td v-text="user.name"></td>
+              <tr v-for="user in usuarios" class="text-center">
+                <td v-text="user.name" ></td>
                 <td v-text="user.email"></td>
                 <td v-text="user.role"></td>
                 <td>
@@ -32,6 +29,9 @@
         </table>
     </div>
     <!-- End Table -->
+    <button data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary center-block">
+        Crear Usuario
+    </button>
 
     <!-- Create Modal -->
     <div class="modal fade" tabindex="-1" role="dialog" id="crear-evaluador">
@@ -80,7 +80,6 @@
         </div>
     </div>
     <!-- End modal -->
-
 </div>
 @endsection
 

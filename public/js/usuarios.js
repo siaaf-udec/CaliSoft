@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 41);
+/******/ 	return __webpack_require__(__webpack_require__.s = 45);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11534,7 +11534,9 @@ module.exports = g;
 /***/ }),
 /* 29 */,
 /* 30 */,
-/* 31 */
+/* 31 */,
+/* 32 */,
+/* 33 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11547,45 +11549,46 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
-  el: '#app',
-  data: {
-    newUser: {},
-    usuarios: []
-  },
-  created: function created() {
-    var _this = this;
-
-    axios.get('/api/usuarios').then(function (response) {
-      _this.usuarios = response.data;
-    });
-  },
-
-  methods: {
-    store: function store() {
-      var _this2 = this;
-
-      axios.post('/api/usuarios', this.newUser).then(function (response) {
-        _this2.usuarios.push(response.data);
-        _this2.newUser = {};
-        $("#crear-evaluador").modal("hide");
-      });
+    el: '#app',
+    data: {
+        newUser: {},
+        usuarios: [],
+        errors: {}
     },
-    destroy: function destroy(user) {
-      var _this3 = this;
+    created: function created() {
+        var _this = this;
 
-      axios.delete('/api/usuarios/' + user.PK_id).then(function () {
-        _this3.usuarios = _this3.usuarios.filter(function (value) {
-          return value != user;
+        axios.get('/api/usuarios').then(function (response) {
+            _this.usuarios = response.data;
         });
-      });
+    },
+
+    methods: {
+        store: function store() {
+            var _this2 = this;
+
+            axios.post('/api/usuarios', this.newUser).then(function (response) {
+                _this2.usuarios.push(response.data);
+                _this2.newUser = {};
+                $("#crear-evaluador").modal("hide");
+            }).catch(function (error) {
+                _this2.errors = error.response.data;
+            });
+        },
+        destroy: function destroy(user) {
+            var _this3 = this;
+
+            axios.delete('/api/usuarios/' + user.PK_id).then(function () {
+                _this3.usuarios = _this3.usuarios.filter(function (value) {
+                    return value != user;
+                });
+            });
+        }
     }
-  }
 
 });
 
 /***/ }),
-/* 32 */,
-/* 33 */,
 /* 34 */,
 /* 35 */,
 /* 36 */,
@@ -11593,10 +11596,14 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 38 */,
 /* 39 */,
 /* 40 */,
-/* 41 */
+/* 41 */,
+/* 42 */,
+/* 43 */,
+/* 44 */,
+/* 45 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(31);
+module.exports = __webpack_require__(33);
 
 
 /***/ })
