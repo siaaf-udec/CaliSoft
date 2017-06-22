@@ -33,19 +33,20 @@ new Vue({
                     toastr.info('Usuario Eliminado Correctamente');
                 });
         },
-        refresh(url){
+        refresh(url, params){
           if(!url) return;
-          axios.get(url).then(response => {
+          axios.get(url, { params }).then(response => {
               this.paginacion = response.data;
               this.usuarios = this.paginacion.data;
           });
         }
     },
 
-    computed: {
-        searchedUsers(){
-            if(!this.role) return this.usuarios;
-            return this.usuarios.filter(usuario => usuario.role == this.role);
+    watch: {
+        role(val) {
+            let params = { page: this.paginacion.current_page };
+            if(val) params.role = val;
+            this.refresh('/api/usuarios', params);
         }
     }
 

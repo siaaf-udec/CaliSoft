@@ -11584,25 +11584,22 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 toastr.info('Usuario Eliminado Correctamente');
             });
         },
-        refresh: function refresh(url) {
+        refresh: function refresh(url, params) {
             var _this3 = this;
 
             if (!url) return;
-            axios.get(url).then(function (response) {
+            axios.get(url, { params: params }).then(function (response) {
                 _this3.paginacion = response.data;
                 _this3.usuarios = _this3.paginacion.data;
             });
         }
     },
 
-    computed: {
-        searchedUsers: function searchedUsers() {
-            var _this4 = this;
-
-            if (!this.role) return this.usuarios;
-            return this.usuarios.filter(function (usuario) {
-                return usuario.role == _this4.role;
-            });
+    watch: {
+        role: function role(val) {
+            var params = { page: this.paginacion.current_page };
+            if (val) params.role = val;
+            this.refresh('/api/usuarios', params);
         }
     }
 

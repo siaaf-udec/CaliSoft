@@ -36,7 +36,7 @@
                 <th class="text-center">Operacion</th>
             </thead>
             <tbody>
-              <tr v-for="user in searchedUsers" class="text-center">
+              <tr v-for="user in usuarios" class="text-center">
                 <td v-text="user.name" ></td>
                 <td v-text="user.email"></td>
                 <td v-text="user.role"></td>
@@ -64,15 +64,15 @@
         <div class="col-sm-6">
             <ul class="pagination pager pull-right">
                 <li>
-                  <a :class="{disabled: !paginacion.prev_page_url}"  @click="refresh(paginacion.prev_page_url)">
+                  <a :class="{disabled: !paginacion.prev_page_url}" @click="refresh(paginacion.prev_page_url)">
                     <i class="fa fa-angle-double-left" aria-hidden="true"></i>
                   </a>
                 </li>
                 <li v-for="index in paginacion.last_page">
-                      <a @click="refresh('/api/usuarios?page='+index)">@{{index}}</a>
+                      <a @click="refresh('/api/usuarios', { page: index })">@{{index}}</a>
                 </li>
                 <li>
-                  <a :class="{disabled: !paginacion.next_page_url}"  @click="refresh(paginacion.next_page_url)">
+                  <a :class="{disabled: !paginacion.next_page_url}" @click="refresh(paginacion.next_page_url)">
                     <i class="fa fa-angle-double-right" aria-hidden="true"></i>
                   </a>
                 </li>

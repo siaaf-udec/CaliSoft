@@ -21,9 +21,18 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        return User::paginate(5);
+        $this->validate($request, [
+            'role' => 'in:admin,student,evaluator'
+        ]);
+        $role = $request->role;
+
+        //Filtra por role si existe el parametro role, si no, retorna todo
+        return User::when($role, function ($query) use ($role) {
+            return $query->where('role', $role);
+        })->paginate(5);
+
     }
 
     /**
