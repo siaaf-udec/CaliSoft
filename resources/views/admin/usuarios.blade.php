@@ -10,10 +10,10 @@
          <label for="cargo">Seleccionar Usuario:</label>
        </div>
        <div>
-         <select class="bs-select form-control input-small" data-style="btn-primary">
-             <option>Administrador</option>
-             <option>Evaluador</option>
-             <option>Estudiante</option>
+         <select class="bs-select form-control input-small" data-style="btn-primary" id="cargo">
+             <option value="admin">Administrador</option>
+             <option value="evaluator">Evaluador</option>
+             <option value="role">Estudiante</option>
          </select>
        </div>
        <br>
