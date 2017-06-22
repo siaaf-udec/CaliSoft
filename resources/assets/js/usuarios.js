@@ -21,7 +21,7 @@ new Vue({
                     this.newUser = {};
                     $("#crear-evaluador").modal("hide");
                 }).catch(error => {
-                        this.errors = error.response.data;
+                    this.errors = error.response.data;
                 });
         }
     }

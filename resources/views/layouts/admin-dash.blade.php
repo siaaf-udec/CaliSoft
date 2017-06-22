@@ -17,7 +17,7 @@
     @component('components.nav-link', ['icon' => 'fa fa-pie-chart', 'link' => route('categorias'), 'title' => 'Categorias'])
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => '/admin/tdocumento', 'title' => 'Documentos'])
+    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => route('tdocumentos'), 'title' => 'Documentos'])
     @endcomponent
 
     @component('components.nav-link', [

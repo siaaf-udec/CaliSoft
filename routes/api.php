@@ -25,6 +25,7 @@ Route::resource('grupos-de-investigacion', 'Admin\GrupoDeInvestigacionController
 Route::resource('categorias', 'Admin\CategoriasController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
+
 Route::resource('usuarios', 'Admin\UserController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
@@ -32,6 +33,14 @@ Route::resource('usuarios', 'Admin\UserController', [
 Route::resource('proyectos/{tabla?}', 'Student\ProyectosController', [
     'only' => ['index', 'store']
 ]);
+
 Route::resource('documentacion', 'Student\DocumentosController', [
     'only' => ['index', 'store', 'update', 'destroy']
+]);
+
+Route::get('tdocumentos/{documento}/componentes', 'Admin\TiposDocumentoController@getComponents')
+    ->name('tdocumentos.componentes');
+
+Route::resource('componentes', 'Admin\ComponenteController', [
+    'only' => ['store', 'update', 'destroy']
 ]);
