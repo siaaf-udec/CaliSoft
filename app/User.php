@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use App\Proyecto;
 
 class User extends Authenticatable
 {
@@ -45,5 +46,10 @@ class User extends Authenticatable
     public function goHome()
     {
         return redirect()->route($this->role);
+    }
+
+    public function proyectos(){
+        return $this->belongsToMany('App\Proyecto','TBL_ProyectosAsignados','FK_UsuarioId','FK_ProyectoId')
+        ->withTimestamps();
     }
 }

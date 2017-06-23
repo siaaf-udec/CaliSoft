@@ -4,6 +4,7 @@ namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
+use App\User;
 
 class Proyecto extends Model
 {
@@ -15,4 +16,9 @@ class Proyecto extends Model
     protected $fillable = [
         'nombre', 'FK_GrupoDeInvestigacionId', 'FK_SemilleroId','FK_CategoriaId',
     ];
+
+    public function users(){
+        return $this->belongsToMany('App\User','TBL_ProyectosAsignados','FK_ProyectoId','FK_UsuarioId')
+        ->withTimestamps();
+    }
 }
