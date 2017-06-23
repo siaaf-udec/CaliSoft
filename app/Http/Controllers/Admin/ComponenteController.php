@@ -1,3 +1,4 @@
+
 <?php
 
 namespace App\Http\Controllers\Admin;
@@ -5,9 +6,18 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\TiposDocumento;
+use App\Componente;
 
 class ComponenteController extends Controller
 {
+
+
+     function __construct(){
+        $this->middleware('auth');
+        $this->middleware('role:admin', [
+            'except' => ['index']
+        ]);
+    }
     /**
      * Display a listing of the resource.
      *
@@ -36,7 +46,19 @@ class ComponenteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+       //Aqui realizo validaciones,
+       $this->validate($request, [
+            'nombre'=>'required|string',
+            'descripcion'=>'required|string',
+            'FK_TipoDocumentoId'=>'required|integer'
+        ]);
+
+        return Componente::create([
+            'nombre'=>$request->nombre,
+            'descripcion'=>$request->descripcion,
+            'FK_TipoDocumentoId'=>$request->FK_TipoDocumentoId,
+            'required'=> true
+            ]);
     }
 
     /**
