@@ -33,6 +33,13 @@ class ProyectosController extends Controller
     }
 
     public function store(Request $request){
+        
+         $this->validate($request,[
+             'nombre'          => 'min:5|string|required',
+             'FK_grupo'        => 'required',
+             'FK_semillero'    => 'required',
+             'FK_categoria' => 'required'
+         ]);
     
          return Proyecto::create([
               'nombre'                    => $request->nombre,

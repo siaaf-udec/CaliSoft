@@ -4,6 +4,10 @@
     <div id="app">
       <form v-on:submit.prevent="store()">
         <div class="form-body" style='width: 80%; margin-left : 5% ' >
+            <div v-if="errors['nombre']" class="alert alert-danger col-md-12" role="alert">@{{ errors.nombre[0] }}</div>
+            <div v-if="errors['FK_grupo']" class="alert alert-danger col-md-12" role="alert">@{{ mensajes.grupo }}</div>
+            <div v-if="errors['FK_semillero']" class="alert alert-danger col-md-12" role="alert">@{{ mensajes.semillero }}</div>
+            <div v-if="errors['FK_FK_categoria']" class="alert alert-danger col-md-12" role="alert">@{{ mensajes.categoria }}</div>
             <div class="form-group form-md-line-input" >
                 <label for="nomProyecto" class="control-label">Nombre Proyecto:</label>
                 <input class="form-control" id="nomProyecto" v-model="proyecto.nombre"></input>
@@ -35,6 +39,7 @@
       </form>
     </div>
 @endsection 
+
 @push('functions')
     <script src="/js/proyectos.js"></script>
 @endpush

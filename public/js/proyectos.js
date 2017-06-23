@@ -11552,7 +11552,13 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         semilleros: [],
         grupos: [],
         proyecto: {},
-        error: " " },
+        errors: [],
+        mensajes: {
+            categoria: 'Debe Seleccionar Una Categoria',
+            grupo: 'Debe seleccionar Un Grupo de Investigacion',
+            semillero: 'Debe seleccionar Un Semillero'
+        }
+    },
     created: function created() {
         var _this = this;
 
@@ -11567,10 +11573,12 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 
     methods: {
         store: function store() {
+            var _this2 = this;
+
             axios.post('/api/proyectos/', this.proyecto).then(function (res) {
                 console.log(res.data);
             }).catch(function (e) {
-                return console.log(e);
+                _this2.errors = e.response.data;
             });
         }
     }

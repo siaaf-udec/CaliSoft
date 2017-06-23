@@ -7,7 +7,13 @@ new Vue({
              semilleros: [], 
              grupos: [] ,
              proyecto: {},
-             error : " " },
+             errors : [],
+             mensajes :{
+                  categoria: 'Debe Seleccionar Una Categoria',
+                  grupo: 'Debe seleccionar Un Grupo de Investigacion',
+                  semillero: 'Debe seleccionar Un Semillero'  
+             } 
+     },
     created(){
         axios.all([
             axios.get('/api/proyectos/categorias'),
@@ -28,7 +34,9 @@ new Vue({
                      res => {
                            console.log(res.data); 
                      }
-                 ).catch(e => console.log(e));
+                 ).catch(e => {
+                       this.errors = e.response.data;
+                 });
              },
     }       
 });
