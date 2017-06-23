@@ -39,7 +39,7 @@ new Vue({
               this.paginacion = response.data;
               this.usuarios = this.paginacion.data;
           });
-        }
+        },
     },
 
     watch: {

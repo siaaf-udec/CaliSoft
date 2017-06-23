@@ -81,46 +81,54 @@
         <!-- End Pagination Buttons-->
 
     </div>
-
-
-
-
-
-
+    <!--Inicio Modal-->
         <div class="modal fade" tabindex="-1" role="dialog" id="crear-evaluador">
         <div class="modal-dialog" role="document">
           <div class="modal-content">
             <div class="modal-header">
-              <h4 class="modal-title">Crear Evaluador</h4>
+              <h4 class="modal-title">Registrar Usuarios</h4>
             </div>
             <div class="modal-body">
               <form  method="post" enctype="multipart/form-data" v-on:submit.prevent="store()">
-                <div class="form-group">
-                  <label for="name">Nombre:</label>
+                <div class="form-group form-md-line-input">
+                  <div class="input-icon">
+                    <i class="fa fa-user"></i>
                   <input type="text" name="name" required="" id="name" placeholder="Nombre" class="form-control"  autocomplete='off' v-model="newUser.name"/>
                 </div>
-                <div class="form-group">
-                  <label for="email">Correo:</label>
+                </div>
+                <div class="form-group form-md-line-input">
+                  <div class="input-icon">
+                      <i class="fa fa-envelope-o"></i>
                   <input type="email" name="email" id="name" required="" placeholder="Correo" class="form-control"  autocomplete='off' v-model="newUser.email">
                 </div>
-                <div class="form-group">
-                  <label for="pass">Contraseña:</label>
+                </div>
+                <div class="form-group form-md-line-input">
+                  <div class="input-icon">
+                    <i class="fa fa-key"></i>
                   <input type="password" name="pass" id="pass" required="" placeholder="Contraseña" class="form-control" pattern="[a-z]{3}[0-9]{4}" title="Debe tener 3 letras y 4 numero" v-model="newUser.password">
                 </div>
-                <div class="form-group">
-                  <label for="pass">Confirmar Contraseña:</label>
+                </div>
+                <div class="form-group form-md-line-input">
+                  <div class="input-icon">
+                    <i class="fa fa-key"></i>
                   <input type="password" name="pass" id="pass" required="" placeholder="Confirmar Contraseña" class="form-control" v-model="newUser.password_confirmation">
                 </div>
-                <div class="form-group">
+                </div>
+                <div class="form-group form-md-line-input">
+                  <div class="input-icon">
+                    <i class="fa fa-users"></i>
                   <label for="rol">Cargo: </label>
                   <select name="rol" id="rol" required="" class="form-control" v-model="newUser.role" placeholder="Elija Rol">
                     <option value="admin">Administrador</option>
                     <option value="evaluator">Evaluador</option>
                   </select>
                 </div>
+                </div>
                 <div class="modal-footer">
-                  <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
-                  <button type="submit" class="btn btn-primary">Registrar</button>
+                  <button type="button" class="btn btn-danger" data-dismiss="modal"><i class="fa fa-ban">
+                  </i>Cancelar</button>
+                  <button type="submit" class="btn btn-primary"><i class="fa fa-plus">
+                  </i>Registrar</button>
                 </div>
               </form>
           </div><!-- /.modal-content -->
@@ -128,6 +136,8 @@
         </div>
     </div>
     <!-- End modal -->
+</div>
+</div>
 </div>
 @endsection
 @push('styles')

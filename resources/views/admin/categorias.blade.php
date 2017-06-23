@@ -1,4 +1,4 @@
-@extends('layouts.admin-dash') 
+@extends('layouts.admin-dash')
 @section('content')
 
 
@@ -15,7 +15,7 @@
                     <thead>
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Plataforma</th>
-                        <th class="text-center">Modelado</th>                  
+                        <th class="text-center">Modelado</th>
                         <th class="text-center">Operaciones</th>
                     </thead>
                     <tbody>
@@ -23,7 +23,7 @@
                             <td v-text="categoria.nombre"></td>
                             <td v-text="categoria.plataforma" ></td>
                             <td v-text="categoria.modelado" ></td>
-                           
+
                             <td class="text-center">
                                 <div class="btn-group">
                                     <button class="editar-categoria btn btn-warning btn-xs" @click.prevent="openEditModal(categoria)">
@@ -277,7 +277,7 @@
 </div>
 
 
-@endsection 
+@endsection
 @push('styles')
   <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
 @endpush
