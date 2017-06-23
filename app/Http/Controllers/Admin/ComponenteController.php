@@ -1,5 +1,5 @@
-
 <?php
+
 
 namespace App\Http\Controllers\Admin;
 
@@ -25,8 +25,10 @@ class ComponenteController extends Controller
      */
     public function index(TiposDocumento $tipoDocumento)
     {
-        return $tipoDocumento->componentes;
-    }
+
+        return $tipoDocumento->vista();
+
+    }   
 
     /**
      * Show the form for creating a new resource.
@@ -101,8 +103,8 @@ class ComponenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Componente $componente)
     {
-        //
+       $componente->delete();
     }
 }

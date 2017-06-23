@@ -15,4 +15,19 @@ class Componente extends Model
     public function documento(){
         return $this->belongsTo(TiposDocumento::class, 'FK_TipoDocumentoId', 'PK_id');
     }
+
+    public function vista(){
+        return DB::table('TBL_ComponentesDocumento')
+        ->join('TBL_TiposDocumento','TBL_ComponentesDocumento.FK_TipoDocumentoId','=','TBL_TiposDocumento.PK_id')
+
+        ->select('tbl_componentesdocumento.nombre',
+				'tbl_componentesdocumento.required',
+				'tbl_componentesdocumento.descripcion',
+				'tbl_tiposdocumento.nombre')
+        ->get();
+        
+    }
+
+
+
 }

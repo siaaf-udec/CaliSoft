@@ -11547,13 +11547,47 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: "#app",
-    data: { componentes: [], documento: window.documentId },
+    data: {
+
+        componentes: [],
+        documentoId: window.documentId,
+        newComponente: {}
+
+    },
+
     created: function created() {
         var _this = this;
 
-        axios.get("/api/tdocumentos/" + this.documento + "/componentes").then(function (res) {
+        axios.get("/api/tdocumentos/" + this.documentoId + "/componentes").then(function (res) {
             return _this.componentes = res.data;
         });
+    },
+
+
+    methods: {
+        openEditModal: function openEditModal(componentes) {
+            this.fillCategoria = Object.assign({}, componentes);
+            $('#editar-componentes').modal("show");
+        },
+        store: function store() {
+            var _this2 = this;
+
+            this.newComponente.FK_TipoDocumentoId = this.documentoId;
+            axios.post('/api/componentes/', this.newComponente).then(function (res) {
+                return _this2.componentes.push(res.data);
+            });
+        },
+        destroy: function destroy(componentes) {
+            var _this3 = this;
+
+            axios.delete('/api/componentes/' + componentes.PK_id).then(function () {
+                _this3.componentes = _this3.componentes.filter(function (value) {
+                    return value != componentes;
+                });
+
+                toastr.info('Componente eliminado correctamente');
+            });
+        }
     }
 });
 

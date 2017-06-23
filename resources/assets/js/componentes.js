@@ -18,11 +18,30 @@ new Vue({
             .then(res => this.componentes = res.data);
     },
 
+    
+
     methods:{
+        openEditModal(componentes) {
+            this.fillCategoria = Object.assign({}, componentes);
+            $('#editar-componentes').modal("show");
+        },
+
         store(){
             this.newComponente.FK_TipoDocumentoId = this.documentoId;
             axios.post('/api/componentes/',this.newComponente)
             .then(res => this.componentes.push(res.data))
+        },
+
+        destroy(componentes) {
+            axios.delete('/api/componentes/' + componentes.PK_id)
+                .then(() => {
+                    this.componentes = this.componentes.filter(value => value != componentes);
+                    
+                    toastr.info('Componente eliminado correctamente');
+                });
+
         }
-    }
-})
+
+
+        }
+});
