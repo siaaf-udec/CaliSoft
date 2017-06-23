@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Categorias as Categoria;
 use App\Semillero;
 use App\GrupoDeInvestigacion as Grupo;
@@ -38,14 +39,16 @@ class ProyectosController extends Controller
              'nombre'          => 'min:5|string|required',
              'FK_grupo'        => 'required',
              'FK_semillero'    => 'required',
-             'FK_categoria' => 'required'
+             'FK_categoria'    => 'required'
          ]);
     
-         return Proyecto::create([
+        $proyecto = Proyecto::create([
               'nombre'                    => $request->nombre,
               'FK_GrupoDeInvestigacionId' => $request->FK_grupo,
               'FK_SemilleroId'            => $request->FK_semillero,
               'FK_CategoriaId'            => $request->FK_categoria
          ]);
+
+         return $proyecto->users()->attach(Auth::id());
     }
 }
