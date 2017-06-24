@@ -10,7 +10,7 @@
             <div v-if="errors['FK_FK_categoria']" class="alert alert-danger col-md-12" role="alert">@{{ mensajes.categoria }}</div>
             <div class="form-group form-md-line-input" >
                 <label for="nomProyecto" class="control-label">Nombre Proyecto:</label>
-                <input class="form-control" id="nomProyecto" v-model="proyecto.nombre"></input>
+                <input class="form-control" id="nomProyecto" v-model="proyecto.nombre" required=""></input>
             </div>
             <div class="form-group form-md-line-input col-md-4" >
                 <label for="Categorias" class="control-label">Categoria: </label>

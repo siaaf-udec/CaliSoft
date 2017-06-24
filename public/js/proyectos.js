@@ -11576,7 +11576,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             var _this2 = this;
 
             axios.post('/api/proyectos/', this.proyecto).then(function (res) {
-                console.log(res.data);
+                location.href = '/student/Proyectos';
             }).catch(function (e) {
                 _this2.errors = e.response.data;
             });

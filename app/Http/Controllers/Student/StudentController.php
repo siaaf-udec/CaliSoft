@@ -24,5 +24,9 @@ class StudentController extends Controller
 
         return view('student.student-subir-documentacion');
     }
+
+    public function mensaje(){
+        return view('student.student-mensaje');
+    }
 }
 

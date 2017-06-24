@@ -32,7 +32,7 @@ new Vue({
              store(){
                  axios.post('/api/proyectos/',this.proyecto).then(
                      res => {
-                           console.log(res.data); 
+                           location.href = '/student/Proyectos'; 
                      }
                  ).catch(e => {
                        this.errors = e.response.data;

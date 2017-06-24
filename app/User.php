@@ -48,7 +48,7 @@ class User extends Authenticatable
         return redirect()->route($this->role);
     }
 
-    public function proyectos(){
+    public function projects(){
         return $this->belongsToMany('App\Proyecto','TBL_ProyectosAsignados','FK_UsuarioId','FK_ProyectoId')
         ->withTimestamps();
     }
