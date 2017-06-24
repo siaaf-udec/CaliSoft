@@ -11551,7 +11551,11 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 
         componentes: [],
         documentoId: window.documentId,
-        newComponente: {}
+        newComponente: {},
+        fillComponente: {},
+        formErrors: {},
+        formErrorsUpdate: {},
+        tiposDocumentos: []
 
     },
 
@@ -11566,7 +11570,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 
     methods: {
         openEditModal: function openEditModal(componentes) {
-            this.fillCategoria = Object.assign({}, componentes);
+            this.fillComponente = Object.assign({}, componentes);
             $('#editar-componentes').modal("show");
         },
         store: function store() {
@@ -11577,11 +11581,25 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
                 return _this2.componentes.push(res.data);
             });
         },
-        destroy: function destroy(componentes) {
+        update: function update() {
             var _this3 = this;
 
+            axios.put('/api/componentes/' + this.fillComponente.PK_id, this.fillComponente).then(function (response) {
+                _this3.componentes = _this3.componentes.map(function (value) {
+                    return value.PK_id == _this3.fillComponente.PK_id ? _this3.fillComponente : value;
+                });
+                _this3.fillComponente = {};
+                $("#editar-componentes").modal("hide");
+                toastr.info('Componente editado correctamente');
+            }).catch(function (error) {
+                return _this3.formErrorsUpdate = error.response.data;
+            });
+        },
+        destroy: function destroy(componentes) {
+            var _this4 = this;
+
             axios.delete('/api/componentes/' + componentes.PK_id).then(function () {
-                _this3.componentes = _this3.componentes.filter(function (value) {
+                _this4.componentes = _this4.componentes.filter(function (value) {
                     return value != componentes;
                 });
 

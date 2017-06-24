@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use App\TiposDocumento;
 
 class Componente extends Model
 {
@@ -28,6 +29,13 @@ class Componente extends Model
         
     }
 
+    public function vistaTiposDocumentos(){
+        return DB::table('TBL_TiposDocumento')
+        ->select('TBL_TiposDocumento.Pk_id',
+                'TBL_TiposDocumento.nombre')
+        ->get();
+        
+    }
 
 
 }

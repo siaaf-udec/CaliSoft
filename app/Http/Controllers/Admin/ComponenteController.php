@@ -26,7 +26,7 @@ class ComponenteController extends Controller
     public function index(TiposDocumento $tipoDocumento)
     {
 
-        return $tipoDocumento->vista();
+        return $tipoDocumento->vistaTiposDocumentos();
 
     }   
 
@@ -52,14 +52,16 @@ class ComponenteController extends Controller
        $this->validate($request, [
             'nombre'=>'required|string',
             'descripcion'=>'required|string',
-            'FK_TipoDocumentoId'=>'required|integer'
+            'FK_TipoDocumentoId'=>'required|integer',
+            'required'=>'required'
+
         ]);
 
         return Componente::create([
             'nombre'=>$request->nombre,
             'descripcion'=>$request->descripcion,
             'FK_TipoDocumentoId'=>$request->FK_TipoDocumentoId,
-            'required'=> true
+            'required'=> $request->required
             ]);
     }
 
@@ -92,9 +94,18 @@ class ComponenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+
+    
+    public function update(Request $request, Componente $componente)
     {
-        //
+       $this->validate($request,[
+            'nombre'=>'required|max:255|string',
+            'required'=>'required|max:1|integer',
+            'descripcion'=>'required|string',
+            'FK_TipoDocumentoId'=>'required|integer',
+        ]);
+        $componente->fill($request->all());
+        $componente->save();
     }
 
     /**
@@ -107,4 +118,6 @@ class ComponenteController extends Controller
     {
        $componente->delete();
     }
+
+    
 }

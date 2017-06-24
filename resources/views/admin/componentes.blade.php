@@ -12,6 +12,30 @@
                 <label for="title">Nombre del Componente</label>
                 <input type="text" name="nombre" class="form-control" v-model="newComponente.nombre" required="" />                    
             </div>
+
+            
+            <div class="form-group form-md-radios">
+                <label>OBLIGATORIO</label>
+                <div class="md-radio-list">
+                    <div class="md-radio">
+                        <input type="radio" value="1" id="radio1" name="required" class="md-radiobtn" v-model="newComponente.required" checked>
+                            <label for="radio1">
+                                <span></span>
+                                <span class="check"></span>
+                                <span class="box"></span> SÍ 
+                            </label>
+                    </div>
+                    <div class="md-radio">
+                        <input type="radio" value="0" id="radio2" name="required" v-model="newComponente.required" class="md-radiobtn">
+                            <label for="radio2">
+                                <span></span>
+                                <span class="check"></span>
+                                <span class="box"></span> NO 
+                            </label>
+                    </div>
+                </div>
+            </div>
+            
             <!--                
             <div class="form-group">
                 <label for="title">Obligatorio</label>
@@ -78,26 +102,77 @@
                 </div>
                 <div class="modal-body">
                     <div class="form-group form-group-sm">
-                        <form>
+                        <form @submit.prevent="update(fillComponente.PK_id)">
 
                             <div class="form-group">
                                 <label for="title">Nombre del componente: </label>
-                                <input type="text" name="nombre" class="form-control" required/>
+                                <input type="text" name="nombre" class="form-control" v-model="fillComponente.nombre" required/>
+                                <span v-if="formErrorsUpdate['nombre']" class="error text-danger">
+                                @{{formErrorsUpdate.nombre[0]}}
+                            </span>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="title">Obligatorio: </label>
-                                    <input type="text" name="required" class="form-control" required/>
-                                    
+
+
+                            <div class="form-group form-md-radios">
+                                <label>OBLIGATORIO</label>
+                                <div class="md-radio-list">
+                                    <div class="md-radios">
+                                        <input type="radio" value="1" id="radio3" name="required" class="md-radiobtn"  v-model="fillComponente.required" checked>
+                                        <label for="radio1">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> SÍ 
+                                        </label>
+                                    </div>
+                                    <div class="md-radios">
+                                        <input type="radio" value="0" id="radio4" name="required"  v-model="fillComponente.required" class="md-radiobtn">
+                                        <label for="radio2">
+                                            <span></span>
+                                            <span class="check"></span>
+                                            <span class="box"></span> NO 
+                                        </label>
+                                    </div>
                                 </div>
+                            </div>
+
+                            <div class="col-sm-6">
+                                
+                               <!-- <div class="form-group">
+                                    <label for="title">Obligatorio: </label>
+                                    <input type="text" name="required" class="form-control" v-model="fillComponente.required" required/>
+                                    <span v-if="formErrorsUpdate['required']" class="error text-danger">
+                                @{{formErrorsUpdate.required[0]}}
+                            </span>
+                                    
+                                </div> -->
+
                                 <div class="form-group">
                                     <label for="title">Descripción: </label>
-                                    <input type="text" name="descripcion" class="form-control" required/>
+                                    <input type="text" name="descripcion" class="form-control" v-model="fillComponente.descripcion" required/>
+                                    <span v-if="formErrorsUpdate['descripcion']" class="error text-danger">
+                                         @{{formErrorsUpdate.descripcion[0]}}
+                                    </span>
                                     
                                 </div>
+
+                                <div class="form-group">
+                                <label for="single" class="control-label">Documentos</label>
+                                        <select id="single" class="form-control select2">
+                                                <option value="AK">Alaska</option>
+                                                <option value="NV">Nevada</option>
+                                                <option value="OR">Oregon</option>
+                                                <option value="WA">Washington</option>
+                                        </select>
+                                </div>
+
+
+
                                 <div class="form-group">
                                     <label for="title">Documento: </label>
-                                    <input type="number" name="documento" class="form-control" required/>
+                                    <input type="number" name="FK_TipoDocumentoId" class="form-control" v-model="fillComponente.FK_TipoDocumentoId" required/>
+                                    <span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
+                                @{{formErrorsUpdate.FK_TipoDocumentoId[0]}}
+                            </span>
                                 </div>
                                
                             </div>

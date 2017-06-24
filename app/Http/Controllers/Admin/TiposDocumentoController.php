@@ -124,4 +124,8 @@ class TiposDocumentoController extends Controller
     {
         return $documento->componentes;
     }
+
+
+  
 }
+

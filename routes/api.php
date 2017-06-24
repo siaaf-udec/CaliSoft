@@ -42,5 +42,5 @@ Route::get('tdocumentos/{documento}/componentes', 'Admin\TiposDocumentoControlle
     ->name('tdocumentos.componentes');
 
 Route::resource('componentes', 'Admin\ComponenteController', [
-    'only' => ['store', 'update', 'destroy']
+    'only' => ['store', 'update', 'destroy','index']
 ]);
