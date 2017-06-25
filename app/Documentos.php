@@ -12,4 +12,12 @@ class Documentos extends Model
     protected $hidden = [
         'created_at', 'updated_at'
     ];
+
+    public function tipoDocumento(){
+        return $this->belongsTo(TiposDocumento::class, 'FK_TipoDocumentoId', 'PK_id');
+    }
+
+    public function proyecto(){
+        return $this->belongsTo(proyecto::class, 'FK_ProyectoId', 'PK_id');
+    }
 }

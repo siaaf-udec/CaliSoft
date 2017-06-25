@@ -21,4 +21,8 @@ class Proyecto extends Model
         return $this->belongsToMany('App\User','TBL_ProyectosAsignados','FK_ProyectoId','FK_UsuarioId')
         ->withTimestamps();
     }
+
+    public function documentos(){
+        return $this->hasMany(Documentos::class, 'FK_ProyectoId', 'PK_id');
+    }
 }

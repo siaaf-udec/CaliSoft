@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Student;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Documentos;
 
 class DocumentosController extends Controller
 {
@@ -16,6 +17,8 @@ class DocumentosController extends Controller
     {
         $docs = Documentos::All();
         return view('student.student-subir-documentacion',compact('docs'));
+
+
     }
 
     /**
