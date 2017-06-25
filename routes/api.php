@@ -41,6 +41,9 @@ Route::resource('documentacion', 'Student\DocumentosController', [
 Route::get('tdocumentos/{documento}/componentes', 'Admin\TiposDocumentoController@getComponents')
     ->name('tdocumentos.componentes');
 
+Route::get('tdocumentos', 'Admin\TiposDocumentoController@getTipos')
+    ->name('tdocumentos.tipos');
+
 Route::resource('componentes', 'Admin\ComponenteController', [
     'only' => ['store', 'update', 'destroy','index']
 ]);

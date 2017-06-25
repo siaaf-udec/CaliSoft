@@ -4,6 +4,8 @@
     icon -> Icono del desplegable
     title1 -> Titulo del desplegable
     title2 -> Titulo del componente
+    nombre -> nombre del imput
+    atributo -> atributo del input
 --}}
 
 
@@ -20,7 +22,7 @@
                     <span class="input-group-addon btn default btn-file">
                         <span class="fileinput-new"> {{ $title2 }} </span>
                         <span class="fileinput-exists"> Cambiar </span>
-                        <input type="file" name="..."> 
+                        <input type="file" name="{{ $nombre }}" {{ $atributo }} > 
                     </span>
                     <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remover </a>
                 </div>

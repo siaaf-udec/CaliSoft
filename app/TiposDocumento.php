@@ -42,5 +42,9 @@ class TiposDocumento extends Model
         return $this->hasMany(Componente::class, 'FK_TipoDocumentoId', 'PK_id');
     }
 
+    public function documentos(){
+        return $this->hasMany(Documentos::class, 'FK_TipoDocumentoId', 'PK_id');
+    }
+
 
 }

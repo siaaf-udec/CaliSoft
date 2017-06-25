@@ -158,7 +158,12 @@
                                 <div class="form-group">
                                 <label for="single" class="control-label">Documentos</label>
                                         <select id="single" class="form-control select2">
-                                                <option value="AK">Alaska</option>
+
+                                                @for ($i = 0; $i < 10; $i++)
+                                                
+                                                @endfor
+
+                                                <option value="1" ></option>
                                                 <option value="NV">Nevada</option>
                                                 <option value="OR">Oregon</option>
                                                 <option value="WA">Washington</option>

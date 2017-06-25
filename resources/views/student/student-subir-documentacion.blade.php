@@ -2,8 +2,9 @@
 
 @section('content')
     
-
+    <div id="app">
     <div class="form-group row add" >
+    <form>
         <div class="col-md-12">
                 <h4 class="text-center">SUBIR DOCUMENTACION</h4>
         </div>
@@ -14,7 +15,8 @@
             @endcomponent
             <br>
             <br>
-            @component('components.fileinput', ['title1' => 'Seleccionar documento', 'title2' => 'Seleccionar','icon' => 'fa fa-file fileinput-exists'])
+
+            @component('components.fileinput', ['title1' => 'Seleccionar documento', 'title2' => 'Seleccionar','icon' => 'fa fa-file fileinput-exists', 'nombre' => 'url', 'atributo' => ''])
             @endcomponent
             
 
@@ -29,6 +31,7 @@
         </div>
 
         </div>
+    </form>
     </div>
 
     
@@ -55,7 +58,7 @@
 </div>
 
 <!--edicion modal -->
-<div class="modal fade " id="editar-documento" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
+<div class="modal fade " id="editar-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -90,7 +93,22 @@
 </div>
 </div>
 
+
 @endsection 
+
+@push('styles')
+    <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
+@endpush
+
 @push('functions')
-    <script src="/js/categorias.js"></script>
+    <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+
+    <script src="/js/documentos.js"></script>
+@endpush
+
+
+
+@push('plugins')
+    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>    
 @endpush
