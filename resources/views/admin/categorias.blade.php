@@ -4,10 +4,10 @@
 
 
 <div id="app" class="col-md-10 col-md-offset-1">
-    <div class="panel panel-primary">
-        <div class="panel-heading text-center">
-            <h4>CONFIGURACIÓN DE PORCENTAJES</h4>
-        </div>
+    <div class="panel panel-primar note note-info">
+        <div class="panel-heading text-center note note-default ">
+            <h3 class="text-center">CONFIGURACIÓN DE PORCENTAJES</h3>
+        
         <div class="panel-body">
             <!-- Table de categorias -->
             <div class="table-responsive">
@@ -74,8 +74,10 @@
             </div>
             <!-- Tabla de Categorias -->
             <button type="button" data-toggle="modal" data-target="#crear-categoria" class="btn btn-primary center-block">
+            <i class="fa fa-plus"></i>
                 Crear Nueva Categoría
             </button>
+            </div>
         </div>
     </div>
 
@@ -166,8 +168,10 @@
                             <div class="modal-footer">
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success">Crear Categoría</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-plus"></i>Crear Categoría</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                    <i class="fa fa-ban"></i>
+                                    Cancelar</button>
                                 </div>
                             </div>
                         </form>
@@ -263,8 +267,10 @@
                             <div class="modal-footer">
 
                                 <div class="form-group">
-                                    <button type="submit" class="btn btn-success">Editar Categoría</button>
-                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+                                    <button type="submit" class="btn btn-primary"><i class="fa fa-edit"></i>
+                                    Editar Categoría</button>
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">
+                                    <i class="fa fa-ban"></i>Cancelar</button>
                                 </div>
                             </div>
                         </form>

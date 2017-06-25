@@ -57,7 +57,7 @@
 
                 <div class="col-sm-6">
                     <button data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary center-block">
-                        <i class="fa fa-plus"></i>
+                        <   
                         Crear Usuario
                     </button>
                 </div>
