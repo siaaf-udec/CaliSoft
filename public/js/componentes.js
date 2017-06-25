@@ -11565,6 +11565,10 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         axios.get("/api/tdocumentos/" + this.documentoId + "/componentes").then(function (res) {
             return _this.componentes = res.data;
         });
+
+        axios.get("/api/tdocumentos").then(function (res) {
+            return _this.tiposDocumentos = res.data;
+        });
     },
 
 

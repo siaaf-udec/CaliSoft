@@ -125,7 +125,10 @@ class TiposDocumentoController extends Controller
         return $documento->componentes;
     }
 
-
+    public function getTipos()
+    {
+        return $tdocumento = TiposDocumento::all();
+    }
   
 }
 

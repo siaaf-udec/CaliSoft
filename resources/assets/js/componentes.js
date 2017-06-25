@@ -21,6 +21,8 @@ new Vue({
         axios.get(`/api/tdocumentos/${this.documentoId}/componentes`)
             .then(res => this.componentes = res.data);
 
+        axios.get(`/api/tdocumentos`)
+            .then(res => this.tiposDocumentos = res.data);
     },
 
     
