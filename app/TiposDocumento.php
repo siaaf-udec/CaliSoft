@@ -27,11 +27,15 @@ class TiposDocumento extends Model
      * @var array
      */
     protected $fillable = [
-        'nombre',
-        'required'];
+        'nombre', 'required'
+    ];
 
     protected $hidden = [
         'created_at', 'updated_at'
+    ];
+
+    protected $casts = [
+        'required' => 'boolean'
     ];
 
     public function componentes(){

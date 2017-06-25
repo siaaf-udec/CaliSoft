@@ -11544,7 +11544,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
+var PORCENTAJES = ['modelado', 'plataforma'];
+var DIAGRAMAS = ['despliegue', 'entidad_relacion', 'clases', 'actividades', 'sequencia', 'uso'];
+
+var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
     data: {
         categorias: [],
@@ -11567,12 +11570,10 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         store: function store() {
             var _this2 = this;
 
-            if (!this.sumaPorcentajes()) return;
-
+            if (!this.sumaPorcentajes() || !this.sumaDiagramas()) return;
             axios.post('/api/categorias', this.newCategoria).then(function (response) {
-
                 _this2.categorias.push(response.data);
-                _this2.newCategoria = {};
+                _this2.newCategoria = _this2.formErrors = {};
                 $("#crear-categoria").modal("hide");
                 toastr.success('Categoría creada correctamente');
             }).catch(function (error) {
@@ -11608,23 +11609,37 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             });
         },
         sumaPorcentajes: function sumaPorcentajes() {
-            if (this.newCategoria.modelado + this.newCategoria.plataforma != 100) {
-                this.formErrors.modelado = "la suma de el porcentaje de plataforma y modelado debe ser igual a 100%";
-                alert(this.formErrors.modelado);
+            var _this5 = this;
+
+            var sumatoria = 0;
+            //Realiza la sumatoria de los porcentajes .. pdt: puto hectorino
+            PORCENTAJES.forEach(function (diagrama) {
+                sumatoria += Number.parseInt(_this5.newCategoria[diagrama]);
+            });
+
+            if (sumatoria != 100) {
+                toastr.error("la suma de el porcentaje de plataforma y modelado debe ser igual a 100%");
                 return false;
             }
+            return true;
         },
-        sumaDiagramas: function sumaDiagramas() {}
-    },
-    watch: {
-        "newCategoria.plataforma": function newCategoriaPlataforma(val) {
-            this.newCategoria.modelado = 100 - val;
-        },
-        "newCategoria.modelado": function newCategoriaModelado(val) {
-            this.newCategoria.plataforma = 100 - val;
+        sumaDiagramas: function sumaDiagramas() {
+            var _this6 = this;
+
+            var sumatoria = 0;
+
+            //Realiza la sumatoria de los diagramas .. pdt: puto hectorino
+            DIAGRAMAS.forEach(function (diagrama) {
+                sumatoria += Number.parseInt(_this6.newCategoria[diagrama]);
+            });
+
+            if (sumatoria != 100) {
+                toastr.error("la suma de los diagramas debe ser igual a 100%");
+                return false;
+            }
+            return true;
         }
     }
-
 });
 
 /***/ }),

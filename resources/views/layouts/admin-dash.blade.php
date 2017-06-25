@@ -22,8 +22,8 @@
 
     @component('components.nav-link', [
         'icon' => 'fa fa-gears',
-        'link' => route('semilleros'),
-        'title' => 'Semilleros'
+        'title' => 'Semilleros',
+        'link' => route('semilleros')
     ])
     @endcomponent
 

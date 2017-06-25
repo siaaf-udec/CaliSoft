@@ -27,8 +27,7 @@ class CategoriasController extends Controller
      
     public function index()
     {
-         return Categorias::all();
-         
+         return Categorias::all(); 
     }
 
     /**
@@ -58,20 +57,6 @@ class CategoriasController extends Controller
         ]);
         return Categorias::create($request->all());
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Categorias  $categorias
-     * @return \Illuminate\Http\Response
-     */
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Categorias  $categorias
-     * @return \Illuminate\Http\Response
-     */
 
     /**
      * Update the specified resource in storage.
