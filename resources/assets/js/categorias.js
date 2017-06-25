@@ -39,6 +39,7 @@ let vm = new Vue({
             $('#editar-categoria').modal("show");
         },
         update() {
+            if (!this.sumaPorcentajesEditar() || !this.sumaDiagramasEditar()) return;
             axios.put('/api/categorias/' + this.fillCategoria.PK_id, this.fillCategoria)
                 .then(response => {
                     this.categorias = this.categorias.map(value => {
@@ -64,7 +65,7 @@ let vm = new Vue({
             let sumatoria = 0;
             //Realiza la sumatoria de los porcentajes .. pdt: puto hectorino
             PORCENTAJES.forEach(diagrama => {
-                sumatoria += Number.parseInt( this.newCategoria[diagrama] );
+                sumatoria += Number.parseInt(this.newCategoria[diagrama]);
             });
 
             if (sumatoria != 100) {
@@ -75,10 +76,10 @@ let vm = new Vue({
         },
         sumaDiagramas() {
             let sumatoria = 0;
-            
+
             //Realiza la sumatoria de los diagramas .. pdt: puto hectorino
             DIAGRAMAS.forEach(diagrama => {
-                sumatoria += Number.parseInt( this.newCategoria[diagrama] );
+                sumatoria += Number.parseInt(this.newCategoria[diagrama]);
             });
 
             if (sumatoria != 100) {
@@ -87,6 +88,34 @@ let vm = new Vue({
             }
             return true;
         },
+        sumaPorcentajesEditar() {
+            let sumatoria = 0;
+            //Realiza la sumatoria de los porcentajes .. pdt: puto hectorino
+            PORCENTAJES.forEach(diagrama => {
+                sumatoria += Number.parseInt(this.fillCategoria[diagrama]);
+            });
+
+            if (sumatoria != 100) {
+                toastr.error("la suma de el porcentaje de plataforma y modelado debe ser igual a 100%");
+                return false;
+            }
+            return true;
+        },
+        sumaDiagramasEditar() {
+            let sumatoria = 0;
+
+            //Realiza la sumatoria de los diagramas .. pdt: puto hectorino
+            DIAGRAMAS.forEach(diagrama => {
+                sumatoria += Number.parseInt(this.fillCategoria[diagrama]);
+            });
+
+            if (sumatoria != 100) {
+                toastr.error("la suma de los diagramas debe ser igual a 100%");
+                return false;
+            }
+            return true;
+        },
+
 
 
 

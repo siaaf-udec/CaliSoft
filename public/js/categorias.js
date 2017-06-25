@@ -11587,6 +11587,7 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         update: function update() {
             var _this3 = this;
 
+            if (!this.sumaPorcentajesEditar() || !this.sumaDiagramasEditar()) return;
             axios.put('/api/categorias/' + this.fillCategoria.PK_id, this.fillCategoria).then(function (response) {
                 _this3.categorias = _this3.categorias.map(function (value) {
                     return value.PK_id == _this3.fillCategoria.PK_id ? _this3.fillCategoria : value;
@@ -11631,6 +11632,37 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             //Realiza la sumatoria de los diagramas .. pdt: puto hectorino
             DIAGRAMAS.forEach(function (diagrama) {
                 sumatoria += Number.parseInt(_this6.newCategoria[diagrama]);
+            });
+
+            if (sumatoria != 100) {
+                toastr.error("la suma de los diagramas debe ser igual a 100%");
+                return false;
+            }
+            return true;
+        },
+        sumaPorcentajesEditar: function sumaPorcentajesEditar() {
+            var _this7 = this;
+
+            var sumatoria = 0;
+            //Realiza la sumatoria de los porcentajes .. pdt: puto hectorino
+            PORCENTAJES.forEach(function (diagrama) {
+                sumatoria += Number.parseInt(_this7.fillCategoria[diagrama]);
+            });
+
+            if (sumatoria != 100) {
+                toastr.error("la suma de el porcentaje de plataforma y modelado debe ser igual a 100%");
+                return false;
+            }
+            return true;
+        },
+        sumaDiagramasEditar: function sumaDiagramasEditar() {
+            var _this8 = this;
+
+            var sumatoria = 0;
+
+            //Realiza la sumatoria de los diagramas .. pdt: puto hectorino
+            DIAGRAMAS.forEach(function (diagrama) {
+                sumatoria += Number.parseInt(_this8.fillCategoria[diagrama]);
             });
 
             if (sumatoria != 100) {
