@@ -3,7 +3,6 @@
 
 @section('content')
     <div id="app">
-    
        <h2> {{ $documento->nombre }}</h2>
     
 
@@ -155,31 +154,18 @@
                                     
                                 </div>
 
-                                <div class="form-group">
+                                <div class="form-group" >
                                 <label for="single" class="control-label">Documentos</label>
-                                        <select id="single" class="form-control select2">
 
-                                                @for ($i = 0; $i < 10; $i++)
-                                                
-                                                @endfor
-
-                                                <option value="1" ></option>
-                                                <option value="NV">Nevada</option>
-                                                <option value="OR">Oregon</option>
-                                                <option value="WA">Washington</option>
+                                        <select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="fillComponente.FK_TipoDocumentoId" required>
+                                                <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
+                                                </option>
                                         </select>
+                                        <span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
+                                            @{{formErrorsUpdate.FK_TipoDocumentoId[0]}}
+                                        </span>
                                 </div>
-
-
-
-                                <div class="form-group">
-                                    <label for="title">Documento: </label>
-                                    <input type="number" name="FK_TipoDocumentoId" class="form-control" v-model="fillComponente.FK_TipoDocumentoId" required/>
-                                    <span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
-                                @{{formErrorsUpdate.FK_TipoDocumentoId[0]}}
-                            </span>
-                                </div>
-                               
+                                
                             </div>
                            
                             <div class="modal-footer">

@@ -13,7 +13,6 @@ new Vue({
             formErrors: {},
             formErrorsUpdate: {},
             tiposDocumentos: []
-
             },
 
     created(){
