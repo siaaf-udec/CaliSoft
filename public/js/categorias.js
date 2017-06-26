@@ -11555,7 +11555,8 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         formErrors: {},
         formErrorsUpdate: {},
         newCategoria: {},
-        fillCategoria: {}
+        fillCategoria: {},
+        elimiCategoria: {}
 
     },
     created: function created() {
@@ -11584,6 +11585,10 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             this.fillCategoria = Object.assign({}, categoria);
             $('#editar-categoria').modal("show");
         },
+        openDeleteModal: function openDeleteModal(categoria) {
+            this.elimiCategoria = categoria;
+            $('#eliminar-categoria').modal("show");
+        },
         update: function update() {
             var _this3 = this;
 
@@ -11602,11 +11607,12 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
         destroy: function destroy(categoria) {
             var _this4 = this;
 
-            axios.delete('/api/categorias/' + categoria.PK_id).then(function () {
+            axios.delete('/api/categorias/' + categoria.PK_id).then(function (response) {
                 _this4.categorias = _this4.categorias.filter(function (value) {
                     return value != categoria;
                 });
-                toastr.info('Categoría eliminada correctamente');
+                $("#eliminar-categoria").modal("hide");
+                toastr.info('Categoría eliminar correctamente');
             });
         },
         sumaPorcentajes: function sumaPorcentajes() {

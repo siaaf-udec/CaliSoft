@@ -14,6 +14,7 @@ let vm = new Vue({
         formErrorsUpdate: {},
         newCategoria: {},
         fillCategoria: {},
+        elimiCategoria: {},
 
     },
     created() {
@@ -38,6 +39,10 @@ let vm = new Vue({
             this.fillCategoria = Object.assign({}, categoria);
             $('#editar-categoria').modal("show");
         },
+        openDeleteModal(categoria) {
+            this.elimiCategoria = categoria;
+            $('#eliminar-categoria').modal("show");
+        },
         update() {
             if (!this.sumaPorcentajesEditar() || !this.sumaDiagramasEditar()) return;
             axios.put('/api/categorias/' + this.fillCategoria.PK_id, this.fillCategoria)
@@ -54,10 +59,12 @@ let vm = new Vue({
 
         destroy(categoria) {
             axios.delete('/api/categorias/' + categoria.PK_id)
-                .then(() => {
+                .then(response => {
                     this.categorias = this.categorias.filter(value => value != categoria);
-                    toastr.info('Categoría eliminada correctamente');
+                    $("#eliminar-categoria").modal("hide");
+                    toastr.info('Categoría eliminar correctamente');
                 });
+
 
         },
 
