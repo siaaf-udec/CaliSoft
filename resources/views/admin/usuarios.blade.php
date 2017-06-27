@@ -2,8 +2,10 @@
 
 @section('content')
 <div class="col-md-12">
-    <div class="note note-info">
-        <div id="app" class="note note-default">
+    @component('components.portlet', ['icon' => 'fa fa-users', 'title' => 'Usuarios'])
+
+
+        <div id="app">
 
             <h3 class="text-center">Usuarios </h3>
 
@@ -23,9 +25,6 @@
                     </div>
                 </form>
             </div>
-
-
-
 
             <!-- Table -->
             <div class="table-responsive">
@@ -52,7 +51,7 @@
             </div>
             <!-- End Table -->
 
-
+            <!-- Paginacion -->
             <div class="row">
                 <!-- Boton de crear usuario -->
                 <div class="col-sm-6">
@@ -89,8 +88,7 @@
                     <div class="form-group form-md-line-input">
                         <div class="input-icon">
                             <i class="fa fa-user"></i>
-                            <input type="text" name="name" required="" id="name" placeholder="Nombre" class="form-control" autocomplete='off' v-model="newUser.name"
-                            />
+                            <input type="text" name="name" required="" id="name" placeholder="Nombre" class="form-control" autocomplete='off' v-model="newUser.name"/>
                         </div>
                     </div>
                     <div class="form-group form-md-line-input" :class="{'has-error': errors.email }">
@@ -135,7 +133,7 @@
             </modal>
             <!-- End modal -->
         </div>
-    </div>
+    @endcomponent
 </div>
 @endsection
 
