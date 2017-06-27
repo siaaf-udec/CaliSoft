@@ -11544,15 +11544,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_list_group_crud__ = __webpack_require__(37);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_list_group_crud___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_list_group_crud__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ListGroupCrud__ = __webpack_require__(37);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ListGroupCrud___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_ListGroupCrud__);
 
 
 
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
-    components: { ListGroupCrud: __WEBPACK_IMPORTED_MODULE_2__components_list_group_crud___default.a }
+    components: { ListGroupCrud: __WEBPACK_IMPORTED_MODULE_2__components_ListGroupCrud___default.a }
 });
 
 /***/ }),
@@ -11615,14 +11615,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-
     directives: { focus: __WEBPACK_IMPORTED_MODULE_0_vue_focus__["focus"] },
 
     props: {
-        rest: {
-            type: String,
-            required: true
-        }
+        rest: { type: String, required: true }
     },
 
     data: function data() {
@@ -11733,9 +11729,9 @@ var Component = __webpack_require__(38)(
   /* cssModules */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\components\\list-group-crud.vue"
+Component.options.__file = "/home/stevenson/Documentos/ModuloCentral/resources/assets/components/ListGroupCrud.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] list-group-crud.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] ListGroupCrud.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -11744,9 +11740,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-66317e56", Component.options)
+    hotAPI.createRecord("data-v-f629c40c", Component.options)
   } else {
-    hotAPI.reload("data-v-66317e56", Component.options)
+    hotAPI.reload("data-v-f629c40c", Component.options)
   }
 })()}
 
@@ -11860,6 +11856,7 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "help-block text-danger"
   }, [_vm._v(_vm._s(_vm.error))])])]), _vm._v(" "), _vm._l((_vm.items), function(item) {
     return _c('li', {
+      key: item.PK_id,
       staticClass: "list-group-item"
     }, [(item.PK_id != _vm.editable.PK_id) ? [_c('a', {
       staticClass: "pull-left",
@@ -11950,7 +11947,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-66317e56", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-f629c40c", module.exports)
   }
 }
 

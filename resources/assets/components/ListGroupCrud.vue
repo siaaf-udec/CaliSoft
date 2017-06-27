@@ -14,7 +14,7 @@
                 <span v-show="error" class="help-block text-danger">{{ error }}</span>
             </form>
         </li>
-        <li class="list-group-item" v-for="item in items">
+        <li class="list-group-item" v-for="item in items" :key="item.PK_id">
             <template v-if="item.PK_id != editable.PK_id">
                 <a class="pull-left" @click="selectEditable(item)">
                     <i class="fa fa-edit text-info"></i>
@@ -48,14 +48,10 @@
 import { focus } from "vue-focus";
 
 export default {
-
     directives: { focus },
 
     props: {
-        rest: {
-            type: String,
-            required: true
-        }
+        rest: { type: String, required: true }
     },
 
     data(){

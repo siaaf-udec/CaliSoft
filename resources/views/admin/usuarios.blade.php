@@ -56,8 +56,7 @@
             <div class="row">
 
                 <div class="col-sm-6">
-                    <button data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary center-block">
-                        <   
+                    <button data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary center-block"> 
                         Crear Usuario
                     </button>
                 </div>
