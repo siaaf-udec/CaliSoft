@@ -1,8 +1,10 @@
 import "./bootstrap";
 import Vue from "vue";
+import Modal from "../components/Modal";
 
 new Vue({
     el: '#app',
+    components: { Modal },
     data: {
         newUser: {},
         usuarios: [],
@@ -19,7 +21,7 @@ new Vue({
                 .then(response => {
                     this.usuarios.push(response.data);
                     this.newUser = {};
-                    $("#crear-evaluador").modal("hide");
+                    $("#crear-usuario").modal("hide");
                     toastr.success('Usuario Creado Correctamente');
                 })
                 .catch(error => {

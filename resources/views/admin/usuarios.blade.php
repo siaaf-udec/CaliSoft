@@ -1,4 +1,4 @@
-@extends('layouts.admin-dash') 
+@extends('layouts.admin-dash')
 
 @section('content')
 <div class="col-md-12">
@@ -7,7 +7,7 @@
 
             <h3 class="text-center">Usuarios </h3>
 
-
+            <!-- Filtro de usuarios -->
             <div class="row">
                 <form class="form-horizontal">
                     <div class="form-group col-xs-12 col-md-6 col-lg-4">
@@ -54,9 +54,9 @@
 
 
             <div class="row">
-
+                <!-- Boton de crear usuario -->
                 <div class="col-sm-6">
-                    <button data-toggle="modal" data-target="#crear-evaluador" class="btn btn-primary center-block"> 
+                    <button data-toggle="modal" data-target="#crear-usuario" class="btn btn-primary center-block">
                         Crear Usuario
                     </button>
                 </div>
@@ -82,74 +82,65 @@
                 <!-- End Pagination Buttons-->
 
             </div>
+
             <!--Inicio Modal-->
-            <div class="modal fade" tabindex="-1" role="dialog" id="crear-evaluador">
-                <div class="modal-dialog" role="document">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <h4 class="modal-title">Registrar Usuarios</h4>
+            <modal id="crear-usuario" title="Crear Usuario">
+                <form @submit.prevent="store()">
+                    <div class="form-group form-md-line-input">
+                        <div class="input-icon">
+                            <i class="fa fa-user"></i>
+                            <input type="text" name="name" required="" id="name" placeholder="Nombre" class="form-control" autocomplete='off' v-model="newUser.name"
+                            />
                         </div>
-                        <div class="modal-body">
-                            <form method="post" enctype="multipart/form-data" v-on:submit.prevent="store()">
-                                <div class="form-group form-md-line-input">
-                                    <div class="input-icon">
-                                        <i class="fa fa-user"></i>
-                                        <input type="text" name="name" required="" id="name" placeholder="Nombre" class="form-control" autocomplete='off' v-model="newUser.name"
-                                        />
-                                    </div>
-                                </div>
-                                <div class="form-group form-md-line-input">
-                                    <div class="input-icon">
-                                        <i class="fa fa-envelope-o"></i>
-                                        <input type="email" name="email" id="name" required="" placeholder="Correo" class="form-control" autocomplete='off' v-model="newUser.email">
-                                    </div>
-                                </div>
-                                <div class="form-group form-md-line-input">
-                                    <div class="input-icon">
-                                        <i class="fa fa-key"></i>
-                                        <input type="password" name="pass" id="pass" required="" placeholder="Contraseña" class="form-control" pattern="[a-z]{3}[0-9]{4}"
-                                            title="Debe tener 3 letras y 4 numero" v-model="newUser.password">
-                                    </div>
-                                </div>
-                                <div class="form-group form-md-line-input">
-                                    <div class="input-icon">
-                                        <i class="fa fa-key"></i>
-                                        <input type="password" name="pass" id="pass" required="" placeholder="Confirmar Contraseña" class="form-control" v-model="newUser.password_confirmation">
-                                    </div>
-                                </div>
-                                <div class="form-group form-md-line-input">
-                                    <div class="input-icon">
-                                        <i class="fa fa-users"></i>
-                                        <label for="rol">Cargo: </label>
-                                        <select name="rol" id="rol" required="" class="form-control" v-model="newUser.role" placeholder="Elija Rol">
-                                            <option value="admin">Administrador</option>
-                                            <option value="evaluator">Evaluador</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-danger" data-dismiss="modal">
-                                        <i class="fa fa-ban"></i>Cancelar
-                                    </button>
-                                    <button type="submit" class="btn btn-primary">
-                                        <i class="fa fa-plus"></i>Registrar
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                        <!-- /.modal-content -->
                     </div>
-                    <!-- /.modal-dialog -->
-                </div>
-            </div>
+                    <div class="form-group form-md-line-input" :class="{'has-error': errors.email }">
+                        <div class="input-icon">
+                            <i class="fa fa-envelope-o"></i>
+                            <input type="email" name="email" id="name" required="" placeholder="Correo" class="form-control" autocomplete='off' v-model="newUser.email">
+                            <label class="help-block" v-if="errors.email">@{{errors.email.join(' ')}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-md-line-input" :class="{'has-error': errors.password }" >
+                        <div class="input-icon">
+                            <i class="fa fa-key"></i>
+                            <input type="password" name="pass" id="pass" placeholder="Contraseña" class="form-control" v-model="newUser.password" required>
+                            <label v-if="errors.password">@{{errors.password.join(' ')}}</label>
+                        </div>
+                    </div>
+                    <div class="form-group form-md-line-input">
+                        <div class="input-icon">
+                            <i class="fa fa-key"></i>
+                            <input type="password" name="pass" id="pass" required="" placeholder="Confirmar Contraseña" class="form-control" v-model="newUser.password_confirmation">
+                        </div>
+                    </div>
+                    <div class="form-group form-md-line-input">
+                        <div class="input-icon">
+                            <i class="fa fa-users"></i>
+                            <label for="role">Rol</label>
+                            <select id="role" class="form-control" v-model="newUser.role" required>
+                                <option value="admin">Administrador</option>
+                                <option value="evaluator">Evaluador</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">
+                            <i class="fa fa-ban"></i>Cancelar
+                        </button>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="fa fa-plus"></i>Registrar
+                        </button>
+                    </div>
+                </form>
+            </modal>
             <!-- End modal -->
         </div>
     </div>
 </div>
-@endsection 
+@endsection
 
 @push('styles')
-<link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css"> @endpush 
+<link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css"> @endpush
 
 @push('functions')
 <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
