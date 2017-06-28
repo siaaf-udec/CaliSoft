@@ -1,8 +1,11 @@
 import "./bootstrap";
 import Vue from "vue";
+import BsSelect from "../components/bs-select";
+
 
 new Vue({
     el: '#app',
+    components: { BsSelect },
     data: {
         categorias: [],
         semilleros: [],

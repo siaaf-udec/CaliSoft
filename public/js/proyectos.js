@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 43);
+/******/ 	return __webpack_require__(__webpack_require__.s = 48);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11532,9 +11532,69 @@ module.exports = g;
 
 
 /***/ }),
-/* 29 */,
+/* 29 */
+/***/ (function(module, exports) {
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = Object.create(options.computed || null)
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+    options.computed = computed
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
 /* 30 */,
-/* 31 */
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11543,21 +11603,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_bs_select__ = __webpack_require__(69);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_bs_select___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_bs_select__);
+
 
 
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
-    data: { categorias: [],
+    components: { BsSelect: __WEBPACK_IMPORTED_MODULE_2__components_bs_select___default.a },
+    data: {
+        categorias: [],
         semilleros: [],
         grupos: [],
         proyecto: {},
-        errors: [],
-        mensajes: {
-            categoria: 'Debe Seleccionar Una Categoria',
-            grupo: 'Debe seleccionar Un Grupo de Investigacion',
-            semillero: 'Debe seleccionar Un Semillero'
-        }
+        errors: {}
     },
     created: function created() {
         var _this = this;
@@ -11566,9 +11626,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             _this.categorias = cat.data;
             _this.semilleros = sem.data;
             _this.grupos = gru.data;
-        })).catch(function (e) {
-            _this.error = e.message;
-        });
+        }));
     },
 
     methods: {
@@ -11576,19 +11634,15 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             var _this2 = this;
 
             axios.post('/api/proyectos/', this.proyecto).then(function (res) {
-                location.href = '/student/Proyectos';
+                return location.href = '/student/Proyectos';
             }).catch(function (e) {
-                _this2.errors = e.response.data;
+                return _this2.errors = e.response.data;
             });
         }
     }
 });
 
 /***/ }),
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
 /* 36 */,
 /* 37 */,
 /* 38 */,
@@ -11596,11 +11650,131 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 40 */,
 /* 41 */,
 /* 42 */,
-/* 43 */
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */,
+/* 48 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(31);
+module.exports = __webpack_require__(35);
 
+
+/***/ }),
+/* 49 */,
+/* 50 */,
+/* 51 */,
+/* 52 */,
+/* 53 */,
+/* 54 */,
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['id', 'value', 'title', 'required'],
+    data: function data() {
+        return { initialized: false };
+    },
+
+
+    // Asigna el valor del v-model
+    updated: function updated() {
+        if (!this.initialized) {
+            $("#" + this.id).val(this.value);
+            this.initialized = true;
+        }
+    },
+
+
+    methods: {
+        change: function change(e) {
+            this.$emit('input', e.target.value);
+        }
+    }
+});
+
+/***/ }),
+/* 69 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(29)(
+  /* script */
+  __webpack_require__(68),
+  /* template */
+  __webpack_require__(70),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/components/bs-select.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] bs-select.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-59bd9e84", Component.options)
+  } else {
+    hotAPI.reload("data-v-59bd9e84", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 70 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('select', {
+    staticClass: "form-control selectpicker",
+    attrs: {
+      "id": _vm.id,
+      "title": _vm.title,
+      "required": _vm.required
+    },
+    on: {
+      "change": _vm.change
+    }
+  }, [_vm._t("default")], 2)
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-59bd9e84", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);
