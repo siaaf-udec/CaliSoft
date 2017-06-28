@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 43);
+/******/ 	return __webpack_require__(__webpack_require__.s = 46);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11534,7 +11534,11 @@ module.exports = g;
 /***/ }),
 /* 29 */,
 /* 30 */,
-/* 31 */
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11548,16 +11552,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
-    data: { categorias: [],
+    data: {
+        categorias: [],
         semilleros: [],
         grupos: [],
         proyecto: {},
-        errors: [],
-        mensajes: {
-            categoria: 'Debe Seleccionar Una Categoria',
-            grupo: 'Debe seleccionar Un Grupo de Investigacion',
-            semillero: 'Debe seleccionar Un Semillero'
-        }
+        errors: {}
     },
     created: function created() {
         var _this = this;
@@ -11566,9 +11566,7 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             _this.categorias = cat.data;
             _this.semilleros = sem.data;
             _this.grupos = gru.data;
-        })).catch(function (e) {
-            _this.error = e.message;
-        });
+        }));
     },
 
     methods: {
@@ -11576,19 +11574,15 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
             var _this2 = this;
 
             axios.post('/api/proyectos/', this.proyecto).then(function (res) {
-                location.href = '/student/Proyectos';
+                return location.href = '/student/Proyectos';
             }).catch(function (e) {
-                _this2.errors = e.response.data;
+                return _this2.errors = e.response.data;
             });
         }
     }
 });
 
 /***/ }),
-/* 32 */,
-/* 33 */,
-/* 34 */,
-/* 35 */,
 /* 36 */,
 /* 37 */,
 /* 38 */,
@@ -11596,10 +11590,13 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 40 */,
 /* 41 */,
 /* 42 */,
-/* 43 */
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(31);
+module.exports = __webpack_require__(35);
 
 
 /***/ })
