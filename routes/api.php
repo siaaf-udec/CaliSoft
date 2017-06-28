@@ -38,13 +38,14 @@ Route::resource('documentacion', 'Student\DocumentosController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
 
+Route::resource('tdocumentos', 'Admin\TiposDocumentoController', [
+    'only' => ['index']
+]);
+
 Route::get('tdocumentos/{documento}/componentes', 'Admin\TiposDocumentoController@getComponents')
     ->name('tdocumentos.componentes');
 
-Route::get('tdocumentos', 'Admin\TiposDocumentoController@getTipos')
-    ->name('tdocumentos.tipos');
-
-Route::get('documentos', 'Student\DocumentosController@getTipos')
+Route::get('documentos', 'Student\DocumentosController@getTipo')
     ->name('documentos.tipos');
 
 

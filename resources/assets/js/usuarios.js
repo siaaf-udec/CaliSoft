@@ -1,10 +1,11 @@
 import "./bootstrap";
 import Vue from "vue";
 import Modal from "../components/Modal";
+import BsSelect from "../components/bs-select"
 
 new Vue({
     el: '#app',
-    components: { Modal },
+    components: { Modal, BsSelect },
     data: {
         newUser: {},
         usuarios: [],

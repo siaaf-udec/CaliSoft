@@ -23,10 +23,7 @@ class TiposDocumentoController extends Controller
      */
     public function index(Request $request)
     {
-      $tdocumento = TiposDocumento::all();
-          return view('admin.documento.tipo-documento',[
-            'tdocumentos' => $tdocumento,
-          ]);
+        return TiposDocumento::all();
     }
 
     /**
@@ -125,10 +122,4 @@ class TiposDocumentoController extends Controller
         return $documento->componentes;
     }
 
-    public function getTipos()
-    {
-        return $tdocumento = TiposDocumento::all();
-    }
-  
 }
-

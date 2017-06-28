@@ -11,19 +11,16 @@
 
             <!-- Filtro de usuarios -->
             <div class="row">
-                <form class="form-horizontal">
-                    <div class="form-group col-xs-12 col-md-6 col-lg-4">
-                        <label class="control-label col-md-2 hidden-xs" for="role">Rol:</label>
-                        <div class="col-md-10">
-                            <select class="form-control" v-model="role">
-                                <option value="">Todos</option>
-                                <option value="admin">Administrador</option>
-                                <option value="evaluator">Evaluador</option>
-                                <option value="student">Estudiante</option>
-                            </select>
-                        </div>
-                    </div>
-                </form>
+
+                <div class="form-group col-md-4 col-xs-12">
+                    <bs-select id="role-filter" title="Rol" v-model="role">
+                        <option value="">Todos</option>
+                        <option value="admin">Administrador</option>
+                        <option value="evaluator">Evaluador</option>
+                        <option value="student">Estudiante</option>
+                    </bs-select>
+                </div>
+
             </div>
 
             <!-- Table -->
@@ -138,9 +135,12 @@
 @endsection
 
 @push('styles')
-<link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css"> @endpush
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
+@endpush
 
 @push('functions')
-<script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-<script src="/js/usuarios.js"></script>
+    <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="/js/usuarios.js"></script>
 @endpush
