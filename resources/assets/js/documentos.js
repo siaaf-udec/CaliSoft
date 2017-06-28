@@ -5,20 +5,22 @@ import Vue from "vue";
 new Vue({
     el: "#app",
     data: { 
-
+            proyectoId: {},
             documentos: [],
             newDocumentos: {},
             fillDocumentos: {},
             formErrors: {},
             formErrorsUpdate: {},
             tiposDocumentos: []
-
             },
 
     created(){
         
-        axios.get(`/api/documentacion/`)
-            .then(res => this.documentos = res.data);
+       // axios.get(`/api/tdocumentos/${this.documentoId}/componentes`)
+         //   .then(res => this.componentes = res.data);
+
+        axios.get(`/api/documentos`)
+            .then(res => this.tiposDocumentos = res.data);
 
     },
 

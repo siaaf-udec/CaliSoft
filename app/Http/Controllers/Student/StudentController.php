@@ -28,5 +28,9 @@ class StudentController extends Controller
     public function mensaje(){
         return view('student.student-mensaje');
     }
+
+    //public function documentos(Documentos $documento){
+      //  return view('student.student-subir-documentacion', compact('documento'));
+    //}
 }
 

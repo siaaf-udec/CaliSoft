@@ -51,4 +51,10 @@ class ProyectosController extends Controller
 
          return $proyecto->users()->attach(Auth::id());
     }
+
+    public function getDocumentos(Proyecto $proyecto)
+    {
+        return $proyecto->documento;
+    }
+
 }

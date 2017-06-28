@@ -36,12 +36,6 @@
                         </div>
                     </div>
 
-                    <!--
-                    <div class="form-group">
-                        <label for="title">Obligatorio</label>
-                        <input type="num" name="required" class="form-control" v-model="newComponente.required"/>
-
-                    </div> -->
                     <div class="form-group">
                         <label for="title">Descripción</label>
                         <input type="text" name="descripcion" class="form-control" v-model="newComponente.descripcion" required="" />
@@ -136,15 +130,6 @@
                                     </div>
 
                                     <div class="col-sm-6">
-
-                                       <!-- <div class="form-group">
-                                            <label for="title">Obligatorio: </label>
-                                            <input type="text" name="required" class="form-control" v-model="fillComponente.required" required/>
-                                            <span v-if="formErrorsUpdate['required']" class="error text-danger">
-                                        @{{formErrorsUpdate.required[0]}}
-                                    </span>
-
-                                        </div> -->
 
                                         <div class="form-group">
                                             <label for="title">Descripción: </label>

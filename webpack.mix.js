@@ -19,3 +19,4 @@ mix
     .js('resources/assets/js/usuarios.js', 'public/js')
     .js('resources/assets/js/proyectos.js', 'public/js')
     .js('resources/assets/js/componentes.js', 'public/js')
+	.js('resources/assets/js/documentos.js', 'public/js')

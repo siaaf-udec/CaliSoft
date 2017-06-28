@@ -7,5 +7,6 @@
   "/js/categorias.js": "/js/categorias.js",
   "/js/proyectos.js": "/js/proyectos.js",
   "/js/usuarios.js": "/js/usuarios.js",
-  "/js/componentes.js": "/js/componentes.js"
+  "/js/componentes.js": "/js/componentes.js",
+  "/js/documentos.js": "/js/documentos.js"
 }

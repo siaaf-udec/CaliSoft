@@ -5,3 +5,5 @@ Route::get('/Proyectos', 'StudentController@proyectos')->name('proyectos')->midd
 Route::get('/Porcentajes', 'StudentController@verPorcentajes')->name('porcentajes');
 Route::get('/Documentacion', 'StudentController@subirDocumentacion')->name('documentacion');
 Route::get('/Mensaje','StudentController@mensaje')->name('mensaje');
+
+//Route::get('/updocumentos/{documento}/documentos', 'StudentController@documentos')->name('documentos');

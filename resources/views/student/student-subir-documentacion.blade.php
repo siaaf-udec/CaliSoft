@@ -4,20 +4,45 @@
     
     <div id="app">
     <div class="form-group row add" >
-    <form>
+    <form @submit.prevent='store()'>
         <div class="col-md-12">
                 <h4 class="text-center">SUBIR DOCUMENTACION</h4>
         </div>
         <br>
         <br>
         <div class ="text-center">
-            @component('components.bootstrap-select', ['items' => 'asdasd', 'title' => 'Tipo de documento'])
-            @endcomponent
+            <div class="form-group" >
+                <label class="control-label">Tipo de documentos</label>
+                <select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="fillDocumentos.FK_TipoDocumentoId" required>
+                    <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
+                    </option>
+                </select>
+                <!--<span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
+                                                    @{{formErrorsUpdate.FK_TipoDocumentoId[0]}}
+                </span>-->
+            
             <br>
             <br>
 
-            @component('components.fileinput', ['title1' => 'Seleccionar documento', 'title2' => 'Seleccionar','icon' => 'fa fa-file fileinput-exists', 'nombre' => 'url', 'atributo' => ''])
-            @endcomponent
+            
+                <label class="control-label col-md-3">Seleccionar documento</label>
+                    <div class="col-md-3">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div class="input-group input-large">
+                                <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                    <span class="fileinput-filename"> </span>
+                                </div>
+                            <span class="input-group-addon btn default btn-file">
+                                <span class="fileinput-new"> Seleccionar </span>
+                                <span class="fileinput-exists"> Cambiar </span>
+                                <input type="number" name="url" v-model="newDocumentos.FK_TipoDocumentoId" required > 
+                            </span>
+                            <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                            </div>
+                        </div>
+                    </div>
+            </div>
             
 
 
@@ -35,7 +60,6 @@
     </div>
 
     
-    <div id="app">
     <div class="table-responsive">
     <table class="table table-striped table-hover table-bordered table-condensed">
         <thead>
@@ -44,18 +68,18 @@
             
         </thead>
         <tbody>
-            <tr v-for="categoria in categorias">
+            <!--<tr v-for="documento in documentos">
                 <td v-text="documento.nombre"></td>
-                <td> <button class="editar-categoria btn btn-warning" @click.prevent="openEditModal(categoria)">
+                <td> <button class="editar-documentos btn btn-warning" @click.prevent="openEditModal(documento)">
                     <span class="glyphicon glyphicon-edit"></span>Editar
                     </button>
                 </td>
-            </tr>
+            </tr>-->
         </tbody>
     </table>
     </div>
     
-</div>
+
 
 <!--edicion modal -->
 <div class="modal fade " id="editar-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
@@ -68,17 +92,17 @@
                 <h4 class="modal-title" id="myModalLabel">Editar Documento</h4>
             </div>
             <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" v-on:submit.prevent="update(fillCategoria.PK_id)">
+                <form method="post" enctype="multipart/form-data" v-on:submit.prevent="update(fillDocumentos.PK_id)">
                     <div class="form-group">
                         <label for="title">Nombre Documento</label>
-                        <input type="text" name="nombre" class="form-control" v-model="fillCategoria.nombre"/>
+                        <input type="text" name="nombre" class="form-control" v-model="fillDocumentos.nombre"/>
                         <span v-if="formErrorsUpdate['nombre']" class="error text-danger">
                             @{{formErrorsUpdate.nombre[0]}}
                         </span>
                     </div>
                     <div class="form-group">
                         <label for="title">Seleccionar archivo</label>
-                        <input type="text" name="plataforma" class="form-control" v-model="fillCategoria.plataforma"/>
+                        <input type="text" name="plataforma" class="form-control" v-model="fillDocumentos.plataforma"/>
                         <span v-if="formErrorsUpdate['plataforma']" class="error text-danger">
                             @{{formErrorsUpdate.plataforma[0]}}
                         </span>

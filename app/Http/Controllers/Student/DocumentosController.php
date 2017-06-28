@@ -4,8 +4,10 @@ namespace App\Http\Controllers\Student;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
 use App\Documentos;
-
+use App\TiposDocumento;
+use App\User;
 class DocumentosController extends Controller
 {
     /**
@@ -15,10 +17,9 @@ class DocumentosController extends Controller
      */
     public function index()
     {
-        $docs = Documentos::All();
-        return view('student.student-subir-documentacion',compact('docs'));
 
-
+        $docs = Documentos::All(); 
+            return view('student.student-subir-documentacion',compact('docs'));
     }
 
     /**
@@ -86,4 +87,10 @@ class DocumentosController extends Controller
     {
         //
     }
+
+    public function getTipos()
+    {
+        return $tdocumento = TiposDocumento::all();
+    }
+
 }
