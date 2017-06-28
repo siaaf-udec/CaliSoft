@@ -45,7 +45,7 @@ class CategoriasController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'nombre'=>'required|string',
+            'nombre'=>'required|max:255|string|regex:/^[0-9]{1,3}(\.[0-9]{0,2})?$/',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
             'despliegue'=>'required|integer',
@@ -68,7 +68,6 @@ class CategoriasController extends Controller
     public function update(Request $request, Categorias $categoria)
     {
         $this->validate($request,[
-            'nombre'=>'required|max:255|string',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
             'despliegue'=>'required|integer',

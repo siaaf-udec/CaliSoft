@@ -63,7 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 49);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 47);
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11604,7 +11608,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ListGroupCrud__ = __webpack_require__(42);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ListGroupCrud__ = __webpack_require__(41);
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_ListGroupCrud___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_ListGroupCrud__);
 
 
@@ -11623,7 +11631,11 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+<<<<<<< HEAD
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_focus__ = __webpack_require__(41);
+=======
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_focus__ = __webpack_require__(40);
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_vue_focus___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_vue_focus__);
 //
 //
@@ -11731,8 +11743,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
+<<<<<<< HEAD
 /* 40 */,
 /* 41 */
+=======
+/* 40 */
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11777,20 +11793,32 @@ exports.focus = focus;
 exports.mixin = mixin;
 
 /***/ }),
+<<<<<<< HEAD
 /* 42 */
+=======
+/* 41 */
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(29)(
   /* script */
   __webpack_require__(39),
   /* template */
+<<<<<<< HEAD
   __webpack_require__(43),
+=======
+  __webpack_require__(42),
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
   /* scopeId */
   null,
   /* cssModules */
   null
 )
+<<<<<<< HEAD
 Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/components/ListGroupCrud.vue"
+=======
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\components\\ListGroupCrud.vue"
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] ListGroupCrud.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11801,9 +11829,15 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
+<<<<<<< HEAD
     hotAPI.createRecord("data-v-58ce6785", Component.options)
   } else {
     hotAPI.reload("data-v-58ce6785", Component.options)
+=======
+    hotAPI.createRecord("data-v-f629c40c", Component.options)
+  } else {
+    hotAPI.reload("data-v-f629c40c", Component.options)
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
   }
 })()}
 
@@ -11811,7 +11845,11 @@ module.exports = Component.exports
 
 
 /***/ }),
+<<<<<<< HEAD
 /* 43 */
+=======
+/* 42 */
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -11951,17 +11989,29 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
+<<<<<<< HEAD
      require("vue-hot-reload-api").rerender("data-v-58ce6785", module.exports)
+=======
+     require("vue-hot-reload-api").rerender("data-v-f629c40c", module.exports)
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
   }
 }
 
 /***/ }),
+<<<<<<< HEAD
 /* 44 */,
 /* 45 */,
 /* 46 */,
 /* 47 */,
 /* 48 */,
 /* 49 */
+=======
+/* 43 */,
+/* 44 */,
+/* 45 */,
+/* 46 */,
+/* 47 */
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(36);

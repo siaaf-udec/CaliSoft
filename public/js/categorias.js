@@ -63,7 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 46);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 44);
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11631,7 +11635,11 @@ var Component = __webpack_require__(29)(
   /* cssModules */
   null
 )
+<<<<<<< HEAD
 Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/components/Modal.vue"
+=======
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\components\\Modal.vue"
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] Modal.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -11642,9 +11650,15 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
+<<<<<<< HEAD
     hotAPI.createRecord("data-v-1b002c5a", Component.options)
   } else {
     hotAPI.reload("data-v-1b002c5a", Component.options)
+=======
+    hotAPI.createRecord("data-v-4280e548", Component.options)
+  } else {
+    hotAPI.reload("data-v-4280e548", Component.options)
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
   }
 })()}
 
@@ -11684,7 +11698,11 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
+<<<<<<< HEAD
      require("vue-hot-reload-api").rerender("data-v-1b002c5a", module.exports)
+=======
+     require("vue-hot-reload-api").rerender("data-v-4280e548", module.exports)
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
   }
 }
 
@@ -11852,9 +11870,13 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 41 */,
 /* 42 */,
 /* 43 */,
+<<<<<<< HEAD
 /* 44 */,
 /* 45 */,
 /* 46 */
+=======
+/* 44 */
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(33);

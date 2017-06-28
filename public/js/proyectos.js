@@ -63,7 +63,11 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
+<<<<<<< HEAD
 /******/ 	return __webpack_require__(__webpack_require__.s = 48);
+=======
+/******/ 	return __webpack_require__(__webpack_require__.s = 46);
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11611,7 +11615,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
+<<<<<<< HEAD
     components: { BsSelect: __WEBPACK_IMPORTED_MODULE_2__components_bs_select___default.a },
+=======
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
     data: {
         categorias: [],
         semilleros: [],
@@ -11653,9 +11660,13 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 43 */,
 /* 44 */,
 /* 45 */,
+<<<<<<< HEAD
 /* 46 */,
 /* 47 */,
 /* 48 */
+=======
+/* 46 */
+>>>>>>> ab9d5786e9dba53651bd8032a73fabfafcd6adf4
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports = __webpack_require__(35);
