@@ -10,7 +10,7 @@
                     @php
                         $link = empty($action['link']) ? 'javascript:;' : $action['link'];
                     @endphp
-                    <a class="btn btn-circle btn-icon-only btn-default" id="{{ $id }}" href="{{ $link }}" {!! $action['attributes'] !!}>
+                    <a class="btn btn-circle btn-icon-only btn-default" id="{{ $id }}" href="{{ $link }}">
                         <i class="{{ $action['icon'] }}"></i>
                     </a>
                 @endforeach
