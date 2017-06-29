@@ -8,7 +8,7 @@
 
     <form @submit.prevent='store({{ $idFK->FK_ProyectoId }})'>
         <div class="col-md-12">
-                <h4 class="text-center">SUBIR DOCUMENTACION {{ $idFK->name}}</h4>
+                <h4 class="text-center">SUBIR DOCUMENTACION</h4>
         </div>
 
 
@@ -33,15 +33,6 @@
             
             <br>
             <br>
-
-            <div v-if="!image">
-    <h2>Select an image</h2>
-    <input type="file" @change="onFileChange">
-  </div>
-  <div v-else>
-    <img :src="image" />
-    <button @click="removeImage">Remove image</button>
-  </div>
                 
 
             
@@ -88,13 +79,13 @@
             
         </thead>
         <tbody>
-            <!--<tr v-for="documento in documentos">
-                <td v-text="documento.nombre"></td>
+            <tr v-for="documento in documentos">
+                <td v-text="documento.url"></td>
                 <td> <button class="editar-documentos btn btn-warning" @click.prevent="openEditModal(documento)">
                     <span class="glyphicon glyphicon-edit"></span>Editar
                     </button>
                 </td>
-            </tr>-->
+            </tr>
         </tbody>
     </table>
     </div>
@@ -147,7 +138,9 @@
 
 @push('functions')
     <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-
+    <script>
+        window.proyectoId = {{ $idFK->FK_ProyectoId}};
+    </script>
     <script src="/js/documentos.js"></script>
 @endpush
 
