@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Documentos;
 
 class StudentController extends Controller
 {
@@ -27,6 +28,11 @@ class StudentController extends Controller
         $idFK= User::Where('PK_id',Auth::id())->first();
       
         return view('student.student-subir-documentacion')->with('idFK',$idFK);
+    }
+
+    public function documentosShow($idProyecto){
+
+        return Documentos::Where('FK_ProyectoId',$idProyecto)->get();
     }
 
     public function mensaje(){

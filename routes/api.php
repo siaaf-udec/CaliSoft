@@ -49,6 +49,10 @@ Route::get('documentos', 'Student\DocumentosController@getTipo')
     ->name('documentos.tipos');
 
 
+Route::get('/Documentacion/{idproyecto}', 'Student\StudentController@documentosShow')
+    ->name('documentacion.show');
+
+
 Route::resource('componentes', 'Admin\ComponenteController', [
     'only' => ['store', 'update', 'destroy','index']
 ]);
