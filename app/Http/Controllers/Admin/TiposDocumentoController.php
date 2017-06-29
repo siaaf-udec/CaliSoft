@@ -27,89 +27,53 @@ class TiposDocumentoController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-
-    public function create()
-    {
-          //return view('material.sections.financiero.contratista.new');
-    }
-
-    /**
      * Store a newly created resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(TiposDocumentoRequest $request)
+    public function store(Request $request)
     {
-      /**Contratista::create([
-        'v_nombre' => $request['v_nombre'],
-        'v_nit' => $request['v_nit'],
-        'v_represen_legal' => $request['v_represen_legal'],
-        'v_direccion' => $request['v_direccion'],
-    ]);
-        return redirect('/contratista')->with('success','Operador Creado Correctamente');*/
-    }
+        $this->validate($request, [
+            'nombre' => 'required|string|unique:TBL_TiposDocumento',
+            'required' => 'required|boolean'
+        ]);
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
+        return TiposDocumento::create([
+            'nombre' => $request->nombre,
+            'required' => $request->required
+        ]);
     }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-     public function edit()
-     {
-       /*
-         $user = Contratista::find($contratista);
-         return view('material.sections.financiero.contratista.edit',[
-           'contratista' => $user
-         ]);
-         */
-     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param  TiposDocumento  $tdocumento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request)
+    public function update(Request $request, TiposDocumento $tdocumento)
     {
-      /*
-        $user = Contratista::find($contratista);
-        $user->fill($request->all());
-        $user->save();
-        return redirect('/contratista')->with('success','Operador Modificado Correctamente');
-        */
+        $this->validate($request, [
+            'nombre' => 'string|unique:TBL_TiposDocumento,nombre,' . $tdocumento->PK_id . ',PK_id',
+            'required' => 'boolean'
+        ]);
+
+        $tdocumento->update([
+            'nombre' => $request->nombre,
+            'required' => $request->required
+        ]);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param  TiposDocumento  $tdocumento
      * @return \Illuminate\Http\Response
      */
-     public function destroy()
+     public function destroy(TiposDocumento $tdocumento)
      {
-       /*
-         Contratista::destroy($contratista);
-         return redirect('/contratista')->with('success','Operador Eliminado Correctamente');
-         */
+        $tdocumento->delete();
      }
 
     /**

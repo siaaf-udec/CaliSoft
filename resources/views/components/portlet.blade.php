@@ -7,7 +7,10 @@
         <div class="actions">
             @if(isset($actions) && !empty($actions))
                 @foreach($actions as $id => $action)
-                    <a class="btn btn-circle btn-icon-only btn-default" id="{{ $id }}" href="@if(empty($action['link'])) {{ 'javascript:;' }} @else {{ $action['link'] }} @endif">
+                    @php
+                        $link = empty($action['link']) ? 'javascript:;' : $action['link'];
+                    @endphp
+                    <a class="btn btn-circle btn-icon-only btn-default" id="{{ $id }}" href="{{ $link }}">
                         <i class="{{ $action['icon'] }}"></i>
                     </a>
                 @endforeach
