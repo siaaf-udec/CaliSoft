@@ -5,7 +5,7 @@
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-cubes', 'title' => 'Componentes'])
             <div id="app">
-               <h2> {{ $documento->nombre }}</h2>
+               <h2> {{ $tdocumento->nombre }}</h2>
 
                 <form @submit.prevent='store()'>
                     <div class="form-group">
@@ -48,7 +48,7 @@
 
                 <div class="panel panel-primary">
                 <div class="panel-heading text-center">
-                    <h4>LISTA DE COMPONENTES CORRESPONDIENTES A <font style="text-transform: uppercase;">{{ $documento->nombre }}</font></h4>
+                    <h4>LISTA DE COMPONENTES CORRESPONDIENTES A <font style="text-transform: uppercase;">{{ $tdocumento->nombre }}</font></h4>
                 </div>
                 <div class="panel-body">
                     <!-- Table de categorias -->
@@ -66,7 +66,7 @@
                                     <td v-text="componentes.nombre"></td>
                                     <td v-text="componentes.required" ></td>
                                     <td v-text="componentes.descripcion" ></td>
-                                    <td> {{ $documento->nombre }} </td>
+                                    <td> {{ $tdocumento->nombre }} </td>
 
                                     <td class="text-center">
                                         <div class="btn-group">
@@ -182,7 +182,7 @@
 @push('functions')
     <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script>
-        window.documentId = {{ $documento->PK_id }};
+        window.documentId = {{ $tdocumento->PK_id }};
     </script>
     <script src="/js/componentes.js"></script>
 @endpush
