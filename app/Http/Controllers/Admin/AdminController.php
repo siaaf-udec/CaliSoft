@@ -33,7 +33,7 @@ class AdminController extends Controller
         return view('admin.tipo-documento');
     }
 
-    public function componentes(TiposDocumento $documento){
+    public function componentes(TiposDocumento $tdocumento){
         return view('admin.componentes', compact('documento'));
     }
 }
