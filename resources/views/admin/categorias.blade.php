@@ -172,13 +172,14 @@
                         </div>
 
                     </div>
-
+                     <div class="modal-footer">
                     <div class="form-group">
                         <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Crear Categoría</button>
-                        <button type="button" class="btn red pull-right" data-dismiss="modal">
+                        <button type="button" class="btn red" data-dismiss="modal">
                             <i class="fa fa-ban"></i>
                             Cancelar
                         </button>
+                    </div>
                     </div>
                 </form>
             </modal>
@@ -272,7 +273,7 @@
                         </div>
 
                     </div>
-
+                    <div class="modal-footer">
                     <div class="form-group">
                         <button type="submit" class="btn blue">
                             <i class="fa fa-edit"></i>Editar Categoría
@@ -280,6 +281,7 @@
                         <button type="button" class="btn red" data-dismiss="modal">
                             <i class="fa fa-ban"></i>Cancelar
                         </button>
+                    </div>
                     </div>
 
                 </form>
