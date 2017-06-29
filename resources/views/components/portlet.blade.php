@@ -5,16 +5,16 @@
             <span class="caption-subject bold uppercase"> {{ $title }} </span>
         </div>
         <div class="actions">
-            @if(isset($actions) && !empty($actions))
-                @foreach($actions as $id => $action)
-                    @php
-                        $link = empty($action['link']) ? 'javascript:;' : $action['link'];
-                    @endphp
-                    <a class="btn btn-circle btn-icon-only btn-default" id="{{ $id }}" href="{{ $link }}">
-                        <i class="{{ $action['icon'] }}"></i>
-                    </a>
-                @endforeach
-            @endif
+            {{ $actions or null }}
+            
+            {{-- Boton de ayuda --}}
+            @component('components.porlet-action', [
+                'icon' => 'fa fa-question',
+                'link' => '#ayuda',
+                'attributes' => "data-toggle='modal'"
+            ])
+            @endcomponent
+
             <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;"></a>
         </div>
     </div>
