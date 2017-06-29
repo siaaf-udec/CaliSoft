@@ -40,7 +40,18 @@ class DocumentosController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $this->validate($request, [
+            'url'=>'required|string',
+            'FK_ProyectoId'=>'required|integer',
+            'FK_TipoDocumentoId'=>'required|integer'
+
+        ]);
+
+        return Documentos::create([
+            'url'=> $request->url,
+            'FK_ProyectoId'=>$request->FK_ProyectoId,
+            'FK_TipoDocumentoId'=>$request->FK_TipoDocumentoId
+            ]);
     }
 
     /**
@@ -92,5 +103,10 @@ class DocumentosController extends Controller
     {
         return $tdocumento = TiposDocumento::all();
     }
+
+    //public function getDocumentos(Proyecto $documento)
+    //{
+      //  return $documento->
+    //}
 
 }

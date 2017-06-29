@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Student;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Auth;
+use App\User;
 
 class StudentController extends Controller
 {
@@ -22,7 +24,9 @@ class StudentController extends Controller
 
     public function subirDocumentacion(){
 
-        return view('student.student-subir-documentacion');
+        $idFK= User::Where('PK_id',Auth::id())->first();
+      
+        return view('student.student-subir-documentacion')->with('idFK',$idFK);
     }
 
     public function mensaje(){

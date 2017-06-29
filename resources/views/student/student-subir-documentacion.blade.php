@@ -4,28 +4,48 @@
     
     <div id="app">
     <div class="form-group row add" >
-    <form @submit.prevent='store()'>
+
+
+    <form @submit.prevent='store({{ $idFK->FK_ProyectoId }})'>
         <div class="col-md-12">
-                <h4 class="text-center">SUBIR DOCUMENTACION</h4>
+                <h4 class="text-center">SUBIR DOCUMENTACION {{ $idFK->name}}</h4>
         </div>
+
+
         <br>
         <br>
         <div class ="text-center">
             <div class="form-group" >
                 <label class="control-label">Tipo de documentos</label>
-                <select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="fillDocumentos.FK_TipoDocumentoId" required>
+                <select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="newDocumentos.FK_TipoDocumentoId" required>
                     <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
                     </option>
                 </select>
-                <!--<span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
+                <span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
                                                     @{{formErrorsUpdate.FK_TipoDocumentoId[0]}}
-                </span>-->
+                </span>
+            
+
+                <input type="text" name="url" v-model="newDocumentos.url" required>
+                <span v-if="formErrorsUpdate['url']" class="error text-danger">
+                                                    @{{formErrorsUpdate.url[0]}}
+                </span>
             
             <br>
             <br>
 
+            <div v-if="!image">
+    <h2>Select an image</h2>
+    <input type="file" @change="onFileChange">
+  </div>
+  <div v-else>
+    <img :src="image" />
+    <button @click="removeImage">Remove image</button>
+  </div>
+                
+
             
-                <label class="control-label col-md-3">Seleccionar documento</label>
+               <!-- <label class="control-label col-md-3">Seleccionar documento</label>
                     <div class="col-md-3">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
                             <div class="input-group input-large">
@@ -41,7 +61,7 @@
                             <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remover </a>
                             </div>
                         </div>
-                    </div>
+                    </div>-->
             </div>
             
 
@@ -134,5 +154,6 @@
 
 
 @push('plugins')
-    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>    
+    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+
 @endpush
