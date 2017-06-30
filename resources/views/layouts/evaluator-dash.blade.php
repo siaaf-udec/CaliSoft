@@ -4,7 +4,7 @@
     @component('components.nav-link', ['icon' => 'fa fa-folder-open', 'link' => '#', 'title' => 'Proyectos'])
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => '#', 'title' => 'Porcentajes'])
+    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => route('evaluator.categorias'), 'title' => 'Categorias'])
     @endcomponent
     
 @endsection
