@@ -36,8 +36,33 @@ new Vue({
         store(idfk){
             this.newDocumentos.FK_ProyectoId = idfk;
             axios.post('../api/documentacion/',this.newDocumentos)
-            .then(res => this.documentos.push(res.data))
-        }
+            .then(res => this.documentos.push(res.data));
+            $("#crear-documentos").modal("hide");;
+            toastr.info('Documento subido correctamente');
+        },
+
+        update() {
+            axios.put('../api/documentacion/' + this.fillDocumentos.PK_id, this.fillDocumentos)
+                .then(response => {
+                    this.documentos = this.documentos.map(value => {
+                        return value.PK_id == this.fillDocumentos.PK_id ? this.fillDocumentos : value;
+                    });
+                    this.fillDocumentos = {};
+                    $("#editar-documentos").modal("hide");
+                    toastr.info('Documento editado correctamente');
+                })
+                .catch(error => this.formErrorsUpdate = error.response.data);
+        },
+
+        destroy(documento) {
+            axios.delete('../api/documentacion/' + documento.PK_id)
+                .then(() => {
+                    this.documentos = this.documentos.filter(value => value != documento);
+
+                    toastr.info('Documento eliminado correctamente');
+                });
+
+        },
 
 
         }

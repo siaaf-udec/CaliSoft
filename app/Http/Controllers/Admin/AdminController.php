@@ -33,7 +33,10 @@ class AdminController extends Controller
         return view('admin.tipo-documento');
     }
 
-    public function componentes(TiposDocumento $tdocumento){
-        return view('admin.componentes', compact('tdocumento'));
+    public function componentes($tdocumento){
+        
+        $tdocumento= TiposDocumento::Where('PK_id',$tdocumento)->first();
+        return view('admin.componentes')->with('tdocumento',$tdocumento);
+        //return view('admin.componentes', compact('tdocumento'));
     }
 }

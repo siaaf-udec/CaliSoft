@@ -50,10 +50,10 @@ class ComponenteController extends Controller
     {
        //Aqui realizo validaciones,
        $this->validate($request, [
-            'nombre'=>'required|string',
+            'nombre'=>'required|string|unique:TBL_ComponentesDocumento',
             'descripcion'=>'required|string',
             'FK_TipoDocumentoId'=>'required|integer',
-            'required'=>'required'
+            'required'=>'integer'
 
         ]);
 
