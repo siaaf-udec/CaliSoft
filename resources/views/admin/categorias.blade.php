@@ -300,8 +300,8 @@
                     <div class="panel panel-default">
                         <div class="panel-heading" style="background-color:#0E3D38;">
                             <h4 class="panel-title" >
-                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2" style="background-color:#FFFFFF;">
-                                    Porcentajes de evaluación</a>
+                                <a data-toggle="collapse" data-parent="#accordion" href="#collapse2">
+                                    <label class="font-white">Porcentajes de evaluación</label></a>
                             </h4>
                         </div>
                         <div id="collapse2" class="panel-collapse collapse">
@@ -316,10 +316,10 @@
                 
                
                     <div class="panel panel-default">
-                        <div class="panel-heading">
+                        <div class="panel-heading" style="background-color:#0E3D38;">
                             <h4 class="panel-title">
                                 <a data-toggle="collapse" data-parent="#accordion" href="#collapse3">
-                                Porcentajes de evaluación del modelado</a>
+                                <label class="font-white">Porcentajes de evaluación del modelado</label></a>
                             </h4>
                         </div>
                         <div id="collapse3" class="panel-collapse collapse">
@@ -328,6 +328,9 @@
                              los porcentajes deben sumarme el 100% y un diagrama no puede ser 
                              menor del 10%.</div>
                         </div>
+                    </div>
+                    <div class="modal-footer" slot="footer">
+                    <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cerrar</button>
                     </div>
                 
         </modal>
