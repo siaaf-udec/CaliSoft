@@ -45,9 +45,6 @@ Route::resource('tdocumentos', 'Admin\TiposDocumentoController', [
 Route::get('tdocumentos/{tdocumento}/componentes', 'Admin\TiposDocumentoController@getComponents')
     ->name('tdocumentos.componentes');
 
-Route::get('documentos', 'Student\DocumentosController@getTipo')
-    ->name('documentos.tipos');
-
 
 Route::get('/Documentacion/{idproyecto}', 'Student\StudentController@documentosShow')
     ->name('documentacion.show');

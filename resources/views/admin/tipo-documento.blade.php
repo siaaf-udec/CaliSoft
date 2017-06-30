@@ -71,7 +71,7 @@
                                     <button class="btn btn-md blue" type="submit">
                                         <span class="fa fa-save"></span> Guardar
                                     </button>
-                                    <button class="btn btn-md default" @click="tdocEdit = {}">
+                                    <button class="btn btn-md default" @click.prevent="tdocEdit = {}">
                                         Cancelar
                                     </button>
                                 </div>
