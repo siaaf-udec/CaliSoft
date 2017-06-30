@@ -83,9 +83,15 @@ class DocumentosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Documentos $documentos)
     {
-        //
+        $this->validate($request,[
+            'url'=>'required|string',
+            'FK_ProyectoId'=>'required|integer',
+            'FK_TipoDocumentoId'=>'required|integer'
+        ]);
+        $documentos->fill($request->all());
+        $documentos->save();
     }
 
     /**
@@ -94,9 +100,9 @@ class DocumentosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(Documentos $documento)
     {
-        //
+        $documento->delete();
     }
 
     public function getTipos()

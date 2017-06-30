@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\TiposDocumento;
 use Illuminate\Http\Request;
+use App\Componente;
 
 
 class TiposDocumentoController extends Controller
@@ -81,9 +82,10 @@ class TiposDocumentoController extends Controller
     * @param TiposDocumento $documento
     * @return \Illuminate\Http\Response  Arreglo con los componentes
     */
-    public function getComponents(TiposDocumento $documento)
+    public function getComponents($documento)
     {
-        return $documento->componentes;
+        return $documento = Componente::Where('FK_TipoDocumentoId',$documento)->get();
+        //return $documento->componentes;
     }
 
 }

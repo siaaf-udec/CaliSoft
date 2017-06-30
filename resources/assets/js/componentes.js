@@ -1,9 +1,11 @@
 import "./bootstrap";
 import Vue from "vue";
+import BsSwitch from "../components/bs-switch";
 
 
 new Vue({
     el: "#app",
+    components: { BsSwitch},
     data: { 
 
             componentes: [],
@@ -35,7 +37,9 @@ new Vue({
         store(){
             this.newComponente.FK_TipoDocumentoId = this.documentoId;
             axios.post('/api/componentes/',this.newComponente)
-            .then(res => this.componentes.push(res.data))
+            .then(res => this.componentes.push(res.data));
+            $("#crear-componente").modal("hide");;
+            toastr.info('Componente subido correctamente');
         },
 
         update() {
@@ -59,7 +63,11 @@ new Vue({
                     toastr.info('Componente eliminado correctamente');
                 });
 
-        }
+        },
+
+        getSchema(){
+            return { nombre: "",required: false, descripcion:"", FK_TipoDocumentoId: "" }
+        },
 
 
 

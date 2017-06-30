@@ -6,46 +6,7 @@
         @component('components.portlet', ['icon' => 'fa fa-cubes', 'title' => 'Componentes'])
             <div id="app">
                <h2> {{ $tdocumento->nombre }}</h2>
-
-                <form @submit.prevent='store()'>
-                    <div class="form-group">
-                        <label for="title">Nombre del Componente</label>
-                        <input type="text" name="nombre" class="form-control" v-model="newComponente.nombre" required="" />
-                    </div>
-
-
-                    <div class="form-group form-md-radios">
-                        <label>OBLIGATORIO</label>
-                        <div class="md-radio-list">
-                            <div class="md-radio">
-                                <input type="radio" value="1" id="radio1" name="required" class="md-radiobtn" v-model="newComponente.required" checked>
-                                    <label for="radio1">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span> SÍ
-                                    </label>
-                            </div>
-                            <div class="md-radio">
-                                <input type="radio" value="0" id="radio2" name="required" v-model="newComponente.required" class="md-radiobtn">
-                                    <label for="radio2">
-                                        <span></span>
-                                        <span class="check"></span>
-                                        <span class="box"></span> NO
-                                    </label>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="title">Descripción</label>
-                        <input type="text" name="descripcion" class="form-control" v-model="newComponente.descripcion" required="" />
-
-                    </div>
-
-                     <button type="submit" class="btn btn-success">Crear</button>
-
-                </form>
-
+                <br>
                 <div class="panel panel-primary">
                 <div class="panel-heading text-center">
                     <h4>LISTA DE COMPONENTES CORRESPONDIENTES A <font style="text-transform: uppercase;">{{ $tdocumento->nombre }}</font></h4>
@@ -83,6 +44,64 @@
                         </table>
                 </div>
             </div>
+
+            <button type="button" data-toggle="modal" data-target="#crear-componente" class="btn blue center-block">
+                    <i class="fa fa-plus"></i>
+                    Crear Nuevo Componente
+                </button>
+
+
+            <!--Comienzo Modal de creación -->
+            <div class="modal fade " id="crear-componente" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true"></span>
+                        </button>
+                            <h4 class="modal-title" id="myModalLabel">Crear Componente </h4>
+                        </div>
+                        <div class="modal-body">
+                            <div class="form-group form-group-sm">
+                                <form @submit.prevent='store()'>
+                    <div class="form-group">
+                        <label for="title">Nombre del Componente</label>
+                        <input type="text" name="nombre" class="form-control" v-model="newComponente.nombre" required="" />
+                        <span v-if="formErrorsUpdate['nombre']" class="error text-danger">
+                                        @{{formErrorsUpdate.nombre[0]}}
+                        </span>
+                    </div>
+
+
+                    <div class="form-group form-md-radios">
+                        <label>OBLIGATORIO</label>
+                        <div class="form-group">
+                            <bs-switch id="required" label="requerido" v-model="newComponente.required">
+                            </bs-switch>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="title">Descripción</label>
+                        <input type="text" name="descripcion" class="form-control" v-model="newComponente.descripcion" required="" />
+                        <span v-if="formErrorsUpdate['descripcion']" class="error text-danger">
+                                        @{{formErrorsUpdate.nombre[0]}}
+                        </span>
+                    </div>
+
+                     <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Crear Componente</button>
+                     <button type="button" class="btn red" data-dismiss="modal">
+                            <i class="fa fa-ban"></i>
+                            Cancelar
+                        </button>
+
+                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- Fin de Modal de creación -->
 
             <!--Comienzo Modal de edicion -->
             <div class="modal fade " id="editar-componentes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
@@ -170,6 +189,8 @@
             <!-- Fin de Modal de edicion -->
 
         @endcomponent
+    </div>
+    </div>
     </div>
 
 

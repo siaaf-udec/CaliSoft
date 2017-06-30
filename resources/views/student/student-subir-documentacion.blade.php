@@ -2,21 +2,69 @@
 
 @section('content')
     
-    <div id="app">
-    <div class="form-group row add" >
+    <div class="col-md-12">
+        @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
+            <div id="app">
+               <h2> DOCUMENTACIÓN</h2>
+                <br>
+                <div class="panel panel-primary">
+                <div class="panel-heading text-center">
+                    <h4>LISTADO DE DOCUMENTOS ANEXADOS</h4>
+                </div>
+                <div class="panel-body">
+                    <!-- Table de categorias -->
+                    <div class="table-responsive">
+                        <table class="table table-striped table-hover table-bordered table-condensed">
+        <thead>
+            <th>Documento</th>
+            <th>Tipo</th>
+            <th>Operación</th>
+            
+        </thead>
+        <tbody>
+            <tr v-for="documento in documentos" class="text-center">
+                <td v-text="documento.url"></td>
+                <td v-text="documento.FK_TipoDocumentoId"></td>
+                <td class="text-center"> 
+                     <div class="btn-group">
+                    <button class="editar-categoria btn btn-warning btn-xs" @click.prevent="openEditModal(documento)">
+                    <span class="glyphicon glyphicon-edit"></span>
+                    </button>
+                    <button class="editar-modal btn btn-danger btn-xs" @click.prevent="destroy(documento)">
+                                                <span class="glyphicon glyphicon-trash"></span>
+                                            </button>
+                                            </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+                </div>
+            </div>
 
+    
+    <button type="button" data-toggle="modal" data-target="#crear-documentos" class="btn blue center-block">
+                    <i class="fa fa-plus"></i>
+                    Subir Documento
+                </button>
 
-    <form @submit.prevent='store({{ $idFK->FK_ProyectoId }})'>
-        <div class="col-md-12">
-                <h4 class="text-center">SUBIR DOCUMENTACION</h4>
-        </div>
-
+<!--Creación modal Documentación -->
+<div class="modal fade " id="crear-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true"></span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Subir Documento</h4>
+            </div>
+            <div class="modal-body">
+                <form @submit.prevent='store({{ $idFK->FK_ProyectoId }})'>
 
         <br>
         <br>
         <div class ="text-center">
             <div class="form-group" >
-                <label class="control-label">Tipo de documentos</label>
+                <label class="control-label">Tipo de documento</label>
                 <select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="newDocumentos.FK_TipoDocumentoId" required>
                     <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
                     </option>
@@ -56,42 +104,20 @@
             </div>
             
 
+                <br>
+                <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Subir Documento</button>
+                     <button type="button" class="btn red" data-dismiss="modal">
+                            <i class="fa fa-ban"></i>
+                            Cancelar
+                        </button>
 
-        <div class="col-md-12">
-            <div class="form-group">
-                <br>
-                <br>
-                <br>
-                <button type="submit" class="btn btn-success">Agregar documento</button>
+        </div>
+    </form>  
             </div>
         </div>
-
-        </div>
-    </form>
     </div>
-
-    
-    <div class="table-responsive">
-    <table class="table table-striped table-hover table-bordered table-condensed">
-        <thead>
-            <th>Documento</th>
-            <th>Operación</th>
-            
-        </thead>
-        <tbody>
-            <tr v-for="documento in documentos">
-                <td v-text="documento.url"></td>
-                <td> <button class="editar-documentos btn btn-warning" @click.prevent="openEditModal(documento)">
-                    <span class="glyphicon glyphicon-edit"></span>Editar
-                    </button>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    </div>
-    
-
-
+</div>
+</div>
 <!--edicion modal -->
 <div class="modal fade " id="editar-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
     <div class="modal-dialog" role="document">
@@ -103,29 +129,66 @@
                 <h4 class="modal-title" id="myModalLabel">Editar Documento</h4>
             </div>
             <div class="modal-body">
-                <form method="post" enctype="multipart/form-data" v-on:submit.prevent="update(fillDocumentos.PK_id)">
-                    <div class="form-group">
-                        <label for="title">Nombre Documento</label>
-                        <input type="text" name="nombre" class="form-control" v-model="fillDocumentos.nombre"/>
-                        <span v-if="formErrorsUpdate['nombre']" class="error text-danger">
-                            @{{formErrorsUpdate.nombre[0]}}
-                        </span>
-                    </div>
-                    <div class="form-group">
-                        <label for="title">Seleccionar archivo</label>
-                        <input type="text" name="plataforma" class="form-control" v-model="fillDocumentos.plataforma"/>
-                        <span v-if="formErrorsUpdate['plataforma']" class="error text-danger">
-                            @{{formErrorsUpdate.plataforma[0]}}
-                        </span>
-                    </div>
-                    <div class="form-group">
-                        <button type="submit" class="btn btn-success">Editar Documento</button>
-                    </div>
-                </form>  
+                <form @submit.prevent="update(fillDocumentos.PK_id)">
+        <br>
+        <br>
+        <div class ="text-center">
+            <div class="form-group" >
+                <label class="control-label">Tipo de documento</label>
+                <select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="fillDocumentos.FK_TipoDocumentoId" required>
+                    <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
+                    </option>
+                </select>
+                <span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
+                                                    @{{formErrorsUpdate.FK_TipoDocumentoId[0]}}
+                </span>
+            
+
+                <input type="text" name="url" v-model="fillDocumentos.url" required>
+                <span v-if="formErrorsUpdate['url']" class="error text-danger">
+                                                    @{{formErrorsUpdate.url[0]}}
+                </span>
+            
+            <br>
+            <br>
+                
+
+            
+               <!-- <label class="control-label col-md-3">Seleccionar documento</label>
+                    <div class="col-md-3">
+                        <div class="fileinput fileinput-new" data-provides="fileinput">
+                            <div class="input-group input-large">
+                                <div class="form-control uneditable-input input-fixed input-medium" data-trigger="fileinput">
+                                    <i class="fa fa-file fileinput-exists"></i>&nbsp;
+                                    <span class="fileinput-filename"> </span>
+                                </div>
+                            <span class="input-group-addon btn default btn-file">
+                                <span class="fileinput-new"> Seleccionar </span>
+                                <span class="fileinput-exists"> Cambiar </span>
+                                <input type="number" name="url" v-model="newDocumentos.FK_TipoDocumentoId" required > 
+                            </span>
+                            <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remover </a>
+                            </div>
+                        </div>
+                    </div>-->
+            </div>
+            
+
+                <br>
+                <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Modificar Documento</button>
+                     <button type="button" class="btn red" data-dismiss="modal">
+                            <i class="fa fa-ban"></i>
+                            Cancelar
+                        </button>
+
+        </div>
+    </form>    
             </div>
         </div>
     </div>
 </div>
+</div>
+@endcomponent
 </div>
 
 
