@@ -284,12 +284,12 @@
             ¿Desea eliminar la categoría @{{elimiCategoria.nombre}}?
 
             <div class="modal-footer" slot="footer">
-                <button type="submit" class="btn blue">
-                            <i class="fa fa-edit"></i>Eliminar Categoria
-                        </button>
+                <button class="btn blue" @click="destroy(elimiCategoria)">
+                    <i class="fa fa-edit"></i>Eliminar Categoria
+                </button>
                 <button type="button" class="btn red" data-dismiss="modal">
-                            <i class="fa fa-ban"></i>Cancelar
-                        </button>
+                    <i class="fa fa-ban"></i>Cancelar
+                </button>
             </div>
         </modal>
         <!-- Fin Modal Eliminar -->

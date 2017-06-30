@@ -14,16 +14,15 @@ new Vue({
         errors: {}
     },
     created() {
-        axios.all([
-                axios.get('/api/proyectos/categorias'),
-                axios.get('/api/proyectos/semilleros'),
-                axios.get('/api/proyectos/grupos')
-            ])
-            .then(axios.spread((cat, sem, gru) => {
-                this.categorias = cat.data;
-                this.semilleros = sem.data;
-                this.grupos = gru.data;
-            }));
+        Promise.all([
+            axios.get('/api/proyectos/categorias'),
+            axios.get('/api/proyectos/semilleros'),
+            axios.get('/api/proyectos/grupos')
+        ]).then(results => {
+            this.categorias = results[0].data;
+            this.semilleros = results[1].data;
+            this.grupos = results[2].data;
+        });
     },
     methods: {
         store() {

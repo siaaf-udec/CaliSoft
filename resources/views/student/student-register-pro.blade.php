@@ -17,7 +17,7 @@
                     <div class="row">
                         <div class="form-group form-md-line-input col-sm-4 col-xs-12">
                             <bs-select id="categoria" v-model="proyecto.FK_categoria" title="Categoria" required>
-                                <option v-for="categoria in categorias" :value="categoria.PK_id">
+                                <option v-for="categoria in categorias" :value="categoria.PK_id" :key="categoria.PK_id">
                                     @{{ categoria.nombre }}
                                 </option>
                             </bs-select>
@@ -31,7 +31,6 @@
                         </div>
                         <div class="form-group form-md-line-input col-sm-4 col-xs-12">
                             <bs-select id="grupos" v-model="proyecto.FK_grupo" title="Grupo de investigacion" required>
-                                <option>Selecione el Grupo de investigacion</option>
                                 <option v-for=" grupo in grupos" :value="grupo.PK_id">@{{ grupo.nombre }}</option>
                             </bs-select>
                         </div>
