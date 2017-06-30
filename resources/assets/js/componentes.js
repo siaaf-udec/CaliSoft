@@ -1,47 +1,50 @@
 import "./bootstrap";
 import Vue from "vue";
 import BsSwitch from "../components/bs-switch";
-
+import Modal from "../components/Modal";
 
 new Vue({
     el: "#app",
-    components: { BsSwitch},
-    data: { 
-
+    components: { BsSwitch, Modal },
+    data() { 
+        return {
             componentes: [],
+            newComponente: this.getSchema(),
             documentoId: window.documentId,
-            newComponente: {},
             fillComponente: {},
             formErrors: {},
             formErrorsUpdate: {},
             tiposDocumentos: []
-            },
-
-    created(){
-        
-        axios.get(`/api/tdocumentos/${this.documentoId}/componentes`)
-            .then(res => this.componentes = res.data);
-
-        axios.get(`/api/tdocumentos`)
-            .then(res => this.tiposDocumentos = res.data);
+        }
     },
 
-    
+    created(){
+        axios.get(`/api/tdocumentos/${this.documentoId}/componentes`)
+            .then(res => this.componentes = res.data);
+    },
 
     methods:{
+
+        //abre el modal de edicion
         openEditModal(componentes) {
             this.fillComponente = Object.assign({}, componentes);
             $('#editar-componentes').modal("show");
         },
 
+        //crea el componente del documento
         store(){
             this.newComponente.FK_TipoDocumentoId = this.documentoId;
-            axios.post('/api/componentes/',this.newComponente)
-            .then(res => this.componentes.push(res.data));
-            $("#crear-componente").modal("hide");;
-            toastr.info('Componente subido correctamente');
+            axios.post('/api/componentes/', this.newComponente)
+                .then(res => { 
+                    this.componentes.push(res.data);
+                    this.newComponente = this.getSchema();
+                    $("#crear-componente").modal("hide");
+                    toastr.info('Componente subido correctamente');
+                })
+                .catch(err => this.formErrors = err.response.data)
         },
 
+        //actualiza el componente 
         update() {
             axios.put('/api/componentes/' + this.fillComponente.PK_id, this.fillComponente)
                 .then(response => {
@@ -55,21 +58,25 @@ new Vue({
                 .catch(error => this.formErrorsUpdate = error.response.data);
         },
 
+        //elimina el componente
         destroy(componentes) {
             axios.delete('/api/componentes/' + componentes.PK_id)
                 .then(() => {
                     this.componentes = this.componentes.filter(value => value != componentes);
-
                     toastr.info('Componente eliminado correctamente');
                 });
-
         },
 
+        //esquema de un componente de documento
         getSchema(){
-            return { nombre: "",required: false, descripcion:"", FK_TipoDocumentoId: "" }
+            return { 
+                nombre: "", 
+                required: false, 
+                descripcion:"",
+            }
         },
 
 
 
-        }
+    }
 });

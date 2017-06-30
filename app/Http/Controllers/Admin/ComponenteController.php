@@ -17,28 +17,7 @@ class ComponenteController extends Controller
         $this->middleware('role:admin', [
             'except' => ['index']
         ]);
-    }
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(TiposDocumento $tipoDocumento)
-    {
-
-        return $tipoDocumento->vistaTiposDocumentos();
-
-    }   
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+    }  
 
     /**
      * Store a newly created resource in storage.
@@ -50,62 +29,32 @@ class ComponenteController extends Controller
     {
        //Aqui realizo validaciones,
        $this->validate($request, [
-            'nombre'=>'required|string|unique:TBL_ComponentesDocumento',
-            'descripcion'=>'required|string',
-            'FK_TipoDocumentoId'=>'required|integer',
-            'required'=>'integer'
-
+            'nombre' => 'required|string|unique:TBL_ComponentesDocumento',
+            'descripcion' => 'required|string',
+            'FK_TipoDocumentoId' => 'required|integer',
+            'required' => 'required|boolean'
         ]);
 
         return Componente::create([
-            'nombre'=>$request->nombre,
-            'descripcion'=>$request->descripcion,
-            'FK_TipoDocumentoId'=>$request->FK_TipoDocumentoId,
+            'nombre' => $request->nombre,
+            'descripcion'=> $request->descripcion,
+            'FK_TipoDocumentoId'=> $request->FK_TipoDocumentoId,
             'required'=> $request->required
-            ]);
+        ]);
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
 
     
     public function update(Request $request, Componente $componente)
     {
        $this->validate($request,[
-            'nombre'=>'required|max:255|string',
-            'required'=>'required|max:1|integer',
-            'descripcion'=>'required|string',
-            'FK_TipoDocumentoId'=>'required|integer',
+            'nombre' => 'string',
+            'required' => 'boolean',
+            'descripcion' => 'string'
         ]);
-        $componente->fill($request->all());
-        $componente->save();
+        
+        $componente->update(
+            $request->only('nombre', 'required', 'descripcion')
+        );
     }
 
     /**

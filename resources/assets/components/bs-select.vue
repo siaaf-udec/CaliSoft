@@ -1,5 +1,5 @@
 <template>
-    <select :id="id" class="form-control selectpicker" :title="title" @change="change" :required="required">
+    <select :id="id" class="form-control selectpicker" :value="value" :title="title" @change="change" :required="required">
         <slot></slot>
     </select>
 </template>

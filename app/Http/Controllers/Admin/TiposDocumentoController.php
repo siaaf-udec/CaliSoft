@@ -82,10 +82,9 @@ class TiposDocumentoController extends Controller
     * @param TiposDocumento $documento
     * @return \Illuminate\Http\Response  Arreglo con los componentes
     */
-    public function getComponents($documento)
+    public function getComponents(TiposDocumento $tdocumento)
     {
-        return $documento = Componente::Where('FK_TipoDocumentoId',$documento)->get();
-        //return $documento->componentes;
+        return $tdocumento->componentes;
     }
 
 }
