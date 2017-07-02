@@ -8,19 +8,14 @@
         <div class="row">
             <div class="col-xs-6">
                 <!-- Email Form Group -->
-                <div class="form-group form-md-line-input {{$errors->has('email') ? 'has-error' : ''}}">
-                    <div class="input-icon">
-                        <input class="form-control" id="email" name="email" 
-                            type="email" value="{{ old('email') }}" required>
-                        <label for="email" class="control-label">Correo:</label>
-                        @if ($errors->has('email'))
-                            <span class="help-block">
-                                <strong>{{ $errors->first('email') }}</strong>
-                            </span>
-                        @endif
-                        <i class="fa fa-user"></i>
-                    </div>
-                </div>
+                @component('components.email', [
+                    'name' => 'email',
+                    'attributes' => "required",
+                    'label' => 'Email',
+                    'help' => 'Digita el correo',
+                ])
+                    
+                @endcomponent
                 <!-- End Email Form -->
             </div>
             <div class="col-xs-6">
@@ -28,7 +23,8 @@
                     'name' => 'name',
                     'attributes' => "required",
                     'label' => 'Nombre',
-                    'help' => 'Digita el nombre'
+                    'help' => 'Digita el nombre',
+                    'icon' => 'fa fa-user'
                 ])
                 @endcomponent
             </div>

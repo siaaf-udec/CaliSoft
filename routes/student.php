@@ -1,9 +1,19 @@
 <?php
 
-Route::get('/', 'StudentController@index')->name('student');
-Route::get('/Proyectos', 'StudentController@proyectos')->name('proyectos')->middleware('project');
-Route::get('/Porcentajes', 'StudentController@verPorcentajes')->name('porcentajes');
-Route::get('/Documentacion', 'StudentController@subirDocumentacion')->name('documentacion');
-Route::get('/Mensaje','StudentController@mensaje')->name('mensaje');
+Route::get('/', 'StudentController@index')
+    ->name('student');
+
+Route::get('/proyectos', 'StudentController@proyectos')
+    ->name('proyectos')
+    ->middleware('create-project');
+
+Route::post('/proyectos', 'ProyectosController@store')
+    ->name('proyectos.store');
+
+Route::get('/porcentajes', 'StudentController@verPorcentajes')
+    ->name('porcentajes');
+
+Route::get('/documentacion', 'StudentController@subirDocumentacion')
+    ->name('documentacion');
 
 //Route::get('/updocumentos/{documento}/documentos', 'StudentController@documentos')->name('documentos');

@@ -3,44 +3,53 @@
 @section('content')
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-pencil-square', 'title' => 'Registro Proyecto'])
-            <div id="app">
-              <form v-on:submit.prevent="store()">
-                    <div class="row">
-                        <div class="form-group form-md-line-input col-md-6" :class="{'has-error': errors.nombre }">
-                            <div class="input-icon">
-                                <i class="fa fa-cubes"></i>
-                                <input class="form-control" id="nomProyecto" placeholder="Nombre del proyecto" v-model="proyecto.nombre" required=""></input>
-                            </div>
-                        </div>
-                    </div>
+            <div class="row">
+                <form action="{{ route('proyectos.store') }}" method="POST" class="col-md-8 col-md-offset-2" >
+                    
+                    {{ csrf_field() }}
 
-                    <div class="row">
-                        <div class="form-group form-md-line-input col-sm-4 col-xs-12">
-                            <bs-select id="categoria" v-model="proyecto.FK_categoria" title="Categoria" required>
-                                <option v-for="categoria in categorias" :value="categoria.PK_id" :key="categoria.PK_id">
-                                    @{{ categoria.nombre }}
-                                </option>
-                            </bs-select>
-                        </div>
-                        <div class="form-group form-md-line-input col-sm-4 col-xs-12" >
-                            <bs-select id="semilleros" v-model="proyecto.FK_semillero" title="Semilleros" required>
-                                 <option v-for="semillero in semilleros" :value="semillero.PK_id">
-                                     @{{ semillero.nombre }}
-                                 </option>
-                            </bs-select>
-                        </div>
-                        <div class="form-group form-md-line-input col-sm-4 col-xs-12">
-                            <bs-select id="grupos" v-model="proyecto.FK_grupo" title="Grupo de investigacion" required>
-                                <option v-for=" grupo in grupos" :value="grupo.PK_id">@{{ grupo.nombre }}</option>
-                            </bs-select>
-                        </div>
-                    </div>
+                    @component('components.text', [
+                        'name' => 'nombre',
+                        'attributes' => "required",
+                        'label' => 'Nombre del proyecto',
+                        'help' => 'Digita el nombre',
+                        'icon' => 'fa fa-cubes'
+                    ])
+                    @endcomponent
+                   
+                    @component('components.select', [
+                        'name' => 'categoria',
+                        'title' => 'Categoria',
+                        'items' => $categorias,
+                        'value' => 'PK_id',
+                        'label' => 'nombre'
+                    ])
+                    @endcomponent
+
+                    @component('components.select', [
+                        'name' => 'semillero',
+                        'title' => 'Semillero',
+                        'items' => $semilleros,
+                        'value' => 'PK_id',
+                        'label' => 'nombre'
+                    ])
+                    @endcomponent
+
+                    @component('components.select', [
+                        'name' => 'grupo',
+                        'title' => 'Grupo de investigacion',
+                        'items' => $gruposDeInvestigacion,
+                        'value' => 'PK_id',
+                        'label' => 'nombre'
+                    ])
+                    @endcomponent
+                 
 
                     <div class="form-group">
                         <button type="submit" class="btn blue center-block">Enviar</button>
                     </div>
 
-              </form>
+                </form>
             </div>
         @endcomponent
     </div>
@@ -53,5 +62,4 @@
 
 @push('functions')
     <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <script src="/js/proyectos.js"></script>
 @endpush

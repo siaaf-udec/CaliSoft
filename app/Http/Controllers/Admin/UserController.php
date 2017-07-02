@@ -14,7 +14,9 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin');
+        $this->middleware('role:admin', [
+            'only' => ['index', 'store', 'destroy']
+        ]);
     }
     /**
      * Display a listing of the resource.
@@ -66,5 +68,11 @@ class UserController extends Controller
     public function destroy(User $usuario)
     {
         $usuario->delete();
+    }
+
+    public function getProject(){
+        return request()->user()->proyecto->load(
+            'semillero', 'categoria', 'grupoDeInvestigacion', 'integrantes', 'evaluadores'
+        );
     }
 }

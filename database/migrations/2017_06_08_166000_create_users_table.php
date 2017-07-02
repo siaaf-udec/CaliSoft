@@ -19,8 +19,14 @@ class CreateUsersTable extends Migration
             $table->string('email')->unique();
             $table->string('password');
             $table->enum('role', ['admin', 'student', 'evaluator']);
+            $table->integer('FK_ProyectoId')->unsigned()->nullable();
             $table->rememberToken();
             $table->timestamps();
+
+
+            $table->foreign('FK_ProyectoId')->references('PK_id')
+                ->on('TBL_Proyectos')->onUpdate('cascade');
+
         });
     }
 

@@ -16,11 +16,6 @@ class CheckProject
     public function handle($request, Closure $next)
     {
           $user = $request->user();
-           
-          if( count($user->projects()->get()) > 0 ){
-              return redirect()->route('mensaje'); 
-          } else{
-              return $next($request);
-          }
+          return $user->FK_ProyectoId ? $user->goHome() : $next($request);
     }
 }

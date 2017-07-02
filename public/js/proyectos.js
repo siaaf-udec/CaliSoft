@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 55);
+/******/ 	return __webpack_require__(__webpack_require__.s = 63);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -1807,6 +1807,63 @@ process.umask = function() { return 0; };
 
 /***/ }),
 /* 27 */
+/***/ (function(module, exports) {
+
+// this module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  scopeId,
+  cssModules
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  // inject cssModules
+  if (cssModules) {
+    var computed = Object.create(options.computed || null)
+    Object.keys(cssModules).forEach(function (key) {
+      var module = cssModules[key]
+      computed[key] = function () { return module }
+    })
+    options.computed = computed
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
+/* 28 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -11505,63 +11562,6 @@ module.exports = Vue$3;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(29)))
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports) {
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  scopeId,
-  cssModules
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  // inject cssModules
-  if (cssModules) {
-    var computed = Object.create(options.computed || null)
-    Object.keys(cssModules).forEach(function (key) {
-      var module = cssModules[key]
-      computed[key] = function () { return module }
-    })
-    options.computed = computed
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
 /* 29 */
 /***/ (function(module, exports) {
 
@@ -11592,159 +11592,36 @@ module.exports = g;
 /* 30 */,
 /* 31 */,
 /* 32 */,
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['id', 'value', 'title', 'required'],
-    data: function data() {
-        return { initialized: false };
-    },
-
-
-    // Asigna el valor del v-model
-    updated: function updated() {
-        if (!this.initialized) {
-            $("#" + this.id).val(this.value);
-            this.initialized = true;
-        }
-    },
-
-
-    methods: {
-        change: function change(e) {
-            this.$emit('input', e.target.value);
-        }
-    }
-});
-
-/***/ }),
+/* 33 */,
 /* 34 */,
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(28)(
-  /* script */
-  __webpack_require__(33),
-  /* template */
-  __webpack_require__(38),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/components/bs-select.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] bs-select.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-59bd9e84", Component.options)
-  } else {
-    hotAPI.reload("data-v-59bd9e84", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
+/* 35 */,
 /* 36 */,
 /* 37 */,
-/* 38 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('select', {
-    staticClass: "form-control selectpicker",
-    attrs: {
-      "id": _vm.id,
-      "title": _vm.title,
-      "required": _vm.required
-    },
-    domProps: {
-      "value": _vm.value
-    },
-    on: {
-      "change": _vm.change
-    }
-  }, [_vm._t("default")], 2)
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-59bd9e84", module.exports)
-  }
-}
-
-/***/ }),
+/* 38 */,
 /* 39 */,
-/* 40 */,
-/* 41 */,
-/* 42 */
+/* 40 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_bs_select__ = __webpack_require__(35);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_bs_select___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_bs_select__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_proyecto_vista__ = __webpack_require__(87);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_proyecto_vista___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_proyecto_vista__);
 
 
 
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: '#app',
-    components: { BsSelect: __WEBPACK_IMPORTED_MODULE_2__components_bs_select___default.a },
-    data: {
-        categorias: [],
-        semilleros: [],
-        grupos: [],
-        proyecto: {},
-        errors: {}
-    },
-    created: function created() {
-        var _this = this;
-
-        Promise.all([axios.get('/api/proyectos/categorias'), axios.get('/api/proyectos/semilleros'), axios.get('/api/proyectos/grupos')]).then(function (results) {
-            _this.categorias = results[0].data;
-            _this.semilleros = results[1].data;
-            _this.grupos = results[2].data;
-        });
-    },
-
-    methods: {
-        store: function store() {
-            var _this2 = this;
-
-            axios.post('/api/proyectos/', this.proyecto).then(function (res) {
-                return location.href = '/student/Proyectos';
-            }).catch(function (e) {
-                return _this2.errors = e.response.data;
-            });
-        }
-    }
+    components: { ProyectoVista: __WEBPACK_IMPORTED_MODULE_2__components_proyecto_vista___default.a }
 });
 
 /***/ }),
+/* 41 */,
+/* 42 */,
 /* 43 */,
 /* 44 */,
 /* 45 */,
@@ -11757,11 +11634,402 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 52 */,
 /* 53 */,
 /* 54 */,
-/* 55 */
+/* 55 */,
+/* 56 */,
+/* 57 */,
+/* 58 */,
+/* 59 */,
+/* 60 */,
+/* 61 */,
+/* 62 */,
+/* 63 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(42);
+module.exports = __webpack_require__(40);
 
+
+/***/ }),
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */,
+/* 70 */,
+/* 71 */,
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */,
+/* 83 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['integrantes']
+});
+
+/***/ }),
+/* 84 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(27)(
+  /* script */
+  __webpack_require__(83),
+  /* template */
+  __webpack_require__(85),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/components/proyecto-integrantes.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] proyecto-integrantes.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-fc84a2d4", Component.options)
+  } else {
+    hotAPI.reload("data-v-fc84a2d4", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 85 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-success"
+  }, [_c('div', {
+    staticClass: "panel-heading text-center"
+  }, [_vm._v("INTEGRANTES")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body bg-success"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, [_vm._l((_vm.integrantes), function(usuario) {
+    return _c('li', {
+      key: usuario.PK_id,
+      staticClass: "list-group-item text-center"
+    }, [_vm._v("\n                " + _vm._s(usuario.name) + " - " + _vm._s(usuario.email) + "\n            ")])
+  }), _vm._v(" "), _vm._m(0)], 2)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('button', {
+    staticClass: "list-group-item list-group-item-info text-center"
+  }, [_c('div', {
+    staticClass: "text-center"
+  }, [_c('span', {
+    staticClass: "fa fa-plus"
+  }), _vm._v(" Agregar Integrante\n                ")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-fc84a2d4", module.exports)
+  }
+}
+
+/***/ }),
+/* 86 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__proyecto_integrantes__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__proyecto_integrantes___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__proyecto_integrantes__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__proyecto_evaluadores__ = __webpack_require__(90);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__proyecto_evaluadores___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__proyecto_evaluadores__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    components: {
+        ProyectoIntegrantes: __WEBPACK_IMPORTED_MODULE_0__proyecto_integrantes___default.a,
+        ProyectoEvaluadores: __WEBPACK_IMPORTED_MODULE_1__proyecto_evaluadores___default.a
+    },
+    data: function data() {
+        return { proyecto: {} };
+    },
+    created: function created() {
+        var _this = this;
+
+        axios.get('/api/user/project').then(function (res) {
+            return _this.proyecto = res.data;
+        });
+    }
+});
+
+/***/ }),
+/* 87 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(27)(
+  /* script */
+  __webpack_require__(86),
+  /* template */
+  __webpack_require__(88),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/components/proyecto-vista.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] proyecto-vista.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4597046f", Component.options)
+  } else {
+    hotAPI.reload("data-v-4597046f", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 88 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "row"
+  }, [_c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "panel panel-info"
+  }, [_c('div', {
+    staticClass: "panel-heading text-center text-uppercase"
+  }, [_vm._v("PROYECTO")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body bg-info"
+  }, [(_vm.proyecto.nombre) ? _c('table', {
+    staticClass: "table"
+  }, [_c('tbody', [_c('tr', [_c('th', [_vm._v("Nombre:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyecto.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Estado:")]), _vm._v(" "), _c('td', {
+    staticClass: "text-uppercase"
+  }, [_vm._v(_vm._s(_vm.proyecto.state))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Categoria:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyecto.categoria.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semillero")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyecto.semillero.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Grupo de investigacion:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyecto.grupo_de_investigacion.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Creado el:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(new Date(_vm.proyecto.created_at).toLocaleDateString()))])])])]) : _vm._e(), _vm._v(" "), _vm._m(0)])])]), _vm._v(" "), _c('div', {
+    staticClass: "col-sm-6"
+  }, [_c('div', {
+    staticClass: "row"
+  }, [_c('proyecto-integrantes', {
+    attrs: {
+      "integrantes": _vm.proyecto.integrantes
+    }
+  })], 1), _vm._v(" "), _c('div', {
+    staticClass: "row"
+  }, [_c('proyecto-evaluadores', {
+    attrs: {
+      "evaluadores": _vm.proyecto.evaluadores
+    }
+  })], 1)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "btn-group btn-group-vertical center-block"
+  }, [_c('button', {
+    staticClass: "btn blue"
+  }, [_vm._v("Enviar Propuesta")]), _vm._v(" "), _c('button', {
+    staticClass: "btn yellow-gold"
+  }, [_vm._v("Editar Datos")]), _vm._v(" "), _c('button', {
+    staticClass: "btn red"
+  }, [_vm._v("Eliminar")])])
+}]}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-4597046f", module.exports)
+  }
+}
+
+/***/ }),
+/* 89 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['evaluadores']
+});
+
+/***/ }),
+/* 90 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var Component = __webpack_require__(27)(
+  /* script */
+  __webpack_require__(89),
+  /* template */
+  __webpack_require__(91),
+  /* scopeId */
+  null,
+  /* cssModules */
+  null
+)
+Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/components/proyecto-evaluadores.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] proyecto-evaluadores.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-51e3a36f", Component.options)
+  } else {
+    hotAPI.reload("data-v-51e3a36f", Component.options)
+  }
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 91 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "panel panel-warning"
+  }, [_c('div', {
+    staticClass: "panel-heading text-center"
+  }, [_vm._v("EVALUADORES")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body bg-warning"
+  }, [_c('ul', {
+    staticClass: "list-group"
+  }, _vm._l((_vm.evaluadores), function(usuario) {
+    return _c('li', {
+      key: usuario.PK_id,
+      staticClass: "list-group-item text-center"
+    }, [_vm._v("\n                " + _vm._s(usuario.name) + " - " + _vm._s(usuario.email) + "\n            ")])
+  }))])])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-51e3a36f", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

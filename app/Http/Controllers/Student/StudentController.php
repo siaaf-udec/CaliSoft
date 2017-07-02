@@ -6,7 +6,9 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use App\User;
-use App\Documentos;
+use App\Categorias;
+use App\Semillero;
+use App\GrupoDeInvestigacion;
 
 class StudentController extends Controller
 {
@@ -15,14 +17,19 @@ class StudentController extends Controller
     }
 
     public function proyectos(){
-        return view('student.student-register-pro');
+        return view('student.student-register-pro', [
+            'categorias' => Categorias::all(),
+            'semilleros' => Semillero::all(),
+            'gruposDeInvestigacion' => GrupoDeInvestigacion::all()
+        ]);
     }
 
-    public function verPorcentajes(){
-
+    public function porcentajes(){
         return view('student.student-ver-porcentajes');
     }
 
+
+    /*
     public function subirDocumentacion(){
 
         $idFK= User::Where('PK_id',Auth::id())->first();
@@ -34,7 +41,7 @@ class StudentController extends Controller
 
         return Documentos::Where('FK_ProyectoId',$idProyecto)->get();
     }
-
+    */
     public function mensaje(){
         return view('student.student-mensaje');
     }

@@ -30,10 +30,6 @@ Route::resource('usuarios', 'Admin\UserController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
 
-Route::resource('proyectos/{tabla?}', 'Student\ProyectosController', [
-    'only' => ['index', 'store']
-]);
-
 Route::resource('documentacion', 'Student\DocumentosController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
@@ -45,9 +41,9 @@ Route::resource('tdocumentos', 'Admin\TiposDocumentoController', [
 Route::get('tdocumentos/{tdocumento}/componentes', 'Admin\TiposDocumentoController@getComponents')
     ->name('tdocumentos.componentes');
 
+Route::get('/user/project', 'Admin\UserController@getProject');
 
-Route::get('/Documentacion/{idproyecto}', 'Student\StudentController@documentosShow')
-    ->name('documentacion.show');
+Route::get('/Documentacion/{idproyecto}', 'Student\StudentController@documentosShow');
 
 
 Route::resource('componentes', 'Admin\ComponenteController', [

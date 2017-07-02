@@ -19,42 +19,37 @@ class ProyectosController extends Controller
         ]);
     }
 
-    public function index($tabla){
-
-       if($tabla == "categorias"){
-          return Categoria::all();
-       }
-       if($tabla == "semilleros"){
-          return Semillero::all();
-       }
-       if($tabla == "grupos"){
-          return Grupo::all();
-       } 
+    public function index(){
 
     }
 
     public function store(Request $request){
         
          $this->validate($request,[
-             'nombre'          => 'min:5|string|required',
-             'FK_grupo'        => 'required',
-             'FK_semillero'    => 'required',
-             'FK_categoria'    => 'required'
+             'nombre'          => 'required|string|min:5|unique:TBL_Proyectos',
+             'grupo'        => 'required|integer',
+             'semillero'    => 'required|integer',
+             'categoria'    => 'required|integer'
          ]);
     
         $proyecto = Proyecto::create([
               'nombre'                    => $request->nombre,
-              'FK_GrupoDeInvestigacionId' => $request->FK_grupo,
-              'FK_SemilleroId'            => $request->FK_semillero,
-              'FK_CategoriaId'            => $request->FK_categoria
-         ]);
+              'FK_GrupoDeInvestigacionId' => $request->grupo,
+              'FK_SemilleroId'            => $request->semillero,
+              'FK_CategoriaId'            => $request->categoria
+        ]);
 
-         return $proyecto->users()->attach(Auth::id());
+        $user = $request->user();
+        $user->proyecto()->associate($proyecto);
+        $user->save();
+        return redirect()->route('student'); 
     }
 
     public function getDocumentos(Proyecto $proyecto)
     {
-        return $proyecto->documento;
+        return $proyecto->documentos;
     }
+
+    
 
 }

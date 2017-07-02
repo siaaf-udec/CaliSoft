@@ -8,6 +8,6 @@
                 <strong>{{ $errors->first($name) }}</strong>
             </span>
         @endif
-        <i class="fa fa-envelope-o"></i>
+        <i class="{{ $icon }}"></i>
     </div>
 </div>

@@ -1,7 +1,7 @@
 @extends('material.layouts.dashboard')
 
 @section('links')
-    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => Route('documentacion'), 'title' => 'Documentacion'])
+    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => '#', 'title' => 'Documentacion'])
     @endcomponent
 
     @component('components.nav-dropdown', ['icon' => 'fa fa-check', 'title' => 'Evaluación'])
@@ -15,14 +15,19 @@
         @component('components.nav-link', ['icon' => 'fa fa-cubes', 'link' => '#', 'title' => 'Plataforma'])
         @endcomponent
 
-
-
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => Route('porcentajes'),'title' => 'Porcentajes'])
+    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => '#','title' => 'Porcentajes'])
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-pencil-square', 'link' => Route('proyectos'), 'title' => 'Registro Proyecto'])
-    @endcomponent
+    @can('create', 'App\Proyecto')
+        @component('components.nav-link', [
+            'icon' => 'fa fa-pencil-square',
+            'title' => 'Registro Proyecto',
+            'link' => route('proyectos'),
+        ])
+        @endcomponent
+    @endcan
+
 
 @endsection
