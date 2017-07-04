@@ -10,6 +10,7 @@ new Vue({
         newUser: {},
         usuarios: [],
         errors: {},
+        deleteUser: {},
         paginacion:{},
         role: ""
     },
@@ -29,10 +30,15 @@ new Vue({
                     this.errors = error.response.data
                 });
         },
+        openDeleteModal(user){
+          this.deleteUser = user;
+          $('#eliminar-usuarios').modal("show");
+        },
         destroy(user) {
             axios.delete('/api/usuarios/' + user.PK_id)
                 .then(() => {
                     this.usuarios = this.usuarios.filter(value => value != user);
+                    $('#eliminar-usuarios').modal("hide");
                     toastr.info('Usuario Eliminado Correctamente');
                 });
         },

@@ -38,7 +38,8 @@
                             <td v-text="user.email"></td>
                             <td v-text="user.role"></td>
                             <td>
-                                <button class="editar-modal btn btn-danger" @click.prevent="destroy(user)">
+                                <button class="editar-modal btn btn-danger" @click.prevent="openDeleteModal(user)">
+                                <!--<button class="editar-modal btn btn-danger" @click.prevent="destroy(user)">-->
                                     <span class="glyphicon glyphicon-trash"></span>Eliminar
                                 </button>
                             </td>
@@ -79,7 +80,7 @@
 
             </div>
 
-            <!--Inicio Modal-->
+            <!--Inicio Modal crear usuarios-->
             <modal id="crear-usuario" title="Crear Usuario">
                 <form @submit.prevent="store()">
                     <div class="form-group form-md-line-input">
@@ -128,7 +129,24 @@
                     </div>
                 </form>
             </modal>
-            <!-- End modal -->
+            <!-- End modal crear usuarios-->
+
+            <!--Inicio modal Eliminar usuarios-->
+            <!-- inicio modal eliminar-->
+            <modal id="eliminar-usuarios" title="Eliminar Usuarios">
+                ¿Desea eliminar el Usuario @{{deleteUser.name}}?
+
+                <div class="modal-footer" slot="footer">
+                    <button class="btn blue" @click="destroy(deleteUser)">
+                        <i class="fa fa-edit"></i>Eliminar Usuario
+                    </button>
+                    <button type="button" class="btn red" data-dismiss="modal">
+                        <i class="fa fa-ban"></i>Cancelar
+                    </button>
+                </div>
+            </modal>
+            <!-- Fin Modal Eliminar -->
+            @include('partials.modalHelpUsuario')
         </div>
     @endcomponent
 </div>
