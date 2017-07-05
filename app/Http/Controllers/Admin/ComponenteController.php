@@ -17,7 +17,7 @@ class ComponenteController extends Controller
         $this->middleware('role:admin', [
             'except' => ['index']
         ]);
-    }  
+    }
 
     /**
      * Store a newly created resource in storage.
@@ -43,15 +43,16 @@ class ComponenteController extends Controller
         ]);
     }
 
-    
+
     public function update(Request $request, Componente $componente)
     {
+
        $this->validate($request,[
-            'nombre' => 'string',
+            'nombre' => 'string|unique:TBL_ComponentesDocumento,nombre,' . $componente->PK_id . ',PK_id',
             'required' => 'boolean',
             'descripcion' => 'string'
         ]);
-        
+
         $componente->update(
             $request->only('nombre', 'required', 'descripcion')
         );
@@ -68,5 +69,5 @@ class ComponenteController extends Controller
        $componente->delete();
     }
 
-    
+
 }

@@ -1,6 +1,6 @@
 import "./bootstrap";
 import Vue from "vue";
-import Modal from "../components/Modal";
+import Modal from "../components/modal";
 
 const PORCENTAJES = ['modelado', 'plataforma'];
 const DIAGRAMAS = ['despliegue', 'entidad_relacion', 'clases', 'actividades', 'sequencia', 'uso'];

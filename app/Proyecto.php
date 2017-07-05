@@ -19,17 +19,16 @@ class Proyecto extends Model
         'nombre', 'FK_GrupoDeInvestigacionId', 'FK_SemilleroId','FK_CategoriaId',
     ];
 
-   
+
     public function integrantes(){
         return $this->hasMany(User::class, 'FK_ProyectoId', 'PK_id');
     }
 
 
     public function evaluadores(){
-        return $this->belongsToMany(User::class, 'TBL_ProyectosAsignados', 
+        return $this->belongsToMany(User::class, 'TBL_ProyectosAsignados',
             'FK_ProyectoId', 'FK_UsuarioId')->withTimestamps();
     }
-
 
     public function documentos(){
         return $this->hasMany(Documentos::class, 'FK_ProyectoId', 'PK_id');
@@ -45,5 +44,10 @@ class Proyecto extends Model
 
     public function grupoDeInvestigacion(){
         return $this->belongsTo(GrupoDeInvestigacion::class, 'FK_GrupoDeInvestigacionId');
+    }
+
+    public function invitados(){
+      return $this->belongsToMany(User::class, 'TBL_Invitaciones',
+          'FK_ProyectoId', 'FK_UsuarioId')->withTimestamps();
     }
 }

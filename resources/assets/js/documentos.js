@@ -4,7 +4,7 @@ import Vue from "vue";
 
 new Vue({
     el: "#app",
-    data: { 
+    data: {
             documentos: [],
             newDocumentos: {},
             fillDocumentos: {},
@@ -12,12 +12,12 @@ new Vue({
             formErrorsUpdate: {},
             tiposDocumentos: [],
             proyectoId: window.proyectoId
-            },
+    },
 
 
     created(){
-        
-        axios.get(`../api/Documentacion/${this.proyectoId}`)
+
+        axios.get(`/api/proyectos/${this.proyectoId}/documentacion`)
             .then(res => this.documentos = res.data);
 
         axios.get(`/api/tdocumentos`)

@@ -32,7 +32,7 @@
                             </tr>
                         </tbody>
                     </table>
-                    
+
                     <div class="btn-group btn-group-vertical center-block">
                         <button class="btn blue">Enviar Propuesta</button>
                         <button class="btn yellow-gold">Editar Datos</button>
@@ -45,18 +45,18 @@
         <div class="col-sm-6">
             <!-- Integrantes -->
             <div class="row">
-                <proyecto-integrantes :integrantes="proyecto.integrantes"></proyecto-integrantes>
+                <proyecto-integrantes :proyecto="proyecto"></proyecto-integrantes>
             </div>
-            
+
             <!-- Evaluadores -->
             <div class="row">
                 <proyecto-evaluadores :evaluadores="proyecto.evaluadores"></proyecto-evaluadores>
             </div>
         </div>
 
-        
+
     </div>
-    
+
 </template>
 
 <script>
@@ -76,4 +76,3 @@ export default {
     }
 }
 </script>
-

@@ -67,11 +67,20 @@ class User extends Authenticatable
     }
 
     /**
-     * Relacion evaluador -> proyectos asignados 
+     * Relacion evaluador -> proyectos asignados
      */
     public function proyectosAsignados(){
-        return $this->belongsToMany(Proyecto::class, 'TBL_ProyectosAsignados', 
+        return $this->belongsToMany(Proyecto::class, 'TBL_ProyectosAsignados',
             'FK_UsuarioId', 'FK_ProyectoId')->withTimestamps();
     }
-    
+
+    public function invitaciones(){
+        return $this->belongsToMany(Proyecto::class, 'TBL_Invitaciones',
+            'FK_UsuarioId', 'FK_ProyectoId')->withTimestamps();
+    }
+
+    public function scopeFreeStudents($query){
+        return $query->where('role', 'student')->whereNull('FK_ProyectoId');
+    }
+
 }

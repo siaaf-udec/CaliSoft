@@ -18,7 +18,7 @@ class DocumentosController extends Controller
     public function index()
     {
 
-        $docs = Documentos::All(); 
+        $docs = Documentos::All();
             return view('student.student-subir-documentacion',compact('docs'));
     }
 
@@ -83,15 +83,15 @@ class DocumentosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Documentos $documentos)
+    public function update(Request $request, Documentos $documentacion)
     {
         $this->validate($request,[
             'url'=>'required|string',
             'FK_ProyectoId'=>'required|integer',
             'FK_TipoDocumentoId'=>'required|integer'
         ]);
-        $documentos->fill($request->all());
-        $documentos->save();
+        $documentacion->fill($request->all());
+        $documentacion->save();
     }
 
     /**
@@ -100,9 +100,9 @@ class DocumentosController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Documentos $documento)
+    public function destroy(Documentos $documentacion)
     {
-        $documento->delete();
+        $documentacion->delete();
     }
 
     public function getTipos()

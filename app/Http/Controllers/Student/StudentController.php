@@ -29,19 +29,11 @@ class StudentController extends Controller
     }
 
 
-    /*
+
     public function subirDocumentacion(){
-
-        $idFK= User::Where('PK_id',Auth::id())->first();
-      
-        return view('student.student-subir-documentacion')->with('idFK',$idFK);
+        return view('student.student-subir-documentacion');
     }
 
-    public function documentosShow($idProyecto){
-
-        return Documentos::Where('FK_ProyectoId',$idProyecto)->get();
-    }
-    */
     public function mensaje(){
         return view('student.student-mensaje');
     }
@@ -50,4 +42,3 @@ class StudentController extends Controller
       //  return view('student.student-subir-documentacion', compact('documento'));
     //}
 }
-

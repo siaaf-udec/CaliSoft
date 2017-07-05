@@ -1,7 +1,7 @@
 @extends('layouts.student-dash')
 
 @section('content')
-    
+
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
             <div id="app">
@@ -19,13 +19,13 @@
             <th>Documento</th>
             <th>Tipo</th>
             <th>Operación</th>
-            
+
         </thead>
         <tbody>
             <tr v-for="documento in documentos" class="text-center">
                 <td v-text="documento.url"></td>
                 <td v-text="documento.FK_TipoDocumentoId"></td>
-                <td class="text-center"> 
+                <td class="text-center">
                      <div class="btn-group">
                     <button class="editar-categoria btn btn-warning btn-xs" @click.prevent="openEditModal(documento)">
                     <span class="glyphicon glyphicon-edit"></span>
@@ -41,14 +41,14 @@
                 </div>
             </div>
 
-    
+
     <button type="button" data-toggle="modal" data-target="#crear-documentos" class="btn blue center-block">
                     <i class="fa fa-plus"></i>
                     Subir Documento
                 </button>
 
 <!--Creación modal Documentación -->
-<div class="modal fade " id="crear-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
+<div class="modal fade " id="crear-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -58,7 +58,7 @@
                 <h4 class="modal-title" id="myModalLabel">Subir Documento</h4>
             </div>
             <div class="modal-body">
-                <form @submit.prevent='store({{ $idFK->FK_ProyectoId }})'>
+                <form @submit.prevent='store({{  Auth::user()->FK_ProyectoId  }})'>
 
         <br>
         <br>
@@ -72,18 +72,18 @@
                 <span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
                                                     @{{formErrorsUpdate.FK_TipoDocumentoId[0]}}
                 </span>
-            
+
 
                 <input type="text" name="url" v-model="newDocumentos.url" required>
                 <span v-if="formErrorsUpdate['url']" class="error text-danger">
                                                     @{{formErrorsUpdate.url[0]}}
                 </span>
-            
-            <br>
-            <br>
-                
 
-            
+            <br>
+            <br>
+
+
+
                <!-- <label class="control-label col-md-3">Seleccionar documento</label>
                     <div class="col-md-3">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -95,14 +95,14 @@
                             <span class="input-group-addon btn default btn-file">
                                 <span class="fileinput-new"> Seleccionar </span>
                                 <span class="fileinput-exists"> Cambiar </span>
-                                <input type="number" name="url" v-model="newDocumentos.FK_TipoDocumentoId" required > 
+                                <input type="number" name="url" v-model="newDocumentos.FK_TipoDocumentoId" required >
                             </span>
                             <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remover </a>
                             </div>
                         </div>
                     </div>-->
             </div>
-            
+
 
                 <br>
                 <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Subir Documento</button>
@@ -112,14 +112,14 @@
                         </button>
 
         </div>
-    </form>  
+    </form>
             </div>
         </div>
     </div>
 </div>
 </div>
 <!--edicion modal -->
-<div class="modal fade " id="editar-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"> 
+<div class="modal fade " id="editar-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -142,18 +142,18 @@
                 <span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
                                                     @{{formErrorsUpdate.FK_TipoDocumentoId[0]}}
                 </span>
-            
+
 
                 <input type="text" name="url" v-model="fillDocumentos.url" required>
                 <span v-if="formErrorsUpdate['url']" class="error text-danger">
                                                     @{{formErrorsUpdate.url[0]}}
                 </span>
-            
-            <br>
-            <br>
-                
 
-            
+            <br>
+            <br>
+
+
+
                <!-- <label class="control-label col-md-3">Seleccionar documento</label>
                     <div class="col-md-3">
                         <div class="fileinput fileinput-new" data-provides="fileinput">
@@ -165,14 +165,14 @@
                             <span class="input-group-addon btn default btn-file">
                                 <span class="fileinput-new"> Seleccionar </span>
                                 <span class="fileinput-exists"> Cambiar </span>
-                                <input type="number" name="url" v-model="newDocumentos.FK_TipoDocumentoId" required > 
+                                <input type="number" name="url" v-model="newDocumentos.FK_TipoDocumentoId" required >
                             </span>
                             <a href="javascript:;" class="input-group-addon btn red fileinput-exists" data-dismiss="fileinput"> Remover </a>
                             </div>
                         </div>
                     </div>-->
             </div>
-            
+
 
                 <br>
                 <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Modificar Documento</button>
@@ -182,7 +182,7 @@
                         </button>
 
         </div>
-    </form>    
+    </form>
             </div>
         </div>
     </div>
@@ -192,7 +192,7 @@
 </div>
 
 
-@endsection 
+@endsection
 
 @push('styles')
     <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
@@ -202,7 +202,7 @@
 @push('functions')
     <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script>
-        window.proyectoId = {{ $idFK->FK_ProyectoId}};
+        window.proyectoId = {{ Auth::user()->FK_ProyectoId }};
     </script>
     <script src="/js/documentos.js"></script>
 @endpush

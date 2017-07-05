@@ -14,9 +14,7 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:admin', [
-            'only' => ['index', 'store', 'destroy']
-        ]);
+        $this->middleware('role:admin')->only('index', 'store', 'destroy');
     }
     /**
      * Display a listing of the resource.
@@ -70,9 +68,31 @@ class UserController extends Controller
         $usuario->delete();
     }
 
+    /**
+     * Retorna el proyecto del usuario logeado
+     */
     public function getProject(){
         return request()->user()->proyecto->load(
-            'semillero', 'categoria', 'grupoDeInvestigacion', 'integrantes', 'evaluadores'
+            'semillero', 'categoria', 'grupoDeInvestigacion', 'integrantes', 'evaluadores', 'invitados'
         );
     }
+
+    /**
+    *  Retorna los estudiantes que no tienen
+    *  proyectos, filtra por nombre
+    */
+    public function searchFreeStudents(Request $request){
+        $this->validate($request, [ 'name' => 'string' ]);
+        $name = $request->name;
+        return User::freeStudents()
+          ->when($name, function ($query) use ($name) {
+              return $query->where('name', 'like', "%$name%");
+          })->limit(5)->get();
+    }
+
+    public function getInvitations()
+    {
+      return request()->user()->invitaciones();
+    }
+
 }

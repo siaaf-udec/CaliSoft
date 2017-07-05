@@ -43,7 +43,11 @@ Route::get('tdocumentos/{tdocumento}/componentes', 'Admin\TiposDocumentoControll
 
 Route::get('/user/project', 'Admin\UserController@getProject');
 
-Route::get('/Documentacion/{idproyecto}', 'Student\StudentController@documentosShow');
+Route::get('/student/search', 'Admin\UserController@searchFreeStudents');
+Route::get('/student/invitations', 'Admin\UserController@getInvitations');
+Route::post('/invitations', 'Student\ProyectosController@storeInvitation');
+
+Route::get('/proyectos/{proyecto}/documentacion', 'Student\ProyectosController@getDocumentos');
 
 
 Route::resource('componentes', 'Admin\ComponenteController', [

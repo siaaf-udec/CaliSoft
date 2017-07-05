@@ -1,6 +1,6 @@
 import "./bootstrap";
 import Vue from "vue";
-import Modal from "../components/Modal";
+import Modal from "../components/modal";
 import BsSelect from "../components/bs-select"
 
 new Vue({

@@ -16,4 +16,4 @@ Route::get('/porcentajes', 'StudentController@verPorcentajes')
 Route::get('/documentacion', 'StudentController@subirDocumentacion')
     ->name('documentacion');
 
-//Route::get('/updocumentos/{documento}/documentos', 'StudentController@documentos')->name('documentos');
+Route::get('/documentos/{documento}/documentos', 'StudentController@documentos')->name('documentos');

@@ -1,10 +1,10 @@
 @extends('layouts.admin-dash') @section('content')
 <div class="col-md-12">
-    @component('components.portlet', ['icon' => 
-        'fa fa-cubes', 
+    @component('components.portlet', ['icon' =>
+        'fa fa-cubes',
         'title' => 'Componentes de ' . $tdocumento->nombre])
     <div id="app">
-        
+
             <!-- Table de categorias -->
             <div class="table-responsive">
                 <table class="table table-hover table-bordered table-condensed">
@@ -39,7 +39,7 @@
                 <i class="fa fa-plus"></i>
                 Crear Nuevo Componente
             </button>
-            
+
 
             <!--Comienzo Modal de creación -->
             <modal id="crear-componente" title="Crear Componentes">
@@ -47,7 +47,7 @@
                     <div class="form-group">
                         <label for="title">Nombre del Componente</label>
                         <input type="text" name="nombre" class="form-control" v-model="newComponente.nombre" required="" />
-                        <span v-if="formErrorsUpdate['nombre']" class="error text-danger">
+                        <span v-if="formErrors['nombre']" class="error text-danger">
                             @{{formErrors.nombre[0]}}
                         </span>
                     </div>
@@ -65,7 +65,7 @@
                         <label for="title">Descripción</label>
                         <textarea name="descripcion" cols="20" rows="4" class="form-control" v-model="newComponente.descripcion" required="">
                         </textarea>
-                        <span v-if="formErrorsUpdate['descripcion']" class="error text-danger">
+                        <span v-if="formErrors['descripcion']" class="error text-danger">
                             @{{formErrors.nombre[0]}}
                         </span>
                     </div>
@@ -87,7 +87,7 @@
                             @{{formErrorsUpdate.nombre[0]}}
                         </span>
                     </div>
-                    
+
                     <div class="form-group form-md-radios">
                         <label>OBLIGATORIO</label>
                         <div class="form-group">
@@ -104,7 +104,7 @@
                             @{{formErrorsUpdate.nombre[0]}}
                         </span>
                     </div>
-                    
+
                     <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Guardar</button>
                     <button type="button" class="btn red" data-dismiss="modal"><i class="fa fa-ban"></i>Cancelar</button>
 
