@@ -17,17 +17,17 @@ class CategoriasController extends Controller
             'except' => ['index']
         ]);
     }
-    
+
 
     /*
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-     
+
     public function index()
     {
-         return Categorias::all(); 
+         return Categorias::all();
     }
 
     /**
@@ -45,7 +45,7 @@ class CategoriasController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'nombre'=>'required|string',
+            'nombre'=> 'required|string|unique:TBL_Categorias',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
             'despliegue'=>'required|integer',
@@ -68,6 +68,7 @@ class CategoriasController extends Controller
     public function update(Request $request, Categorias $categoria)
     {
         $this->validate($request,[
+            'nombre' => 'required|string|unique:TBL_Categorias,nombre,' . $categoria->PK_id . ',PK_id',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
             'despliegue'=>'required|integer',
@@ -79,7 +80,7 @@ class CategoriasController extends Controller
         ]);
         $categoria->fill($request->all());
         $categoria->save();
-        
+
     }
 
     /**

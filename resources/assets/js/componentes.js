@@ -1,12 +1,12 @@
 import "./bootstrap";
 import Vue from "vue";
 import BsSwitch from "../components/bs-switch";
-import Modal from "../components/Modal";
+import Modal from "../components/modal";
 
 new Vue({
     el: "#app",
     components: { BsSwitch, Modal },
-    data() { 
+    data() {
         return {
             componentes: [],
             newComponente: this.getSchema(),
@@ -35,7 +35,7 @@ new Vue({
         store(){
             this.newComponente.FK_TipoDocumentoId = this.documentoId;
             axios.post('/api/componentes/', this.newComponente)
-                .then(res => { 
+                .then(res => {
                     this.componentes.push(res.data);
                     this.newComponente = this.getSchema();
                     $("#crear-componente").modal("hide");
@@ -44,7 +44,7 @@ new Vue({
                 .catch(err => this.formErrors = err.response.data)
         },
 
-        //actualiza el componente 
+        //actualiza el componente
         update() {
             axios.put('/api/componentes/' + this.fillComponente.PK_id, this.fillComponente)
                 .then(response => {
@@ -69,9 +69,9 @@ new Vue({
 
         //esquema de un componente de documento
         getSchema(){
-            return { 
-                nombre: "", 
-                required: false, 
+            return {
+                nombre: "",
+                required: false,
                 descripcion:"",
             }
         },
