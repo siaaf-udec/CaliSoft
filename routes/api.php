@@ -49,3 +49,7 @@ Route::get('/Documentacion/{idproyecto}', 'Student\StudentController@documentosS
 Route::resource('componentes', 'Admin\ComponenteController', [
     'only' => ['store', 'update', 'destroy','index']
 ]);
+
+Route::resource('proyectos', 'Admin\ProyectoController', [
+  'only' =>['index','store','update','destroy']
+]);
