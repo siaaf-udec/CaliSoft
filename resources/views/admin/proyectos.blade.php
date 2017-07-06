@@ -7,23 +7,17 @@
         <div class="row">
 
             <div class="col-sm-6">
-                <div class="panel panel-default" v-for="proyecto in proyectos">
-                    <div class="panel-heading" style="background-color:#0E3D38;">
-                        <h4 class="panel-title">
-                            <a data-toggle="collapse" data-parent="#accordion" href="#collapse3" @click.prevent="seleccionar(proyecto)">
-                                <label class="font-white">@{{proyecto.nombre}}</label></a>
-                        </h4>
-                    </div>
+                <div class="list-group">
+                    <a v-for="proyecto in proyectos " href="#" class="list-group-item" @click="seleccionar(proyecto)">@{{proyecto.nombre}}</a>
+
                 </div>
             </div>
 
-            <div class="col-sm-6">
-                <div id="collapse3" class="panel-collapse collapse">
-                    <div class="panel-body">
-                        <proyecto-tabla :proyectos="proyectos">
-                        </proyecto-tabla>
-                    </div>
-                </div>
+            <div class="col-sm-6" v-if="seleccion.nombre">
+
+                <proyecto-tabla :proyecto="seleccion">
+                </proyecto-tabla>
+
 
             </div>
         </div>

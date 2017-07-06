@@ -11682,9 +11682,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['proyectos']
+    props: ['proyecto']
 });
 
 /***/ }),
@@ -11749,29 +11761,11 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
   }, [_vm._v("PROYECTO")]), _vm._v(" "), _c('div', {
     staticClass: "panel-body bg-info"
   }, [_c('table', {
-    staticClass: "table table-hover table-bordered table-condensed"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.proyectos), function(proyecto) {
-    return _c('tr', {
-      staticClass: "text-center"
-    }, [_c('td', {
-      domProps: {
-        "textContent": _vm._s(proyecto.nombre)
-      }
-    }), _vm._v(" "), _c('td', {
-      domProps: {
-        "textContent": _vm._s(proyecto.state)
-      }
-    }), _vm._v(" "), _c('td', {})])
-  }))]), _vm._v(" "), _vm._m(1)])])
+    staticClass: "table"
+  }, [_c('tbody', [_c('tr', [_c('th', [_vm._v("Nombre:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyecto.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Estado:")]), _vm._v(" "), _c('td', {
+    staticClass: "text-uppercase"
+  }, [_vm._v(_vm._s(_vm.proyecto.state))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Categoria:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyecto.categoria.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semillero")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyecto.semillero.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Grupo de investigacion:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyecto.grupo_de_investigacion.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Creado el:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(new Date(_vm.proyecto.created_at).toLocaleDateString()))])])])]), _vm._v(" "), _vm._m(0)])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('thead', [_c('th', {
-    staticClass: "text-center"
-  }, [_vm._v("Nombre")]), _vm._v(" "), _c('th', {
-    staticClass: "text-center"
-  }, [_vm._v("estado")]), _vm._v(" "), _c('th', {
-    staticClass: "text-center"
-  }, [_vm._v("Modelado")])])
-},function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('div', {
     staticClass: "btn-group btn-group-vertical center-block"
   }, [_c('button', {
