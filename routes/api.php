@@ -54,6 +54,6 @@ Route::resource('componentes', 'Admin\ComponenteController', [
     'only' => ['store', 'update', 'destroy','index']
 ]);
 
-Route::resource('proyectos', 'Admin\ProyectoController', [
+Route::resource('proyectos', 'Admin\AdminProyectoController', [
   'only' =>['index','store','update','destroy']
 ]);

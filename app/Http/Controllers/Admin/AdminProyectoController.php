@@ -7,7 +7,7 @@ use Illuminate\Http\Request;
 use App\Categorias;
 use App\Proyecto;
 
-class ProyectoController extends Controller
+class AdminProyectoController extends Controller
 {
     /**
      * Display a listing of the resource.
