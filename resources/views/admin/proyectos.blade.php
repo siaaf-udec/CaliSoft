@@ -8,14 +8,15 @@
        
             <div class="col-sm-6">
                 <div class="list-group" >
-                    <a href="#" class="list-group-item" v-for="proyecto in proyectos" @click="seleccionar(proyecto)">
+                    <a href="#" class="list-group-item" v-for="proyecto in proyectos" @click.prevent="seleccionar(proyecto)">
                         @{{proyecto.nombre}}
                     </a>
 
                 </div>
             </div>
             <div class="col-sm-6">
-
+            <proyecto-tabla :proyectos="proyectos">
+            </proyecto-tabla>
             </div>
         </div>
 

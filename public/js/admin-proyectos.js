@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 68);
+/******/ 	return __webpack_require__(__webpack_require__.s = 71);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -11604,7 +11604,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_proyecto_tabla__ = __webpack_require__(91);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_proyecto_tabla__ = __webpack_require__(60);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_proyecto_tabla___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_proyecto_tabla__);
 
 
@@ -11624,8 +11624,8 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 
 
     methods: {
-        seleccionar: function seleccionar(proyecto) {
-            this.seleccion = proyecto;
+        seleccionar: function seleccionar(proyectos) {
+            this.seleccion = proyectos;
         }
     }
 
@@ -11646,7 +11646,60 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 48 */,
 /* 49 */,
 /* 50 */,
-/* 51 */,
+/* 51 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['proyectos']
+});
+
+/***/ }),
 /* 52 */,
 /* 53 */,
 /* 54 */,
@@ -11655,51 +11708,14 @@ var vm = new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 57 */,
 /* 58 */,
 /* 59 */,
-/* 60 */,
-/* 61 */,
-/* 62 */,
-/* 63 */,
-/* 64 */,
-/* 65 */,
-/* 66 */,
-/* 67 */,
-/* 68 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports = __webpack_require__(36);
-
-
-/***/ }),
-/* 69 */,
-/* 70 */,
-/* 71 */,
-/* 72 */,
-/* 73 */,
-/* 74 */,
-/* 75 */,
-/* 76 */,
-/* 77 */,
-/* 78 */,
-/* 79 */,
-/* 80 */,
-/* 81 */,
-/* 82 */,
-/* 83 */,
-/* 84 */,
-/* 85 */,
-/* 86 */,
-/* 87 */,
-/* 88 */,
-/* 89 */,
-/* 90 */,
-/* 91 */
+/* 60 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var Component = __webpack_require__(7)(
   /* script */
-  __webpack_require__(93),
+  __webpack_require__(51),
   /* template */
-  __webpack_require__(92),
+  __webpack_require__(69),
   /* scopeId */
   null,
   /* cssModules */
@@ -11726,12 +11742,38 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 92 */
+/* 61 */,
+/* 62 */,
+/* 63 */,
+/* 64 */,
+/* 65 */,
+/* 66 */,
+/* 67 */,
+/* 68 */,
+/* 69 */
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c("div")
-},staticRenderFns: []}
+  return _c('div', {
+    staticClass: "panel panel-info"
+  }, [_c('div', {
+    staticClass: "panel-heading text-center text-uppercase"
+  }, [_vm._v("PROYECTO")]), _vm._v(" "), _c('div', {
+    staticClass: "panel-body bg-info"
+  }, [(_vm.proyectos.nombre) ? _c('table', {
+    staticClass: "table"
+  }, [_c('tbody', [_c('tr', [_c('th', [_vm._v("Nombre:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyectos.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Estado:")]), _vm._v(" "), _c('td', {
+    staticClass: "text-uppercase"
+  }, [_vm._v(_vm._s(_vm.proyectos.state))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Categoria:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyectos.categoria.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Semillero")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyectos.semillero.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Grupo de investigacion:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(_vm.proyectos.grupo_de_investigacion.nombre))])]), _vm._v(" "), _c('tr', [_c('th', [_vm._v("Creado el:")]), _vm._v(" "), _c('td', [_vm._v(_vm._s(new Date(_vm.proyectos.created_at).toLocaleDateString()))])])])]) : _vm._e(), _vm._v(" "), _vm._m(0)])])
+},staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "btn-group btn-group-vertical center-block"
+  }, [_c('button', {
+    staticClass: "btn blue"
+  }, [_vm._v("Aceptar Proyecto")]), _vm._v(" "), _c('button', {
+    staticClass: "btn red"
+  }, [_vm._v("Eliminar")])])
+}]}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
@@ -11741,19 +11783,12 @@ if (false) {
 }
 
 /***/ }),
-/* 93 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
+/* 70 */,
+/* 71 */
+/***/ (function(module, exports, __webpack_require__) {
 
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
+module.exports = __webpack_require__(36);
 
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['proyecto']
-});
 
 /***/ })
 /******/ ]);

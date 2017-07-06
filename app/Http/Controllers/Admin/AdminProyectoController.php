@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Categorias;
 use App\Proyecto;
 
+
 class AdminProyectoController extends Controller
 {
     /**
