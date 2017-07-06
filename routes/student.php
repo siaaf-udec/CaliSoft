@@ -10,8 +10,8 @@ Route::get('/proyectos', 'StudentController@proyectos')
 Route::post('/proyectos', 'ProyectosController@store')
     ->name('proyectos.store');
 
-Route::get('/porcentajes', 'StudentController@verPorcentajes')
-    ->name('porcentajes');
+Route::get('/Porcentajes', 'StudentController@porcentajes')
+    ->name('Porcentajes');
 
 Route::get('/documentacion', 'StudentController@subirDocumentacion')
     ->name('documentacion');

@@ -10,5 +10,6 @@
   "/js/componentes.js": "/js/componentes.js",
   "/js/documentos.js": "/js/documentos.js",
   "/js/tipo-documento.js": "/js/tipo-documento.js",
-  "/js/categorias-show.js": "/js/categorias-show.js"
+  "/js/categorias-show.js": "/js/categorias-show.js",
+  "/js/admin-proyectos.js": "/js/admin-proyectos.js"
 }
