@@ -11,8 +11,9 @@ let vm = new Vue({
     },
 
     methods: {
-        seleccionar(proyectos) {
-            this.seleccion = proyectos;
+        seleccionar(proyecto) {
+            this.seleccion = proyecto;
+
         }
     }
 
