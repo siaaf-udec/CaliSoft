@@ -3,18 +3,23 @@
 <div class="col-md-12">
     @component('components.portlet', ['icon' => 'fa fa-folder-open', 'title' => 'Proyectos'])
     <div id="app">
-      <div class="row">
-        @component('components.select', [
-            'name' => 'categoria',
-            'title' => 'Categoria',
-            'items' => $categorias,
-            'value' => 'PK_id',
-            'label' => 'nombre'
-        ])
-        @endcomponent
+          @component('components.select', [
+              'name' => 'categoria',
+              'title' => 'Categoria',
+              'items' => $categorias,
+              'value' => 'PK_id',
+              'label' => 'nombre'
+          ])
+          @endcomponent
+          <div class="row">
+            <div class="col-sm-6">
 
-      </div>
+            </div>
+            <div class="col-sm-6">
 
+            </div>
+          </div>
+        @include('partials.modalHelpProyecto')
     </div>
     @endcomponent
 @endsection

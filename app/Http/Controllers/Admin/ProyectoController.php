@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Categorias;
+use App\Proyecto;
 
 class ProyectoController extends Controller
 {
@@ -15,6 +16,7 @@ class ProyectoController extends Controller
      */
     public function index()
     {
+        return Proyecto::all();
     }
 
     /**
