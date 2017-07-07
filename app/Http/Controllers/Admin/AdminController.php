@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\TiposDocumento;
+use App\Categorias;
 
 class AdminController extends Controller
 {
@@ -35,5 +36,12 @@ class AdminController extends Controller
 
     public function componentes(TiposDocumento $tdocumento){
         return view('admin.componentes', compact('tdocumento'));
+    }
+
+    public function proyectos()
+    {
+        return view('admin.proyectos',
+      ['categorias' => Categorias::all()]
+    );
     }
 }

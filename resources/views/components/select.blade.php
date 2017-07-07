@@ -10,6 +10,6 @@
             <option value="{{ $item[$value] }}">
                 {{ $item[$label] }}
             </option>
-        @endforeach   
+        @endforeach
     </select>
 </div>

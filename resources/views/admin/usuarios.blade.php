@@ -7,8 +7,6 @@
 
         <div id="app">
 
-            <h3 class="text-center">Usuarios </h3>
-
             <!-- Filtro de usuarios -->
             <div class="row">
 
