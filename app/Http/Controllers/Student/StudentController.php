@@ -30,15 +30,7 @@ class StudentController extends Controller
 
 
 
-    public function subirDocumentacion(){
+    public function documentos(){
         return view('student.student-subir-documentacion');
     }
-
-    public function mensaje(){
-        return view('student.student-mensaje');
-    }
-
-    //public function documentos(Documentos $documento){
-      //  return view('student.student-subir-documentacion', compact('documento'));
-    //}
 }

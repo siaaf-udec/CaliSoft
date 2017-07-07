@@ -3,17 +3,19 @@
 Route::get('/', 'StudentController@index')
     ->name('student');
 
+
 Route::get('/proyectos', 'StudentController@proyectos')
     ->name('proyectos')
     ->middleware('create-project');
 
-Route::post('/proyectos', 'ProyectosController@store')
-    ->name('proyectos.store');
 
-Route::get('/porcentajes', 'StudentController@verPorcentajes')
+Route::post('/proyectos', 'ProyectosController@store')
+    ->name('proyectos.store')
+    ->middleware('create-project');
+
+
+Route::get('/porcentajes', 'StudentController@porcentajes')
     ->name('porcentajes');
 
-Route::get('/documentacion', 'StudentController@subirDocumentacion')
+Route::get('/documentacion', 'StudentController@documentos')
     ->name('documentacion');
-
-Route::get('/documentos/{documento}/documentos', 'StudentController@documentos')->name('documentos');

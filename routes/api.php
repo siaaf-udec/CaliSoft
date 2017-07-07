@@ -45,7 +45,12 @@ Route::get('/user/project', 'Admin\UserController@getProject');
 
 Route::get('/student/search', 'Admin\UserController@searchFreeStudents');
 Route::get('/student/invitations', 'Admin\UserController@getInvitations');
-Route::post('/invitations', 'Student\ProyectosController@storeInvitation');
+
+
+Route::resource('invitations', 'Student\InvitationController', [
+    'only' => ['store']
+]);
+
 
 Route::get('/proyectos/{proyecto}/documentacion', 'Student\ProyectosController@getDocumentos');
 

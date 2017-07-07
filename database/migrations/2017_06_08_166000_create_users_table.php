@@ -25,7 +25,7 @@ class CreateUsersTable extends Migration
 
 
             $table->foreign('FK_ProyectoId')->references('PK_id')
-                ->on('TBL_Proyectos')->onUpdate('cascade');
+                ->on('TBL_Proyectos');
 
         });
     }
