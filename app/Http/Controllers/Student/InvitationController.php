@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Student;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Proyecto;
+use App\User;
+use App\Notifications\Invitacion;
 
 class InvitationController extends Controller
 {
@@ -17,9 +19,12 @@ class InvitationController extends Controller
         ]);
 
         $proyecto = Proyecto::findOrFail($request->project_id);
+        $user = User::findOrFail($request->user_id);
+
         $query = $proyecto->usuarios();
         if ($request->invitation) {
-            $query->attach($request->user_id, ['tipo' => 'invitado']); //agrega la invitacion
+            $query->attach($user->PK_id, ['tipo' => 'invitado']); //agrega la invitacion
+            $user->notify(new Invitacion($request->user(), $proyecto));
         }
         else {
             $query->detach($request->user_id); // borra la invitacion

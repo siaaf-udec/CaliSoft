@@ -28,9 +28,11 @@ class StudentController extends Controller
         return view('student.student-ver-porcentajes');
     }
 
-
-
     public function documentos(){
         return view('student.student-subir-documentacion');
+    }
+
+    public function invitaciones(){
+        return view('student.student-invitaciones');
     }
 }

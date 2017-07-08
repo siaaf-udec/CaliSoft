@@ -19,3 +19,6 @@ Route::get('/porcentajes', 'StudentController@porcentajes')
 
 Route::get('/documentacion', 'StudentController@documentos')
     ->name('documentacion');
+
+Route::get('/invitaciones', 'StudentController@invitaciones')
+    ->name('invitaciones');
