@@ -9,7 +9,7 @@ use App\Semillero;
 use App\GrupoDeInvestigacion as Grupo;
 use App\Proyecto;
 
-class ProyectosController extends Controller
+class ProyectoController extends Controller
 {
     function __construct()
     {
@@ -31,29 +31,34 @@ class ProyectosController extends Controller
             'categoria' => 'required|integer'
         ]);
 
-        $proyecto = Proyecto::create([
+        $request->user()->proyectos()->create([
             'nombre' => $request->nombre,
             'FK_GrupoDeInvestigacionId' => $request->grupo,
             'FK_SemilleroId' => $request->semillero,
             'FK_CategoriaId' => $request->categoria
+        ], [
+            'tipo' => 'integrante'
         ]);
 
-        $user = $request->user();
-        $user->proyecto()->associate($proyecto);
-        $user->save();
         return redirect()->route('student');
     }
 
-    public function getDocumentos(Proyecto $proyecto)
+    public function documentos(Proyecto $proyecto)
     {
         return $proyecto->documentos;
     }
 
 
-    public function getInvitated(Proyecto $proyecto)
+    public function invitados(Proyecto $proyecto)
     {
-        return $proyecto->invitados()->get();
+        return $proyecto->usuarios()->wherePivot('tipo', 'invitado')->get();
     }
+
+    public function integrantes(Proyecto $proyecto)
+    {
+        return $proyecto->usuarios()->wherePivot('tipo', 'integrante')->get();
+    }
+
 
 
 

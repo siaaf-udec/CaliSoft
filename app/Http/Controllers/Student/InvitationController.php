@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Student;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Proyecto;
 
 class InvitationController extends Controller
 {
@@ -16,14 +17,12 @@ class InvitationController extends Controller
         ]);
 
         $proyecto = Proyecto::findOrFail($request->project_id);
-        $query = $proyecto->invitados();
+        $query = $proyecto->usuarios();
         if ($request->invitation) {
-            $query->attach($request->user_id); //agrega la invitacion
-
+            $query->attach($request->user_id, ['tipo' => 'invitado']); //agrega la invitacion
         }
         else {
             $query->detach($request->user_id); // borra la invitacion
-
         }
     }
 }

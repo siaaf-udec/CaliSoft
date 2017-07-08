@@ -17,7 +17,7 @@
 
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => route('Porcentajes'),'title' => 'Porcentajes'])
+    @component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => route('porcentajes'),'title' => 'Porcentajes'])
     @endcomponent
 
     @can('create', 'App\Proyecto')

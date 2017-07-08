@@ -19,7 +19,7 @@ class ProjectPolicy
      */
     public function create(User $user)
     {
-        return $user->role == 'student' && !$user->FK_ProyectoId;
+        return $user->role == 'student' && !$user->proyectos()->count();
     }
 
     /**

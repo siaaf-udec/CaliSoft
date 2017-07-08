@@ -34,7 +34,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token', 'pivot'
+        'password', 'remember_token'
     ];
 
 
@@ -58,29 +58,15 @@ class User extends Authenticatable
         return redirect()->route($this->role);
     }
 
-
-    /**
-     * Relacion integrante -> proyecto
-     */
-    public function proyecto(){
-        return $this->belongsTo(Proyecto::class, 'FK_ProyectoId', 'PK_id');
-    }
-
     /**
      * Relacion evaluador -> proyectos asignados
      */
-    public function proyectosAsignados(){
-        return $this->belongsToMany(Proyecto::class, 'TBL_ProyectosAsignados',
-            'FK_UsuarioId', 'FK_ProyectoId')->withTimestamps();
+    public function proyectos(){
+        return $this->belongsToMany(Proyecto::class, 'TBL_ProyectosAsignados', 'FK_UsuarioId', 'FK_ProyectoId')
+            ->withPivot('tipo')
+            ->withTimestamps();
     }
 
-    public function invitaciones(){
-        return $this->belongsToMany(Proyecto::class, 'TBL_Invitaciones',
-            'FK_UsuarioId', 'FK_ProyectoId')->withTimestamps();
-    }
-
-    public function scopeFreeStudents($query){
-        return $query->where('role', 'student')->whereNull('FK_ProyectoId');
-    }
+    
 
 }
