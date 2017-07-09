@@ -34,6 +34,11 @@ class AdminController extends Controller
         return view('admin.tipo-documento');
     }
 
+    public function peticiones()
+    {
+        return view('admin.peticiones');
+    }
+
     public function componentes(TiposDocumento $tdocumento){
         return view('admin.componentes', compact('tdocumento'));
     }

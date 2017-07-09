@@ -8,6 +8,9 @@ use Illuminate\Support\Facades\Auth;
 use App\Documentos;
 use App\TiposDocumento;
 use App\User;
+use Illuminate\Notifications\Notifiable;
+use App\Notifications\ProyectoCreado;
+
 class DocumentosController extends Controller
 {
     /**
@@ -38,7 +41,7 @@ class DocumentosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(Request $request, User $admin)
     {
         $this->validate($request, [
             'url'=>'required|string',
@@ -47,11 +50,23 @@ class DocumentosController extends Controller
 
         ]);
 
+        $this->admin=$admin;
+
+        //$admi = User::where('role','admin')->get();
+
+        //$admin->addComment('1');
+        //$thread->addComment($request->body);
+        //$thread->addComment($request->body);
+
+        auth()->user()->notify(new ProyectoCreado($admin));
+
         return Documentos::create([
             'url'=> $request->url,
             'FK_ProyectoId'=>$request->FK_ProyectoId,
             'FK_TipoDocumentoId'=>$request->FK_TipoDocumentoId
             ]);
+
+        
     }
 
     /**

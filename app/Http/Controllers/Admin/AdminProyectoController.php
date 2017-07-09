@@ -86,4 +86,10 @@ class AdminProyectoController extends Controller
     {
         //
     }
+
+    public function getPeticiones()
+    {
+        return Proyecto::where('state','propuesta')
+        ->get();
+    }
 }

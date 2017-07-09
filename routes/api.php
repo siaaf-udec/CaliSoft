@@ -50,9 +50,13 @@ Route::post('/invitations', 'Student\ProyectosController@storeInvitation');
 Route::get('/proyectos/{proyecto}/documentacion', 'Student\ProyectosController@getDocumentos');
 
 
+
 Route::resource('componentes', 'Admin\ComponenteController', [
     'only' => ['store', 'update', 'destroy','index']
 ]);
+
+
+Route::get('/peticiones', 'Admin\AdminProyectoController@getPeticiones');
 
 Route::resource('proyectos', 'Admin\AdminProyectoController', [
   'only' =>['index','store','update','destroy']

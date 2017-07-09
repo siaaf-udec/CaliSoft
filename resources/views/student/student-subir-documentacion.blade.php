@@ -9,7 +9,7 @@
                 <br>
                 <div class="panel panel-primary">
                 <div class="panel-heading text-center">
-                    <h4>LISTADO DE DOCUMENTOS ANEXADOS</h4>
+                    <h4>LISTADO DE DOCUMENTOS ANEXADOS {{DB::table('TBL_usuarios')->where('role','admin')->get()}}</h4>
                 </div>
                 <div class="panel-body">
                     <!-- Table de categorias -->
@@ -58,7 +58,7 @@
                 <h4 class="modal-title" id="myModalLabel">Subir Documento</h4>
             </div>
             <div class="modal-body">
-                <form @submit.prevent='store({{  Auth::user()->FK_ProyectoId  }})'>
+                <form @submit.prevent='store({{  Auth::user()->FK_ProyectoId  }},{{  Auth::user()->FK_ProyectoId  }} )'>
 
         <br>
         <br>

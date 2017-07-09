@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 76);
+/******/ 	return __webpack_require__(__webpack_require__.s = 78);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -738,63 +738,7 @@ module.exports = function bind(fn, thisArg) {
 
 
 /***/ }),
-/* 7 */
-/***/ (function(module, exports) {
-
-// this module is a runtime utility for cleaner component module output and will
-// be included in the final webpack user bundle
-
-module.exports = function normalizeComponent (
-  rawScriptExports,
-  compiledTemplate,
-  scopeId,
-  cssModules
-) {
-  var esModule
-  var scriptExports = rawScriptExports = rawScriptExports || {}
-
-  // ES6 modules interop
-  var type = typeof rawScriptExports.default
-  if (type === 'object' || type === 'function') {
-    esModule = rawScriptExports
-    scriptExports = rawScriptExports.default
-  }
-
-  // Vue.extend constructor export interop
-  var options = typeof scriptExports === 'function'
-    ? scriptExports.options
-    : scriptExports
-
-  // render functions
-  if (compiledTemplate) {
-    options.render = compiledTemplate.render
-    options.staticRenderFns = compiledTemplate.staticRenderFns
-  }
-
-  // scopedId
-  if (scopeId) {
-    options._scopeId = scopeId
-  }
-
-  // inject cssModules
-  if (cssModules) {
-    var computed = Object.create(options.computed || null)
-    Object.keys(cssModules).forEach(function (key) {
-      var module = cssModules[key]
-      computed[key] = function () { return module }
-    })
-    options.computed = computed
-  }
-
-  return {
-    esModule: esModule,
-    exports: scriptExports,
-    options: options
-  }
-}
-
-
-/***/ }),
+/* 7 */,
 /* 8 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -11589,198 +11533,18 @@ module.exports = g;
 
 
 /***/ }),
-/* 30 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['id', 'title']
-});
-
-/***/ }),
-/* 31 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(7)(
-  /* script */
-  __webpack_require__(30),
-  /* template */
-  __webpack_require__(32),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\components\\modal.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] modal.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-69e27530", Component.options)
-  } else {
-    hotAPI.reload("data-v-69e27530", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 32 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "modal fade",
-    attrs: {
-      "id": _vm.id,
-      "role": "dialog"
-    }
-  }, [_c('div', {
-    staticClass: "modal-dialog"
-  }, [_c('div', {
-    staticClass: "modal-content"
-  }, [_c('div', {
-    staticClass: "modal-header"
-  }, [_c('button', {
-    staticClass: "close",
-    attrs: {
-      "type": "button",
-      "data-dismiss": "modal"
-    }
-  }, [_vm._v("×")]), _vm._v(" "), _c('h4', {
-    staticClass: "modal-title"
-  }, [_vm._v(_vm._s(_vm.title))])]), _vm._v(" "), _c('div', {
-    staticClass: "modal-body"
-  }, [_vm._t("default")], 2), _vm._v(" "), _vm._t("footer")], 2)])])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-69e27530", module.exports)
-  }
-}
-
-/***/ }),
-/* 33 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['id', 'value', 'label', 'required'],
-    mounted: function mounted() {
-        var el = $("#" + this.id);
-        el.bootstrapSwitch();
-        el.on('switchChange.bootstrapSwitch', this.handleChange);
-    },
-
-    methods: {
-        handleChange: function handleChange(e, state) {
-            this.$emit('input', state);
-        }
-    }
-});
-
-/***/ }),
-/* 34 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Component = __webpack_require__(7)(
-  /* script */
-  __webpack_require__(33),
-  /* template */
-  __webpack_require__(35),
-  /* scopeId */
-  null,
-  /* cssModules */
-  null
-)
-Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\components\\bs-switch.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key !== "__esModule"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] bs-switch.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-489e0feb", Component.options)
-  } else {
-    hotAPI.reload("data-v-489e0feb", Component.options)
-  }
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 35 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('input', {
-    attrs: {
-      "type": "checkbox",
-      "id": _vm.id,
-      "data-label-text": _vm.label || _vm.id,
-      "required": _vm.required,
-      "data-size": "normal",
-      "data-inverse": "true"
-    },
-    domProps: {
-      "checked": _vm.value
-    }
-  })
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-489e0feb", module.exports)
-  }
-}
-
-/***/ }),
+/* 30 */,
+/* 31 */,
+/* 32 */,
+/* 33 */,
+/* 34 */,
+/* 35 */,
 /* 36 */,
 /* 37 */,
 /* 38 */,
-/* 39 */
+/* 39 */,
+/* 40 */,
+/* 41 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -11789,107 +11553,62 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__bootstrap___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__bootstrap__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue__ = __webpack_require__(28);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_bs_switch__ = __webpack_require__(34);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__components_bs_switch___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__components_bs_switch__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_modal__ = __webpack_require__(31);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_modal__);
-
-
 
 
 
 new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
     el: "#app",
-    components: { BsSwitch: __WEBPACK_IMPORTED_MODULE_2__components_bs_switch___default.a, Modal: __WEBPACK_IMPORTED_MODULE_3__components_modal___default.a },
     data: function data() {
         return {
-            componentes: [],
-            newComponente: this.getSchema(),
-            documentoId: window.documentId,
+            peticiones: [],
             fillComponente: {},
             formErrors: {},
-            formErrorsUpdate: {},
-            tiposDocumentos: []
+            formErrorsUpdate: {}
         };
     },
     created: function created() {
         var _this = this;
 
-        axios.get("/api/tdocumentos/" + this.documentoId + "/componentes").then(function (res) {
-            return _this.componentes = res.data;
+        axios.get("/api/peticiones").then(function (res) {
+            return _this.peticiones = res.data;
         });
     },
 
 
     methods: {
 
-        //abre el modal de edicion
-        openEditModal: function openEditModal(componentes) {
-            this.fillComponente = Object.assign({}, componentes);
-            $('#editar-componentes').modal("show");
-        },
-
-
-        //crea el componente del documento
-        store: function store() {
-            var _this2 = this;
-
-            this.newComponente.FK_TipoDocumentoId = this.documentoId;
-            axios.post('/api/componentes/', this.newComponente).then(function (res) {
-                _this2.componentes.push(res.data);
-                _this2.newComponente = _this2.getSchema();
-                $("#crear-componente").modal("hide");
-                toastr.info('Componente subido correctamente');
-            }).catch(function (err) {
-                return _this2.formErrors = err.response.data;
-            });
-        },
-
-
         //actualiza el componente
         update: function update() {
-            var _this3 = this;
+            var _this2 = this;
 
             axios.put('/api/componentes/' + this.fillComponente.PK_id, this.fillComponente).then(function (response) {
-                _this3.componentes = _this3.componentes.map(function (value) {
-                    return value.PK_id == _this3.fillComponente.PK_id ? _this3.fillComponente : value;
+                _this2.componentes = _this2.componentes.map(function (value) {
+                    return value.PK_id == _this2.fillComponente.PK_id ? _this2.fillComponente : value;
                 });
-                _this3.fillComponente = {};
+                _this2.fillComponente = {};
                 $("#editar-componentes").modal("hide");
                 toastr.info('Componente editado correctamente');
             }).catch(function (error) {
-                return _this3.formErrorsUpdate = error.response.data;
+                return _this2.formErrorsUpdate = error.response.data;
             });
         },
 
 
         //elimina el componente
         destroy: function destroy(componentes) {
-            var _this4 = this;
+            var _this3 = this;
 
             axios.delete('/api/componentes/' + componentes.PK_id).then(function () {
-                _this4.componentes = _this4.componentes.filter(function (value) {
+                _this3.componentes = _this3.componentes.filter(function (value) {
                     return value != componentes;
                 });
                 toastr.info('Componente eliminado correctamente');
             });
-        },
-
-
-        //esquema de un componente de documento
-        getSchema: function getSchema() {
-            return {
-                nombre: "",
-                required: false,
-                descripcion: ""
-            };
         }
     }
 });
 
 /***/ }),
-/* 40 */,
-/* 41 */,
 /* 42 */,
 /* 43 */,
 /* 44 */,
@@ -11924,10 +11643,12 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 /* 73 */,
 /* 74 */,
 /* 75 */,
-/* 76 */
+/* 76 */,
+/* 77 */,
+/* 78 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(39);
+module.exports = __webpack_require__(41);
 
 
 /***/ })
