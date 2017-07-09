@@ -30,7 +30,6 @@ export default {
     },
     invite(user){
       this.$emit('invite', user);
-      this.users = [];
     }
   },
   watch: {
