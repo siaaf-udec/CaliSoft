@@ -16,6 +16,6 @@ class CheckProject
     public function handle($request, Closure $next)
     {
           $user = $request->user();
-          return $user->FK_ProyectoId ? $user->goHome() : $next($request);
+          return $user->proyectos()->count() ? $user->goHome() : $next($request);
     }
 }

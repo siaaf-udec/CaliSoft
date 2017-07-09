@@ -16,6 +16,7 @@ class CreateAsignedProjectsTable extends Migration
         Schema::create('TBL_ProyectosAsignados', function (Blueprint $table) {
             $table->integer('FK_UsuarioId')->unsigned();
             $table->integer('FK_ProyectoId')->unsigned();
+            $table->enum('tipo', ['invitado', 'integrante', 'evaluador']);
             $table->timestamps();
 
             $table->primary(['FK_UsuarioId', 'FK_ProyectoId']);

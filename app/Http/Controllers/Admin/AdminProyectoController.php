@@ -17,7 +17,7 @@ class AdminProyectoController extends Controller
      */
     public function index()
     {
-        return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'integrantes', 'evaluadores', 'invitados')
+        return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
         ->get();
     }
 

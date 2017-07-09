@@ -45,13 +45,22 @@
         <div class="col-sm-6">
             <!-- Integrantes -->
             <div class="row">
-                <proyecto-integrantes :proyecto="proyecto"></proyecto-integrantes>
+                <proyecto-integrantes :integrantes="integrantes" :project-id="proyecto.PK_id">
+                </proyecto-integrantes>
             </div>
 
             <!-- Evaluadores -->
-            <div class="row">
-                <proyecto-evaluadores :evaluadores="proyecto.evaluadores"></proyecto-evaluadores>
+            <div class="row" v-if="evaluadores.length">
+                <proyecto-evaluadores :evaluadores="evaluadores">
+                </proyecto-evaluadores>
             </div>
+
+            <!-- Invitados -->
+            <div class="row">
+              <proyecto-invitados :invitados="invitados" :proyecto-id="proyecto.PK_id">
+              </proyecto-invitados>
+            </div>
+
         </div>
 
 
@@ -61,18 +70,35 @@
 
 <script>
 import ProyectoIntegrantes from "./proyecto-integrantes";
-import ProyectoEvaluadores from "./proyecto-evaluadores"
+import ProyectoEvaluadores from "./proyecto-evaluadores";
+import ProyectoInvitados from "./proyecto-invitados";
 
 export default {
     components: {
-        ProyectoIntegrantes,
-        ProyectoEvaluadores
+        ProyectoIntegrantes, ProyectoEvaluadores, ProyectoInvitados
     },
     data(){
         return { proyecto: {} };
     },
     created(){
         axios.get('/api/user/project').then(res => this.proyecto = res.data);
+    },
+    computed: {
+        integrantes(){
+            return this.filtrarUsuario('integrante');
+        },
+        evaluadores(){
+            return this.filtrarUsuario('evaluador');
+        },
+        invitados(){
+            return this.filtrarUsuario('invitado');
+        }
+    },
+    methods: {
+        filtrarUsuario(tipo){
+            return this.proyecto.usuarios ?
+                this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo) : []
+        }
     }
 }
 </script>

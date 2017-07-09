@@ -1,27 +1,20 @@
 <template>
-<div class="dropdown">
-  <button class="list-group-item list-group-item-info text-center dropdown-toggle" data-toggle="dropdown">
-    <div class="text-center">
-      <span class="fa fa-plus"></span> Agregar Integrante
+  <section>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="Buscar" v-model="search">
+        <span class="input-group-addon">
+          <i class="glyphicon glyphicon-search"></i>
+        </span>
     </div>
-  </button>
-    <ul class="dropdown-menu dropdown-menu-right">
-      <li>
-          <div class="input-group" style="margin: 10px">
-            <input type="text" class="form-control" placeholder="Buscar" v-model="search">
-              <span class="input-group-addon">
-                <i class="glyphicon glyphicon-search"></i>
-              </span>
-          </div>
-      </li>
-
-      <li class="divider"></li>
-
-      <li v-for="user in users">
-        <a @click.stop="$emit('selected', user)" class="text-center">{{ `${user.name} - ${user.email}` }}</a>
+    <ul class="list-group" style="margin-top: 2%">
+      <li class="list-group-item" v-for="user in users">
+        {{ `${user.name} - ${user.email}` }}
+        <button class="btn btn-success btn-xs pull-right" @click="invite(user)">
+          invitar
+        </button>
       </li>
     </ul>
-</div>
+  </section>
 </template>
 
 <script>
@@ -35,6 +28,10 @@ export default {
       axios.get('/api/student/search', { params })
         .then(res => this.users = res.data)
     },
+    invite(user){
+      this.$emit('invite', user);
+      this.users = [];
+    }
   },
   watch: {
     search() {

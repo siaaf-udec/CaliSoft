@@ -41,14 +41,18 @@ Route::resource('tdocumentos', 'Admin\TiposDocumentoController', [
 Route::get('tdocumentos/{tdocumento}/componentes', 'Admin\TiposDocumentoController@getComponents')
     ->name('tdocumentos.componentes');
 
-Route::get('/user/project', 'Admin\UserController@getProject');
+Route::get('/user/project', 'Admin\UserController@proyecto');
 
 Route::get('/student/search', 'Admin\UserController@searchFreeStudents');
-Route::get('/student/invitations', 'Admin\UserController@getInvitations');
-Route::post('/invitations', 'Student\ProyectosController@storeInvitation');
+Route::get('/student/invitations', 'Admin\UserController@invitaciones');
 
-Route::get('/proyectos/{proyecto}/documentacion', 'Student\ProyectosController@getDocumentos');
 
+Route::resource('invitations', 'Student\InvitationController', [
+    'only' => ['store', 'update', 'destroy'],
+    'parameters' => [
+      'invitations' => 'proyecto'
+    ]
+]);
 
 
 Route::resource('componentes', 'Admin\ComponenteController', [
@@ -61,3 +65,5 @@ Route::get('/peticiones', 'Admin\AdminProyectoController@getPeticiones');
 Route::resource('proyectos', 'Admin\AdminProyectoController', [
   'only' =>['index','store','update','destroy']
 ]);
+
+Route::get('/proyectos/{proyecto}/documentacion', 'Student\ProyectoController@documentos');

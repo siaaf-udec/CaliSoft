@@ -13,41 +13,49 @@ class Proyecto extends Model
     protected $table = "TBL_Proyectos";
     protected $primaryKey = "PK_id";
 
-    protected $hidden = ['pivot'];
-
     protected $fillable = [
         'nombre', 'FK_GrupoDeInvestigacionId', 'FK_SemilleroId','FK_CategoriaId',
     ];
-
-
-    public function integrantes(){
-        return $this->hasMany(User::class, 'FK_ProyectoId', 'PK_id');
-    }
-
-
-    public function evaluadores(){
-        return $this->belongsToMany(User::class, 'TBL_ProyectosAsignados',
-            'FK_ProyectoId', 'FK_UsuarioId')->withTimestamps();
-    }
 
     public function documentos(){
         return $this->hasMany(Documentos::class, 'FK_ProyectoId', 'PK_id');
     }
 
     public function semillero(){
-        return $this->belongsTo(Semillero::class, 'FK_SemilleroId');
+        return $this->belongsTo(Semillero::class, 'FK_SemilleroId')
+            ->select('PK_id', 'nombre');
     }
 
     public function categoria(){
-        return $this->belongsTo(Categorias::class, 'FK_CategoriaId');
+        return $this->belongsTo(Categorias::class, 'FK_CategoriaId')
+            ->select('PK_id', 'nombre');
     }
 
     public function grupoDeInvestigacion(){
-        return $this->belongsTo(GrupoDeInvestigacion::class, 'FK_GrupoDeInvestigacionId');
+        return $this->belongsTo(GrupoDeInvestigacion::class, 'FK_GrupoDeInvestigacionId')
+            ->select('PK_id', 'nombre');
+    }
+
+
+    /*
+    *  Relacion de proyecto con usuarios
+    */
+    public function usuarios(){
+        return $this->belongsToMany(User::class, 'TBL_ProyectosAsignados', 'FK_ProyectoId', 'FK_UsuarioId')
+            ->withPivot('tipo')
+            ->withTimestamps();
+    }
+
+    public function integrantes(){
+        return $this->usuarios()->wherePivot('tipo', 'integrante');
+    }
+
+    public function evaluadores(){
+        return $this->usuarios()->wherePivot('tipo', 'evaluador');
     }
 
     public function invitados(){
-      return $this->belongsToMany(User::class, 'TBL_Invitaciones',
-          'FK_ProyectoId', 'FK_UsuarioId')->withTimestamps();
+        return $this->usuarios()->wherePivot('tipo', 'invitado');
     }
+
 }

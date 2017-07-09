@@ -4,6 +4,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\User;
+use App\Repositories\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;
@@ -11,10 +12,13 @@ use Illuminate\Routing\Route;
 
 class UserController extends Controller
 {
-    public function __construct()
+    private $users;
+
+    public function __construct(Users $users)
     {
         $this->middleware('auth');
         $this->middleware('role:admin')->only('index', 'store', 'destroy');
+        $this->users = $users;
     }
     /**
      * Display a listing of the resource.
@@ -71,10 +75,10 @@ class UserController extends Controller
     /**
      * Retorna el proyecto del usuario logeado
      */
-    public function getProject(){
-        return request()->user()->proyecto->load(
-            'semillero', 'categoria', 'grupoDeInvestigacion', 'integrantes', 'evaluadores', 'invitados'
-        );
+    public function proyecto(){
+        return request()->user()->proyectos()->with(
+            'semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios'
+        )->first();
     }
 
     /**
@@ -82,17 +86,13 @@ class UserController extends Controller
     *  proyectos, filtra por nombre
     */
     public function searchFreeStudents(Request $request){
-        $this->validate($request, [ 'name' => 'string' ]);
-        $name = $request->name;
-        return User::freeStudents()
-          ->when($name, function ($query) use ($name) {
-              return $query->where('name', 'like', "%$name%");
-          })->limit(5)->get();
+        $this->validate($request, [ 'name' => 'string|required' ]);
+        return $this->users->searchFreeStudents($request->name);
     }
 
-    public function getInvitations()
+    public function invitaciones()
     {
-      return request()->user()->invitaciones();
+      return request()->user()->proyectos()->wherePivot('tipo', 'invitado')->get();
     }
 
 }
