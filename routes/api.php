@@ -44,11 +44,14 @@ Route::get('tdocumentos/{tdocumento}/componentes', 'Admin\TiposDocumentoControll
 Route::get('/user/project', 'Admin\UserController@proyecto');
 
 Route::get('/student/search', 'Admin\UserController@searchFreeStudents');
-Route::get('/student/invitations', 'Admin\UserController@getInvitations');
+Route::get('/student/invitations', 'Admin\UserController@invitaciones');
 
 
 Route::resource('invitations', 'Student\InvitationController', [
-    'only' => ['store']
+    'only' => ['store', 'update', 'destroy'],
+    'parameters' => [
+      'invitations' => 'proyecto'
+    ]
 ]);
 
 Route::resource('componentes', 'Admin\ComponenteController', [

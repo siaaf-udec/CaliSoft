@@ -90,9 +90,9 @@ class UserController extends Controller
         return $this->users->searchFreeStudents($request->name);
     }
 
-    public function getInvitations()
+    public function invitaciones()
     {
-      return request()->user()->invitaciones();
+      return request()->user()->proyectos()->wherePivot('tipo', 'invitado')->get();
     }
 
 }

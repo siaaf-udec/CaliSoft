@@ -9,7 +9,7 @@ Route::get('/proyectos', 'StudentController@proyectos')
     ->middleware('create-project');
 
 
-Route::post('/proyectos', 'ProyectosController@store')
+Route::post('/proyectos', 'ProyectoController@store')
     ->name('proyectos.store')
     ->middleware('create-project');
 
