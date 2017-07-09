@@ -10,18 +10,12 @@ new Vue({
             fillDocumentos: {},
             formErrors: {},
             formErrorsUpdate: {},
-            tiposDocumentos: [],
-            proyectoId: window.proyectoId
+            tiposDocumentos: []
     },
 
 
     created(){
 
-        axios.get(`/api/proyectos/${this.proyectoId}/documentacion`)
-            .then(res => this.documentos = res.data);
-
-        axios.get(`/api/tdocumentos`)
-            .then(res => this.tiposDocumentos = res.data);
 
     },
 
@@ -33,14 +27,7 @@ new Vue({
             $('#editar-documentos').modal("show");
         },
 
-        store(idfk){
-            this.newDocumentos.FK_ProyectoId = idfk;
-            axios.post('../api/documentacion/',this.newDocumentos)
-            .then(res => this.documentos.push(res.data));
-            $("#crear-documentos").modal("hide");;
-            toastr.info('Documento subido correctamente');
-        },
-
+    
         update() {
             axios.put('../api/documentacion/' + this.fillDocumentos.PK_id, this.fillDocumentos)
                 .then(response => {

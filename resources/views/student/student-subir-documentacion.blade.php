@@ -5,13 +5,9 @@
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
             <div id="app">
-               <h2> DOCUMENTACIÓN</h2>
                 <br>
-                <div class="panel panel-primary">
-                <div class="panel-heading text-center">
-                    <h4>LISTADO DE DOCUMENTOS ANEXADOS {{DB::table('TBL_usuarios')->where('role','admin')->get()}}</h4>
-                </div>
-                <div class="panel-body">
+                
+                
                     <!-- Table de categorias -->
                     <div class="table-responsive">
                         <table class="table table-striped table-hover table-bordered table-condensed">
@@ -39,7 +35,7 @@
         </tbody>
     </table>
                 </div>
-            </div>
+            
 
 
     <button type="button" data-toggle="modal" data-target="#crear-documentos" class="btn blue center-block">
@@ -58,7 +54,7 @@
                 <h4 class="modal-title" id="myModalLabel">Subir Documento</h4>
             </div>
             <div class="modal-body">
-                <form @submit.prevent='store({{  Auth::user()->FK_ProyectoId  }},{{  Auth::user()->FK_ProyectoId  }} )'>
+                <form @submit.prevent='store( )'>
 
         <br>
         <br>
@@ -117,7 +113,7 @@
         </div>
     </div>
 </div>
-</div>
+
 <!--edicion modal -->
 <div class="modal fade " id="editar-documentos" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
     <div class="modal-dialog" role="document">
@@ -201,9 +197,7 @@
 
 @push('functions')
     <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script>
-        window.proyectoId = {{ Auth::user()->FK_ProyectoId }};
-    </script>
+   
     <script src="/js/documentos.js"></script>
 @endpush
 

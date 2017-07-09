@@ -22,7 +22,6 @@ mix
     .js('resources/assets/js/documentos.js', 'public/js')
     .js('resources/assets/js/tipo-documento.js', 'public/js')
     .js('resources/assets/js/categorias-show.js', 'public/js')
-    .js('resources/assets/js/admin-proyectos.js', 'public/js')
     .js('resources/assets/js/invitaciones.js', 'public/js')
-
     .js('resources/assets/js/peticiones.js', 'public/js')
+    .js('resources/assets/js/admin-proyectos.js', 'public/js')
