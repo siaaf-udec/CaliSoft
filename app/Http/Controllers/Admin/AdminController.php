@@ -39,14 +39,13 @@ class AdminController extends Controller
         return view('admin.peticiones');
     }
 
-    public function componentes(TiposDocumento $tdocumento){
+    public function componentes(TiposDocumento $tdocumento)
+    {
         return view('admin.componentes', compact('tdocumento'));
     }
 
     public function proyectos()
     {
-        return view('admin.proyectos',
-      ['categorias' => Categorias::all()]
-    );
+        return view('admin.proyectos',['categorias' => Categorias::all()]);
     }
 }
