@@ -51,7 +51,7 @@
             <div class="row">
                 <!-- Boton de crear usuario -->
                 <div class="col-sm-6">
-                    <button data-toggle="modal" data-target="#crear-usuario" class="btn btn-primary center-block">
+                    <button data-toggle="modal" data-target="#crear-usuario" class="btn green-jungle center-block">
                         Crear Usuario
                     </button>
                 </div>
@@ -117,12 +117,12 @@
                             </select>
                         </div>
                     </div>
-                    <div class="form-group">
+                    <div class="form-group modal-footer">
+                      <button type="submit" class="btn green-jungle">
+                          <i class="fa fa-plus"></i>Registrar
+                      </button>
                         <button type="button" class="btn btn-danger" data-dismiss="modal">
                             <i class="fa fa-ban"></i>Cancelar
-                        </button>
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fa fa-plus"></i>Registrar
                         </button>
                     </div>
                 </form>
@@ -135,7 +135,7 @@
                 ¿Desea eliminar el Usuario @{{deleteUser.name}}?
 
                 <div class="modal-footer" slot="footer">
-                    <button class="btn blue" @click="destroy(deleteUser)">
+                    <button class="btn green-jungle" @click="destroy(deleteUser)">
                         <i class="fa fa-edit"></i>Eliminar Usuario
                     </button>
                     <button type="button" class="btn red" data-dismiss="modal">
