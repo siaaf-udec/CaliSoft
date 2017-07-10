@@ -1,5 +1,5 @@
 <template>
-   
+
             <div class="panel panel-info">
                 <div class="panel-heading text-center text-uppercase">PROYECTO</div>
                 <div class="panel-body bg-info">
@@ -8,6 +8,14 @@
                             <tr>
                                 <th>Nombre:</th>
                                 <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                              <th>Integrantes:</th>
+                              <td>{{integrantes.join(", ")}}</td>
+                            </tr>
+                            <tr>
+                              <th>Evaluadores:</th>
+                              <td>{{evaluadores.join(", ")}}</td>
                             </tr>
                             <tr>
                                 <th>Estado:</th>
@@ -38,11 +46,26 @@
                     </div>
                 </div>
             </div>
-        
+
 </template>
 
 <script>
 export default {
-    props: ['proyecto']
+    props: ['proyecto'],
+    methods:{
+      filtrar(tipo){
+        return this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo)
+          .map(usuario => usuario.name);
+      }
+    },
+    computed:{
+      integrantes(){
+        return this.filtrar('integrante')
+      },
+      evaluadores(){
+        return this.filtrar('evaluador')
+      }
+
+    }
 }
 </script>
