@@ -14,6 +14,10 @@
                               <td>{{integrantes.join(", ")}}</td>
                             </tr>
                             <tr>
+                              <th>Evaluadores:</th>
+                              <td>{{evaluadores.join(", ")}}</td>
+                            </tr>
+                            <tr>
                                 <th>Estado:</th>
                                 <td class="text-uppercase">{{ proyecto.state }}</td>
                             </tr>
@@ -48,11 +52,20 @@
 <script>
 export default {
     props: ['proyecto'],
-    computed:{
-      integrantes(){
-        return this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == 'integrante')
+    methods:{
+      filtrar(tipo){
+        return this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo)
           .map(usuario => usuario.name);
       }
+    },
+    computed:{
+      integrantes(){
+        return this.filtrar('integrante')
+      },
+      evaluadores(){
+        return this.filtrar('evaluador')
+      }
+
     }
 }
 </script>
