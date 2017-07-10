@@ -14,10 +14,17 @@ class AdminProyectoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $this->validate($request,[
+        'categoriaId' => 'integer'
+        ]);
+        $categoriaId=$request->categoriaId;
         return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
-        ->paginate(3);
+        ->when($categoriaId,function($query) use ($categoriaId){
+            return $query->where('FK_CategoriaId',$categoriaId);
+        })
+        ->paginate(5);
     }
 
     /**
