@@ -15,7 +15,7 @@
         <div class="row">
 
             <div class="col-sm-6">
-                <div class="list-group">
+                <div class="list-group ">
                     <a v-for="proyecto in proyectos " href="#" class="list-group-item" @click="seleccionar(proyecto)">@{{proyecto.nombre}}</a>
                 </div>
                 <!--Inicio Paginacion Proyecto-->
