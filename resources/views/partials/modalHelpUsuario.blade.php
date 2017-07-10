@@ -28,7 +28,7 @@
           </div>
       </div>
       <div class="modal-footer" slot="footer">
-        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Close</button>
+        <button type="button" class="btn dark btn-outline" data-dismiss="modal">Cerrar</button>
       </div>
     </div>
   </div>
