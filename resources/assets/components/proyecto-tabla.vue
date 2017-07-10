@@ -1,5 +1,5 @@
 <template>
-   
+
             <div class="panel panel-info">
                 <div class="panel-heading text-center text-uppercase">PROYECTO</div>
                 <div class="panel-body bg-info">
@@ -8,6 +8,10 @@
                             <tr>
                                 <th>Nombre:</th>
                                 <td>{{ proyecto.nombre }}</td>
+                            </tr>
+                            <tr>
+                              <th>Integrantes:</th>
+                              <td>{{integrantes.join(", ")}}</td>
                             </tr>
                             <tr>
                                 <th>Estado:</th>
@@ -38,11 +42,17 @@
                     </div>
                 </div>
             </div>
-        
+
 </template>
 
 <script>
 export default {
-    props: ['proyecto']
+    props: ['proyecto'],
+    computed:{
+      integrantes(){
+        return this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == 'integrante')
+          .map(usuario => usuario.name);
+      }
+    }
 }
 </script>
