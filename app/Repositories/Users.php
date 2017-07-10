@@ -13,7 +13,7 @@ class Users {
       })
         ->where('role', 'student')
         ->where('name', 'like', "%$name%")
-        ->limit(5)
+        ->limit(10)
         ->get();
   }
 
