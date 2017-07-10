@@ -38,11 +38,11 @@ class CategoriesTableSeeder extends Seeder
                 'plataforma' => 80,
                 'modelado' => 20,
                 'clases' => 40,
-                'uso' => 15,
-                'despliegue' => 15,
+                'uso' => 0,
+                'despliegue' => 0,
                 'sequencia' => 60,
-                'actividades' => 15,
-                'entidad_relacion' => 25
+                'actividades' => 0,
+                'entidad_relacion' => 0
             ]
         ]);
     }
