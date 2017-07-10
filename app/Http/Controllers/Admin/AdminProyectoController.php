@@ -7,7 +7,6 @@ use Illuminate\Http\Request;
 use App\Categorias;
 use App\Proyecto;
 
-
 class AdminProyectoController extends Controller
 {
     /**
@@ -17,8 +16,8 @@ class AdminProyectoController extends Controller
      */
     public function index()
     {
-        return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'integrantes', 'evaluadores', 'invitados')
-        ->get()->paginate(3);
+        return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
+        ->paginate(3);
     }
 
     /**
@@ -89,7 +88,7 @@ class AdminProyectoController extends Controller
 
     public function getPeticiones()
     {
-        return Proyecto::where('state','propuesta')
+        return Proyecto::where('state', 'propuesta')
         ->get();
     }
 }
