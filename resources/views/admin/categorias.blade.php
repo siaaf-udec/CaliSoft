@@ -22,8 +22,8 @@
 
                         <td class="text-center">
 
-                            <button class="editar-categoria btn yellow-gold btn-xs" @click.prevent="openEditModal(categoria)">
-                                    <span class="glyphicon glyphicon-edit"></span>
+                            <button class="editar-categoria btn blue btn-xs" @click.prevent="openEditModal(categoria)">
+                                    <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
                             <button class="editar-modal btn red btn-xs" @click.prevent="openDeleteModal(categoria)">
                                     <span class="glyphicon glyphicon-trash"></span>
@@ -43,7 +43,7 @@
                         <th class="text-center">Actividades</th>
                         <th class="text-center">secuencia</th>
                         <th class="text-center">Uso</th>
-                        <th class="text-center">Operaciones</th>
+                        
                     </thead>
                     <tbody>
                         <tr v-for="categoria in categorias" class="text-center">
@@ -54,20 +54,15 @@
                             <td v-text="categoria.actividades"></td>
                             <td v-text="categoria.sequencia"></td>
                             <td v-text="categoria.uso"></td>
-                            <td class="text-center">
-                                <button class="editar-categoria btn yellow-gold btn-xs" @click.prevent="openEditModal(categoria)">
-                                        <span class="glyphicon glyphicon-edit"></span>
-                                    </button>
-                                <button class="editar-modal btn red btn-xs" @click.prevent="openDeleteModal(categoria)">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
+                            
+                                
                             </td>
                         </tr>
                     </tbody>
                 </table>
             </div>
             <!-- Tabla de Categorias -->
-            <button type="button" data-toggle="modal" data-target="#crear-categoria" class="btn blue center-block">
+            <button type="button" data-toggle="modal" data-target="#crear-categoria" class="btn green-jungle center-block">
                     <i class="fa fa-plus"></i>
                     Crear Nueva Categoría
                 </button>
@@ -166,7 +161,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="form-group">
-                        <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Crear Categoría</button>
+                        <button type="submit" class="btn green-jungle"><i class="fa fa-plus"></i>Crear Categoría</button>
                         <button type="button" class="btn red" data-dismiss="modal">
                             <i class="fa fa-ban"></i>
                             Cancelar
@@ -267,7 +262,7 @@
                 </div>
                 <div class="modal-footer">
                     <div class="form-group">
-                        <button type="submit" class="btn blue">
+                        <button type="submit" class="btn green-jungle">
                             <i class="fa fa-edit"></i>Editar Categoría
                         </button>
                         <button type="button" class="btn red" data-dismiss="modal">
@@ -285,7 +280,7 @@
             ¿Desea eliminar la categoría @{{elimiCategoria.nombre}}?
 
             <div class="modal-footer" slot="footer">
-                <button class="btn blue" @click="destroy(elimiCategoria)">
+                <button class="btn green-jungle" @click="destroy(elimiCategoria)">
                     <i class="fa fa-edit"></i>Eliminar Categoria
                 </button>
                 <button type="button" class="btn red" data-dismiss="modal">

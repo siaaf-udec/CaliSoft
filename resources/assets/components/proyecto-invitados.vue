@@ -37,12 +37,17 @@ export default {
 
     methods: {
         invitar(user){
+            if(this.allUsers.find(u => u.PK_id == user.PK_id)){
+              toastr.error('ya se ha invitado a este usuario');
+              return;
+            }
             axios.post('/api/invitations', {
                 project_id: this.proyectoId,
                 user_id: user.PK_id,
                 invitation: true
             }).then(() => {
-                this.usuarios.push(user);
+
+                toastr.info(`Has invitado ha ${user.name} a tu proyecto`);
                 $('#invite-modal').modal('hide');
             });
         }
