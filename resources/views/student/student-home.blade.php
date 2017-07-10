@@ -13,14 +13,19 @@
                     <proyecto-vista></proyecto-vista>
                 </div>
             @endcan
-               
+
         @endcomponent
     </div>
-    
+
 @endsection
 
-@push('functions')
-    @cannot('create', 'App\Proyecto')
-        <script src="/js/proyectos.js"></script>
-    @endcannot
-@endpush
+@cannot('create', 'App\Proyecto')
+  @push('functions')
+    <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="/js/proyectos.js"></script>
+  @endpush
+
+  @push('styles')
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
+  @endpush
+@endcannot

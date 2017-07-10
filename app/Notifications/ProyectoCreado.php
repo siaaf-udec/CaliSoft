@@ -56,9 +56,8 @@ class ProyectoCreado extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'admin'=>$this->admin,
-            'user'=>auth()->user()
-            //'repliedTime'=>\Carbon\Carbon::now()
+            'admin'=> $this->admin,
+            'user'=> auth()->user()
         ];
     }
 }

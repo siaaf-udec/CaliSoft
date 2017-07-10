@@ -11,14 +11,14 @@
                 Ya puedes ver el proyecto <a href="{{ route('student') }}">Aqui.</a>
             </p>
 
-            <ul class="list-group col-md-8 col-md-offset-2" v-else>
+            <ul class="list-group col-xs-10 col-xs-offset-1" v-else>
               <li class="list-group-item" v-for="proyecto in invitaciones">
                 <div class="row">
-                  <div class="col-sm-8 col-xs-12 text-center">
+                  <div class="col-md-8 col-xs-12 text-center">
                     El proyecto <strong>@{{ proyecto.nombre }}</strong> te ha invitado a ser parte
-                    de su equipo de trabajo
+                    de su equipo de trabajo.
                   </div>
-                  <div class="col-sm-4 col-xs-12 text-center">
+                  <div class="col-md-4 col-xs-12 text-center">
                       <button class="btn blue" @click="accept(proyecto)">Aceptar</button>
                       <button class="btn" @click="reject(proyecto)">Rechazar</button>
                   </div>
