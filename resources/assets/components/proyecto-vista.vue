@@ -35,7 +35,7 @@
 
                     <div class="btn-group btn-group-vertical center-block">
                         <button class="btn blue">Enviar Propuesta</button>
-                        <button class="btn yellow-gold">Editar Datos</button>
+                        <button class="btn yellow-gold" @click.prevent="openEditModal(proyecto)">Editar Datos</button>
                         <button class="btn red">Eliminar</button>
                     </div>
                 </div>
@@ -60,11 +60,21 @@
               <proyecto-invitados :invitados="invitados" :proyecto-id="proyecto.PK_id">
               </proyecto-invitados>
             </div>
+            <!-- comienzo modal de edicion-->
+            <div class="row">
+                <modal id="editar-proyecto" title="Editar Proyecto">
+                     <proyecto-editar :proyecto="fillProyecto">
+                     </proyecto-editar>
+                </modal>
+            </div>
 
         </div>
 
 
     </div>
+    
+    
+
 
 </template>
 
@@ -72,17 +82,26 @@
 import ProyectoIntegrantes from "./proyecto-integrantes";
 import ProyectoEvaluadores from "./proyecto-evaluadores";
 import ProyectoInvitados from "./proyecto-invitados";
+import Modal from "./modal";
+import proyectoEditar from "./proyecto-editar";
 
 export default {
     components: {
-        ProyectoIntegrantes, ProyectoEvaluadores, ProyectoInvitados
+        ProyectoIntegrantes, 
+        ProyectoEvaluadores, 
+        ProyectoInvitados,
+        Modal,
+        proyectoEditar,
     },
     data(){
-        return { proyecto: {} };
+        return { proyecto: {},
+                 fillProyecto:{},    
+        };
     },
     created(){
         axios.get('/api/user/project').then(res => this.proyecto = res.data);
     },
+    
     computed: {
         integrantes(){
             return this.filtrarUsuario('integrante');
@@ -98,7 +117,11 @@ export default {
         filtrarUsuario(tipo){
             return this.proyecto.usuarios ?
                 this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo) : []
-        }
+        },
+        openEditModal(proyecto){
+        this.fillProyecto = Object.assign({},proyecto);
+        $('#editar-proyecto').modal("show");
+    },
     }
 }
 </script>
