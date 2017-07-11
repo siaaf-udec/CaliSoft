@@ -50,11 +50,12 @@
 
         @include('partials.modalHelpProyecto')
     </div>
-    @endcomponent 
-    @endsection 
+    @endcomponent
+  </div>
+    @endsection
     @push('styles')
-    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css"> 
-    @endpush 
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
+    @endpush
     @push('functions')
     <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
     <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>

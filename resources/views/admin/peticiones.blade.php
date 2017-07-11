@@ -3,16 +3,14 @@
 @section('content')
 
     <div class="col-md-12">
-        @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
+        @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Peticiones'])
             <div id="app">
-               <h2> PETICIONES</h2>
-                <br>
                 <div class="panel panel-primary">
                     <div class="panel-heading text-center">
                         <h4>LISTADO DE PROYECTOS EN PROPUESTA</h4>
                     </div>
                     <div class="panel-body">
-                    
+
 
                         <!-- BEGIN Portlet PORTLET-->
                             <div class="portlet box red-sunglo" v-for="peticion in peticiones">
@@ -28,7 +26,7 @@
                                     </div>
                                 </div>
                                 <div class="portlet-body">
-                                    <div class="col-md-12">    
+                                    <div class="col-md-12">
                                         <div class="profile-sidebar">
                                             <div class="portlet light profile-sidebar-portlet ">
                                                 <!-- SIDEBAR USERPIC -->
@@ -53,12 +51,12 @@
                                         amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
 
 
-                                    
+
                             </div>
                             <!-- END Portlet PORTLET-->
 
 
-                    
+
                     </div>
                 </div>
             </div>
@@ -73,7 +71,7 @@
     <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
     <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
-        
+
 @endpush
 
 @push('functions')
