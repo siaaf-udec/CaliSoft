@@ -93,7 +93,10 @@ export default{
       update(){
         let proyecto = this.proyectoEdit;
         axios.put('/api/proyectos/' + proyecto.PK_id, proyecto)
-          .then(() => this.$emit('update', proyecto))
+          .then(() => {
+            this.errors = {};
+            this.$emit('update', proyecto)
+          })
           .catch(error => this.errors = error.response.data)
       }
     }

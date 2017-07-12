@@ -15,6 +15,8 @@ class ProyectoController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:student')->except('index');
+
+        $this->middleware('can:update,proyecto')->only('update');
     }
 
     public function index()
