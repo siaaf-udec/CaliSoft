@@ -5,7 +5,7 @@
         @component('components.portlet', ['icon' => 'fa fa-pencil-square', 'title' => 'Registro Proyecto'])
             <div class="row">
                 <form action="{{ route('proyectos.store') }}" method="POST" class="col-md-8 col-md-offset-2" >
-                    
+
                     {{ csrf_field() }}
 
                     @component('components.text', [
@@ -16,7 +16,7 @@
                         'icon' => 'fa fa-cubes'
                     ])
                     @endcomponent
-                   
+
                     @component('components.select', [
                         'name' => 'categoria',
                         'title' => 'Categoria',
@@ -43,7 +43,7 @@
                         'label' => 'nombre'
                     ])
                     @endcomponent
-                 
+
 
                     <div class="form-group">
                         <button type="submit" class="btn blue center-block">Enviar</button>
@@ -52,6 +52,7 @@
                 </form>
             </div>
         @endcomponent
+        @include('partials.modalHelpRegistroProyecto')
     </div>
 
 @endsection
