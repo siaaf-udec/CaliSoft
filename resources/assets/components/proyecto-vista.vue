@@ -63,7 +63,7 @@
             <!-- comienzo modal de edicion-->
             <div class="row">
                 <modal id="editar-proyecto" title="Editar Proyecto">
-                     <proyecto-editar :proyecto="fillProyecto">
+                     <proyecto-editar :proyecto="fillProyecto" @update="update">
                      </proyecto-editar>
                 </modal>
             </div>
@@ -72,8 +72,8 @@
 
 
     </div>
-    
-    
+
+
 
 
 </template>
@@ -87,21 +87,21 @@ import proyectoEditar from "./proyecto-editar";
 
 export default {
     components: {
-        ProyectoIntegrantes, 
-        ProyectoEvaluadores, 
+        ProyectoIntegrantes,
+        ProyectoEvaluadores,
         ProyectoInvitados,
         Modal,
         proyectoEditar,
     },
     data(){
         return { proyecto: {},
-                 fillProyecto:{},    
+                 fillProyecto:{},
         };
     },
     created(){
         axios.get('/api/user/project').then(res => this.proyecto = res.data);
     },
-    
+
     computed: {
         integrantes(){
             return this.filtrarUsuario('integrante');
@@ -119,9 +119,14 @@ export default {
                 this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo) : []
         },
         openEditModal(proyecto){
-        this.fillProyecto = Object.assign({},proyecto);
-        $('#editar-proyecto').modal("show");
-    },
+          this.fillProyecto = Object.assign({},proyecto);
+          $('#editar-proyecto').modal("show");
+        },
+        update(proyecto){
+          this.proyecto = proyecto;
+          $('#editar-proyecto').modal("hide");
+          toastr.info('Datos del proyecto actualizados con exito');
+        }
     }
 }
 </script>
