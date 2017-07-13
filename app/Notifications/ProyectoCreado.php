@@ -3,10 +3,8 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Notification;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Proyecto;
+use Illuminate\Notifications\Notification;
 
 class ProyectoCreado extends Notification
 {
@@ -19,7 +17,7 @@ class ProyectoCreado extends Notification
      */
     public function __construct($admin)
     {
-        $this->admin=$admin;
+        $this->admin = $admin;
     }
 
     /**
@@ -42,9 +40,9 @@ class ProyectoCreado extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Notification Action', url('/'))
-                    ->line('Thank you for using our application!');
+            ->line('The introduction to the notification.')
+            ->action('Notification Action', url('/'))
+            ->line('Thank you for using our application!');
     }
 
     /**
@@ -56,8 +54,8 @@ class ProyectoCreado extends Notification
     public function toDatabase($notifiable)
     {
         return [
-            'admin'=> $this->admin,
-            'user'=> auth()->user()
+            'admin' => $this->admin,
+            'user'  => auth()->user(),
         ];
     }
 }

@@ -121,7 +121,9 @@
 
 
 @endsection @push('styles')
-<link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css"> @endpush @push('functions')
+<link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css"> @endpush 
+
+@push('functions')
 <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
 <script>
     window.documentId = {{ $tdocumento ->PK_id }};

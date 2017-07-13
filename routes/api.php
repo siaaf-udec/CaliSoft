@@ -30,7 +30,7 @@ Route::resource('usuarios', 'Admin\UserController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
 
-Route::resource('documentacion', 'Student\DocumentosController', [
+Route::resource('documentacion', 'Student\DocumentoController', [
     'only' => ['index', 'store', 'update', 'destroy']
 ]);
 

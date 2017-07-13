@@ -3,21 +3,18 @@
 @section('content')
 
     <div class="col-md-12">
-        @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
+        @component('components.portlet', ['icon' => 'fa fa-university', 'title' => 'Peticiones'])
             <div id="app">
-               <h2> PETICIONES</h2>
                 <br>
                 <div class="panel panel-primary">
-                    <div class="panel-heading text-center">
-                        <h4>LISTADO DE PROYECTOS EN PROPUESTA</h4>
-                    </div>
-                    <div class="panel-body">
+                   
                     
-
                         <!-- BEGIN Portlet PORTLET-->
+
+
                             <div class="portlet box red-sunglo" v-for="peticion in peticiones">
                                 <div class="portlet-title">
-                                    <div class="caption" v-text="peticion.nombre" >
+                                    <div class="caption" v-text="peticion.nombre">
                                         <i class="fa fa-gift"></i ></div>
                                     <div class="tools">
                                         <a href="javascript:;" class="collapse"> </a>
@@ -29,7 +26,7 @@
                                 </div>
                                 <div class="portlet-body">
                                     <div class="col-md-12">    
-                                        <div class="profile-sidebar">
+                                        <div class="profile-sidebar" v-for="usuario in peticion.usuarios">
                                             <div class="portlet light profile-sidebar-portlet ">
                                                 <!-- SIDEBAR USERPIC -->
                                                 <div class="profile-userpic">
@@ -37,8 +34,10 @@
                                                 <!-- END SIDEBAR USERPIC -->
                                                 <!-- SIDEBAR USER TITLE -->
                                             <div class="profile-usertitle">
-                                                <div class="profile-usertitle-name"> Marcus Doe </div>
-                                                <div class="profile-usertitle-job"> Developer </div>
+                                                <div class="profile-usertitle-name "  v-text="usuario.name" >  </div>
+                                                <div class="profile-usertitle-job" v-text="usuario.email"> </div>
+                                                <div class="profile-usertitle-job" v-text="usuario.role"> </div>
+
                                             </div>
                                     <!-- END SIDEBAR USER TITLE -->
                                         </div>
@@ -46,11 +45,39 @@
 
                                     </div>
 
-                                    <p>
-                                        <strong>Scroll is hidden</strong>
-                                        <br/> Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula,
-                                        eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit
-                                        amet fermentum. Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. </p>
+                                    <div class="row">
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-md-line-input has-success">
+                                                        <div class="input-icon">
+                                                            <input type="text" class="form-control" v-model="peticion.categoria.nombre" disabled>
+                                                            <label for="form_control_1">Categoria</label>
+                                                            <i class="fa fa-pie-chart"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-md-line-input has-warning">
+                                                        <div class="input-icon">
+                                                            <input type="text" class="form-control" v-model="peticion.grupo_de_investigacion.nombre" disabled>
+                                                            <label for="form_control_1">Grupo de investigación</label>
+                                                            <i class="fa fa-gears"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-4">
+                                                    <div class="form-group form-md-line-input has-error">
+                                                        <div class="input-icon">
+                                                            <input type="text" class="form-control" v-model="peticion.semillero.nombre" disabled>
+                                                            <label for="form_control_1">Semillero</label>
+                                                            <i class="fa fa-pagelines"></i>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                    <div class="btn-group btn-group-vertical center-block">
+                                    <button class="btn blue"  @click.prevent="asig(peticion)">Aceptar Propuesta</button>
+                                   </div>
 
 
                                     
@@ -60,10 +87,28 @@
 
                     
                     </div>
-                </div>
             </div>
+
+
+            
+            <modal id="editar-proyecto" title="¿Está seguro de continuar?">
+                <form @submit.prevent="update(fillPeticiones.PK_id)">
+
+                    <button type="submit" class="btn blue"><i class="fa fa-check"></i>Aceptar</button>
+                    <button type="button" class="btn red" data-dismiss="modal"><i class="fa fa-ban"></i>Cancelar</button>
+
+                </form>
+            </modal>
+
+
+           </div> 
+
         @endcomponent
-    </div>
+
+
+
+
+    
 
 </div>
 @endsection

@@ -2,16 +2,15 @@
 
 namespace App\Http\Controllers\Student;
 
-use Illuminate\Http\Request;
-use App\Http\Controllers\Controller;
-use Illuminate\Support\Facades\Auth;
 use App\Documentos;
+use App\Http\Controllers\Controller;
+use App\Notifications\ProyectoCreado;
 use App\TiposDocumento;
 use App\User;
-use Illuminate\Notifications\Notifiable;
-use App\Notifications\ProyectoCreado;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
-class DocumentosController extends Controller
+class DocumentoController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -20,9 +19,11 @@ class DocumentosController extends Controller
      */
     public function index()
     {
-
-        $docs = Documentos::All();
-            return view('student.student-subir-documentacion',compact('docs'));
+        $proyectoId = auth()->user()->proyectos()->first();
+        $documents  = Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)->get();
+        return $documents;
+        //$docs = Documentos::All();
+        //  return view('student.student-subir-documentacion',compact('docs'));
     }
 
     /**
@@ -41,32 +42,25 @@ class DocumentosController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request, User $admin)
+    public function store(Request $request)
     {
         $this->validate($request, [
-            'url'=>'required|string',
-            'FK_ProyectoId'=>'required|integer',
-            'FK_TipoDocumentoId'=>'required|integer'
+            'url'                => 'required|string',
+            'FK_ProyectoId'      => 'required|integer',
+            'FK_TipoDocumentoId' => 'required|integer',
 
         ]);
 
-        $this->admin=$admin;
-
-        //$admi = User::where('role','admin')->get();
-
-        //$admin->addComment('1');
-        //$thread->addComment($request->body);
-        //$thread->addComment($request->body);
+        $admin = User::where('role', 'admin')->first();
 
         auth()->user()->notify(new ProyectoCreado($admin));
 
         return Documentos::create([
-            'url'=> $request->url,
-            'FK_ProyectoId'=>$request->FK_ProyectoId,
-            'FK_TipoDocumentoId'=>$request->FK_TipoDocumentoId
-            ]);
+            'url'                => $request->url,
+            'FK_ProyectoId'      => $request->FK_ProyectoId,
+            'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
+        ]);
 
-        
     }
 
     /**
@@ -100,10 +94,10 @@ class DocumentosController extends Controller
      */
     public function update(Request $request, Documentos $documentacion)
     {
-        $this->validate($request,[
-            'url'=>'required|string',
-            'FK_ProyectoId'=>'required|integer',
-            'FK_TipoDocumentoId'=>'required|integer'
+        $this->validate($request, [
+            'url'                => 'required|string',
+            'FK_ProyectoId'      => 'required|integer',
+            'FK_TipoDocumentoId' => 'required|integer',
         ]);
         $documentacion->fill($request->all());
         $documentacion->save();
@@ -127,7 +121,7 @@ class DocumentosController extends Controller
 
     //public function getDocumentos(Proyecto $documento)
     //{
-      //  return $documento->
+    //  return $documento->
     //}
 
 }

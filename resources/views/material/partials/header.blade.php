@@ -84,14 +84,14 @@
                         <ul class="dropdown-menu">
                             <li class="external">
 
-                                <h3><span class="bold">Proyectos</span> En propuesta</h3>
-                                <a href="{{ route('peticiones') }}">Ver todos {{$content = DB::table('TBL_Proyectos')->select('PK_Id')->where('state','propuesta')->count()}}</a>
+                                <h3><span class="bold">Proyectos</span> en propuesta</h3>
+                                <a href="{{ route('peticiones') }}">Ver todos </a>
                             </li>
                             <li>
                                 <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
                                     @foreach(auth()->user()->Notifications as $notifications)
                                     <li>
-                                        <a href="javascript:;">
+                                        <a href="{{ route('peticiones') }}">
                                             <span class="time">{{$notifications->created_at}}</span>
                                             <span class="details">
                                             <span class="label label-sm label-icon label-success">
@@ -100,15 +100,24 @@
                                         </a>
                                     </li>
                                     @endforeach
+                                    <div id='oculto' style='display:none;'>
+                                    {{$content = DB::table('TBL_Proyectos')->select('nombre','created_at')->where('state','propuesta')->get()}}
+                                   
+                                   
+                                    
+                                    </div>
+                                    @foreach($content as $Content)
+                                    
                                     <li>
-                                        <a href="javascript:;">
-                                            <span class="time">3 mins</span>
+                                        <a href="{{ route('peticiones') }}">
+                                            <span class="time">{{$Content->created_at}}</span>
                                             <span class="details">
                                             <span class="label label-sm label-icon label-danger">
                                                 <i class="fa fa-bolt"></i>
-                                            </span> Server #12 overloaded. </span>
+                                            </span> {{$Content->nombre}} </span>
                                         </a>
                                     </li>
+                                    @endforeach
                                 </ul>
                             </li>
                         </ul>

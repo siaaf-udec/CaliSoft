@@ -77,9 +77,15 @@ class AdminProyectoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, Proyecto $proyecto)
     {
-        //
+
+        $this->validate($request,[
+            
+            'state' => 'required|string'
+        ]);
+        $proyecto->state= $request->state;
+        $proyecto->save();
     }
 
     /**
@@ -95,7 +101,12 @@ class AdminProyectoController extends Controller
 
     public function getPeticiones()
     {
-        return Proyecto::where('state', 'propuesta')
-        ->get();
+        
+        return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
+        ->where('state', 'propuesta')->get();
+        
+        
+        //return Proyecto::where('state', 'propuesta')
+        //->get();
     }
 }

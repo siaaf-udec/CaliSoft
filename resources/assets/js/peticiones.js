@@ -1,13 +1,14 @@
 import "./bootstrap";
 import Vue from "vue";
-
+import Modal from "../components/modal";
 
 new Vue({
     el: "#app",
+    components: { Modal },
     data() {
         return {
             peticiones: [],
-            fillComponente: {},
+            fillPeticiones: {},
             formErrors: {},
             formErrorsUpdate: {}
         }
@@ -16,33 +17,35 @@ new Vue({
     created(){
         axios.get(`/api/peticiones`)
             .then(res => this.peticiones = res.data);
+
+      //  axios.get('/api/proyectos')
+        //    .then(res => this.peticiones = res.data);
     },
 
     methods:{
 
+        asig(peticion) {
+            this.fillPeticiones = Object.assign({}, peticion);
+            this.fillPeticiones.state="activo";
+            $('#editar-proyecto').modal("show");
+            
+        },
 
-        //actualiza el componente
+
+        //actualiza el proyecto
         update() {
-            axios.put('/api/componentes/' + this.fillComponente.PK_id, this.fillComponente)
+            axios.put('/api/proyectos/' + this.fillPeticiones.PK_id, this.fillPeticiones)
                 .then(response => {
-                    this.componentes = this.componentes.map(value => {
-                        return value.PK_id == this.fillComponente.PK_id ? this.fillComponente : value;
+                    this.peticiones = this.peticiones.map(value => {
+                        return value.PK_id == this.fillPeticiones.PK_id ? this.fillPeticiones : value;
                     });
-                    this.fillComponente = {};
-                    $("#editar-componentes").modal("hide");
-                    toastr.info('Componente editado correctamente');
+                    this.fillPeticiones = {};
+                    toastr.info('Proyecto aprobado correctamente');
                 })
                 .catch(error => this.formErrorsUpdate = error.response.data);
+                $('#editar-proyecto').modal("hide");
         },
 
-        //elimina el componente
-        destroy(componentes) {
-            axios.delete('/api/componentes/' + componentes.PK_id)
-                .then(() => {
-                    this.componentes = this.componentes.filter(value => value != componentes);
-                    toastr.info('Componente eliminado correctamente');
-                });
-        },
 
 
     }

@@ -8,7 +8,7 @@
     ])
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-university', 'link' => '#', 'title' => 'Peticiones'])
+    @component('components.nav-link', ['icon' => 'fa fa-university', 'link' => route('peticiones'), 'title' => 'Peticiones'])
     @endcomponent
 
     @component('components.nav-link', ['icon' => 'fa fa-folder-open', 'link' => route('proyecto.admin'), 'title' => 'Proyectos'])
