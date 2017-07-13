@@ -94,7 +94,7 @@
                     <button class="btn default" data-dismiss="modal">Cancelar</button>
                 </div>
             </modal>
-
+            @include('partials.modalHelpTipoDocumento')
         </div>
     @endcomponent
 </div>

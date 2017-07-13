@@ -46,7 +46,7 @@ export default {
                 user_id: user.PK_id,
                 invitation: true
             }).then(() => {
-
+                this.usuarios.push(user);
                 toastr.info(`Has invitado ha ${user.name} a tu proyecto`);
                 $('#invite-modal').modal('hide');
             });

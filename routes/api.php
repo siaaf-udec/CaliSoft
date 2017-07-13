@@ -60,10 +60,15 @@ Route::resource('componentes', 'Admin\ComponenteController', [
 ]);
 
 
-Route::get('/peticiones', 'Admin\AdminProyectoController@getPeticiones');
 
+
+//Proyecto Admin Controller Index ?
 Route::resource('proyectos', 'Admin\AdminProyectoController', [
-  'only' =>['index','store','update','destroy']
+  'only' =>['index']
 ]);
+
+//Proyecto Student Controller Store, Update
+Route::put('/proyectos/{proyecto}', 'Student\ProyectoController@update');
+
 
 Route::get('/proyectos/{proyecto}/documentacion', 'Student\ProyectoController@documentos');

@@ -113,9 +113,9 @@
 
 
             <!-- Fin de Modal de edicion -->
-
+              @include('partials.modalHelpComponentes')
+          </div>
             @endcomponent
-        </div>
     </div>
 </div>
 

@@ -85,7 +85,7 @@
                             <!-- END Portlet PORTLET-->
 
 
-                    
+
                     </div>
             </div>
 
@@ -118,7 +118,7 @@
     <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
     <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
     <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
-        
+
 @endpush
 
 @push('functions')

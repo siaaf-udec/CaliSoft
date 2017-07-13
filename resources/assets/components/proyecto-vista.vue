@@ -34,9 +34,9 @@
                     </table>
 
                     <div class="btn-group btn-group-vertical center-block">
-                        <button class="btn blue">Enviar Propuesta</button>
-                        <button class="btn yellow-gold">Editar Datos</button>
-                        <button class="btn red">Eliminar</button>
+                      <button type="button" class="btn blue" data-toggle="modal" href="#propuesta">Enviar Propuesta</button>
+                      <button class="btn yellow-gold" @click.prevent="openEditModal(proyecto)">Editar Datos</button>
+                      <button class="btn red" data-toggle="modal" href="#eliminar">Eliminar</button>
                     </div>
                 </div>
             </div>
@@ -60,29 +60,62 @@
               <proyecto-invitados :invitados="invitados" :proyecto-id="proyecto.PK_id">
               </proyecto-invitados>
             </div>
-
         </div>
+        <!-- comienzo modal de edicion-->
+        <modal id="editar-proyecto" title="Editar Proyecto">
+             <proyecto-editar :proyecto="fillProyecto" @update="update">
+             </proyecto-editar>
+        </modal>
 
+        <!-- comienzo modal de envio de propuesta -->
+        <modal id="propuesta" title="Propuesta">
+          <p class="text-justified">
+            Despues de pasar el proyecto como propuesta
+            <strong>no podras agregar integrantes ni editar los datos del mismo</strong>.
+            Deseas pasar el proyecto como propuesta?
+          </p>
+          <div class="form-group">
+            <button class="btn blue center-block">Pasar propuesta de proyecto</button>
+          </div>
+        </modal>
 
+        <!-- Eliminar proyecto -->
+        <modal id="eliminar" title="Eliminar Proyecto">
+          <p class="text-center">
+            todas las invitaciones seran canceladas y los integrantes seran liberados. <br>
+            Desea eliminar el proyecto?
+            <div class="form-group">
+              <button class="btn red center-block">Eliminar</button>
+            </div>
+          </p>
+        </modal>
     </div>
-
 </template>
 
 <script>
 import ProyectoIntegrantes from "./proyecto-integrantes";
 import ProyectoEvaluadores from "./proyecto-evaluadores";
 import ProyectoInvitados from "./proyecto-invitados";
+import Modal from "./modal";
+import proyectoEditar from "./proyecto-editar";
 
 export default {
     components: {
-        ProyectoIntegrantes, ProyectoEvaluadores, ProyectoInvitados
+        ProyectoIntegrantes,
+        ProyectoEvaluadores,
+        ProyectoInvitados,
+        Modal,
+        proyectoEditar,
     },
     data(){
-        return { proyecto: {} };
+        return { proyecto: {},
+                 fillProyecto:{},
+        };
     },
     created(){
         axios.get('/api/user/project').then(res => this.proyecto = res.data);
     },
+
     computed: {
         integrantes(){
             return this.filtrarUsuario('integrante');
@@ -98,6 +131,15 @@ export default {
         filtrarUsuario(tipo){
             return this.proyecto.usuarios ?
                 this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo) : []
+        },
+        openEditModal(proyecto){
+          this.fillProyecto = Object.assign({},proyecto);
+          $('#editar-proyecto').modal("show");
+        },
+        update(proyecto){
+          this.proyecto = proyecto;
+          $('#editar-proyecto').modal("hide");
+          toastr.info('Datos del proyecto actualizados con exito');
         }
     }
 }

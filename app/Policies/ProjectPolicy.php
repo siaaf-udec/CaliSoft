@@ -31,7 +31,11 @@ class ProjectPolicy
      */
     public function update(User $user, Proyecto $proyecto)
     {
-        //
+        return $user->proyectos()
+          ->wherePivot('tipo', 'integrante')
+          ->where('PK_id', $proyecto->PK_id)
+          ->where('state', 'creacion')
+          ->count() > 0;
     }
 
     /**

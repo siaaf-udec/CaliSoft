@@ -15,6 +15,8 @@ class ProyectoController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:student')->except('index');
+
+        $this->middleware('can:update,proyecto')->only('update');
     }
 
     public function index()
@@ -42,6 +44,19 @@ class ProyectoController extends Controller
 
         return redirect()->route('student');
     }
+
+    public function update(Request $request, Proyecto $proyecto)
+    {
+      $this->validate($request, [
+          'nombre' => sprintf('string|min:5|unique:TBL_Proyectos,nombre,%d,PK_id', $proyecto->PK_id),
+          'FK_CategoriaId' => 'integer',
+          'FK_SemilleroId' => 'integer',
+          'FK_GrupoDeInvestigacionId' => 'integer'
+      ]);
+
+      $proyecto->update($request->all());
+    }
+
 
     public function documentos(Proyecto $proyecto)
     {
