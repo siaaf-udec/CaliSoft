@@ -25,3 +25,4 @@ mix
     .js('resources/assets/js/invitaciones.js', 'public/js')
     .js('resources/assets/js/peticiones.js', 'public/js')
     .js('resources/assets/js/admin-proyectos.js', 'public/js')
+    .copy('resources/assets/js/noti.js', 'public/js')

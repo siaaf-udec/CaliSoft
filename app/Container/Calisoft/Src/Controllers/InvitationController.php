@@ -1,5 +1,5 @@
 <?php
-namespace App\Http\Controllers\Student;
+namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;

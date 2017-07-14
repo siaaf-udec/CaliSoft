@@ -68,7 +68,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('api')
              ->middleware('web')
-             ->namespace($this->namespace)
+             ->namespace('App\Container\Calisoft\Src\Controllers')
              ->group(base_path('routes/api.php'));
     }
 
@@ -88,15 +88,23 @@ class RouteServiceProvider extends ServiceProvider
     {
         Route::prefix('admin')
             ->middleware(['web', 'auth', 'role:admin'])
-            ->namespace($this->namespace . '\Admin')
+            ->namespace('App\Container\Calisoft\Src\Controllers')
             ->group(base_path('routes/admin.php'));
     }
+
+    /*protected function mapCalisoftRoutes()
+    {
+        Route::middleware('web')
+            ->namespace('App\Container\Calisoft\Src\Controllers')
+            ->group(base_path('routes/calisoft.php'));
+    }*/
+
 
     protected function mapStudentRoutes()
     {
         Route::prefix('student')
             ->middleware(['web', 'auth', 'role:student'])
-            ->namespace($this->namespace . '\Student')
+            ->namespace('App\Container\Calisoft\Src\Controllers')
             ->group(base_path('routes/student.php'));
     }
 
@@ -104,7 +112,8 @@ class RouteServiceProvider extends ServiceProvider
     {
          Route::prefix('evaluator')
             ->middleware(['web', 'auth', 'role:evaluator'])
-            ->namespace($this->namespace . '\Evaluator')
+            ->namespace('App\Container\Calisoft\Src\Controllers')
             ->group(base_path('routes/evaluator.php'));
     }
+
 }

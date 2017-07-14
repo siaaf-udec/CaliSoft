@@ -11,19 +11,19 @@
 |
  */
 
-Route::resource('semilleros', 'Admin\SemilleroController', [
+Route::resource('semilleros', 'SemilleroController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
-Route::resource('grupos-de-investigacion', 'Admin\GrupoDeInvestigacionController', [
+Route::resource('grupos-de-investigacion', 'GrupoDeInvestigacionController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
-Route::resource('categorias', 'Admin\CategoriasController', [
+Route::resource('categorias', 'CategoriaController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
-Route::resource('usuarios', 'Admin\UserController', [
+Route::resource('usuarios', 'UserController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
@@ -31,38 +31,38 @@ Route::resource('documentacion', 'Student\DocumentoController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
-Route::resource('tdocumentos', 'Admin\TiposDocumentoController', [
+Route::resource('tdocumentos', 'TiposDocumentoController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
-Route::get('tdocumentos/{tdocumento}/componentes', 'Admin\TiposDocumentoController@getComponents')
+Route::get('tdocumentos/{tdocumento}/componentes', 'TiposDocumentoController@getComponents')
     ->name('tdocumentos.componentes');
 
-Route::get('/user/project', 'Admin\UserController@proyecto');
+Route::get('/user/project', 'UserController@proyecto');
 
-Route::get('/student/search', 'Admin\UserController@searchFreeStudents');
+Route::get('/student/search', 'UserController@searchFreeStudents');
 Route::get('/student/invitations', 'Admin\UserController@invitaciones');
 
-Route::resource('invitations', 'Student\InvitationController', [
+Route::resource('invitations', 'InvitationController', [
     'only'       => ['store', 'update', 'destroy'],
     'parameters' => [
         'invitations' => 'proyecto',
     ],
 ]);
 
-Route::resource('componentes', 'Admin\ComponenteController', [
+Route::resource('componentes', 'ComponenteController', [
     'only' => ['store', 'update', 'destroy', 'index'],
 ]);
 
-Route::get('peticiones', 'Admin\AdminProyectoController@getPeticiones');
-Route::put('/peticiones/{proyecto}', 'Admin\AdminProyectoController@update');
+Route::get('peticiones', 'AdminProyectoController@getPeticiones');
+Route::put('/peticiones/{proyecto}', 'AdminProyectoController@update');
 
 //Proyecto Admin Controller Index ?
-Route::resource('proyectos', 'Admin\AdminProyectoController', [
+Route::resource('proyectos', 'AdminProyectoController', [
     'only' => ['index'],
 ]);
 
 //Proyecto Student Controller Store, Update
-Route::put('/proyectos/{proyecto}', 'Student\ProyectoController@update');
+Route::put('/proyectos/{proyecto}', 'ProyectoController@update');
 
-Route::get('/proyectos/{proyecto}/documentacion', 'Student\ProyectoController@documentos');
+Route::get('/proyectos/{proyecto}/documentacion', 'ProyectoController@documentos');

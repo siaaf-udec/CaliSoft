@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Semillero;
 use Illuminate\Http\Request;

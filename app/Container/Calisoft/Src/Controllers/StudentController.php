@@ -1,13 +1,11 @@
 <?php
 
-namespace App\Http\Controllers\Student;
+namespace App\Container\Calisoft\Src\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Categorias;
 use App\GrupoDeInvestigacion;
-use App\Http\Controllers\Controller;
 use App\Semillero;
-use App\User;
-use Illuminate\Support\Facades\Auth;
 
 class StudentController extends Controller
 {

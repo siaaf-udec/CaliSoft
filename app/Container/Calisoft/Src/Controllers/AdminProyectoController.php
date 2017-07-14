@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -81,7 +81,7 @@ class AdminProyectoController extends Controller
     {
 
         $this->validate($request,[
-            
+
             'state' => 'required|string'
         ]);
         $proyecto->state= $request->state;
@@ -101,11 +101,11 @@ class AdminProyectoController extends Controller
 
     public function getPeticiones()
     {
-        
+
         return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
         ->where('state', 'propuesta')->get();
-        
-        
+
+
         //return Proyecto::where('state', 'propuesta')
         //->get();
     }

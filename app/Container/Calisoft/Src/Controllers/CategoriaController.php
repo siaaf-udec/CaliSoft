@@ -1,14 +1,12 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Categorias;
 use Illuminate\Http\Request;
-use Illuminate\Routing\Route;
-use Illuminate\Validation\Rule;
 
-class CategoriasController extends Controller
+class CategoriaController extends Controller
 {
     function __construct()
     {

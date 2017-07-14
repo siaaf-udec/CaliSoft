@@ -1,7 +1,6 @@
 <?php
 
-
-namespace App\Http\Controllers\Admin;
+namespace App\Container\Calisoft\Src\Controllers;
 
 use App\User;
 use App\Repositories\Users;

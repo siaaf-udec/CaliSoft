@@ -1,5 +1,6 @@
 <?php
-namespace App\Http\Controllers\Student;
+
+namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Categorias as Categoria;
 use App\GrupoDeInvestigacion as Grupo;
@@ -17,7 +18,7 @@ class ProyectoController extends Controller
         $this->middleware('auth');
         $this->middleware('role:student')->except('index');
 
-        $this->middleware('can:update,proyecto')->only('update');
+        //$this->middleware('can:update,proyecto')->only('update');
     }
 
     public function index()
