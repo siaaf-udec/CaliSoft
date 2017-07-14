@@ -5,7 +5,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\TiposDocumento;
-use App\Categorias;
+use App\Container\Calisoft\Src\Categoria;
 
 class AdminController extends Controller
 {
@@ -46,6 +46,6 @@ class AdminController extends Controller
 
     public function proyectos()
     {
-        return view('calisoft.admin.admin-proyectos',['categorias' => Categorias::all()]);
+        return view('calisoft.admin.admin-proyectos', ['categorias' => Categorias::all()]);
     }
 }
