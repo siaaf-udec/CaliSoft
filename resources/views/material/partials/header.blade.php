@@ -79,7 +79,7 @@
 
                     @if( auth()->user()->role == 'admin')
 
-                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                    <li class="dropdown dropdown-extended dropdown-notification" id="notify_admin" onclick="notificacionesLeidas()">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="icon-bell"></i>
                             <span class="badge badge-default"> {{count(auth()->user()->unreadNotifications)}} </span>
@@ -99,15 +99,12 @@
                                             <span class="details">
                                             <span class="label label-sm label-icon label-success">
                                                 <i class="fa fa-plus"></i>
-                                            </span> {{$notifications->type}} </span>
+                                            @include('partials.notification.'.snake_case(class_basename($notifications->type)))
                                         </a>
                                     </li>
                                     @endforeach
                                     <div id='oculto' style='display:none;'>
                                     {{$content = DB::table('TBL_Proyectos')->select('nombre','created_at')->where('state','propuesta')->get()}}
-
-
-
                                     </div>
                                     @foreach($content as $Content)
 

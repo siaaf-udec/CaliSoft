@@ -9,7 +9,6 @@ use App\Proyecto;
 use App\Semillero;
 use App\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class ProyectoController extends Controller
 {
@@ -35,8 +34,11 @@ class ProyectoController extends Controller
             'categoria' => 'required|integer',
         ]);
 
+        // Envío de noticifación a admin BEGIN
         $admin = User::where('role', 'admin')->first();
-        auth()->user()->notify(new ProyectoCreado($admin));
+
+        $admin->notify(new ProyectoCreado($admin));
+        // Envío de noticifación a admin ENDING
 
         $request->user()->proyectos()->create([
             'nombre'                    => $request->nombre,

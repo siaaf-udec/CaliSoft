@@ -86,6 +86,7 @@
     {{-- END SCRIPTS --}}
     {{-- BEGIN CUSTOM FUNCTIONS --}}
         @stack('functions')
+        <script src="{{asset('/js/noti.js')}}"></script>
     {{-- END CUSTOM FUNCTIONS --}}
 </body>
 {{-- END BODY --}}
