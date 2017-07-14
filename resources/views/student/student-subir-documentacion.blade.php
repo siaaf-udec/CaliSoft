@@ -60,9 +60,14 @@
 
 
                 <div class="form-group">
-                    <img v-if="preview" :src="preview" class="img-responsive img-thumbnail">
-                    <input type="file" id="url" name="url" class="inputfile" @change="fileChange" accept="file_extension">
-                    <label for="logo" class="btn btn-primary form-control"> PDF </label>
+                    <div v-if="!image">
+                    <h2>Select an image</h2>
+                    <input type="file" @change="onFileChange">
+                    </div>
+                    <div v-else>
+                    <img :src="image" />
+                    <button @click="removeImage">Remove image</button>
+                    </div>
                 </div>
 
                 <span v-if="formErrorsUpdate['url']" class="error text-danger">

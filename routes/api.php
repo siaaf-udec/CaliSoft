@@ -1,7 +1,5 @@
 <?php
 
-use Illuminate\Http\Request;
-
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -11,31 +9,30 @@ use Illuminate\Http\Request;
 | routes are loaded by the RouteServiceProvider within a group which
 | is assigned the "api" middleware group. Enjoy building your API!
 |
-*/
-
+ */
 
 Route::resource('semilleros', 'Admin\SemilleroController', [
-    'only' => ['index', 'store', 'update', 'destroy']
+    'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
 Route::resource('grupos-de-investigacion', 'Admin\GrupoDeInvestigacionController', [
-    'only' => ['index', 'store', 'update', 'destroy']
+    'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
 Route::resource('categorias', 'Admin\CategoriasController', [
-    'only' => ['index', 'store', 'update', 'destroy']
+    'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
 Route::resource('usuarios', 'Admin\UserController', [
-    'only' => ['index', 'store', 'update', 'destroy']
+    'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
 Route::resource('documentacion', 'Student\DocumentoController', [
-    'only' => ['index', 'store', 'update', 'destroy']
+    'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
 Route::resource('tdocumentos', 'Admin\TiposDocumentoController', [
-    'only' => ['index', 'store', 'update', 'destroy']
+    'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
 Route::get('tdocumentos/{tdocumento}/componentes', 'Admin\TiposDocumentoController@getComponents')
@@ -46,29 +43,26 @@ Route::get('/user/project', 'Admin\UserController@proyecto');
 Route::get('/student/search', 'Admin\UserController@searchFreeStudents');
 Route::get('/student/invitations', 'Admin\UserController@invitaciones');
 
-
 Route::resource('invitations', 'Student\InvitationController', [
-    'only' => ['store', 'update', 'destroy'],
+    'only'       => ['store', 'update', 'destroy'],
     'parameters' => [
-      'invitations' => 'proyecto'
-    ]
+        'invitations' => 'proyecto',
+    ],
 ]);
-
 
 Route::resource('componentes', 'Admin\ComponenteController', [
-    'only' => ['store', 'update', 'destroy','index']
+    'only' => ['store', 'update', 'destroy', 'index'],
 ]);
 
-
-
+Route::get('peticiones', 'Admin\AdminProyectoController@getPeticiones');
+Route::put('/peticiones/{proyecto}', 'Admin\AdminProyectoController@update');
 
 //Proyecto Admin Controller Index ?
 Route::resource('proyectos', 'Admin\AdminProyectoController', [
-  'only' =>['index']
+    'only' => ['index'],
 ]);
 
 //Proyecto Student Controller Store, Update
 Route::put('/proyectos/{proyecto}', 'Student\ProyectoController@update');
-
 
 Route::get('/proyectos/{proyecto}/documentacion', 'Student\ProyectoController@documentos');

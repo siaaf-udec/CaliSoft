@@ -1,17 +1,19 @@
 <?php
 namespace App\Http\Controllers\Student;
 
+use App\Categorias as Categoria;
+use App\GrupoDeInvestigacion as Grupo;
 use App\Http\Controllers\Controller;
+use App\Notifications\ProyectoCreado;
+use App\Proyecto;
+use App\Semillero;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Categorias as Categoria;
-use App\Semillero;
-use App\GrupoDeInvestigacion as Grupo;
-use App\Proyecto;
 
 class ProyectoController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role:student')->except('index');
@@ -27,19 +29,22 @@ class ProyectoController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'nombre' => 'required|string|min:5|unique:TBL_Proyectos',
-            'grupo' => 'required|integer',
+            'nombre'    => 'required|string|min:5|unique:TBL_Proyectos',
+            'grupo'     => 'required|integer',
             'semillero' => 'required|integer',
-            'categoria' => 'required|integer'
+            'categoria' => 'required|integer',
         ]);
 
+        $admin = User::where('role', 'admin')->first();
+        auth()->user()->notify(new ProyectoCreado($admin));
+
         $request->user()->proyectos()->create([
-            'nombre' => $request->nombre,
+            'nombre'                    => $request->nombre,
             'FK_GrupoDeInvestigacionId' => $request->grupo,
-            'FK_SemilleroId' => $request->semillero,
-            'FK_CategoriaId' => $request->categoria
+            'FK_SemilleroId'            => $request->semillero,
+            'FK_CategoriaId'            => $request->categoria,
         ], [
-            'tipo' => 'integrante'
+            'tipo' => 'integrante',
         ]);
 
         return redirect()->route('student');
@@ -47,22 +52,20 @@ class ProyectoController extends Controller
 
     public function update(Request $request, Proyecto $proyecto)
     {
-      $this->validate($request, [
-          'nombre' => sprintf('string|min:5|unique:TBL_Proyectos,nombre,%d,PK_id', $proyecto->PK_id),
-          'FK_CategoriaId' => 'integer',
-          'FK_SemilleroId' => 'integer',
-          'FK_GrupoDeInvestigacionId' => 'integer'
-      ]);
+        $this->validate($request, [
+            'nombre'                    => sprintf('string|min:5|unique:TBL_Proyectos,nombre,%d,PK_id', $proyecto->PK_id),
+            'FK_CategoriaId'            => 'integer',
+            'FK_SemilleroId'            => 'integer',
+            'FK_GrupoDeInvestigacionId' => 'integer',
+        ]);
 
-      $proyecto->update($request->all());
+        $proyecto->update($request->all());
     }
-
 
     public function documentos(Proyecto $proyecto)
     {
         return $proyecto->documentos;
     }
-
 
     public function invitados(Proyecto $proyecto)
     {
@@ -73,8 +76,5 @@ class ProyectoController extends Controller
     {
         return $proyecto->usuarios()->wherePivot('tipo', 'integrante')->get();
     }
-
-
-
 
 }

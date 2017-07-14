@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Student;
 
 use App\Documentos;
 use App\Http\Controllers\Controller;
-use App\Notifications\ProyectoCreado;
 use App\TiposDocumento;
 use App\User;
 use Illuminate\Http\Request;
@@ -45,15 +44,10 @@ class DocumentoController extends Controller
     public function store(Request $request)
     {
         $this->validate($request, [
-            'url'                => 'required|string',
             'FK_ProyectoId'      => 'required|integer',
             'FK_TipoDocumentoId' => 'required|integer',
 
         ]);
-
-        $admin = User::where('role', 'admin')->first();
-
-        auth()->user()->notify(new ProyectoCreado($admin));
 
         return Documentos::create([
             'url'                => $request->url,

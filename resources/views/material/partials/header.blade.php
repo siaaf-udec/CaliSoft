@@ -76,6 +76,9 @@
                     {{-- DOC: Apply "dropdown-dark" class below "dropdown-extended" to change the dropdown styte --}}
                     {{-- DOC: Apply "dropdown-hoverable" class after below "dropdown" and remove data-toggle="dropdown" data-hover="dropdown" data-close-others="true" attributes to enable hover dropdown mode --}}
                     {{-- DOC: Remove "dropdown-hoverable" and add data-toggle="dropdown" data-hover="dropdown" data-close-others="true" attributes to the below A element with dropdown-toggle class --}}
+
+                    @if( auth()->user()->role == 'admin')
+
                     <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="icon-bell"></i>
@@ -102,12 +105,12 @@
                                     @endforeach
                                     <div id='oculto' style='display:none;'>
                                     {{$content = DB::table('TBL_Proyectos')->select('nombre','created_at')->where('state','propuesta')->get()}}
-                                   
-                                   
-                                    
+
+
+
                                     </div>
                                     @foreach($content as $Content)
-                                    
+
                                     <li>
                                         <a href="{{ route('peticiones') }}">
                                             <span class="time">{{$Content->created_at}}</span>
@@ -122,6 +125,48 @@
                             </li>
                         </ul>
                     </li>
+
+                    @else
+
+                    <li class="dropdown dropdown-extended dropdown-notification" id="header_notification_bar">
+                        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                            <i class="icon-bell"></i>
+                            <span class="badge badge-default"> 0 </span>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li class="external">
+
+                                <h3><span class="bold">Proyectos</span> en propuesta</h3>
+                                <a href="#">Ver todos </a>
+                            </li>
+                            <li>
+                                <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
+                                    <li>
+                                        <a href="#">
+                                            <span class="time">2017/90/7</span>
+                                            <span class="details">
+                                            <span class="label label-sm label-icon label-success">
+                                                <i class="fa fa-plus"></i>
+                                            </span> Hola mundo </span>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a href="#">
+                                            <span class="time">2017/06/09</span>
+                                            <span class="details">
+                                            <span class="label label-sm label-icon label-danger">
+                                                <i class="fa fa-bolt"></i>
+                                            </span> Hola mundo 2 </span>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+
+
+                    @endif
+
                     {{-- END NOTIFICATION DROPDOWN --}}
                     {{-- BEGIN INBOX DROPDOWN --}}
                     {{-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte --}}

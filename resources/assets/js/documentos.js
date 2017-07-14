@@ -14,7 +14,8 @@ new Vue({
         formErrors: {},
         formErrorsUpdate: {},
         tiposDocumentos: [],
-        proyectoId: window.proyectId
+        proyectoId: window.proyectId,
+        image: ''
     },
     created() {
         axios.get(`/api/tdocumentos`).then(res => this.tiposDocumentos = res.data);
@@ -29,6 +30,7 @@ new Vue({
             $('#editar-documentos').modal("show");
         },
         store() {
+            this.newDocumentos.url = this.image;
             this.newDocumentos.FK_ProyectoId = this.proyectoId;
             axios.post('/api/documentacion/', this.newDocumentos).then(res => {
                 this.documentos.push(res.data);
@@ -54,22 +56,22 @@ new Vue({
                 toastr.info('Documento eliminado correctamente');
             });
         },
-        fileChange(e) {
-            let file = e.target.files[0];
-            if (file && file.type.match('pdf')) {
-                this.renderPreview(file);
-                this.$emit('change', file); //emite el archivo hacia el parent
-            };
+        onFileChange(e) {
+            var files = e.target.files || e.dataTransfer.files;
+            if (!files.length) return;
+            this.createImage(files[0]);
         },
-        renderPreview(file) {
-            let reader = new FileReader();
-            reader.addEventListener('loadend', () => this.image = reader.result);
+        createImage(file) {
+            var image = new Image();
+            var reader = new FileReader();
+            var vm = this;
+            reader.onload = (e) => {
+                vm.image = e.target.result;
+            };
             reader.readAsDataURL(file);
         },
-    },
-    computed: {
-        preview() {
-            return this.image || this.src
+        removeImage: function(e) {
+            this.image = '';
         }
     }
 });
