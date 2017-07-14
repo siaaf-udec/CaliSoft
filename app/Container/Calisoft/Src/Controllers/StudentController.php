@@ -11,12 +11,12 @@ class StudentController extends Controller
 {
     public function index()
     {
-        return view('student.student-home');
+        return view('calisoft.student.student-home');
     }
 
     public function proyectos()
     {
-        return view('student.student-register-pro', [
+        return view('calisoft.student.student-register-pro', [
             'categorias'            => Categorias::all(),
             'semilleros'            => Semillero::all(),
             'gruposDeInvestigacion' => GrupoDeInvestigacion::all(),
@@ -25,7 +25,7 @@ class StudentController extends Controller
 
     public function porcentajes()
     {
-        return view('student.student-ver-porcentajes');
+        return view('calisoft.student.student-ver-porcentajes');
     }
 
     public function documentos()
@@ -38,22 +38,22 @@ class StudentController extends Controller
 
             if ($co->state == 'activo') {
 
-                return view('student.student-subir-documentacion', compact('co'));
+                return view('calisoft.student.student-subir-documentacion', compact('co'));
 
             } else {
 
-                return view('student.student-home');
+                return view('calisoft.student.student-home');
 
             }
 
         } else {
 
-            return view('student.student-home');
+            return view('calisoft.student.student-home');
         }
     }
 
     public function invitaciones()
     {
-        return view('student.student-invitaciones');
+        return view('calisoft.student.student-invitaciones');
     }
 }
