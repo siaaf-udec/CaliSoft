@@ -11,7 +11,7 @@
     <meta content="{{ csrf_token() }}" name="csrf-token"/>
 
     @include('material.partials.head')
-    
+
     <link href="{{ asset('assets/pages/css/login-5.min.css') }}" rel="stylesheet" type="text/css" />
 
 </head>
@@ -25,7 +25,7 @@
         <div class="row bs-reset">
             <div class="col-md-6 bs-reset mt-login-5-bsfix">
                 <div class="login-bg" style="background-image:url({{ asset('assets/pages/img/login/bg1.jpg') }})">
-                    <img class="login-logo" src="{{ asset('assets/pages/img/login/siaaf.png') }}" /> 
+                    <img class="login-logo" src="{{ asset('assets/pages/img/login/siaaf.png') }}" />
                 </div>
             </div>
             <div class="col-md-6 login-container bs-reset mt-login-5-bsfix">
@@ -73,12 +73,13 @@
 
     {{-- Core Scripts --}}
     @include('material.partials.scripts')
-    
+
     {{-- Javascript Libraries --}}
     @stack('plugins')
 
     {{-- Javascript Functions --}}
     @stack('functions')
+
 </body>
 {{-- END BODY --}}
 </html>
