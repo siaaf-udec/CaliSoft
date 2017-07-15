@@ -65,7 +65,8 @@ export default {
             axios.post(this.rest, this.newItem)
                 .then(res => {
                     this.items.push(res.data);
-                    this.newItem = this.errors = {};
+                    this.newItem = {};
+                    this.error = "";
                 })
                 .catch(error => this.error = error.response.data.nombre[0]);
         },
@@ -85,6 +86,7 @@ export default {
                         return value.PK_id == this.editable.PK_id ? this.editable : value;
                     });
                     this.editable = {};
+                    this.updateError = "";
                 })
                 .catch(error => this.updateError = error.response.data.nombre[0]);
 

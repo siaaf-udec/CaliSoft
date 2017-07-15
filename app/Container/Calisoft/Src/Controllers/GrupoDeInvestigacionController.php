@@ -5,7 +5,9 @@ namespace App\Container\Calisoft\Src\Controllers;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\GrupoDeInvestigacion;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
+
+use App\Container\Calisoft\Src\Requests\GrupoStoreRequest;
+use App\Container\Calisoft\Src\Requests\GrupoUpdateRequest;
 
 class GrupoDeInvestigacionController extends Controller
 {
@@ -33,10 +35,9 @@ class GrupoDeInvestigacionController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(GrupoStoreRequest $request)
     {
-        $this->validate($request, ['nombre' => 'required|string|unique:TBL_GruposDeInvestigacion']);
-        return GrupoDeInvestigacion::create(['nombre' => $request->nombre]);
+        return GrupoDeInvestigacion::create($request->only('nombre'));
     }
 
 
@@ -48,17 +49,9 @@ class GrupoDeInvestigacionController extends Controller
      * @param  \App\GrupoDeInvestigacion  $grupoDeInvestigacion
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, GrupoDeInvestigacion $grupos_de_investigacion)
+    public function update(GrupoUpdateRequest $request, GrupoDeInvestigacion $grupos_de_investigacion)
     {
-        $this->validate($request, [
-            'nombre' => [
-                'string',
-                Rule::unique('TBL_GruposDeInvestigacion')->ignore($grupos_de_investigacion->PK_id, 'Pk_id')
-            ]
-        ]);
-
-        $grupos_de_investigacion->nombre = $request->nombre;
-        $grupos_de_investigacion->save();
+        $grupos_de_investigacion->update($request->only('nombre'));
     }
 
     /**
