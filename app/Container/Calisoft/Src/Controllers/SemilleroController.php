@@ -5,7 +5,8 @@ namespace App\Container\Calisoft\Src\Controllers;
 use App\Container\Calisoft\Src\Semillero;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use Illuminate\Validation\Rule;
+use App\Container\Calisoft\Src\Requests\SemilleroUpdateRequest;
+use App\Container\Calisoft\Src\Requests\SemilleroStoreRequest;
 
 class SemilleroController extends Controller
 {
@@ -34,10 +35,9 @@ class SemilleroController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(SemilleroStoreRequest $request)
     {
-        $this->validate($request, ['nombre' => 'required|string|unique:TBL_Semilleros']);
-        return Semillero::create(['nombre' => $request->nombre]);
+        return Semillero::create($request->only('nombre'));
     }
 
 
@@ -48,17 +48,9 @@ class SemilleroController extends Controller
      * @param  \App\Semillero  $semillero
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Semillero $semillero)
+    public function update(SemilleroUpdateRequest $request, Semillero $semillero)
     {
-        $this->validate($request, [
-            'nombre' => [
-                'string',
-                Rule::unique('TBL_Semilleros')->ignore($semillero->PK_id, 'PK_id')
-            ]
-        ]);
-
-        $semillero->nombre = $request->nombre;
-        $semillero->save();
+        $semillero->update($request->only('nombre'));
     }
 
     /**
