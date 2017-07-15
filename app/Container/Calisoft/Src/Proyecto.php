@@ -30,7 +30,7 @@ class Proyecto extends Model
 
     public function categoria()
     {
-        return $this->belongsTo(Categorias::class, 'FK_CategoriaId')
+        return $this->belongsTo(Categoria::class, 'FK_CategoriaId')
             ->select('PK_id', 'nombre');
     }
 

@@ -2,8 +2,6 @@
 
 namespace App\Container\Calisoft\Src\Controllers;
 
-use App\Container\Calisoft\Src\User;
-use App\Repositories\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;

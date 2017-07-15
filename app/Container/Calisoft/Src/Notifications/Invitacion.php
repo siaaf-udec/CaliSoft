@@ -1,23 +1,30 @@
 <?php
 
-namespace App\Notifications;
+namespace App\Container\Calisoft\Src\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
+use Illuminate\Contracts\Queue\ShouldQueue;
+use Illuminate\Notifications\Messages\MailMessage;
+use App\Container\Calisoft\Src\Proyecto;
+use App\User;
 
-class ProyectoCreado extends Notification
+class Invitacion extends Notification implements ShouldQueue
 {
     use Queueable;
+
+    private $proyecto;
+    private $from;
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($admin)
+    public function __construct(User $from, Proyecto $proyecto)
     {
-        $this->admin = $admin;
+        $this->from = $from;
+        $this->proyecto = $proyecto;
     }
 
     /**
@@ -28,7 +35,7 @@ class ProyectoCreado extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['mail'];
     }
 
     /**
@@ -40,9 +47,12 @@ class ProyectoCreado extends Notification
     public function toMail($notifiable)
     {
         return (new MailMessage)
-            ->line('The introduction to the notification.')
-            ->action('Notification Action', url('/'))
-            ->line('Thank you for using our application!');
+          ->subject('Has recibido una invitacion')
+          ->markdown('mail.invitacion', [
+            'user' => $notifiable,
+            'proyecto' => $this->proyecto,
+            'from' => $this->from
+          ]);
     }
 
     /**
@@ -51,12 +61,10 @@ class ProyectoCreado extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
-
         return [
-            'admin' => $this->admin,
-            'user'  => auth()->user(),
+            //
         ];
     }
 }

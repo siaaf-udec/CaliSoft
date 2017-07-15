@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Container\Calisoft\Src;
+namespace App;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;

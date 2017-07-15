@@ -25,7 +25,7 @@ class CategoriaController extends Controller
 
     public function index()
     {
-        return Categorias::all();
+        return Categoria::all();
     }
 
     /**
@@ -53,7 +53,7 @@ class CategoriaController extends Controller
             'sequencia'=>'required|integer',
             'uso'=>'required|integer',
         ]);
-        return Categorias::create($request->all());
+        return Categoria::create($request->all());
     }
 
     /**
@@ -63,7 +63,7 @@ class CategoriaController extends Controller
      * @param  \App\Categorias  $categorias
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Categorias $categoria)
+    public function update(Request $request, Categoria $categoria)
     {
         $this->validate($request, [
             'nombre' => 'required|string|unique:TBL_Categorias,nombre,' . $categoria->PK_id . ',PK_id',
@@ -86,7 +86,7 @@ class CategoriaController extends Controller
      * @param  \App\Categorias  $categorias
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Categorias $categoria)
+    public function destroy(Categoria $categoria)
     {
         $categoria->delete();
     }

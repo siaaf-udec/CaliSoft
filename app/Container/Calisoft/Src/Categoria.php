@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Categorias extends Model
+class Categoria extends Model
 {
     protected $primaryKey = "PK_id";
     protected $table="TBL_Categorias";
