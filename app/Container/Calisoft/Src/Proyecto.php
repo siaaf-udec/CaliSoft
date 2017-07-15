@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
-use App\Container\Calisoft\Src\User;
+use App\User;
 
 class Proyecto extends Model
 {

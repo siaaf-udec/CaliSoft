@@ -3,7 +3,7 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Container\Calisoft\Src\User;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 

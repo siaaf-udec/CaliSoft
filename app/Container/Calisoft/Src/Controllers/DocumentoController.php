@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Student;
 use App\Container\Calisoft\Src\Documentos;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\TiposDocumento;
-use App\Container\Calisoft\Src\User;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 

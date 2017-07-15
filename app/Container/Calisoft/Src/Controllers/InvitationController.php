@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
-use App\Container\Calisoft\Src\User;
+use App\User;
 use App\Notifications\Invitacion;
 
 class InvitationController extends Controller
