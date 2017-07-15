@@ -3,8 +3,8 @@ namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Proyecto;
-use App\User;
+use App\Container\Calisoft\Src\Proyecto;
+use App\Container\Calisoft\Src\User;
 use App\Notifications\Invitacion;
 
 class InvitationController extends Controller
@@ -26,7 +26,6 @@ class InvitationController extends Controller
 
         $proyecto->usuarios()->attach($user->PK_id, ['tipo' => 'invitado']);
         $user->notify(new Invitacion($request->user(), $proyecto));
-
     }
 
     /**
@@ -34,7 +33,7 @@ class InvitationController extends Controller
     */
     public function update(Proyecto $proyecto)
     {
-      request()->user()->proyectos()->sync([ $proyecto->PK_id => [
+        request()->user()->proyectos()->sync([ $proyecto->PK_id => [
           'tipo' => 'integrante'
       ]]);
     }
@@ -44,7 +43,6 @@ class InvitationController extends Controller
     */
     public function destroy(Proyecto $proyecto)
     {
-      request()->user()->proyectos()->detach($proyecto->PK_id);
+        request()->user()->proyectos()->detach($proyecto->PK_id);
     }
-
 }

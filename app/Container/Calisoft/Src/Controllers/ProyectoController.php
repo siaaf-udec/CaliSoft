@@ -2,13 +2,13 @@
 
 namespace App\Container\Calisoft\Src\Controllers;
 
-use App\Categorias as Categoria;
-use App\GrupoDeInvestigacion as Grupo;
+use App\Container\Calisoft\Src\Categoria as Categoria;
+use App\Container\Calisoft\Src\GrupoDeInvestigacion as Grupo;
 use App\Http\Controllers\Controller;
 use App\Notifications\ProyectoCreado;
-use App\Proyecto;
-use App\Semillero;
-use App\User;
+use App\Container\Calisoft\Src\Proyecto;
+use App\Container\Calisoft\Src\Semillero;
+use App\Container\Calisoft\Src\User;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
@@ -79,5 +79,4 @@ class ProyectoController extends Controller
     {
         return $proyecto->usuarios()->wherePivot('tipo', 'integrante')->get();
     }
-
 }

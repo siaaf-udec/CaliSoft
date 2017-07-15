@@ -5,14 +5,13 @@ namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\TiposDocumento;
-use App\Componente;
+use App\Container\Calisoft\Src\TiposDocumento;
+use App\Container\Calisoft\Src\Componente;
 
 class ComponenteController extends Controller
 {
-
-
-     function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
         $this->middleware('role:admin', [
             'except' => ['index']
@@ -27,7 +26,7 @@ class ComponenteController extends Controller
      */
     public function store(Request $request)
     {
-       //Aqui realizo validaciones,
+        //Aqui realizo validaciones,
        $this->validate($request, [
             'nombre' => 'required|string|unique:TBL_ComponentesDocumento',
             'descripcion' => 'required|string',
@@ -46,8 +45,7 @@ class ComponenteController extends Controller
 
     public function update(Request $request, Componente $componente)
     {
-
-       $this->validate($request,[
+        $this->validate($request, [
             'nombre' => 'string|unique:TBL_ComponentesDocumento,nombre,' . $componente->PK_id . ',PK_id',
             'required' => 'boolean',
             'descripcion' => 'string'
@@ -66,8 +64,6 @@ class ComponenteController extends Controller
      */
     public function destroy(Componente $componente)
     {
-       $componente->delete();
+        $componente->delete();
     }
-
-
 }

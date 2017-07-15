@@ -2,7 +2,7 @@
 
 namespace App\Container\Calisoft\Src\Controllers;
 
-use App\Semillero;
+use App\Container\Calisoft\Src\Semillero;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Validation\Rule;

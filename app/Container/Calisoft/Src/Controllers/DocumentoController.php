@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers\Student;
 
-use App\Documentos;
+use App\Container\Calisoft\Src\Documentos;
 use App\Http\Controllers\Controller;
-use App\TiposDocumento;
-use App\User;
+use App\Container\Calisoft\Src\TiposDocumento;
+use App\Container\Calisoft\Src\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -54,7 +54,6 @@ class DocumentoController extends Controller
             'FK_ProyectoId'      => $request->FK_ProyectoId,
             'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
         ]);
-
     }
 
     /**
@@ -117,5 +116,4 @@ class DocumentoController extends Controller
     //{
     //  return $documento->
     //}
-
 }

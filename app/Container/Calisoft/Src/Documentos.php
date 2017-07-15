@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Container\Calisoft\Src;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,11 +13,13 @@ class Documentos extends Model
         'created_at', 'updated_at'
     ];
 
-    public function tipoDocumento(){
+    public function tipoDocumento()
+    {
         return $this->belongsTo(TiposDocumento::class, 'FK_TipoDocumentoId', 'PK_id');
     }
 
-    public function proyecto(){
+    public function proyecto()
+    {
         return $this->belongsTo(proyecto::class, 'FK_ProyectoId', 'PK_id');
     }
 }

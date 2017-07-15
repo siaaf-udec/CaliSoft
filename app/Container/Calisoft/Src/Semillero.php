@@ -1,12 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Container\Calisoft\Src;
 
 use Illuminate\Database\Eloquent\Model;
 
-class GrupoDeInvestigacion extends Model
+class Semillero extends Model
 {
-    protected $table = "TBL_GruposDeInvestigacion";
+    protected $table = "TBL_Semilleros";
     protected $primaryKey = "PK_id";
 
     protected $fillable = ["nombre"];

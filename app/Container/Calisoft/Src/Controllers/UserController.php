@@ -2,7 +2,7 @@
 
 namespace App\Container\Calisoft\Src\Controllers;
 
-use App\User;
+use App\Container\Calisoft\Src\User;
 use App\Repositories\Users;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -35,7 +35,6 @@ class UserController extends Controller
         return User::when($role, function ($query) use ($role) {
             return $query->where('role', $role);
         })->paginate(5);
-
     }
 
     /**
@@ -74,7 +73,8 @@ class UserController extends Controller
     /**
      * Retorna el proyecto del usuario logeado
      */
-    public function proyecto(){
+    public function proyecto()
+    {
         return request()->user()->proyectos()->with(
             'semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios'
         )->first();
@@ -84,14 +84,14 @@ class UserController extends Controller
     *  Retorna los estudiantes que no tienen
     *  proyectos, filtra por nombre
     */
-    public function searchFreeStudents(Request $request){
+    public function searchFreeStudents(Request $request)
+    {
         $this->validate($request, [ 'name' => 'string|required' ]);
         return $this->users->searchFreeStudents($request->name);
     }
 
     public function invitaciones()
     {
-      return request()->user()->proyectos()->wherePivot('tipo', 'invitado')->get();
+        return request()->user()->proyectos()->wherePivot('tipo', 'invitado')->get();
     }
-
 }

@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\TiposDocumento;
+use App\Container\Calisoft\Src\TiposDocumento;
 use App\Container\Calisoft\Src\Categoria;
 
 class AdminController extends Controller

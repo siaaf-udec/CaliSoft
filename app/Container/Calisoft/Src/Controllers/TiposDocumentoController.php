@@ -3,15 +3,14 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\TiposDocumento;
+use App\Container\Calisoft\Src\TiposDocumento;
 use Illuminate\Http\Request;
-use App\Componente;
-
+use App\Container\Calisoft\Src\Componente;
 
 class TiposDocumentoController extends Controller
 {
-
-    function __construct(){
+    public function __construct()
+    {
         $this->middleware('auth');
         $this->middleware('role:admin', [
             'except' => ['index']
@@ -74,7 +73,7 @@ class TiposDocumentoController extends Controller
      */
      public function destroy(TiposDocumento $tdocumento)
      {
-        $tdocumento->delete();
+         $tdocumento->delete();
      }
 
     /**
@@ -86,5 +85,4 @@ class TiposDocumentoController extends Controller
     {
         return $tdocumento->componentes;
     }
-
 }

@@ -2,10 +2,8 @@
 
 namespace App\Container\Calisoft\Src\Controllers;
 
-
-
 use App\Http\Controllers\Controller;
-use App\User;
+use App\Container\Calisoft\Src\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
@@ -18,8 +16,8 @@ class RegisterEvaluadorController extends Controller
      */
     public function index()
     {
-      $users = User::All();
-      return view('admin.register-evaluador',compact('users'));
+        $users = User::All();
+        return view('admin.register-evaluador', compact('users'));
     }
 
     /**

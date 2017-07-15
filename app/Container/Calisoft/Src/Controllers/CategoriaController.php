@@ -3,12 +3,12 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Categorias;
+use App\Container\Calisoft\Src\Categoria;
 use Illuminate\Http\Request;
 
 class CategoriaController extends Controller
 {
-    function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role:admin', [
@@ -25,7 +25,7 @@ class CategoriaController extends Controller
 
     public function index()
     {
-         return Categorias::all();
+        return Categorias::all();
     }
 
     /**
@@ -42,7 +42,7 @@ class CategoriaController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'nombre'=> 'required|string|unique:TBL_Categorias',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
@@ -65,7 +65,7 @@ class CategoriaController extends Controller
      */
     public function update(Request $request, Categorias $categoria)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'nombre' => 'required|string|unique:TBL_Categorias,nombre,' . $categoria->PK_id . ',PK_id',
             'plataforma'=>'required|integer',
             'modelado'=>'required|integer',
@@ -78,7 +78,6 @@ class CategoriaController extends Controller
         ]);
         $categoria->fill($request->all());
         $categoria->save();
-
     }
 
     /**

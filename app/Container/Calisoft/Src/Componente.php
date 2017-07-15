@@ -1,13 +1,12 @@
 <?php
 
-namespace App;
+namespace App\Container\Calisoft\Src;
 
 use Illuminate\Database\Eloquent\Model;
-use App\TiposDocumento;
+use App\Container\Calisoft\Src\TiposDocumento;
 
 class Componente extends Model
 {
-
     protected $table = "TBL_ComponentesDocumento";
     protected $primaryKey = "PK_id";
 
@@ -17,11 +16,8 @@ class Componente extends Model
         'required' => 'boolean'
     ];
 
-    public function documento(){
+    public function documento()
+    {
         return $this->belongsTo(TiposDocumento::class, 'FK_TipoDocumentoId', 'PK_id');
     }
-
-    
-
-
 }

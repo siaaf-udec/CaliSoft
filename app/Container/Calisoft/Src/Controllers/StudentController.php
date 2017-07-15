@@ -3,9 +3,9 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\Categorias;
-use App\GrupoDeInvestigacion;
-use App\Semillero;
+use App\Container\Calisoft\Src\Categoria;
+use App\Container\Calisoft\Src\GrupoDeInvestigacion;
+use App\Container\Calisoft\Src\Semillero;
 
 class StudentController extends Controller
 {
@@ -30,24 +30,17 @@ class StudentController extends Controller
 
     public function documentos()
     {
-
         $co = auth()->user()->proyectos()->count();
 
         if ($co >= 1) {
             $co = auth()->user()->proyectos()->first();
 
             if ($co->state == 'activo') {
-
                 return view('calisoft.student.student-subir-documentacion', compact('co'));
-
             } else {
-
                 return view('calisoft.student.student-home');
-
             }
-
         } else {
-
             return view('calisoft.student.student-home');
         }
     }

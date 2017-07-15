@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Container\Calisoft\Src;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Model;
-use App\User;
+use App\Container\Calisoft\Src\User;
 
 class Proyecto extends Model
 {
@@ -17,21 +17,25 @@ class Proyecto extends Model
         'nombre', 'FK_GrupoDeInvestigacionId', 'FK_SemilleroId','FK_CategoriaId',
     ];
 
-    public function documentos(){
+    public function documentos()
+    {
         return $this->hasMany(Documentos::class, 'FK_ProyectoId', 'PK_id');
     }
 
-    public function semillero(){
+    public function semillero()
+    {
         return $this->belongsTo(Semillero::class, 'FK_SemilleroId')
             ->select('PK_id', 'nombre');
     }
 
-    public function categoria(){
+    public function categoria()
+    {
         return $this->belongsTo(Categorias::class, 'FK_CategoriaId')
             ->select('PK_id', 'nombre');
     }
 
-    public function grupoDeInvestigacion(){
+    public function grupoDeInvestigacion()
+    {
         return $this->belongsTo(GrupoDeInvestigacion::class, 'FK_GrupoDeInvestigacionId')
             ->select('PK_id', 'nombre');
     }
@@ -40,22 +44,25 @@ class Proyecto extends Model
     /*
     *  Relacion de proyecto con usuarios
     */
-    public function usuarios(){
+    public function usuarios()
+    {
         return $this->belongsToMany(User::class, 'TBL_ProyectosAsignados', 'FK_ProyectoId', 'FK_UsuarioId')
             ->withPivot('tipo')
             ->withTimestamps();
     }
 
-    public function integrantes(){
+    public function integrantes()
+    {
         return $this->usuarios()->wherePivot('tipo', 'integrante');
     }
 
-    public function evaluadores(){
+    public function evaluadores()
+    {
         return $this->usuarios()->wherePivot('tipo', 'evaluador');
     }
 
-    public function invitados(){
+    public function invitados()
+    {
         return $this->usuarios()->wherePivot('tipo', 'invitado');
     }
-
 }

@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Container\Calisoft\Src;
 
 use Illuminate\Database\Eloquent\Model;
 
@@ -38,13 +38,13 @@ class TiposDocumento extends Model
         'required' => 'boolean'
     ];
 
-    public function componentes(){
+    public function componentes()
+    {
         return $this->hasMany(Componente::class, 'FK_TipoDocumentoId', 'PK_id');
     }
 
-    public function documentos(){
+    public function documentos()
+    {
         return $this->hasMany(Documentos::class, 'FK_TipoDocumentoId', 'PK_id');
     }
-
-
 }

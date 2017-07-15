@@ -4,8 +4,8 @@ namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Categorias;
-use App\Proyecto;
+use App\Container\Calisoft\Src\Categoria;
+use App\Container\Calisoft\Src\Proyecto;
 
 class AdminProyectoController extends Controller
 {
@@ -16,13 +16,13 @@ class AdminProyectoController extends Controller
      */
     public function index(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
         'categoriaId' => 'integer'
         ]);
         $categoriaId=$request->categoriaId;
         return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
-        ->when($categoriaId,function($query) use ($categoriaId){
-            return $query->where('FK_CategoriaId',$categoriaId);
+        ->when($categoriaId, function ($query) use ($categoriaId) {
+            return $query->where('FK_CategoriaId', $categoriaId);
         })
         ->paginate(5);
     }
@@ -79,8 +79,7 @@ class AdminProyectoController extends Controller
      */
     public function update(Request $request, Proyecto $proyecto)
     {
-
-        $this->validate($request,[
+        $this->validate($request, [
 
             'state' => 'required|string'
         ]);
@@ -101,7 +100,6 @@ class AdminProyectoController extends Controller
 
     public function getPeticiones()
     {
-
         return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
         ->where('state', 'propuesta')->get();
 

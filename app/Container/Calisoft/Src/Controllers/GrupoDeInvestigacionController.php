@@ -3,14 +3,13 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Http\Controllers\Controller;
-use App\GrupoDeInvestigacion;
+use App\Container\Calisoft\Src\GrupoDeInvestigacion;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 
 class GrupoDeInvestigacionController extends Controller
 {
-
-    function __construct()
+    public function __construct()
     {
         $this->middleware('auth');
         $this->middleware('role:admin', [

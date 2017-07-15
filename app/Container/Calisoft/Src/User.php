@@ -1,10 +1,10 @@
 <?php
 
-namespace App;
+namespace App\Container\Calisoft\Src;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Proyecto;
+use App\Container\Calisoft\Src\Proyecto;
 
 class User extends Authenticatable
 {
@@ -61,12 +61,10 @@ class User extends Authenticatable
     /**
      * Relacion evaluador -> proyectos asignados
      */
-    public function proyectos(){
+    public function proyectos()
+    {
         return $this->belongsToMany(Proyecto::class, 'TBL_ProyectosAsignados', 'FK_UsuarioId', 'FK_ProyectoId')
             ->withPivot('tipo')
             ->withTimestamps();
     }
-
-    
-
 }
