@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Container\Calisoft\Src\Middleware;
 
 use Closure;
 

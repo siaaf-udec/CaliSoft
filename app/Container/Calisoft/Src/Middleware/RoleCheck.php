@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Middleware;
+namespace App\Container\Calisoft\Src\Middleware;
 
 use Closure;
 
@@ -14,7 +14,7 @@ class RoleCheck
      * @return mixed
      */
     public function handle($request, Closure $next, $role)
-    {   
+    {
         if($request->user()->role != $role) return abort(403);
 
         $response = $next($request);
