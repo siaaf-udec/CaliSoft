@@ -64,5 +64,5 @@ Route::resource('proyectos', 'AdminProyectoController', [
 
 //Proyecto Student Controller Store, Update
 Route::put('/proyectos/{proyecto}', 'ProyectoController@update');
-
+Route::put('/proyectos/{proyecto}/propuesta', 'ProyectoController@propuesta');
 Route::get('/proyectos/{proyecto}/documentacion', 'ProyectoController@documentos');

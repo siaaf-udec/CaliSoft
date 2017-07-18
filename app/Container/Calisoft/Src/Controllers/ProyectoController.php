@@ -10,6 +10,7 @@ use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\Semillero;
 use App\User;
 use Illuminate\Http\Request;
+use Illuminate\Http\Response;
 
 class ProyectoController extends Controller
 {
@@ -69,6 +70,19 @@ class ProyectoController extends Controller
     {
         return $proyecto->documentos;
     }
+
+    /**
+    * Cambia el estado del proyecto como propuesta
+    * @param Proyecto $proyecto
+    * @return Response
+    */
+    public function propuesta(Proyecto $proyecto){
+        $proyecto->usuarios()->wherePivot('tipo', 'invitado')->delete();
+        $proyecto->state = 'propuesta';
+        $proyecto->save();
+        return $proyecto;
+    }
+
 
     public function invitados(Proyecto $proyecto)
     {

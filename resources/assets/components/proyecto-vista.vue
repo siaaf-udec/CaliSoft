@@ -12,7 +12,9 @@
                             </tr>
                             <tr>
                                 <th>Estado:</th>
-                                <td class="text-uppercase">{{ proyecto.state }}</td>
+                                <td class="text-uppercase">
+                                  <strong>{{ proyecto.state }}</strong>
+                                </td>
                             </tr>
                             <tr>
                                 <th>Categoria:</th>
@@ -33,7 +35,7 @@
                         </tbody>
                     </table>
 
-                    <div class="btn-group btn-group-vertical center-block">
+                    <div class="btn-group btn-group-vertical center-block" v-if="proyecto.state == 'creacion'">
                       <button type="button" class="btn blue" data-toggle="modal" href="#propuesta">Enviar Propuesta</button>
                       <button class="btn yellow-gold" @click.prevent="openEditModal(proyecto)">Editar Datos</button>
                       <button class="btn red" data-toggle="modal" href="#eliminar">Eliminar</button>
@@ -57,7 +59,7 @@
 
             <!-- Invitados -->
             <div class="row">
-              <proyecto-invitados :invitados="invitados" :proyecto-id="proyecto.PK_id">
+              <proyecto-invitados :invitados="invitados" :proyecto-id="proyecto.PK_id" v-if="proyecto.state == 'creacion'">
               </proyecto-invitados>
             </div>
         </div>
@@ -75,7 +77,7 @@
             Deseas pasar el proyecto como propuesta?
           </p>
           <div class="form-group">
-            <button class="btn blue center-block">Pasar propuesta de proyecto</button>
+            <button class="btn blue center-block" @click="propuesta()">Pasar propuesta de proyecto</button>
           </div>
         </modal>
 
@@ -140,6 +142,13 @@ export default {
           this.proyecto = proyecto;
           $('#editar-proyecto').modal("hide");
           toastr.info('Datos del proyecto actualizados con exito');
+        },
+        propuesta(){
+          axios.put(`/api/proyectos/${this.proyecto.PK_id}/propuesta`).then(res => {
+            this.proyecto = Object.assign({}, this.proyecto, res.data);
+            $('#propuesta').modal('hide');
+            toastr.info('Has pasado el proyecto como propuesta');
+          })
         }
     }
 }
