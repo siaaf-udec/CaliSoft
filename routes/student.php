@@ -14,6 +14,7 @@ Route::post('/proyectos', 'ProyectoController@store')
     ->middleware('create-project');
 
 
+
 Route::get('/porcentajes', 'StudentController@porcentajes')
     ->name('porcentajes');
 

@@ -27,7 +27,7 @@ Route::resource('usuarios', 'UserController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
-Route::resource('documentacion', 'Student\DocumentoController', [
+Route::resource('documentacion', 'DocumentoController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
@@ -41,7 +41,7 @@ Route::get('tdocumentos/{tdocumento}/componentes', 'TiposDocumentoController@get
 Route::get('/user/project', 'UserController@proyecto');
 
 Route::get('/student/search', 'UserController@searchFreeStudents');
-Route::get('/student/invitations', 'Admin\UserController@invitaciones');
+Route::get('/student/invitations', 'UserController@invitaciones');
 
 Route::resource('invitations', 'InvitationController', [
     'only'       => ['store', 'update', 'destroy'],
@@ -66,3 +66,5 @@ Route::resource('proyectos', 'AdminProyectoController', [
 Route::put('/proyectos/{proyecto}', 'ProyectoController@update');
 Route::put('/proyectos/{proyecto}/propuesta', 'ProyectoController@propuesta');
 Route::get('/proyectos/{proyecto}/documentacion', 'ProyectoController@documentos');
+
+Route::delete('/proyectos/{proyecto}', 'ProyectoController@destroy');

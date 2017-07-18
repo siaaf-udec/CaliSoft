@@ -5,7 +5,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 use App\Container\Calisoft\Src\Categoria as Categoria;
 use App\Container\Calisoft\Src\GrupoDeInvestigacion as Grupo;
 use App\Http\Controllers\Controller;
-use App\Notifications\ProyectoCreado;
+use App\Container\Calisoft\Src\Notifications\ProyectoCreado;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\Semillero;
 use App\User;
@@ -64,6 +64,10 @@ class ProyectoController extends Controller
         ]);
 
         $proyecto->update($request->all());
+    }
+
+    public function destroy(Proyecto $proyecto){
+      $proyecto->delete();
     }
 
     public function documentos(Proyecto $proyecto)

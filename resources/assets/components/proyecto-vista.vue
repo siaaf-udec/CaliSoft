@@ -1,10 +1,11 @@
 <template>
-    <div class="row">
+  <section >
+    <div class="row" v-if="proyecto.nombre">
         <div class="col-sm-6">
             <div class="panel panel-info">
                 <div class="panel-heading text-center text-uppercase">PROYECTO</div>
                 <div class="panel-body bg-info">
-                    <table class="table" v-if="proyecto.nombre">
+                    <table class="table">
                         <tbody>
                             <tr>
                                 <th>Nombre:</th>
@@ -63,35 +64,43 @@
               </proyecto-invitados>
             </div>
         </div>
-        <!-- comienzo modal de edicion-->
-        <modal id="editar-proyecto" title="Editar Proyecto">
-             <proyecto-editar :proyecto="fillProyecto" @update="update">
-             </proyecto-editar>
-        </modal>
 
-        <!-- comienzo modal de envio de propuesta -->
-        <modal id="propuesta" title="Propuesta">
-          <p class="text-justified">
-            Despues de pasar el proyecto como propuesta
-            <strong>no podras agregar integrantes ni editar los datos del mismo</strong>.
-            Deseas pasar el proyecto como propuesta?
-          </p>
-          <div class="form-group">
-            <button class="btn blue center-block" @click="propuesta()">Pasar propuesta de proyecto</button>
-          </div>
-        </modal>
-
-        <!-- Eliminar proyecto -->
-        <modal id="eliminar" title="Eliminar Proyecto">
-          <p class="text-center">
-            todas las invitaciones seran canceladas y los integrantes seran liberados. <br>
-            Desea eliminar el proyecto?
-            <div class="form-group">
-              <button class="btn red center-block">Eliminar</button>
-            </div>
-          </p>
-        </modal>
     </div>
+    <p class="text-justify" v-else>
+        Todavia no has creado una propuesta de proyecto,
+        puedes crearla <a href="/student/proyectos">Aqui.</a>
+    </p>
+
+    <!-- comienzo modal de edicion-->
+    <modal id="editar-proyecto" title="Editar Proyecto">
+         <proyecto-editar :proyecto="fillProyecto" @update="update">
+         </proyecto-editar>
+    </modal>
+
+    <!-- comienzo modal de envio de propuesta -->
+    <modal id="propuesta" title="Propuesta">
+      <p class="text-justified">
+        Despues de pasar el proyecto como propuesta
+        <strong>no podras agregar integrantes ni editar los datos del mismo</strong>.
+        Deseas pasar el proyecto como propuesta?
+      </p>
+      <div class="form-group">
+        <button class="btn blue center-block" @click="propuesta()">Pasar propuesta de proyecto</button>
+      </div>
+    </modal>
+
+    <!-- Eliminar proyecto -->
+    <modal id="eliminar" title="Eliminar Proyecto">
+      <p class="text-center">
+        todas las invitaciones seran canceladas y los integrantes seran liberados. <br>
+        Desea eliminar el proyecto?
+        <div class="form-group">
+          <button class="btn red center-block" @click="destroy()">Eliminar</button>
+        </div>
+      </p>
+    </modal>
+
+  </section>
 </template>
 
 <script>
@@ -148,6 +157,13 @@ export default {
             this.proyecto = Object.assign({}, this.proyecto, res.data);
             $('#propuesta').modal('hide');
             toastr.info('Has pasado el proyecto como propuesta');
+          })
+        },
+        destroy(){
+          axios.delete('/api/proyectos/' + this.proyecto.PK_id).then(() => {
+            this.proyecto = {};
+            $('#eliminar').modal('hide');
+            axios.info('Has eliminado el proyecto');
           })
         }
     }

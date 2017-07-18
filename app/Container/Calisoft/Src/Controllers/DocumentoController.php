@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Student;
+namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Container\Calisoft\Src\Documentos;
 use App\Http\Controllers\Controller;

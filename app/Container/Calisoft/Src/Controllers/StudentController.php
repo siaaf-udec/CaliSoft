@@ -17,7 +17,7 @@ class StudentController extends Controller
     public function proyectos()
     {
         return view('calisoft.student.student-register-pro', [
-            'categorias'            => Categorias::all(),
+            'categorias'            => Categoria::all(),
             'semilleros'            => Semillero::all(),
             'gruposDeInvestigacion' => GrupoDeInvestigacion::all(),
         ]);
@@ -28,6 +28,7 @@ class StudentController extends Controller
         return view('calisoft.student.student-ver-porcentajes');
     }
 
+    //Cambiar
     public function documentos()
     {
         $co = auth()->user()->proyectos()->count();
