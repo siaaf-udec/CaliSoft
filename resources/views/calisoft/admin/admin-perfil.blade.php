@@ -1,4 +1,4 @@
-@extends('layouts.admin-dash') 
+@extends('layouts.admin-dash')
 @section('content')
 <div class="col-md-12">
 @component('components.portlet', ['icon' => 'fa fa-user', 'title' => 'Perfil'])
@@ -8,4 +8,3 @@
 </div>
 
 @endsection
-
