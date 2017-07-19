@@ -8,7 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Notifications\ProyectoCreado;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\Semillero;
-use App\User;
+use App\Container\Calisoft\Src\User;
 use Illuminate\Http\Request;
 
 class ProyectoController extends Controller

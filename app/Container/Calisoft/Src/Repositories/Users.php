@@ -2,7 +2,7 @@
 
 namespace App\Container\Calisoft\Src\Repositories;
 
-use App\User;
+use App\Container\Calisoft\Src\User;
 
 class Users
 {

@@ -78,13 +78,72 @@
 
             </div>
 
+            <!--Inicio Modal crear Usuarios-->
+            <div class="modal fade" id="crear-usuari" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Crear Usuarios</h5>
+                  </div>
+                  <div class="modal-body">
+                    <form @submit.prevent="store()" id="registro">
+                      <div class="form-group form-md-line-input">
+                          <div class="input-icon">
+                              <input  class="form-control" id="name" name="name" type="text" maxlength="10" v-model="newUser.name"/>
+                              <label  class="control-label">Nombre</label>
+                              <span class="help-block">Digite el Nombre</span>
+                              <i class="fa fa-user"></i>
+                          </div>
+                      </div>
+                      <div class="form-group form-md-line-input">
+                          <div class="input-icon">
+                              <input  class="form-control" id="correo" name="correo" type="email" maxlength="50" v-model="newUser.email"/>
+                              <label  class="control-label">Correo</label>
+
+                              <i class="fa fa-envelope-o"></i>
+                          </div>
+                      </div>
+                      <div class="form-group form-md-line-input">
+                          <div class="input-icon">
+                              <input  class="form-control" id="password" name="password" type="password" maxlength="10" v-model="newUser.password"/>
+                              <label  class="control-label">Contraseña</label>
+                              <span class="help-block">Digite la contraseña</span>
+                              <i class="fa fa-envelope-o"></i>
+                          </div>
+                      </div>
+                      <div class="form-group form-md-line-input">
+                          <div class="input-icon">
+                              <input  class="form-control" name="password" type="password" maxlength="10" v-model="newUser.password_confirmation"/>
+                              <label  class="control-label">Confirmar Contraseña</label>
+                              <span class="help-block">Confirmar la contraseña</span>
+                              <i class="fa fa-envelope-o"></i>
+                          </div>
+                      </div>
+                    </form>
+                  </div>
+                  <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Save changes</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!--Fin modal crear usuarios-->
+
+
+
+
+
+
+
             <!--Inicio Modal crear usuarios-->
-            <modal id="crear-usuario" title="Crear Usuario">
+            <<modal id="crear-usuario" title="Crear Usuario">
                 <form @submit.prevent="store()">
                     <div class="form-group form-md-line-input">
                         <div class="input-icon">
                             <i class="fa fa-user"></i>
-                            <input type="text" name="name" required="" id="name" placeholder="Nombre" class="form-control" autocomplete='off' v-model="newUser.name"/>
+                            <input type="text" name="name" required="" id="name" placeholder="Nombre" maxlength="50" class="form-control" autocomplete='off' v-model="newUser.name"/>
                         </div>
                     </div>
                     <div class="form-group form-md-line-input" :class="{'has-error': errors.email }">
@@ -156,7 +215,19 @@
 @endpush
 
 @push('functions')
+  <script src="{{ asset('assets/global/plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/global/plugins/jquery-validation/js/additional-methods.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('assets/global/plugins/jquery-validation/js/localization/messages_es.js') }}" type="text/javascript"></script>
+
+<script src="{{ asset('assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js') }}" type="text/javascript"></script>
+
     <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
     <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script src="/js/usuarios.js"></script>
+
+    <script>
+      $("#registro").validate();
+    </script>
+
+
 @endpush

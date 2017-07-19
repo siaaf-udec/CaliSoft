@@ -7,7 +7,7 @@ use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use App\Container\Calisoft\Src\Proyecto;
-use App\User;
+use App\Container\Calisoft\Src\User;
 
 class Invitacion extends Notification implements ShouldQueue
 {

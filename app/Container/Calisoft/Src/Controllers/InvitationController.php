@@ -5,7 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\Notifications\Invitacion;
-use App\User;
+use App\Container\Calisoft\Src\User;
 
 class InvitationController extends Controller
 {
