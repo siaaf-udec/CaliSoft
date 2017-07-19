@@ -2,9 +2,10 @@
 
 namespace App\Policies;
 
-use App\User;
+use App\Container\Calisoft\Src\User;
 use App\Proyecto;
 use Illuminate\Auth\Access\HandlesAuthorization;
+
 
 class ProjectPolicy
 {

@@ -357,7 +357,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
-                                <a href="javascript:;"><i class="icon-user"></i> Mi Perfil </a>
+                                <a href="{{route(auth()->user()->role . '.perfil')}}"><i class="icon-user"></i> Mi Perfil </a>
                             </li>
                             <li class="divider"> </li>
                             <li>
