@@ -15,5 +15,9 @@ class EvaluatorController extends Controller
     public function categorias(){
         return view('calisoft.evaluator.evaluator-categoria');
     }
+    public function perfil()
+    {
+        return view('calisoft.evaluator.evaluator-perfil');
+    }
 
 }

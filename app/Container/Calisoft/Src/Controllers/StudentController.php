@@ -50,4 +50,8 @@ class StudentController extends Controller
     {
         return view('calisoft.student.student-invitaciones');
     }
+    public function perfil()
+    {
+        return view('calisoft.student.student-perfil');
+    }
 }

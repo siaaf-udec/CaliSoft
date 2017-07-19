@@ -23,3 +23,5 @@ Route::get('/documentacion', 'StudentController@documentos')
 
 Route::get('/invitaciones', 'StudentController@invitaciones')
     ->name('invitaciones');
+
+Route::get('/perfil', 'StudentController@perfil')->name('student.perfil');    

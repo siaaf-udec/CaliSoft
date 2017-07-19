@@ -48,4 +48,8 @@ class AdminController extends Controller
     {
         return view('calisoft.admin.admin-proyectos', ['categorias' => Categoria::all()]);
     }
+    public function perfil()
+    {
+        return view('calisoft.admin.admin-perfil');
+    }
 }
