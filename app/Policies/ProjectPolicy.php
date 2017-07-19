@@ -3,7 +3,7 @@
 namespace App\Policies;
 
 use App\Container\Calisoft\Src\User;
-use App\Proyecto;
+use App\Container\Calisoft\Src\Proyecto;
 use Illuminate\Auth\Access\HandlesAuthorization;
 
 
