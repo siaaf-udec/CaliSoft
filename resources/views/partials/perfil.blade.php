@@ -99,28 +99,25 @@
                     <!-- PERSONAL INFO TAB -->
                     <div class="tab-pane active" id="tab_1_1">
                         <form role="form" action="#">
-                            <div class="form-group">
-                                <label class="control-label">First Name</label>
-                                <input type="text" placeholder="John" class="form-control" /> </div>
-                            <div class="form-group">
-                                <label class="control-label">Last Name</label>
-                                <input type="text" placeholder="Doe" class="form-control" /> </div>
-                            <div class="form-group">
-                                <label class="control-label">Mobile Number</label>
-                                <input type="text" placeholder="+1 646 580 DEMO (6284)" class="form-control" /> </div>
-                            <div class="form-group">
-                                <label class="control-label">Interests</label>
-                                <input type="text" placeholder="Design, Web etc." class="form-control" /> </div>
-                            <div class="form-group">
-                                <label class="control-label">Occupation</label>
-                                <input type="text" placeholder="Web Developer" class="form-control" /> </div>
-                            <div class="form-group">
-                                <label class="control-label">About</label>
-                                <textarea class="form-control" rows="3" placeholder="We are KeenThemes!!!"></textarea>
+                            <br>
+                            <div class="form-group form-md-line-input">
+                                <div class="input-icon">
+                                    <input class="form-control" id="name" name="name" type="text" maxlength="10" v-model="newUser.name" />
+                                    <label class="control-label">Nombre</label>
+                                    <span class="help-block">Digite el Nombre</span>
+                                    <i class="fa fa-user"></i>
+                                </div>
                             </div>
-                            <div class="form-group">
-                                <label class="control-label">Website Url</label>
-                                <input type="text" placeholder="http://www.mywebsite.com" class="form-control" /> </div>
+
+                            <div class="form-group form-md-line-input">
+                                <div class="input-icon">
+                                    <input class="form-control" id="name" name="name" type="text" maxlength="10" v-model="newUser.name" readonly/>
+                                    <label class="control-label">Rol</label>
+                                    <span class="help-block">Digite el Nombre</span>
+                                    <i class="fa fa-user"></i>
+                                </div>
+                            </div>
+
                             <div class="margiv-top-10">
                                 <a href="javascript:;" class="btn green"> Save Changes </a>
                                 <a href="javascript:;" class="btn default"> Cancel </a>
