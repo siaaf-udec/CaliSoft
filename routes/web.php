@@ -13,3 +13,5 @@
 Route::get('/markAsRead', function () {
     auth()->user()->unreadNotifications->markAsRead();
 });
+Route::put('/perfil','\App\Container\Calisoft\Src\Controllers\PerfilController@update')->name('perfil.update');
+Route::put('/perfil/password','\App\Container\Calisoft\Src\Controllers\PerfilController@updatePassword')->name('perfil.password');

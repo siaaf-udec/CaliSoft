@@ -1,4 +1,6 @@
-<div class="row">
+
+
+<div class="row" id="app">
 
     <div class="col-md-4">
         <div class="portlet light profile-sidebar-portlet ">
@@ -89,20 +91,20 @@
                     <li>
                         <a href="#tab_1_3" data-toggle="tab">Cambiar Contraseña</a>
                     </li>
-                    <li>
-                        <a href="#tab_1_4" data-toggle="tab">Privacy Settings</a>
-                    </li>
+                   
                 </ul>
             </div>
             <div class="portlet-body">
                 <div class="tab-content">
                     <!-- PERSONAL INFO TAB -->
                     <div class="tab-pane active" id="tab_1_1">
-                        <form role="form" action="#">
+                        <form role="form" action="{{route('perfil.update')}}" method="POST">
+                            {{csrf_field()}}
+                            {{method_field("PUT")}}
                             <br>
                             <div class="form-group form-md-line-input">
                                 <div class="input-icon">
-                                    <input class="form-control" id="name" name="name" type="text" maxlength="50" v-model="" />
+                                    <input class="form-control" id="name" name="name" type="text" maxlength="50" value="{{auth()->user()->name}}" />
                                     <label class="control-label">Nombre</label>
                                     <span class="help-block">Cambiar el Nombre</span>
                                     <i class="fa fa-user"></i>
@@ -111,7 +113,7 @@
 
                             <div class="form-group form-md-line-input">
                                 <div class="input-icon">
-                                    <input class="form-control" id="rol" name="rol" type="text" v-model="" readonly/>
+                                    <input class="form-control"  type="text"  readonly value="{{auth()->user()->role}}"/>
                                     <label class="control-label">Rol</label>
 
                                     <i class="fa fa-user"></i>
@@ -119,14 +121,16 @@
                             </div>
                             <div class="form-group form-md-line-input">
                                 <div class="input-icon">
-                                    <input class="form-control" id="correo" name="correo" type="email" maxlength="50" v-model="" />
+                                    <input class="form-control" id="correo" name="email" type="email" maxlength="50" value="{{auth()->user()->email}}"/>
                                     <label class="control-label">Correo</label>
                                     <span class="help-block">Cambiar Correo</span>
                                     <i class="fa fa-envelope-o"></i>
                                 </div>
                             </div>
                             <div class="margiv-top-10">
-                                <a href="javascript:;" class="btn green"> Guardar Cambios </a>
+                                <button type="submit" class="btn green-jungle" >
+                                 <i class="fa fa-edit"></i>Guardar Cambios
+                                </button>
                                 <a href="javascript:;" class="btn default"> Cancelar </a>
                             </div>
                         </form>
@@ -166,7 +170,7 @@
                         <form action="#">
                             <div class="form-group form-md-line-input">
                                 <div class="input-icon">
-                                    <input class="form-control" id="oldPassword" name="oldPassword" type="password" maxlength="10" v-model="newUser.password" />
+                                    <input class="form-control" id="oldPassword" name="oldPassword" type="password" maxlength="10"  />
                                     <label class="control-label">Antigua Contraseña</label>
                                     <span class="help-block">Digite la contraseña Antigua </span>
                                     <i class="fa fa-key"></i>
@@ -174,7 +178,7 @@
                             </div>
                             <div class="form-group form-md-line-input">
                                 <div class="input-icon">
-                                    <input class="form-control" id="newPassword" name="newPassword" type="password" maxlength="10" v-model="newUser.password" />
+                                    <input class="form-control" id="newPassword" name="newPassword" type="password" maxlength="10"  />
                                     <label class="control-label">Contraseña</label>
                                     <span class="help-block">Digite la Nueva contraseña</span>
                                     <i class="fa fa-key"></i>
@@ -182,7 +186,7 @@
                             </div>
                             <div class="form-group form-md-line-input">
                                 <div class="input-icon">
-                                    <input class="form-control" name="confirmationPassword" type="password" maxlength="10" v-model="newUser.password_confirmation" />
+                                    <input class="form-control" name="confirmationPassword" type="password" maxlength="10"  />
                                     <label class="control-label">Confirmar Contraseña</label>
                                     <span class="help-block">Confirmar la contraseña</span>
                                     <i class="fa fa-key"></i>
@@ -190,85 +194,15 @@
                             </div>
 
                             <div class="margin-top-10">
-                                <a href="javascript:;" class="btn green"> Cambiar Contraseña </a>
+                                <button type="submit" class="btn green-jungle">
+                                 <i class="fa fa-edit"></i>Editar Contraseña
+                                </button>
                                 <a href="javascript:;" class="btn default"> Cancelar </a>
                             </div>
                         </form>
                     </div>
                     <!-- END CHANGE PASSWORD TAB -->
-                    <!-- PRIVACY SETTINGS TAB -->
-                    <div class="tab-pane" id="tab_1_4">
-                        <form action="#">
-                            <table class="table table-light table-hover">
-                                <tr>
-                                    <td> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus.. </td>
-                                    <td>
-                                        <div class="mt-radio-inline">
-                                            <label class="mt-radio">
-                                                                                <input type="radio" name="optionsRadios1" value="option1" /> Yes
-                                                                                <span></span>
-                                                                            </label>
-                                            <label class="mt-radio">
-                                                                                <input type="radio" name="optionsRadios1" value="option2" checked/> No
-                                                                                <span></span>
-                                                                            </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                    <td>
-                                        <div class="mt-radio-inline">
-                                            <label class="mt-radio">
-                                                                                <input type="radio" name="optionsRadios11" value="option1" /> Yes
-                                                                                <span></span>
-                                                                            </label>
-                                            <label class="mt-radio">
-                                                                                <input type="radio" name="optionsRadios11" value="option2" checked/> No
-                                                                                <span></span>
-                                                                            </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                    <td>
-                                        <div class="mt-radio-inline">
-                                            <label class="mt-radio">
-                                                                                <input type="radio" name="optionsRadios21" value="option1" /> Yes
-                                                                                <span></span>
-                                                                            </label>
-                                            <label class="mt-radio">
-                                                                                <input type="radio" name="optionsRadios21" value="option2" checked/> No
-                                                                                <span></span>
-                                                                            </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td> Enim eiusmod high life accusamus terry richardson ad squid wolf moon </td>
-                                    <td>
-                                        <div class="mt-radio-inline">
-                                            <label class="mt-radio">
-                                                                                <input type="radio" name="optionsRadios31" value="option1" /> Yes
-                                                                                <span></span>
-                                                                            </label>
-                                            <label class="mt-radio">
-                                                                                <input type="radio" name="optionsRadios31" value="option2" checked/> No
-                                                                                <span></span>
-                                                                            </label>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </table>
-                            <!--end profile-settings-->
-                            <div class="margin-top-10">
-                                <a href="javascript:;" class="btn red"> Save Changes </a>
-                                <a href="javascript:;" class="btn default"> Cancel </a>
-                            </div>
-                        </form>
-                    </div>
-                    <!-- END PRIVACY SETTINGS TAB -->
+                    
 
                 </div>
             </div>
@@ -298,4 +232,10 @@
     <link href="../assets/layouts/layout2/css/custom.min.css" rel="stylesheet" type="text/css" />
     <!-- END THEME LAYOUT STYLES -->
     <link rel="shortcut icon" href="favicon.ico" /> </head>
+
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
+
     @endpush
+
+
+    

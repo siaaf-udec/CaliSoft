@@ -14,5 +14,6 @@
   "/js/peticiones.js": "/js/peticiones.js",
   "/js/admin-proyectos.js": "/js/admin-proyectos.js",
   "/js/invitaciones.js": "/js/invitaciones.js",
-  "/js/noti.js": "/js/noti.js"
+  "/js/noti.js": "/js/noti.js",
+  "/js/perfil.js": "/js/perfil.js"
 }

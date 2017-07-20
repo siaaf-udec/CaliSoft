@@ -92,4 +92,5 @@ class UserController extends Controller
     {
         return request()->user()->proyectos()->wherePivot('tipo', 'invitado')->get();
     }
+    
 }
