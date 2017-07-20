@@ -81,13 +81,13 @@
 
                 <ul class="nav nav-tabs">
                     <li class="active">
-                        <a href="#tab_1_1" data-toggle="tab">Personal Info</a>
+                        <a href="#tab_1_1" data-toggle="tab">Información Personal</a>
                     </li>
                     <li>
-                        <a href="#tab_1_2" data-toggle="tab">Change Avatar</a>
+                        <a href="#tab_1_2" data-toggle="tab">Cambiar Foto</a>
                     </li>
                     <li>
-                        <a href="#tab_1_3" data-toggle="tab">Change Password</a>
+                        <a href="#tab_1_3" data-toggle="tab">Cambiar Contraseña</a>
                     </li>
                     <li>
                         <a href="#tab_1_4" data-toggle="tab">Privacy Settings</a>
@@ -102,25 +102,32 @@
                             <br>
                             <div class="form-group form-md-line-input">
                                 <div class="input-icon">
-                                    <input class="form-control" id="name" name="name" type="text" maxlength="10" v-model="newUser.name" />
+                                    <input class="form-control" id="name" name="name" type="text" maxlength="50" v-model="" />
                                     <label class="control-label">Nombre</label>
-                                    <span class="help-block">Digite el Nombre</span>
+                                    <span class="help-block">Cambiar el Nombre</span>
                                     <i class="fa fa-user"></i>
                                 </div>
                             </div>
 
                             <div class="form-group form-md-line-input">
                                 <div class="input-icon">
-                                    <input class="form-control" id="name" name="name" type="text" maxlength="10" v-model="newUser.name" readonly/>
+                                    <input class="form-control" id="rol" name="rol" type="text" v-model="" readonly/>
                                     <label class="control-label">Rol</label>
-                                    <span class="help-block">Digite el Nombre</span>
+
                                     <i class="fa fa-user"></i>
                                 </div>
                             </div>
-
+                            <div class="form-group form-md-line-input">
+                                <div class="input-icon">
+                                    <input class="form-control" id="correo" name="correo" type="email" maxlength="50" v-model="" />
+                                    <label class="control-label">Correo</label>
+                                    <span class="help-block">Cambiar Correo</span>
+                                    <i class="fa fa-envelope-o"></i>
+                                </div>
+                            </div>
                             <div class="margiv-top-10">
-                                <a href="javascript:;" class="btn green"> Save Changes </a>
-                                <a href="javascript:;" class="btn default"> Cancel </a>
+                                <a href="javascript:;" class="btn green"> Guardar Cambios </a>
+                                <a href="javascript:;" class="btn default"> Cancelar </a>
                             </div>
                         </form>
                     </div>
@@ -157,18 +164,34 @@
                     <!-- CHANGE PASSWORD TAB -->
                     <div class="tab-pane" id="tab_1_3">
                         <form action="#">
-                            <div class="form-group">
-                                <label class="control-label">Current Password</label>
-                                <input type="password" class="form-control" /> </div>
-                            <div class="form-group">
-                                <label class="control-label">New Password</label>
-                                <input type="password" class="form-control" /> </div>
-                            <div class="form-group">
-                                <label class="control-label">Re-type New Password</label>
-                                <input type="password" class="form-control" /> </div>
+                            <div class="form-group form-md-line-input">
+                                <div class="input-icon">
+                                    <input class="form-control" id="oldPassword" name="oldPassword" type="password" maxlength="10" v-model="newUser.password" />
+                                    <label class="control-label">Antigua Contraseña</label>
+                                    <span class="help-block">Digite la contraseña Antigua </span>
+                                    <i class="fa fa-key"></i>
+                                </div>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <div class="input-icon">
+                                    <input class="form-control" id="newPassword" name="newPassword" type="password" maxlength="10" v-model="newUser.password" />
+                                    <label class="control-label">Contraseña</label>
+                                    <span class="help-block">Digite la Nueva contraseña</span>
+                                    <i class="fa fa-key"></i>
+                                </div>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                                <div class="input-icon">
+                                    <input class="form-control" name="confirmationPassword" type="password" maxlength="10" v-model="newUser.password_confirmation" />
+                                    <label class="control-label">Confirmar Contraseña</label>
+                                    <span class="help-block">Confirmar la contraseña</span>
+                                    <i class="fa fa-key"></i>
+                                </div>
+                            </div>
+
                             <div class="margin-top-10">
-                                <a href="javascript:;" class="btn green"> Change Password </a>
-                                <a href="javascript:;" class="btn default"> Cancel </a>
+                                <a href="javascript:;" class="btn green"> Cambiar Contraseña </a>
+                                <a href="javascript:;" class="btn default"> Cancelar </a>
                             </div>
                         </form>
                     </div>
