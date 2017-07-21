@@ -5,7 +5,6 @@ namespace App\Container\Calisoft\Src\Controllers;
 use App\Container\Calisoft\Src\Documentos;
 use App\Container\Calisoft\Src\TiposDocumento;
 use App\Http\Controllers\Controller;
-use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
