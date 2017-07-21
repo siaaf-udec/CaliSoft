@@ -3,11 +3,14 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Container\Calisoft\Src\Documentos;
-use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\TiposDocumento;
-use App\Container\Calisoft\Src\User;
+use App\Http\Controllers\Controller;
+use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Response;
 
 class DocumentoController extends Controller
 {
@@ -43,17 +46,25 @@ class DocumentoController extends Controller
      */
     public function store(Request $request)
     {
-        $this->validate($request, [
-            'FK_ProyectoId'      => 'required|integer',
-            'FK_TipoDocumentoId' => 'required|integer',
 
-        ]);
+        $path  = storage_path() . '/uploads/';
+        $files = $request->file('file');
+        foreach ($files as $file) {
+            $fileName = $file->getClientOriginalName();
+            $file->move($path, $fileName);
+        }
 
-        return Documentos::create([
-            'url'                => $request->url,
-            'FK_ProyectoId'      => $request->FK_ProyectoId,
-            'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
-        ]);
+        /*$this->validate($request, [
+    'FK_ProyectoId'      => 'required|integer',
+    'FK_TipoDocumentoId' => 'required|integer',
+
+    ]);
+
+    return Documentos::create([
+    'url'                => $request->url,
+    'FK_ProyectoId'      => $request->FK_ProyectoId,
+    'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
+    ]);*/
     }
 
     /**
@@ -112,8 +123,52 @@ class DocumentoController extends Controller
         return $tdocumento = TiposDocumento::all();
     }
 
-    //public function getDocumentos(Proyecto $documento)
-    //{
-    //  return $documento->
-    //}
+    public function postfile()
+    {
+        $fileInput  = Input::file('file');
+        $tipoInput  = Input::get('FK_TipoDocumentoId');
+        $idProyecto = auth()->user()->proyectos()->first();
+
+        if (Input::hasFile('file')) {
+
+            $path     = storage_path() . '/uploads/documentos/';
+            $fileName = Hash::make($fileInput->getClientOriginalName());
+
+            $id = auth()->user()->id;
+            //$usuario = User::find($id);
+
+            $file                     = new Documentos;
+            $file->url                = $fileName;
+            $file->FK_ProyectoId      = $idProyecto->PK_id;
+            $file->FK_TipoDocumentoId = $tipoInput;
+
+            //$file->user()->associate($usuario);
+
+            if ($fileInput->move($path, $fileName . '.' . $fileInput->guessExtension())) {
+                $file->save();
+
+            }
+
+        }
+
+    }
+
+    public function getfile()
+    {
+        return view('student.student-subir-documentacion');
+    }
+
+    public function download($file)
+    {
+        return response()->download("../storage/uploads/documentos/" . $file);
+
+        //$publicacion = Documentos::find($file);
+        //$rutaarchivo = '../storage/uploads/' . $publicacion->url . '.pdf';
+        //return response()->download($rutaarchivo);
+
+        //$pathtoFile = storage_path() . '\uploads\am_fundamentals.pdf.pdf';
+        //return response()->download($pathtoFile);
+
+    }
+
 }
