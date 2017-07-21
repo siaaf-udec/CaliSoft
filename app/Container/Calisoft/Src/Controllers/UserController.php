@@ -25,14 +25,12 @@ class UserController extends Controller
     public function index(Request $request)
     {
         $this->validate($request, [
-            'role' => 'in:admin,student,evaluator'
+            'role' => 'exists:roles,id'
         ]);
         $role = $request->role;
 
         //Filtra por role si existe el parametro role, si no, retorna todo
-        return User::when($role, function ($query) use ($role) {
-            return $query->where('role', $role);
-        })->paginate(5);
+        return User::with('roles')->paginate(5);
     }
 
     /**

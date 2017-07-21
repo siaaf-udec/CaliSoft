@@ -1,25 +1,22 @@
 <template>
-    <select :id="id" class="form-control selectpicker" :value="value" :title="title" @change="change" :required="required">
-        <slot></slot>
+    <select :id="id" class="form-control selectpicker" :value.native="value" :title="title" @change="change" :required="required">
+      <slot></slot>
+      <option :value="opt.value" v-for="opt in options">
+        {{ opt.label }}
+      </option>
     </select>
 </template>
 
 <script>
 export default {
-    props: ['id', 'value', 'title', 'required'],
+    props: ['id', 'required', 'getOptions', 'title', 'value'],
     data(){
-        return { initialized: false }
+        return { options: [] }
     },
 
-    // Asigna el valor del v-model
-    updated(){
-        if(!this.initialized){
-            $("#" + this.id).val(this.value);
-            this.initialized = true;
-        }
+    created(){
+      this.getOptions().then(options => this.options = options);
     },
-
-
 
     methods: {
         change(e) {

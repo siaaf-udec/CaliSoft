@@ -12,10 +12,11 @@ new Vue({
         errors: {},
         deleteUser: {},
         paginacion:{},
-        role: ""
+        role: "",
     },
     created() {
         this.refresh('/api/usuarios');
+
     },
     methods: {
         store() {
@@ -49,6 +50,12 @@ new Vue({
               this.usuarios = this.paginacion.data;
           });
         },
+        roles(){
+          return axios.get('/api/roles')
+            .then(res => res.data.map(val => {
+              return { label: val.display_name, value: val.id }
+            }));
+        }
     },
 
     watch: {

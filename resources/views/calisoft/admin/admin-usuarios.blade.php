@@ -11,11 +11,8 @@
             <div class="row">
 
                 <div class="form-group col-md-4 col-xs-12">
-                    <bs-select id="role-filter" title="Rol" v-model="role">
+                    <bs-select id="role-filter" title="Rol" v-model="role" :get-options="roles">
                         <option value="">Todos</option>
-                        <option value="admin">Administrador</option>
-                        <option value="evaluator">Evaluador</option>
-                        <option value="student">Estudiante</option>
                     </bs-select>
                 </div>
 
@@ -34,7 +31,7 @@
                         <tr v-for="user in usuarios" class="text-center">
                             <td v-text="user.name"></td>
                             <td v-text="user.email"></td>
-                            <td v-text="user.role"></td>
+                            <td v-text="user.roles[0].display_name"></td>
                             <td>
                                 <button class="editar-modal btn btn-danger" @click.prevent="openDeleteModal(user)">
                                 <!--<button class="editar-modal btn btn-danger" @click.prevent="destroy(user)">-->
@@ -57,7 +54,7 @@
                 </div>
 
                 <!-- Pagination Buttons-->
-                <div class="col-sm-6">
+                <div class="col-sm-6" v-show="paginacion.last_page > 1">
                     <ul class="pagination pager pull-right">
                         <li>
                             <a :class="{disabled: !paginacion.prev_page_url}" @click="refresh(paginacion.prev_page_url)">
@@ -130,12 +127,6 @@
             </div>
 
             <!--Fin modal crear usuarios-->
-
-
-
-
-
-
 
             <!--Inicio Modal crear usuarios-->
             <<modal id="crear-usuario" title="Crear Usuario">

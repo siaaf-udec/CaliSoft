@@ -15,19 +15,16 @@ class UsersTableSeeder extends Seeder
             [
                 'name' => 'Code Freestyle',
                 'email' => 'root@app.com',
-                'role' => 'admin',
                 'password' => bcrypt('12345')
             ],
             [
                 'name' => 'Paisa',
                 'email' => 'paisa@mail.com',
-                'role' => 'evaluator',
                 'password' => bcrypt('12345')
             ],
             [
                 'name' => 'Fredo',
                 'email' => 'fredo@joya.joya',
-                'role' => 'student',
                 'password' => bcrypt('12345')
             ]
         ]);

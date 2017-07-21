@@ -4,11 +4,11 @@ namespace App\Container\Calisoft\Src;
 
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use App\Container\Calisoft\Src\Proyecto;
+use Zizaco\Entrust\Traits\EntrustUserTrait;
 
 class User extends Authenticatable
 {
-    use Notifiable;
+    use Notifiable, EntrustUserTrait;
 
     protected $table = "TBL_Usuarios";
     protected $primaryKey = "PK_id";
@@ -45,7 +45,7 @@ class User extends Authenticatable
      */
     public function home()
     {
-        return route($this->role);
+        return route($this->roles()->first()->name);
     }
 
     /**
@@ -55,7 +55,7 @@ class User extends Authenticatable
      */
     public function goHome()
     {
-        return redirect()->route($this->role);
+        return redirect()->route($this->roles()->first()->name);
     }
 
     /**

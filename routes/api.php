@@ -68,3 +68,8 @@ Route::put('/proyectos/{proyecto}/propuesta', 'ProyectoController@propuesta');
 Route::get('/proyectos/{proyecto}/documentacion', 'ProyectoController@documentos');
 
 Route::delete('/proyectos/{proyecto}', 'ProyectoController@destroy');
+
+
+Route::resource('roles', 'RoleController', [
+  'only' => ['index']
+]);
