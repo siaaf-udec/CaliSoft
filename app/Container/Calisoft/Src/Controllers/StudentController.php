@@ -31,19 +31,9 @@ class StudentController extends Controller
     //Cambiar
     public function documentos()
     {
-        $co = auth()->user()->proyectos()->count();
-
-        if ($co >= 1) {
             $co = auth()->user()->proyectos()->first();
+            return view('calisoft.student.student-subir-documentacion', compact('co'));
 
-            if ($co->state == 'activo') {
-                return view('calisoft.student.student-subir-documentacion', compact('co'));
-            } else {
-                return view('calisoft.student.student-home');
-            }
-        } else {
-            return view('calisoft.student.student-home');
-        }
     }
 
     public function invitaciones()

@@ -20,7 +20,7 @@
                 </div>
                 <!--Inicio Paginacion Proyecto-->
                 <center>
-                    <ul class="pagination pager pull-center">
+                    <ul class="pagination pager pull-center" v-show="paginacion.last_page > 1">
                         <li>
                             <a :class="{disabled: !paginacion.prev_page_url}" @click="refresh(paginacion.prev_page_url)">
                                 <i class="fa fa-angle-double-left" aria-hidden="true"></i>

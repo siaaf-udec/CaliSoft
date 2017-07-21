@@ -57,7 +57,7 @@
                 </div>
 
                 <!-- Pagination Buttons-->
-                <div class="col-sm-6">
+                <div class="col-sm-6" v-show="paginacion.last_page > 1">
                     <ul class="pagination pager pull-right">
                         <li>
                             <a :class="{disabled: !paginacion.prev_page_url}" @click="refresh(paginacion.prev_page_url)">
