@@ -9,10 +9,6 @@ use App\Container\Calisoft\Src\Semillero;
 
 class StudentController extends Controller
 {
-    public function index()
-    {
-        return view('calisoft.student.student-home');
-    }
 
     public function proyectos()
     {
@@ -39,9 +35,5 @@ class StudentController extends Controller
     public function invitaciones()
     {
         return view('calisoft.student.student-invitaciones');
-    }
-    public function perfil()
-    {
-        return view('calisoft.student.student-perfil');
     }
 }

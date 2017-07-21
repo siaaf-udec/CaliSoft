@@ -39,9 +39,13 @@
                                 'link' => '/'
                             ])
                             @endcomponent
+
+                            {{-- Links --}}
                             @yield('links')
+
                         </ul>
                         {{-- END SIDEBAR MENU --}}
+
                     </div>
                     {{-- END SIDEBAR --}}
                 </div>
@@ -54,11 +58,7 @@
                         {{-- BEGIN THEME PANEL --}}
                         {{--@ include('material.partials.theme-panel')--}}
                         {{-- END THEME PANEL --}}
-                        {{-- BEGIN PAGE TITLE & DESCRIPTION --}}
-                        <h1 class="page-title"> @yield('page-title')
-                            <small>@yield('page-description')</small>
-                        </h1>
-                        {{-- END PAGE TITLE & DESCRIPTION --}}
+
                         {{-- BEGIN BREADCRUMB --}}
                         @include('material.partials.breadcrumb')
                         {{-- END BREADCRUMB --}}
@@ -85,8 +85,9 @@
         @include('material.partials.dash-scripts')
     {{-- END SCRIPTS --}}
     {{-- BEGIN CUSTOM FUNCTIONS --}}
+        <script src="{{ asset('/js/noti.js') }}"></script>
         @stack('functions')
-        <script src="{{asset('/js/noti.js')}}"></script>
+
     {{-- END CUSTOM FUNCTIONS --}}
 </body>
 {{-- END BODY --}}

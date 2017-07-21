@@ -9,10 +9,6 @@ use App\Container\Calisoft\Src\Categoria;
 
 class AdminController extends Controller
 {
-    public function index()
-    {
-        return view('calisoft.admin.admin-home');
-    }
 
     public function semilleros()
     {
@@ -47,9 +43,5 @@ class AdminController extends Controller
     public function proyectos()
     {
         return view('calisoft.admin.admin-proyectos', ['categorias' => Categoria::all()]);
-    }
-    public function perfil()
-    {
-        return view('calisoft.admin.admin-perfil');
     }
 }

@@ -9,6 +9,15 @@ use App\Container\Calisoft\Src\Requests\PerfilUpdateRequest;
 
 class PerfilController extends Controller
 {
+    function __construct(){
+        $this->middleware('auth');
+    }
+
+    public function index(){
+        return view('calisoft.global.perfil');
+    }
+
+
     /**
      * Display a listing of the resource.
      *
@@ -16,7 +25,7 @@ class PerfilController extends Controller
      */
    public function updatePassword(PerfilUpdateRequest $request)
    {
-    
+
    }
 
 
@@ -27,9 +36,9 @@ class PerfilController extends Controller
         $user->fill($request->all());
         $user->save();
         return back();
-        
+
     }
 
-    
+
 
 }

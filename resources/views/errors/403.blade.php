@@ -1,6 +1,6 @@
 
 <!DOCTYPE html>
-<!-- 
+<!--
 Template Name: Metronic - Responsive Admin Dashboard Template build with Twitter Bootstrap 3.3.7
 Version: 4.7.5
 Author: KeenThemes
@@ -54,7 +54,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <h2>Houston, we have a problem.</h2>
             <p> Actually, the page you are looking for does not exist. </p>
             <p>
-                <a href="{{ Auth::user()->home()  }}" class="btn red btn-outline"> Return home </a>
+                <a href="{{ route('home') }}" class="btn red btn-outline"> Return home </a>
                 <br> </p>
         </div>
         <!-- BEGIN CORE PLUGINS -->
@@ -85,5 +85,3 @@ License: You must have a valid license purchased only from themeforest(the above
 
 
 </html>
-    
-    

@@ -1,4 +1,4 @@
-@extends('layouts.admin-dash')
+@extends('layouts.dash')
 
 @section('content')
     <div class="col-md-12">

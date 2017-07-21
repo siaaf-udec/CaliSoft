@@ -37,7 +37,7 @@ class RouteServiceProvider extends ServiceProvider
     {
         $this->mapApiRoutes();
         $this->mapWebRoutes();
-        $this->mapAuthRoutes();
+        $this->mapCalisoftRoutes();
         $this->mapAdminRoutes();
         $this->mapStudentRoutes();
         $this->mapEvaluatorRoutes();
@@ -72,13 +72,6 @@ class RouteServiceProvider extends ServiceProvider
              ->group(base_path('routes/api.php'));
     }
 
-    protected function mapAuthRoutes()
-    {
-        Route::middleware('web')
-            ->namespace($this->namespace)
-            ->group(base_path('routes/auth.php'));
-    }
-
     /**
      * Rutas de Administrador
      *
@@ -86,8 +79,7 @@ class RouteServiceProvider extends ServiceProvider
      */
     protected function mapAdminRoutes()
     {
-        Route::prefix('admin')
-            ->middleware(['web', 'auth', 'role:admin'])
+        Route::middleware(['web', 'auth', 'role:admin'])
             ->namespace('App\Container\Calisoft\Src\Controllers')
             ->group(base_path('routes/admin.php'));
     }
@@ -102,18 +94,22 @@ class RouteServiceProvider extends ServiceProvider
 
     protected function mapStudentRoutes()
     {
-        Route::prefix('student')
-            ->middleware(['web', 'auth', 'role:student'])
+        Route::middleware(['web', 'auth', 'role:student'])
             ->namespace('App\Container\Calisoft\Src\Controllers')
             ->group(base_path('routes/student.php'));
     }
 
     protected function mapEvaluatorRoutes()
     {
-         Route::prefix('evaluator')
-            ->middleware(['web', 'auth', 'role:evaluator'])
+         Route::middleware(['web', 'auth', 'role:evaluator'])
             ->namespace('App\Container\Calisoft\Src\Controllers')
             ->group(base_path('routes/evaluator.php'));
+    }
+
+    protected function mapCalisoftRoutes(){
+        Route::middleware('web')
+             ->namespace('App\Container\Calisoft\Src\Controllers')
+             ->group(base_path('routes/calisoft.php'));
     }
 
 }

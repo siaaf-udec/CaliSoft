@@ -1,4 +1,6 @@
-@extends('layouts.admin-dash') @section('content')
+@extends('layouts.dash')
+
+@section('content')
 <div class="col-md-12">
     @component('components.portlet', ['icon' => 'fa fa-folder-open', 'title' => 'Proyectos'])
     <div id="app">
@@ -52,12 +54,13 @@
     </div>
     @endcomponent
   </div>
-    @endsection
-    @push('styles')
-    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
-    @endpush
-    @push('functions')
-    <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="/js/admin-proyectos.js"></script>
-    @endpush
+  
+@endsection
+@push('styles')
+<link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
+@endpush
+@push('functions')
+<script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+<script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+<script src="/js/admin-proyectos.js"></script>
+@endpush

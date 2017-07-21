@@ -30,7 +30,7 @@ class RegisterController extends Controller
      */
     protected function redirectTo()
     {
-        return '/'. Auth::user()->role;
+        return route('home');
     }
 
     /**

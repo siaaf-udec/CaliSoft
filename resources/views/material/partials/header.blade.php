@@ -102,6 +102,7 @@
                                             @include('partials.notification.'.snake_case(class_basename($notifications->type)))
                                         </a>
                                     </li>
+                                    {{-- Las Consultas no se hacen en la vista --}}
                                     @endforeach
                                     <div id='oculto' style='display:none;'>
                                     {{$content = DB::table('TBL_Proyectos')->select('nombre','created_at')->where('state','propuesta')->get()}}
@@ -357,7 +358,7 @@
                         </a>
                         <ul class="dropdown-menu dropdown-menu-default">
                             <li>
-                                <a href="{{route(auth()->user()->role . '.perfil')}}"><i class="icon-user"></i> Mi Perfil </a>
+                                <a href="{{ route('perfil.index') }}"><i class="icon-user"></i> Mi Perfil </a>
                             </li>
                             <li class="divider"> </li>
                             <li>

@@ -1,4 +1,4 @@
-@extends('layouts.admin-dash') 
+@extends('layouts.dash') 
 @section('content')
 <div class="col-md-12">
     @component('components.portlet', ['icon' => 'fa fa-pie-chart', 'title' => 'Categorias'])
@@ -43,7 +43,7 @@
                         <th class="text-center">Actividades</th>
                         <th class="text-center">secuencia</th>
                         <th class="text-center">Uso</th>
-                        
+
                     </thead>
                     <tbody>
                         <tr v-for="categoria in categorias" class="text-center">
@@ -54,8 +54,8 @@
                             <td v-text="categoria.actividades"></td>
                             <td v-text="categoria.sequencia"></td>
                             <td v-text="categoria.uso"></td>
-                            
-                                
+
+
                             </td>
                         </tr>
                     </tbody>
@@ -300,10 +300,10 @@
 
 </div>
 
-@endsection 
+@endsection
 @push('styles')
 <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
- @endpush 
+ @endpush
  @push('functions')
 <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
 <script src="/js/categorias.js"></script>

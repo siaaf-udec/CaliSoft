@@ -1,4 +1,4 @@
-@extends('layouts.admin-dash')
+@extends('layouts.dash')
 
 @section('content')
 
@@ -7,8 +7,8 @@
             <div id="app">
                 <br>
                 <div class="panel panel-primary">
-                   
-                    
+
+
                         <!-- BEGIN Portlet PORTLET-->
 
 
@@ -25,7 +25,7 @@
                                     </div>
                                 </div>
                                 <div class="portlet-body">
-                                    <div class="col-md-12">    
+                                    <div class="col-md-12">
                                         <div class="profile-sidebar" v-for="usuario in peticion.usuarios">
                                             <div class="portlet light profile-sidebar-portlet ">
                                                 <!-- SIDEBAR USERPIC -->
@@ -80,7 +80,7 @@
                                    </div>
 
 
-                                    
+
                             </div>
                             <!-- END Portlet PORTLET-->
 
@@ -90,7 +90,7 @@
             </div>
 
 
-            
+
             <modal id="editar-proyecto" title="¿Está seguro de continuar?">
                 <form @submit.prevent="update(fillPeticiones.PK_id)">
 
@@ -101,14 +101,14 @@
             </modal>
 
 
-           </div> 
+           </div>
 
         @endcomponent
 
 
 
 
-    
+
 
 </div>
 @endsection
