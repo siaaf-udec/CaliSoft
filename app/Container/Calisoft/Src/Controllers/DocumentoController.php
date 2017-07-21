@@ -161,7 +161,6 @@ class DocumentoController extends Controller
     public function download($file)
     {
         return response()->download("../storage/uploads/documentos/" . $file . '.pdf');
-
         //$publicacion = Documentos::find($file);
         //$rutaarchivo = '../storage/uploads/' . $publicacion->url . '.pdf';
         //return response()->download($rutaarchivo);
