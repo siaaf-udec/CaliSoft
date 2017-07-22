@@ -7,7 +7,6 @@ use App\Container\Calisoft\Src\TiposDocumento;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 
@@ -130,10 +129,11 @@ class DocumentoController extends Controller
 
         if (Input::hasFile('file')) {
 
-            $path     = storage_path() . '/uploads/documentos/';
-            $fileName = Hash::make($fileInput->getClientOriginalName());
+            $id = auth()->user()->PK_id;
 
-            $id = auth()->user()->id;
+            $path     = storage_path() . '/uploads/documentos/';
+            $fileName = $id . '_' . $fileInput->getClientOriginalName();
+
             //$usuario = User::find($id);
 
             $file                     = new Documentos;
@@ -143,7 +143,7 @@ class DocumentoController extends Controller
 
             //$file->user()->associate($usuario);
 
-            if ($fileInput->move($path, $fileName . '.' . $fileInput->guessExtension())) {
+            if ($fileInput->move($path, $fileName)) {
                 $file->save();
 
             }
@@ -152,14 +152,16 @@ class DocumentoController extends Controller
 
     }
 
-    public function getfile()
+    public function getfile($file)
     {
-        return view('student.student-subir-documentacion');
+        return response()->file("../storage/uploads/documentos/" . $file);
     }
 
     public function download($file)
     {
-        return response()->download("../storage/uploads/documentos/" . $file . '.pdf');
+        return response()->download("../storage/uploads/documentos/" . $file);
+        //return redirect()->route('../storage/uploads/documentos/8_am_fundamentals.pdf');
+        //return redirect()->route("../storage/uploads/documentos/" . $file);
         //$publicacion = Documentos::find($file);
         //$rutaarchivo = '../storage/uploads/' . $publicacion->url . '.pdf';
         //return response()->download($rutaarchivo);

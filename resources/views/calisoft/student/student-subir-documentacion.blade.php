@@ -28,11 +28,15 @@
                     <span class="glyphicon glyphicon-edit"></span>
                     </button>
 
-
-
-                    <a v-bind:href="'/api/downloadFile/' +documento.url">
+                    <a :href="'/api/downloadFile/' +documento.url">
                     <button class="editar-categoria btn btn-info btn-xs" >
                     <span class="glyphicon glyphicon-download-alt"></span>
+                    </button>
+                    </a>
+
+                    <a :href="'/api/seeFile/' +documento.url" target="_blank">
+                    <button class="editar-categoria btn btn-success btn-xs" >
+                    <span class="glyphicon glyphicon-eye-open"></span>
                     </button>
                     </a>
 
