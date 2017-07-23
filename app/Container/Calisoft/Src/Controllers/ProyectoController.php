@@ -17,14 +17,16 @@ class ProyectoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:student')->except('index');
-
+        $this->middleware('role:student')->except('index', 'aceptar');
+        $this->middleware('role:admin')->only('index', 'aceptar');
         //$this->middleware('can:update,proyecto')->only('update');
     }
 
     public function index()
     {
-        return Proyecto::all();
+        return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
+            ->where('state', '<>', 'creacion')
+            ->paginate(10);
     }
 
     public function store(Request $request)
@@ -51,7 +53,7 @@ class ProyectoController extends Controller
             'tipo' => 'integrante',
         ]);
 
-        return redirect()->route('student');
+        return redirect()->route('home');
     }
 
     public function update(Request $request, Proyecto $proyecto)
@@ -83,6 +85,12 @@ class ProyectoController extends Controller
     public function propuesta(Proyecto $proyecto){
         $proyecto->usuarios()->wherePivot('tipo', 'invitado')->delete();
         $proyecto->state = 'propuesta';
+        $proyecto->save();
+        return $proyecto;
+    }
+
+    public function aceptar(Proyecto $proyecto){
+        $proyecto->state = 'activo';
         $proyecto->save();
         return $proyecto;
     }

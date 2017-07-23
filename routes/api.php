@@ -54,20 +54,20 @@ Route::resource('componentes', 'ComponenteController', [
     'only' => ['store', 'update', 'destroy', 'index'],
 ]);
 
-Route::get('peticiones', 'AdminProyectoController@getPeticiones');
-Route::put('/peticiones/{proyecto}', 'AdminProyectoController@update');
 
-//Proyecto Admin Controller Index ?
-Route::resource('proyectos', 'AdminProyectoController', [
-    'only' => ['index'],
+// Inicio proyectos
+Route::prefix('proyectos/{proyecto}')->group(function () {
+    Route::put('propuesta', 'ProyectoController@propuesta');
+    Route::put('aceptar', 'ProyectoController@aceptar');
+    Route::get('documentacion', 'ProyectoController@documentos');
+});
+
+Route::resource('proyectos', 'ProyectoController', [
+    'only' => ['index', 'update', 'destroy'],
 ]);
+// Fin proyectos
 
-//Proyecto Student Controller Store, Update
-Route::put('/proyectos/{proyecto}', 'ProyectoController@update');
-Route::put('/proyectos/{proyecto}/propuesta', 'ProyectoController@propuesta');
-Route::get('/proyectos/{proyecto}/documentacion', 'ProyectoController@documentos');
 
-Route::delete('/proyectos/{proyecto}', 'ProyectoController@destroy');
 
 Route::post('file', 'DocumentoController@postfile');
 Route::get('seeFile/{file}', 'DocumentoController@getfile');

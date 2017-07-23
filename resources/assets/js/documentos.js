@@ -1,6 +1,7 @@
 import "./bootstrap";
 import Vue from "vue";
 import Modal from "../components/modal";
+
 new Vue({
     el: "#app",
     components: {
@@ -41,7 +42,7 @@ new Vue({
             $('#subir-documentos').modal("hide");
         },
         update() {
-            axios.put('../api/documentacion/' + this.fillDocumentos.PK_id, this.fillDocumentos).then(response => {
+            axios.put('/api/documentacion/' + this.fillDocumentos.PK_id, this.fillDocumentos).then(response => {
                 this.documentos = this.documentos.map(value => {
                     return value.PK_id == this.fillDocumentos.PK_id ? this.fillDocumentos : value;
                 });
