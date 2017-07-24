@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+use App\Container\Calisoft\Src\Requests\DocumentosUpdateRequest;
 
 class DocumentoController extends Controller
 {
@@ -44,7 +45,6 @@ class DocumentoController extends Controller
      */
     public function store(Request $request)
     {
-
         $path  = storage_path() . '/uploads/';
         $files = $request->file('file');
         foreach ($files as $file) {
@@ -94,13 +94,8 @@ class DocumentoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Documentos $documentacion)
+    public function update(DocumentosUpdateRequest $request, Documentos $documentacion)
     {
-        $this->validate($request, [
-            'url'                => 'required|string',
-            'FK_ProyectoId'      => 'required|integer',
-            'FK_TipoDocumentoId' => 'required|integer',
-        ]);
         $documentacion->fill($request->all());
         $documentacion->save();
     }
@@ -128,7 +123,6 @@ class DocumentoController extends Controller
         $idProyecto = auth()->user()->proyectos()->first();
 
         if (Input::hasFile('file')) {
-
             $id = auth()->user()->PK_id;
 
             $path     = storage_path() . '/uploads/documentos/';
@@ -145,11 +139,8 @@ class DocumentoController extends Controller
 
             if ($fileInput->move($path, $fileName)) {
                 $file->save();
-
             }
-
         }
-
     }
 
     public function getfile($file)
@@ -168,7 +159,5 @@ class DocumentoController extends Controller
 
         //$pathtoFile = storage_path() . '\uploads\am_fundamentals.pdf.pdf';
         //return response()->download($pathtoFile);
-
     }
-
 }
