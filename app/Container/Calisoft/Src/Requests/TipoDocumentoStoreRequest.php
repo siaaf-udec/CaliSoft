@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Requests;
+namespace App\Container\Calisoft\Src\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
@@ -13,7 +13,7 @@ class TipoDocumentoStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,8 @@ class TipoDocumentoStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nombre' => 'required|string|unique:TBL_TiposDocumento',
+            'required' => 'required|boolean'
         ];
     }
 }

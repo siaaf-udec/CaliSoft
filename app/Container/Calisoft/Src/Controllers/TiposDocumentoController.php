@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\TiposDocumento;
 use Illuminate\Http\Request;
 use App\Container\Calisoft\Src\Componente;
+use App\Container\Calisoft\Src\Requests\TipoDocumentoStoreRequest;
+use App\Container\Calisoft\Src\Requests\TipoDocumentoUpdateRequest;
 
 class TiposDocumentoController extends Controller
 {
@@ -32,12 +34,9 @@ class TiposDocumentoController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(TipoDocumentoStoreRequest $request)
     {
-        $this->validate($request, [
-            'nombre' => 'required|string|unique:TBL_TiposDocumento',
-            'required' => 'required|boolean'
-        ]);
+       
 
         return TiposDocumento::create([
             'nombre' => $request->nombre,
@@ -52,13 +51,9 @@ class TiposDocumentoController extends Controller
      * @param  TiposDocumento  $tdocumento
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, TiposDocumento $tdocumento)
+    public function update(TipoDocumentoUpdateRequest $request, TiposDocumento $tdocumento)
     {
-        $this->validate($request, [
-            'nombre' => 'string|unique:TBL_TiposDocumento,nombre,' . $tdocumento->PK_id . ',PK_id',
-            'required' => 'boolean'
-        ]);
-
+        
         $tdocumento->update([
             'nombre' => $request->nombre,
             'required' => $request->required
