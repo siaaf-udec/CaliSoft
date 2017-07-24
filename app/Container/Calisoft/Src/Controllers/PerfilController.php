@@ -35,7 +35,7 @@ class PerfilController extends Controller
         $user=$request->user();
         $user->fill($request->all());
         $user->save();
-        return back();
+        
 
     }
 

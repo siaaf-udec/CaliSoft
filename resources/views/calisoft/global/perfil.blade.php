@@ -12,8 +12,8 @@
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
                     <div class="profile-usertitle">
-                        <div class="profile-usertitle-name"> Marcus Doe </div>
-                        <div class="profile-usertitle-job"> Developer </div>
+                        <div class="profile-usertitle-name"> {{auth()->user()->name}}  </div>
+                        <div class="profile-usertitle-job"> {{auth()->user()->role}} </div>
                     </div>
                     <!-- END SIDEBAR USER TITLE -->
                 </div>
@@ -41,40 +41,34 @@
                         <div class="tab-content">
                             <!-- PERSONAL INFO TAB -->
                             <div class="tab-pane active" id="tab_1_1">
-                                <form role="form" action="{{route('perfil.update')}}" method="POST">
-                                    {{csrf_field()}} {{method_field("PUT")}}
-                                    <br>
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" id="name" name="name" type="text" maxlength="50" value="{{auth()->user()->name}}" />
-                                            <label class="control-label">Nombre</label>
-                                            <span class="help-block">Cambiar el Nombre</span>
-                                            <i class="fa fa-user"></i>
+                                <form action="{{route('perfil.update')}}" method="POST" >
+                                    {{csrf_field()}}
+                                   
+                                    
+                                    @component('components.text', [
+                                    'name' => 'name',
+                                    'attributes' => "required",
+                                    'label' => 'Nombre',
+                                    'help' => 'Cambiar el Nombre',
+                                    'icon' => 'fa fa-user',
+                                    'value'=> auth()->user()->name,
+                                    ])
+                                    @endcomponent
+                                     @component('components.email', [
+                                    'name' => 'email',
+                                    'attributes' => "required",
+                                    'label' => 'Correo',
+                                    'help' => 'Cambiar El Correo',
+                                    'icon' => 'fa fa-envelope-o',
+                                    'value'=> auth()->user()->email,
+                                    ])
+                                    @endcomponent
+                                    
+                                    
+                                        <div class="form-group">
+                                        <button type="submit" class="btn blue center-block">Guardar Cambios</button>
                                         </div>
-                                    </div>
-
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" type="text" readonly value="{{auth()->user()->role}}" />
-                                            <label class="control-label">Rol</label>
-
-                                            <i class="fa fa-user"></i>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" id="correo" name="email" type="email" maxlength="50" value="{{auth()->user()->email}}" />
-                                            <label class="control-label">Correo</label>
-                                            <span class="help-block">Cambiar Correo</span>
-                                            <i class="fa fa-envelope-o"></i>
-                                        </div>
-                                    </div>
-                                    <div class="margiv-top-10">
-                                        <button type="submit" class="btn green-jungle">
-                                         <i class="fa fa-edit"></i>Guardar Cambios
-                                        </button>
-                                        <a href="javascript:;" class="btn default"> Cancelar </a>
-                                    </div>
+                                    
                                 </form>
                             </div>
                             <!-- END PERSONAL INFO TAB -->
