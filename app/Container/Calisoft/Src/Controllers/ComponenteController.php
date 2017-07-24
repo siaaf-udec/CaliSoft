@@ -7,6 +7,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\TiposDocumento;
 use App\Container\Calisoft\Src\Componente;
+use App\Container\Calisoft\Src\Requests\ComponenteStoreRequest;
+use App\Container\Calisoft\Src\Requests\ComponenteUpdateRequest;
 
 class ComponenteController extends Controller
 {
@@ -24,16 +26,9 @@ class ComponenteController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(ComponenteStoreRequest $request)
     {
-        //Aqui realizo validaciones,
-       $this->validate($request, [
-            'nombre' => 'required|string|unique:TBL_ComponentesDocumento',
-            'descripcion' => 'required|string',
-            'FK_TipoDocumentoId' => 'required|integer',
-            'required' => 'required|boolean'
-        ]);
-
+       
         return Componente::create([
             'nombre' => $request->nombre,
             'descripcion'=> $request->descripcion,
@@ -43,14 +38,9 @@ class ComponenteController extends Controller
     }
 
 
-    public function update(Request $request, Componente $componente)
+    public function update(ComponenteUpdateRequest $request, Componente $componente)
     {
-        $this->validate($request, [
-            'nombre' => 'string|unique:TBL_ComponentesDocumento,nombre,' . $componente->PK_id . ',PK_id',
-            'required' => 'boolean',
-            'descripcion' => 'string'
-        ]);
-
+        
         $componente->update(
             $request->only('nombre', 'required', 'descripcion')
         );
