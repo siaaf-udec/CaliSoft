@@ -29,21 +29,21 @@ License: You must have a valid license purchased only from themeforest(the above
         <meta content="" name="author" />
         <!-- BEGIN GLOBAL MANDATORY STYLES -->
         <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700&subset=all" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="../assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/global/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/global/plugins/simple-line-icons/simple-line-icons.min.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/global/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/global/plugins/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet" type="text/css" />
         <!-- END GLOBAL MANDATORY STYLES -->
         <!-- BEGIN THEME GLOBAL STYLES -->
-        <link href="../assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
-        <link href="../assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/global/css/components-md.min.css" rel="stylesheet" id="style_components" type="text/css" />
+        <link href="/assets/global/css/plugins-md.min.css" rel="stylesheet" type="text/css" />
         <!-- END THEME GLOBAL STYLES -->
         <!-- BEGIN PAGE LEVEL STYLES -->
-        <link href="../assets/pages/css/error.min.css" rel="stylesheet" type="text/css" />
+        <link href="/assets/pages/css/error.min.css" rel="stylesheet" type="text/css" />
         <!-- END PAGE LEVEL STYLES -->
         <!-- BEGIN THEME LAYOUT STYLES -->
         <!-- END THEME LAYOUT STYLES -->
-        <link rel="shortcut icon" href="favicon.ico" /> </head>
+        <link rel="shortcut icon" href="/favicon.ico" /> </head>
     <!-- END HEAD -->
 
     <body class=" page-404-3">
@@ -54,7 +54,7 @@ License: You must have a valid license purchased only from themeforest(the above
             <h2>Houston, we have a problem.</h2>
             <p> Actually, the page you are looking for does not exist. </p>
             <p>
-                <a href="{{ route('home') }}" class="btn red btn-outline"> 
+                <a href="{{ route('home') }}" class="btn red btn-outline">
                     Return home
                 </a>
                 <br>
