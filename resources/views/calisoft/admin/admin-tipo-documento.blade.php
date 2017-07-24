@@ -41,7 +41,7 @@
 
                             {{-- List Group Item Actions --}}
                             <div class="btn-group pull-right">
-                                <a :href="`/admin/tdocumentos/${tdoc.PK_id}/componentes`" class="btn blue btn-xs">
+                                <a :href="`tdocumentos/${tdoc.PK_id}/componentes`" class="btn blue btn-xs">
                                     componentes
                                 </a>
                                 <button type="button" class="btn btn-xs" @click="selectEdit(tdoc)">
