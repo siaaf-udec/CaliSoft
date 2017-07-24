@@ -8,7 +8,9 @@
                 <div class="portlet light profile-sidebar-portle">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="../assets/pages/media/profile/profile_user.jpg" class="img-responsive" alt=""> </div>
+                        <img src="../assets/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
+
+                      </div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
                     <div class="profile-usertitle">
@@ -29,11 +31,12 @@
                                 <a href="#tab_1_1" data-toggle="tab">Información Personal</a>
                             </li>
                             <li>
-                                <a href="#tab_1_2" data-toggle="tab">Cambiar Foto</a>
+                                <a href="#tab_1_2" data-toggle="tab">Cambiar Foto data</a>
                             </li>
                             <li>
                                 <a href="#tab_1_3" data-toggle="tab">Cambiar Contraseña</a>
                             </li>
+
 
                         </ul>
                     </div>
@@ -69,8 +72,16 @@
                                         <button type="submit" class="btn blue center-block">Guardar Cambios</button>
                                         </div>
 
+
                                 </form>
-                            </div>
+                                @if(session()->has('mensaje'))
+                                <div class="alert alert-info alert-dismissable">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                  <strong>{{session('mensaje')}}</strong>
+                                </div>
+                                @endif
+                              </div>
+
                             <!-- END PERSONAL INFO TAB -->
                             <!-- CHANGE AVATAR TAB -->
                             <div class="tab-pane" id="tab_1_2">
