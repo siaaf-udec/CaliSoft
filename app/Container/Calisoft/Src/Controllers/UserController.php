@@ -88,9 +88,14 @@ class UserController extends Controller
         return $this->users->searchFreeStudents($request->name);
     }
 
+    public function searchEvaluators(Request $request){
+        $this->validate($request, [ 'name' => 'string|required' ]);
+        return $this->users->searchEvaluators($request->name);
+    }
+
     public function invitaciones()
     {
         return request()->user()->proyectos()->wherePivot('tipo', 'invitado')->get();
     }
-    
+
 }

@@ -16,4 +16,11 @@ class Users
         ->limit(10)
         ->get();
     }
+
+    public function searchEvaluators($name){
+        return User::withCount('proyectos')
+            ->where('role', 'evaluator')
+            ->where('name', 'like', "%$name%")
+            ->get();
+    }
 }

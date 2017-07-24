@@ -46,10 +46,10 @@
             <div class="btn-group btn-group-vertical center-block btn-group-sm">
                 <template v-if="propuesta">
                     <button class="btn blue btn-sm" data-toggle="modal" data-target="#acceptModal">Aceptar Proyecto</button>
-                    <button class="btn red btn-sm">Eliminar</button>
+                    <button class="btn red btn-sm" data-toggle="modal" data-target="#eliminar">Eliminar</button>
                 </template>
                 <template v-if="activo">
-                    <button class="btn blue btn-sm">Asignar Evaluador</button>
+                    <button class="btn blue btn-sm" data-toggle="modal" data-target="#evaluador">Asignar Evaluador</button>
                 </template>
             </div>
         </div>
@@ -64,14 +64,29 @@
             </div>
         </modal>
 
+        <modal id="eliminar" title="Eliminar Proyecto">
+          <p class="text-center">
+            Esta seguro de eliminar el proyecto {{ proyecto.nombre }}?
+            <div class="form-group">
+              <button class="btn red center-block" @click="eliminar()">Eliminar</button>
+            </div>
+          </p>
+        </modal>
+
+        <modal id="evaluador" title="Asignar Evaluador">
+            <evaluator-search></evaluator-search>
+        </modal>
+
     </div>
 
 </template>
 
 <script>
 import Modal from './modal';
+import EvaluatorSearch from './evaluator-search';
+
 export default {
-    components: { Modal },
+    components: { Modal, EvaluatorSearch },
     props: ['proyecto'],
     methods:{
       filtrar(tipo){
@@ -84,6 +99,13 @@ export default {
               toastr.success('Haz Aceptado la propuesta del proyecto ' + this.proyecto.nombre);
               this.$emit('updated', Object.assign({}, this.proyecto, res.data));
           });
+      },
+      eliminar(){
+        axios.delete('/api/proyectos/' + this.proyecto.PK_id).then(() => {
+            $('#eliminar').modal('hide');
+            toastr.info('Haz eliminado del proyecto ' + this.proyecto.nombre);
+            this.$emit('removed', this.proyecto)
+        });
       }
     },
     computed:{
@@ -105,6 +127,6 @@ export default {
 
 <style scoped>
 .borderless td, .borderless th {
-border: none;
+    border: none;
 }
 </style>

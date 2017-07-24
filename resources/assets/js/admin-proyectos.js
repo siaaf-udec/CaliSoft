@@ -35,6 +35,10 @@ let vm = new Vue({
             this.proyectos = this.proyectos.map(pro => {
                 return pro.PK_id == proyecto.PK_id ? proyecto : pro;
             });
+        },
+        remove(proyecto){
+            this.seleccion = {};
+            this.proyectos = this.proyectos.filter(pro => pro.PK_id != proyecto.PK_id);
         }
     },
     watch: {

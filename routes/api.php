@@ -40,8 +40,14 @@ Route::get('tdocumentos/{tdocumento}/componentes', 'TiposDocumentoController@get
 
 Route::get('/user/project', 'UserController@proyecto');
 
-Route::get('/student/search', 'UserController@searchFreeStudents');
-Route::get('/student/invitations', 'UserController@invitaciones');
+
+Route::prefix('student')->group(function () {
+    Route::get('search', 'UserController@searchFreeStudents');
+    Route::get('invitations', 'UserController@invitaciones');
+});
+
+Route::get('/evaluator/search', 'UserController@searchEvaluators');
+
 
 Route::resource('invitations', 'InvitationController', [
     'only'       => ['store', 'update', 'destroy'],

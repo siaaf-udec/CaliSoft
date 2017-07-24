@@ -48,7 +48,7 @@
 
             <div class="col-sm-6" v-if="seleccion.nombre">
 
-                <proyecto-tabla :proyecto="seleccion" @updated="update">
+                <proyecto-tabla :proyecto="seleccion" @updated="update" @removed="remove">
                 </proyecto-tabla>
 
 

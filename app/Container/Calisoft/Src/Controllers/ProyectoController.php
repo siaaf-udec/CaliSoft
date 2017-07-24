@@ -17,7 +17,7 @@ class ProyectoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:student')->except('index', 'aceptar');
+        $this->middleware('role:student')->except('index', 'aceptar', 'destroy');
         $this->middleware('role:admin')->only('index', 'aceptar');
         //$this->middleware('can:update,proyecto')->only('update');
     }
