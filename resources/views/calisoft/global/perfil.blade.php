@@ -43,7 +43,7 @@
                             <div class="tab-pane active" id="tab_1_1">
                                 <form action="{{route('perfil.update')}}" method="POST" >
                                     {{csrf_field()}}
-                                   
+                                   <input type="hidden" name="PK_id" value="{{ auth()->id() }}">
                                     
                                     @component('components.text', [
                                     'name' => 'name',
