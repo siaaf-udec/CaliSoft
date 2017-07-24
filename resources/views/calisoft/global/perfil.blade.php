@@ -44,14 +44,14 @@
                                 <form action="{{route('perfil.update')}}" method="POST" >
                                     {{csrf_field()}}
                                    <input type="hidden" name="PK_id" value="{{ auth()->id() }}">
-                                    
+
                                     @component('components.text', [
                                     'name' => 'name',
                                     'attributes' => "required",
                                     'label' => 'Nombre',
                                     'help' => 'Cambiar el Nombre',
                                     'icon' => 'fa fa-user',
-                                    'value'=> auth()->user()->name,
+                                    'value'=> old('name') ?: auth()->user()->name,
                                     ])
                                     @endcomponent
                                      @component('components.email', [
@@ -60,15 +60,15 @@
                                     'label' => 'Correo',
                                     'help' => 'Cambiar El Correo',
                                     'icon' => 'fa fa-envelope-o',
-                                    'value'=> auth()->user()->email,
+                                    'value'=> old('email') ?: auth()->user()->email,
                                     ])
                                     @endcomponent
-                                    
-                                    
+
+
                                         <div class="form-group">
                                         <button type="submit" class="btn blue center-block">Guardar Cambios</button>
                                         </div>
-                                    
+
                                 </form>
                             </div>
                             <!-- END PERSONAL INFO TAB -->
