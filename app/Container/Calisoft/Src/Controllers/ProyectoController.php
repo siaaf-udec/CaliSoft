@@ -11,6 +11,8 @@ use App\Container\Calisoft\Src\Semillero;
 use App\Container\Calisoft\Src\User;
 use Illuminate\Http\Request;
 use Illuminate\Http\Response;
+use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
+use App\Container\Calisoft\Src\Requests\ProyectoUpdateRequest;
 
 class ProyectoController extends Controller
 {
@@ -26,18 +28,11 @@ class ProyectoController extends Controller
     {
         return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
             ->where('state', '<>', 'creacion')
-            ->paginate(10);
+            ->paginate(9);
     }
 
-    public function store(Request $request)
+    public function store(ProyectoStoreRequest $request)
     {
-        $this->validate($request, [
-            'nombre'    => 'required|string|min:5|unique:TBL_Proyectos',
-            'grupo'     => 'required|integer',
-            'semillero' => 'required|integer',
-            'categoria' => 'required|integer',
-        ]);
-
         // Envío de noticifación a admin BEGIN
         $admin = User::where('role', 'admin')->first();
 
@@ -56,20 +51,14 @@ class ProyectoController extends Controller
         return redirect()->route('home');
     }
 
-    public function update(Request $request, Proyecto $proyecto)
+    public function update(ProyectoUpdateRequest $request, Proyecto $proyecto)
     {
-        $this->validate($request, [
-            'nombre'                    => sprintf('string|min:5|unique:TBL_Proyectos,nombre,%d,PK_id', $proyecto->PK_id),
-            'FK_CategoriaId'            => 'integer',
-            'FK_SemilleroId'            => 'integer',
-            'FK_GrupoDeInvestigacionId' => 'integer',
-        ]);
-
         $proyecto->update($request->all());
     }
 
-    public function destroy(Proyecto $proyecto){
-      $proyecto->delete();
+    public function destroy(Proyecto $proyecto)
+    {
+        $proyecto->delete();
     }
 
     public function documentos(Proyecto $proyecto)
@@ -82,14 +71,16 @@ class ProyectoController extends Controller
     * @param Proyecto $proyecto
     * @return Response
     */
-    public function propuesta(Proyecto $proyecto){
+    public function propuesta(Proyecto $proyecto)
+    {
         $proyecto->usuarios()->wherePivot('tipo', 'invitado')->delete();
         $proyecto->state = 'propuesta';
         $proyecto->save();
         return $proyecto;
     }
 
-    public function aceptar(Proyecto $proyecto){
+    public function aceptar(Proyecto $proyecto)
+    {
         $proyecto->state = 'activo';
         $proyecto->save();
         return $proyecto;

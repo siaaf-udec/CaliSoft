@@ -6,6 +6,10 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\User;
 use App\Container\Calisoft\Src\Repositories\Users;
+use App\Container\Calisoft\Src\Requests\UserIndexRequest;
+use App\Container\Calisoft\Src\Requests\UserStoreRequest;
+use App\Container\Calisoft\Src\Requests\UserSearchEvaluatorsRequest;
+use App\Container\Calisoft\Src\Requests\UserSearchFreeStudentsRequest;
 
 class UserController extends Controller
 {
@@ -22,11 +26,8 @@ class UserController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index(UserIndexRequest $request)
     {
-        $this->validate($request, [
-            'role' => 'in:admin,student,evaluator'
-        ]);
         $role = $request->role;
 
         //Filtra por role si existe el parametro role, si no, retorna todo
@@ -41,14 +42,8 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(UserStoreRequest $request)
     {
-        $this->validate($request, [
-          'name'=>'required|string|max:255',
-          'email'=>'required|string|email|max:255|unique:TBL_Usuarios',
-          'password'=>'required|string|min:7|confirmed',
-          'role'=>'required|string|in:admin,evaluator',
-        ]);
         return User::create([
           'name' => $request['name'],
           'email' => $request['email'],
@@ -82,14 +77,13 @@ class UserController extends Controller
     *  Retorna los estudiantes que no tienen
     *  proyectos, filtra por nombre
     */
-    public function searchFreeStudents(Request $request)
+    public function searchFreeStudents(UserSearchFreeStudentsRequest $request)
     {
-        $this->validate($request, [ 'name' => 'string|required' ]);
         return $this->users->searchFreeStudents($request->name);
     }
 
-    public function searchEvaluators(Request $request){
-        $this->validate($request, [ 'name' => 'string|required' ]);
+    public function searchEvaluators(UserSearchEvaluatorsRequest $request)
+    {
         return $this->users->searchEvaluators($request->name);
     }
 
@@ -97,5 +91,4 @@ class UserController extends Controller
     {
         return request()->user()->proyectos()->wherePivot('tipo', 'invitado')->get();
     }
-
 }
