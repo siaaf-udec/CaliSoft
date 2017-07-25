@@ -27,15 +27,18 @@ class PerfilController extends Controller
      */
    public function updatePassword(PerfilPasswordRequest $request)
    {
-     if (Hash::check($request->PassActual, Auth::user()->password)){
-                $user = new User;
-                $user->where('email', '=', Auth::user()->email)
-                     ->update(['password' => bcrypt($request->password)]);
-                return redirect('user')->with('status', 'Password cambiado con éxito');
+     $user = auth()->user();
+
+     if (Hash::check($request->pass_actual, $user->password)){
+                $user->password=bcrypt($request->pass_new);
+                $user->save();
+                $request->session()->flash('mensaje',__('Contraseñas actulizadas correctamente'));
+                return back();
             }
             else
-            {
-                return redirect('user/password')->with('message', 'Credenciales incorrectas');
+             {
+               $request->session()->flash('error',__('Error al cambiar contraseñas'));
+               return back();
             }
    }
 

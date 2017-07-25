@@ -11,7 +11,8 @@
             @component('components.porlet-action', [
                 'icon' => 'fa fa-question',
                 'link' => '#ayuda',
-                'attributes' => "data-toggle='modal'"
+                'attributes' => "data-toggle='modal'",
+                'title'=>'Ayuda',
             ])
             @endcomponent
 

@@ -21,7 +21,7 @@
                             </bs-switch>
                         </div>
                         <div class="form-group pull-right">
-                            <button class="btn green-jungle center-block" type="submit">
+                            <button class="btn btn-md yellow-gold" type="submit">
                                 <span class="fa fa-plus"></span> Agregar
                             </button>
                         </div>
@@ -41,16 +41,15 @@
 
                             {{-- List Group Item Actions --}}
                             <div class="btn-group pull-right">
-                                <a :href="`tdocumentos/${tdoc.PK_id}/componentes`" class="btn btn-md yellow-gold" title="Agregar Componentes">
-                                  <i class="fa fa-address-book-o" ></i>
-                                    <!--componentes-->
+                                <a :href="`tdocumentos/${tdoc.PK_id}/componentes`" class="btn blue btn-xs" title="Agregar Componentes">
+                                    componentes
                                 </a>
-                                <button type="button" class="btn btn-md blue" title="Editar Documento" @click="selectEdit(tdoc)">
-                                  <i class="glyphicon glyphicon-pencil"></i>
-                                    <!--editar-->
+                                <button type="button" class="btn btn-xs" title="Editar Documento" @click="selectEdit(tdoc)">
+
+                                    editar
                                 </button>
-                                <button type="button" class="btn red btn" title="Eliminar Documento" @click="selectDelete(tdoc)">
-                                  <i class="glyphicon glyphicon-trash"></i>
+                                <button type="button" class="btn red btn-xs" title="Eliminar Documento" @click="selectDelete(tdoc)">
+                                  Eliminar
                                 </button>
                             </div>
                         </div>

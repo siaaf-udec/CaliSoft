@@ -44,7 +44,7 @@
                         <div class="tab-content">
                             <!-- PERSONAL INFO TAB -->
                             <div class="tab-pane active" id="tab_1_1">
-                                <form action="#" method="POST" >
+                                <form action="{{route('perfil.update')}}" method="POST" >
                                     {{csrf_field()}}
                                    <input type="hidden" name="PK_id" value="{{ auth()->id() }}">
 
@@ -117,7 +117,7 @@
                                 <form action="{{route('perfil.password')}}" method="POST">
                                   {{csrf_field()}}
                                     @component('components.password',[
-                                      'name'=>'PassActual',
+                                      'name'=>'pass_actual',
                                       'attributes'=>'required',
                                       'label' => 'Contraseña Actual',
                                       'help' => 'Digite Contraseña Actual',
@@ -125,7 +125,7 @@
                                     ])
                                     @endcomponent
                                     @component('components.password',[
-                                      'name'=>'PassNew',
+                                      'name'=>'pass_new',
                                       'attributes'=>'required',
                                       'label' => 'Contraseña Nueva',
                                       'help' => 'Digite Contraseña Nueva',
@@ -133,7 +133,7 @@
                                     ])
                                     @endcomponent
                                     @component('components.password',[
-                                      'name'=>'PassConfir',
+                                      'name'=>'pass_new_confirmation',
                                       'attributes'=>'required',
                                       'label' => 'Confirmar Contraseña',
                                       'help' => 'Digite para Confirmar Contraseña',
@@ -141,6 +141,18 @@
                                     ])
                                     @endcomponent
 
+                                    @if(session()->has('mensaje2'))
+                                    <div class="alert alert-info alert-dismissable">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                      <strong>{{session('mensaje2')}}</strong>
+                                    </div>
+                                    @endif
+                                    @if(session()->has('error'))
+                                    <div class="alert alert-danger alert-dismissable">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                      <strong>{{session('error')}}</strong>
+                                    </div>
+                                    @endif
                                     <div class="margin-top-10">
                                         <button type="submit" class="btn green-jungle">
                                          <i class="fa fa-edit"></i>Editar Contraseña
