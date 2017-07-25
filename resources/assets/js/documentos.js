@@ -1,10 +1,12 @@
 import "./bootstrap";
 import Vue from "vue";
 import Modal from "../components/modal";
+import BsSelect from "../components/bs-select"
 new Vue({
     el: "#app",
     components: {
-        Modal
+        Modal,
+        BsSelect
     },
     props: ['src'],
     data: {
@@ -14,12 +16,14 @@ new Vue({
         formErrors: {},
         formErrorsUpdate: {},
         tiposDocumentos: [],
+        paginacion: {},
         proyectoId: window.proyectId,
-        image: ''
+        tipo: ""
     },
     created() {
+        this.refresh('/api/documentacion');
         axios.get(`/api/tdocumentos`).then(res => this.tiposDocumentos = res.data);
-        axios.get(`/api/documentacion`).then(res => this.documentos = res.data);
+        //axios.get(`/api/documentacion`).then(res => this.documentos = res.data);
     },
     methods: {
         show() {
@@ -55,6 +59,24 @@ new Vue({
                 this.documentos = this.documentos.filter(value => value != documento);
                 toastr.info('Documento eliminado correctamente');
             });
+        },
+        refresh(url, params) {
+            if (!url) return;
+            axios.get(url, {
+                params
+            }).then(response => {
+                this.paginacion = response.data;
+                this.documentos = this.paginacion.data;
+            });
+        },
+        watch: {
+            tipo(val) {
+                let params = {
+                    page: this.paginacion.current_page
+                };
+                if (val) params.tipo = val;
+                this.refresh('/api/documentacion', params);
+            }
         }
     }
 });

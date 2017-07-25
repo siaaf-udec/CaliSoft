@@ -7,8 +7,10 @@ use App\Container\Calisoft\Src\TiposDocumento;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
+use Illuminate\Support\Facades\Storage;
 
 class DocumentoController extends Controller
 {
@@ -17,13 +19,24 @@ class DocumentoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
+        $this->validate($request, [
+            'tipo' => 'integer',
+        ]);
+
         $proyectoId = auth()->user()->proyectos()->first();
-        $documents  = Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)->get();
-        return $documents;
-        //$docs = Documentos::All();
-        //  return view('student.student-subir-documentacion',compact('docs'));
+        //$documents  = Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)->get();
+        //return $documents;
+
+        $tipo = $request->tipo;
+
+        //Filtra por role si existe el parametro role, si no, retorna todo
+        return Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)
+            ->with('tipoDocumento')
+            ->when($tipo, function ($query) use ($tipo) {
+                return $query->where('FK_TipoDocumentoId', $tipo);
+            })->paginate(5);
     }
 
     /**
@@ -45,24 +58,6 @@ class DocumentoController extends Controller
     public function store(Request $request)
     {
 
-        $path  = storage_path() . '/uploads/';
-        $files = $request->file('file');
-        foreach ($files as $file) {
-            $fileName = $file->getClientOriginalName();
-            $file->move($path, $fileName);
-        }
-
-        /*$this->validate($request, [
-    'FK_ProyectoId'      => 'required|integer',
-    'FK_TipoDocumentoId' => 'required|integer',
-
-    ]);
-
-    return Documentos::create([
-    'url'                => $request->url,
-    'FK_ProyectoId'      => $request->FK_ProyectoId,
-    'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
-    ]);*/
     }
 
     /**
@@ -121,31 +116,33 @@ class DocumentoController extends Controller
         return $tdocumento = TiposDocumento::all();
     }
 
-    public function postfile()
+    public function postfile(Request $request)
     {
-        $fileInput  = Input::file('file');
-        $tipoInput  = Input::get('FK_TipoDocumentoId');
+
+        $this->validate($request, [
+
+            'FK_TipoDocumentoId' => 'required|integer',
+            'file'               => 'required',
+        ]);
+
+        $fileInput  = $request->file('file');
+        $tipoInput  = $request->FK_TipoDocumentoId;
         $idProyecto = auth()->user()->proyectos()->first();
+        $fileName   = rand(1000, 9999) . '_' . $fileInput->getClientOriginalName();
 
-        if (Input::hasFile('file')) {
+        if (!Storage::disk('docuEst')->exists($fileName)) {
 
-            $id = auth()->user()->PK_id;
+            if (Input::hasFile('file')) {
 
-            $path     = storage_path() . '/uploads/documentos/';
-            $fileName = $id . '_' . $fileInput->getClientOriginalName();
+                if ($fileInput) {
+                    Storage::disk('docuEst')->put($fileName, File::get($fileInput));
 
-            //$usuario = User::find($id);
-
-            $file                     = new Documentos;
-            $file->url                = $fileName;
-            $file->FK_ProyectoId      = $idProyecto->PK_id;
-            $file->FK_TipoDocumentoId = $tipoInput;
-
-            //$file->user()->associate($usuario);
-
-            if ($fileInput->move($path, $fileName)) {
-                $file->save();
-
+                    return Documentos::create([
+                        'url'                => $fileName,
+                        'FK_ProyectoId'      => $idProyecto->PK_id,
+                        'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
+                    ]);
+                }
             }
 
         }
@@ -154,6 +151,7 @@ class DocumentoController extends Controller
 
     public function getfile($file)
     {
+        //$url = Storage::disk('docuEst')->url($file);
         return response()->file("../storage/uploads/documentos/" . $file);
     }
 

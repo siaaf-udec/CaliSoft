@@ -5,13 +5,23 @@
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
             <div id="app">
-                <br>
+            <div class="row">
 
+                <div class="form-group col-md-4 col-xs-12">
+                <bs-select id="role-filter" title="Tipo" v-model="tipo">
+                        <option value="">Todos</option>
+                        <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
+                    </option>
+                    </bs-select>
+                <br>
+            </div>
+            </div>
 
                     <!-- Table de categorias -->
                     <div class="table-responsive">
                         <table class="table table-striped table-hover table-bordered table-condensed">
         <thead>
+            <th></th>
             <th>Documento</th>
             <th>Tipo</th>
             <th>Operación</th>
@@ -19,8 +29,9 @@
         </thead>
         <tbody>
             <tr v-for="documento in documentos" class="text-center">
+                <td class="glyphicon glyphicon-file"></td>
                 <td v-text="documento.url"></td>
-                <td v-text="documento.FK_TipoDocumentoId"></td>
+                <td v-text="documento.tipo_documento.nombre"></td>
                 <td class="text-center">
                     <div class="btn-group">
 
@@ -51,12 +62,38 @@
     </table>
                 </div>
 
+    <!-- Paginacion -->
+            <div class="row">
+                <!-- Boton de crear usuario -->
+                <div class="col-sm-6">
+                    <button type="button"  @click.prevent="show()" class="btn blue center-block">
+                    <i class="fa fa-plus"></i>
+                    Subir Documento
+                </button>
+                </div>
 
 
-    <button type="button"  @click.prevent="show()" class="btn blue center-block">
-            <i class="fa fa-plus"></i>
-            Subir Documento
-    </button>
+                <!-- Pagination Buttons-->
+                <div class="col-sm-6" v-show="paginacion.last_page > 1">
+                    <ul class="pagination pager pull-right">
+                        <li>
+                            <a :class="{disabled: !paginacion.prev_page_url}" @click="refresh(paginacion.prev_page_url)">
+                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
+                    </a>
+                        </li>
+                        <li v-for="index in paginacion.last_page">
+                            <a @click="refresh('/api/documentacion', { page: index })">@{{index}}</a>
+                        </li>
+                        <li>
+                            <a :class="{disabled: !paginacion.next_page_url}" @click="refresh(paginacion.next_page_url)">
+                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+                    </a>
+                        </li>
+                    </ul>
+                </div>
+                <!-- End Pagination Buttons-->
+
+            </div>
 
 <!--Creación modal Documentación -->
 
@@ -66,15 +103,23 @@
                 'url'=>'api/file/',
                 'files'=>true,
                 'class'=>'dropzone',
-                'id'=>'my-dropzone',
+                'id'=>'my-awesome-dropzone',
                 'method'=>'post',
                 ))}}
                 <label class="control-label">Tipo de documento</label>
 
-                <select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="newDocumentos.FK_TipoDocumentoId" required>
-                    <option  v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
-                    </option>
-                </select>
+                <div class="row">
+                    <div class="form-group col-md-4 col-xs-12">
+                        <bs-select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="newDocumentos.FK_TipoDocumentoId" required>
+                            <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
+                            </option>
+                        </bs-select>
+                        <br>
+                    </div>
+                </div>
+                <span v-if="formErrorsUpdate['FK_TipoDocumentoId']" class="error text-danger">
+                    @{{formErrorsUpdate.url[0]}}
+                </span>
 
                 <div class="text-center">
                     <h3 class="sbold">Arrastre su archivos aquí u oprima click para subir</h3>
@@ -102,6 +147,7 @@
         <br>
         <div class ="text-center">
             <div class="form-group" >
+                <h3 v-text="fillDocumentos.url"></h3>
                 <label class="control-label">Tipo de documento</label>
                 <select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="fillDocumentos.FK_TipoDocumentoId" required>
                     <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
@@ -134,7 +180,7 @@
 @endsection
 
 @push('styles')
-    <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+
     <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css" />
 
     <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
@@ -154,8 +200,19 @@
 
     <script src="/js/documentos.js"></script>
 
+
     <script src="../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
     <script src="../assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
+
+    <script>
+        Dropzone.options.myAwesomeDropzone = {
+            uploadMultiple: false,
+            maxFilezise: 1000,
+            maxFiles: 2,
+            acceptedFiles: '.pdf',
+        };
+    </script>
+
 
 
 @endpush
@@ -164,6 +221,5 @@
 
 @push('plugins')
     <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
-
 
 @endpush
