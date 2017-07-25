@@ -33,17 +33,6 @@ new Vue({
             this.fillDocumentos = Object.assign({}, documento);
             $('#editar-documentos').modal("show");
         },
-        store() {
-            this.newDocumentos.url = this.image;
-            this.newDocumentos.FK_ProyectoId = this.proyectoId;
-            axios.post('/api/documentacion/', this.newDocumentos).then(res => {
-                this.documentos.push(res.data);
-                this.newDocumentos = this.getSchema();
-                $('#subir-documentos').modal("hide");
-                toastr.info('Documento subido correctamente');
-            }).catch(err => this.formErrors = err.response.data)
-            $('#subir-documentos').modal("hide");
-        },
         update() {
             axios.put('/api/documentacion/' + this.fillDocumentos.PK_id, this.fillDocumentos).then(response => {
                 this.documentos = this.documentos.map(value => {

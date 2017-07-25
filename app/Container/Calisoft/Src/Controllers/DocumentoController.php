@@ -3,6 +3,9 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Container\Calisoft\Src\Documentos;
+use App\Container\Calisoft\Src\Requests\DocumentosIndexRequest;
+use App\Container\Calisoft\Src\Requests\DocumentosStoreRequest;
+use App\Container\Calisoft\Src\Requests\DocumentosUpdateRequest;
 use App\Container\Calisoft\Src\TiposDocumento;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -11,20 +14,19 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
-use App\Container\Calisoft\Src\Requests\DocumentosUpdateRequest;
 
 class DocumentoController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index(Request $request)
+    public function __construct()
     {
-        $this->validate($request, [
-            'tipo' => 'integer',
+        $this->middleware('auth');
+        $this->middleware('role:student', [
+            'except' => ['index'],
         ]);
+    }
+
+    public function index(DocumentosIndexRequest $request)
+    {
 
         $proyectoId = auth()->user()->proyectos()->first();
         //$documents  = Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)->get();
@@ -32,11 +34,10 @@ class DocumentoController extends Controller
 
         $tipo = $request->tipo;
 
-        //Filtra por role si existe el parametro role, si no, retorna todo
         return Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)
             ->with('tipoDocumento')
             ->when($tipo, function ($query) use ($tipo) {
-                return $query->where('FK_TipoDocumentoId', $tipo);
+                return $query->where('FK_TipoDocumentoIds', $tipo);
             })->paginate(5);
     }
 
@@ -112,34 +113,23 @@ class DocumentoController extends Controller
         return $tdocumento = TiposDocumento::all();
     }
 
-    public function postfile(Request $request)
+    public function postfile(DocumentosStoreRequest $request)
     {
-
-        $this->validate($request, [
-
-            'FK_TipoDocumentoId' => 'required|integer',
-            'file'               => 'required',
-        ]);
 
         $fileInput  = $request->file('file');
         $tipoInput  = $request->FK_TipoDocumentoId;
         $idProyecto = auth()->user()->proyectos()->first();
         $fileName   = rand(1000, 9999) . '_' . $fileInput->getClientOriginalName();
 
-        if (!Storage::disk('docuEst')->exists($fileName)) {
+        if (Input::hasFile('file')) {
 
-            if (Input::hasFile('file')) {
+            Storage::disk('docuEst')->put($fileName, File::get($fileInput));
 
-                if ($fileInput) {
-                    Storage::disk('docuEst')->put($fileName, File::get($fileInput));
-
-                    return Documentos::create([
-                        'url'                => $fileName,
-                        'FK_ProyectoId'      => $idProyecto->PK_id,
-                        'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
-                    ]);
-                }
-            }
+            return Documentos::create([
+                'url'                => $fileName,
+                'FK_ProyectoId'      => $idProyecto->PK_id,
+                'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
+            ]);
         }
     }
 

@@ -4,15 +4,14 @@ namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Container\Calisoft\Src\Categoria as Categoria;
 use App\Container\Calisoft\Src\GrupoDeInvestigacion as Grupo;
-use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Notifications\ProyectoCreado;
 use App\Container\Calisoft\Src\Proyecto;
-use App\Container\Calisoft\Src\Semillero;
-use App\Container\Calisoft\Src\User;
-use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
 use App\Container\Calisoft\Src\Requests\ProyectoUpdateRequest;
+use App\Container\Calisoft\Src\Semillero;
+use App\Container\Calisoft\Src\User;
+use App\Http\Controllers\Controller;
+use Illuminate\Http\Response;
 
 class ProyectoController extends Controller
 {
@@ -33,11 +32,6 @@ class ProyectoController extends Controller
 
     public function store(ProyectoStoreRequest $request)
     {
-        // Envío de noticifación a admin BEGIN
-        $admin = User::where('role', 'admin')->first();
-
-        $admin->notify(new ProyectoCreado($admin));
-        // Envío de noticifación a admin ENDING
 
         $request->user()->proyectos()->create([
             'nombre'                    => $request->nombre,
@@ -67,12 +61,18 @@ class ProyectoController extends Controller
     }
 
     /**
-    * Cambia el estado del proyecto como propuesta
-    * @param Proyecto $proyecto
-    * @return Response
-    */
+     * Cambia el estado del proyecto como propuesta
+     * @param Proyecto $proyecto
+     * @return Response
+     */
     public function propuesta(Proyecto $proyecto)
     {
+        // Envío de noticifación a admin BEGIN
+        $admin = User::where('role', 'admin')->first();
+
+        $admin->notify(new ProyectoCreado($admin));
+        // Envío de noticifación a admin ENDING
+
         $proyecto->usuarios()->wherePivot('tipo', 'invitado')->delete();
         $proyecto->state = 'propuesta';
         $proyecto->save();
@@ -85,7 +85,6 @@ class ProyectoController extends Controller
         $proyecto->save();
         return $proyecto;
     }
-
 
     public function invitados(Proyecto $proyecto)
     {

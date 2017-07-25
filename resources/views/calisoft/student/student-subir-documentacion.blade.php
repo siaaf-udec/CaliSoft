@@ -103,7 +103,7 @@
                 'url'=>'api/file/',
                 'files'=>true,
                 'class'=>'dropzone',
-                'id'=>'my-awesome-dropzone',
+                'id'=>'my-awesome-dropzones',
                 'method'=>'post',
                 ))}}
                 <label class="control-label">Tipo de documento</label>
@@ -186,12 +186,17 @@
     <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
 
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
+
+
 
 
 
 @endpush
 
 @push('functions')
+
+    <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
     <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script>
 
@@ -205,11 +210,13 @@
     <script src="../assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
 
     <script>
-        Dropzone.options.myAwesomeDropzone = {
+        Dropzone.options.myAwesomeDropzones = {
             uploadMultiple: false,
             maxFilezise: 1000,
-            maxFiles: 2,
+            maxFiles: 5,
             acceptedFiles: '.pdf',
+            addRemoveLinks: true,
+            dictRemoveFile: "Retirar archivo",
         };
     </script>
 

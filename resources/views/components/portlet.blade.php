@@ -6,7 +6,7 @@
         </div>
         <div class="actions">
             {{ $actions or null }}
-            
+
             {{-- Boton de ayuda --}}
             @component('components.porlet-action', [
                 'icon' => 'fa fa-question',
