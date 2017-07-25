@@ -15,7 +15,7 @@
             ])
             @endcomponent
 
-            <a class="btn btn-circle btn-icon-only btn-default fullscreen" href="javascript:;"></a>
+            <a class="btn btn-circle btn-icon-only btn-default fullscreen"  href="javascript:;"></a>
         </div>
     </div>
     <div class="portlet-body">

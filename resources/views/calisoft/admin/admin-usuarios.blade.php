@@ -36,9 +36,9 @@
                             <td v-text="user.email"></td>
                             <td v-text="user.role"></td>
                             <td>
-                                <button class="editar-modal btn btn-danger" @click.prevent="openDeleteModal(user)">
+                                <button class="editar-modal btn btn-danger" title="Eliminar Usuario" @click.prevent="openDeleteModal(user)">
                                 <!--<button class="editar-modal btn btn-danger" @click.prevent="destroy(user)">-->
-                                    <span class="glyphicon glyphicon-trash"></span>Eliminar
+                                    <span class="glyphicon glyphicon-trash"></span>
                                 </button>
                             </td>
                         </tr>
@@ -52,6 +52,7 @@
                 <!-- Boton de crear usuario -->
                 <div class="col-sm-6">
                     <button data-toggle="modal" data-target="#crear-usuario" class="btn green-jungle center-block">
+                      <i class="fa fa-plus"></i>
                         Crear Usuario
                     </button>
                 </div>
@@ -195,7 +196,7 @@
 
                 <div class="modal-footer" slot="footer">
                     <button class="btn green-jungle" @click="destroy(deleteUser)">
-                        <i class="fa fa-edit"></i>Eliminar Usuario
+                        <i class="glyphicon glyphicon-trash"></i>Eliminar Usuario
                     </button>
                     <button type="button" class="btn red" data-dismiss="modal">
                         <i class="fa fa-ban"></i>Cancelar

@@ -22,10 +22,10 @@
 
                             <td class="text-center">
                                 <div class="btn-group">
-                                    <button class="editar-categoria btn btn-warning btn-xs" @click.prevent="openEditModal(componente)">
-                                        <span class="glyphicon glyphicon-edit"></span>
+                                    <button class="btn btn-md blue" title="Editar Componente" @click.prevent="openEditModal(componente)">
+                                        <span class="glyphicon glyphicon-pencil"></span>
                                     </button>
-                                    <button class="editar-modal btn btn-danger btn-xs" @click.prevent="destroy(componente)">
+                                    <button class="btn red btn" title="Eliminar Componente" @click.prevent="destroy(componente)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </div>
@@ -35,7 +35,7 @@
                 </table>
             </div>
 
-            <button type="button" data-toggle="modal" data-target="#crear-componente" class="btn blue center-block">
+            <button type="button" data-toggle="modal" data-target="#crear-componente" class="btn green-jungle center-block">
                 <i class="fa fa-plus"></i>
                 Crear Nuevo Componente
             </button>
@@ -70,7 +70,7 @@
                         </span>
                     </div>
 
-                    <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Crear Componente</button>
+                    <button type="submit" class="btn green-jungle"><i class="fa fa-plus"></i>Crear Componente</button>
                     <button type="button" class="btn red" data-dismiss="modal"><i class="fa fa-ban"></i>Cancelar</button>
                 </form>
             </modal>
@@ -105,7 +105,7 @@
                         </span>
                     </div>
 
-                    <button type="submit" class="btn blue"><i class="fa fa-plus"></i>Guardar</button>
+                    <button type="submit" class="btn blue"><i  class="fa fa-save"></i>Guardar</button>
                     <button type="button" class="btn red" data-dismiss="modal"><i class="fa fa-ban"></i>Cancelar</button>
 
                 </form>

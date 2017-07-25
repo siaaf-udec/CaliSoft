@@ -21,7 +21,7 @@
                             </bs-switch>
                         </div>
                         <div class="form-group pull-right">
-                            <button class="btn btn-md yellow-gold" type="submit">
+                            <button class="btn green-jungle center-block" type="submit">
                                 <span class="fa fa-plus"></span> Agregar
                             </button>
                         </div>
@@ -41,14 +41,16 @@
 
                             {{-- List Group Item Actions --}}
                             <div class="btn-group pull-right">
-                                <a :href="`tdocumentos/${tdoc.PK_id}/componentes`" class="btn blue btn-xs">
-                                    componentes
+                                <a :href="`tdocumentos/${tdoc.PK_id}/componentes`" class="btn btn-md yellow-gold" title="Agregar Componentes">
+                                  <i class="fa fa-address-book-o" ></i>
+                                    <!--componentes-->
                                 </a>
-                                <button type="button" class="btn btn-xs" @click="selectEdit(tdoc)">
-                                    editar
+                                <button type="button" class="btn btn-md blue" title="Editar Documento" @click="selectEdit(tdoc)">
+                                  <i class="glyphicon glyphicon-pencil"></i>
+                                    <!--editar-->
                                 </button>
-                                <button type="button" class="btn red btn-xs" @click="selectDelete(tdoc)">
-                                    eliminar
+                                <button type="button" class="btn red btn" title="Eliminar Documento" @click="selectDelete(tdoc)">
+                                  <i class="glyphicon glyphicon-trash"></i>
                                 </button>
                             </div>
                         </div>
@@ -72,6 +74,7 @@
                                         <span class="fa fa-save"></span> Guardar
                                     </button>
                                     <button class="btn btn-md default" @click.prevent="tdocEdit = {}">
+                                      <i class="fa fa-ban"></i>
                                         Cancelar
                                     </button>
                                 </div>
@@ -90,8 +93,8 @@
                 </p>
 
                 <div class="modal-footer" slot="footer">
-                    <button class="btn red" @click="destroy()">Eliminar</button>
-                    <button class="btn default" data-dismiss="modal">Cancelar</button>
+                    <button class="btn red" @click="destroy()">  <i class="glyphicon glyphicon-trash"></i>Eliminar</button>
+                    <button class="btn default" data-dismiss="modal"><i class="fa fa-ban"></i>Cancelar</button>
                 </div>
             </modal>
             @include('partials.modalHelpTipoDocumento')

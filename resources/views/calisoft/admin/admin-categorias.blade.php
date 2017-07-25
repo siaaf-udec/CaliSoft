@@ -1,4 +1,4 @@
-@extends('layouts.dash') 
+@extends('layouts.dash')
 @section('content')
 <div class="col-md-12">
     @component('components.portlet', ['icon' => 'fa fa-pie-chart', 'title' => 'Categorias'])
@@ -22,10 +22,10 @@
 
                         <td class="text-center">
 
-                            <button class="editar-categoria btn blue btn-xs" @click.prevent="openEditModal(categoria)">
+                            <button class="editar-categoria btn blue btn-xs" title="Editar Categoria" @click.prevent="openEditModal(categoria)">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
-                            <button class="editar-modal btn red btn-xs" @click.prevent="openDeleteModal(categoria)">
+                            <button class="editar-modal btn red btn-xs" title="Eliminar Categoria" @click.prevent="openDeleteModal(categoria)">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
 
