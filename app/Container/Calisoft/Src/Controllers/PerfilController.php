@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\User;
 use App\Container\Calisoft\Src\Requests\PerfilUpdateRequest;
+use App\Container\Calisoft\Src\Requests\PerfilPasswordRequest;
+use Hash;
 
 class PerfilController extends Controller
 {
@@ -23,9 +25,18 @@ class PerfilController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-   public function updatePassword(PerfilUpdateRequest $request)
+   public function updatePassword(PerfilPasswordRequest $request)
    {
-
+     if (Hash::check($request->PassActual, Auth::user()->password)){
+                $user = new User;
+                $user->where('email', '=', Auth::user()->email)
+                     ->update(['password' => bcrypt($request->password)]);
+                return redirect('user')->with('status', 'Password cambiado con éxito');
+            }
+            else
+            {
+                return redirect('user/password')->with('message', 'Credenciales incorrectas');
+            }
    }
 
 

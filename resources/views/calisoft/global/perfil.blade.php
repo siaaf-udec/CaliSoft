@@ -44,7 +44,7 @@
                         <div class="tab-content">
                             <!-- PERSONAL INFO TAB -->
                             <div class="tab-pane active" id="tab_1_1">
-                                <form action="{{route('perfil.update')}}" method="POST" >
+                                <form action="#" method="POST" >
                                     {{csrf_field()}}
                                    <input type="hidden" name="PK_id" value="{{ auth()->id() }}">
 
@@ -114,31 +114,32 @@
                             <!-- END CHANGE AVATAR TAB -->
                             <!-- CHANGE PASSWORD TAB -->
                             <div class="tab-pane" id="tab_1_3">
-                                <form action="#">
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" id="oldPassword" name="oldPassword" type="password" maxlength="10" />
-                                            <label class="control-label">Antigua Contraseña</label>
-                                            <span class="help-block">Digite la contraseña Antigua </span>
-                                            <i class="fa fa-key"></i>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" id="newPassword" name="newPassword" type="password" maxlength="10" />
-                                            <label class="control-label">Contraseña</label>
-                                            <span class="help-block">Digite la Nueva contraseña</span>
-                                            <i class="fa fa-key"></i>
-                                        </div>
-                                    </div>
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" name="confirmationPassword" type="password" maxlength="10" />
-                                            <label class="control-label">Confirmar Contraseña</label>
-                                            <span class="help-block">Confirmar la contraseña</span>
-                                            <i class="fa fa-key"></i>
-                                        </div>
-                                    </div>
+                                <form action="{{route('perfil.password')}}" method="POST">
+                                  {{csrf_field()}}
+                                    @component('components.password',[
+                                      'name'=>'PassActual',
+                                      'attributes'=>'required',
+                                      'label' => 'Contraseña Actual',
+                                      'help' => 'Digite Contraseña Actual',
+                                      'icon' => 'fa fa-key',
+                                    ])
+                                    @endcomponent
+                                    @component('components.password',[
+                                      'name'=>'PassNew',
+                                      'attributes'=>'required',
+                                      'label' => 'Contraseña Nueva',
+                                      'help' => 'Digite Contraseña Nueva',
+                                      'icon' => 'fa fa-key',
+                                    ])
+                                    @endcomponent
+                                    @component('components.password',[
+                                      'name'=>'PassConfir',
+                                      'attributes'=>'required',
+                                      'label' => 'Confirmar Contraseña',
+                                      'help' => 'Digite para Confirmar Contraseña',
+                                      'icon' => 'fa fa-key',
+                                    ])
+                                    @endcomponent
 
                                     <div class="margin-top-10">
                                         <button type="submit" class="btn green-jungle">
