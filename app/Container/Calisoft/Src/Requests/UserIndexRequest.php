@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TipoDocumentoStoreRequest extends FormRequest
+class UserIndexRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class TipoDocumentoStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required|string|unique:TBL_TiposDocumento',
-            'required' => 'required|boolean'
+            'role' => 'in:admin,student,evaluator'
         ];
     }
 }

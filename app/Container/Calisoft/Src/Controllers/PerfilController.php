@@ -35,6 +35,7 @@ class PerfilController extends Controller
         $user=$request->user();
         $user->fill($request->all());
         $user->save();
+        $request->session()->flash('mensaje',__('Informacion Personal Editada Correctamente'));
         return back();
 
     }

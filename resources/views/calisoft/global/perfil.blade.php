@@ -8,12 +8,14 @@
                 <div class="portlet light profile-sidebar-portle">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="../assets/pages/media/profile/profile_user.jpg" class="img-responsive" alt=""> </div>
+                        <img src="../assets/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
+
+                      </div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
                     <div class="profile-usertitle">
-                        <div class="profile-usertitle-name"> Marcus Doe </div>
-                        <div class="profile-usertitle-job"> Developer </div>
+                        <div class="profile-usertitle-name"> {{auth()->user()->name}}  </div>
+                        <div class="profile-usertitle-job"> {{auth()->user()->role}} </div>
                     </div>
                     <!-- END SIDEBAR USER TITLE -->
                 </div>
@@ -29,11 +31,12 @@
                                 <a href="#tab_1_1" data-toggle="tab">Información Personal</a>
                             </li>
                             <li>
-                                <a href="#tab_1_2" data-toggle="tab">Cambiar Foto</a>
+                                <a href="#tab_1_2" data-toggle="tab">Cambiar Foto data</a>
                             </li>
                             <li>
                                 <a href="#tab_1_3" data-toggle="tab">Cambiar Contraseña</a>
                             </li>
+
 
                         </ul>
                     </div>
@@ -41,42 +44,44 @@
                         <div class="tab-content">
                             <!-- PERSONAL INFO TAB -->
                             <div class="tab-pane active" id="tab_1_1">
-                                <form role="form" action="{{route('perfil.update')}}" method="POST">
-                                    {{csrf_field()}} {{method_field("PUT")}}
-                                    <br>
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" id="name" name="name" type="text" maxlength="50" value="{{auth()->user()->name}}" />
-                                            <label class="control-label">Nombre</label>
-                                            <span class="help-block">Cambiar el Nombre</span>
-                                            <i class="fa fa-user"></i>
-                                        </div>
-                                    </div>
+                                <form action="{{route('perfil.update')}}" method="POST" >
+                                    {{csrf_field()}}
+                                   <input type="hidden" name="PK_id" value="{{ auth()->id() }}">
 
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" type="text" readonly value="{{auth()->user()->role}}" />
-                                            <label class="control-label">Rol</label>
+                                    @component('components.text', [
+                                    'name' => 'name',
+                                    'attributes' => "required",
+                                    'label' => 'Nombre',
+                                    'help' => 'Cambiar el Nombre',
+                                    'icon' => 'fa fa-user',
+                                    'value'=> old('name') ?: auth()->user()->name,
+                                    ])
+                                    @endcomponent
+                                     @component('components.email', [
+                                    'name' => 'email',
+                                    'attributes' => "required",
+                                    'label' => 'Correo',
+                                    'help' => 'Cambiar El Correo',
+                                    'icon' => 'fa fa-envelope-o',
+                                    'value'=> old('email') ?: auth()->user()->email,
+                                    ])
+                                    @endcomponent
 
-                                            <i class="fa fa-user"></i>
+
+                                        <div class="form-group">
+                                        <button type="submit" class="btn blue center-block">Guardar Cambios</button>
                                         </div>
-                                    </div>
-                                    <div class="form-group form-md-line-input">
-                                        <div class="input-icon">
-                                            <input class="form-control" id="correo" name="email" type="email" maxlength="50" value="{{auth()->user()->email}}" />
-                                            <label class="control-label">Correo</label>
-                                            <span class="help-block">Cambiar Correo</span>
-                                            <i class="fa fa-envelope-o"></i>
-                                        </div>
-                                    </div>
-                                    <div class="margiv-top-10">
-                                        <button type="submit" class="btn green-jungle">
-                                         <i class="fa fa-edit"></i>Guardar Cambios
-                                        </button>
-                                        <a href="javascript:;" class="btn default"> Cancelar </a>
-                                    </div>
+
+
                                 </form>
-                            </div>
+                                @if(session()->has('mensaje'))
+                                <div class="alert alert-info alert-dismissable">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                  <strong>{{session('mensaje')}}</strong>
+                                </div>
+                                @endif
+                              </div>
+
                             <!-- END PERSONAL INFO TAB -->
                             <!-- CHANGE AVATAR TAB -->
                             <div class="tab-pane" id="tab_1_2">

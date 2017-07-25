@@ -29,6 +29,16 @@ let vm = new Vue({
                 this.paginacion = response.data;
                 this.proyectos = this.paginacion.data;
             });
+        },
+        update(proyecto){
+            this.seleccion = proyecto;
+            this.proyectos = this.proyectos.map(pro => {
+                return pro.PK_id == proyecto.PK_id ? proyecto : pro;
+            });
+        },
+        remove(proyecto){
+            this.seleccion = {};
+            this.proyectos = this.proyectos.filter(pro => pro.PK_id != proyecto.PK_id);
         }
     },
     watch: {

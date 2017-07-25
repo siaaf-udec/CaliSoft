@@ -14,11 +14,16 @@
             </bs-select>
           </div>
         </div>
-        <div class="row">
+        <div class="row vcenter">
 
             <div class="col-sm-6">
                 <div class="list-group ">
-                    <a v-for="proyecto in proyectos " href="#" class="list-group-item" @click="seleccionar(proyecto)">@{{proyecto.nombre}}</a>
+                    <a v-for="proyecto in proyectos" class="list-group-item" @click.prevent="seleccionar(proyecto)">
+                        @{{proyecto.nombre}}
+                        <span title="propuesta" class="badge bg-green-seagreen bg-font-green-seagreen" v-if="proyecto.state == 'propuesta'">
+                            P
+                        </span>
+                    </a>
                 </div>
                 <!--Inicio Paginacion Proyecto-->
                 <center>
@@ -43,7 +48,7 @@
 
             <div class="col-sm-6" v-if="seleccion.nombre">
 
-                <proyecto-tabla :proyecto="seleccion">
+                <proyecto-tabla :proyecto="seleccion" @updated="update" @removed="remove">
                 </proyecto-tabla>
 
 
@@ -54,10 +59,11 @@
     </div>
     @endcomponent
   </div>
-  
+
 @endsection
 @push('styles')
 <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
+<link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
 @endpush
 @push('functions')
 <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>

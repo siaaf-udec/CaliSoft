@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TipoDocumentoStoreRequest extends FormRequest
+class ComponenteUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,9 @@ class TipoDocumentoStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required|string|unique:TBL_TiposDocumento',
-            'required' => 'required|boolean'
+             'nombre' => 'string|unique:TBL_ComponentesDocumento,nombre,' . $this->PK_id . ',PK_id',
+            'required' => 'boolean',
+            'descripcion' => 'string'
         ];
     }
 }

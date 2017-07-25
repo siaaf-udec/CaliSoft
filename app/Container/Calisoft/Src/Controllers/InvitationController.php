@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\Notifications\Invitacion;
 use App\Container\Calisoft\Src\User;
+use App\Container\Calisoft\Src\Requests\InvitationStoreRequest;
 
 class InvitationController extends Controller
 {
@@ -14,13 +15,9 @@ class InvitationController extends Controller
     * Crea la invitacion y envia la notificacion
     * al usuario invitado
     */
-    public function store(Request $request)
+    public function store(InvitationStoreRequest $request)
     {
-        $this->validate($request, [
-            'user_id' => 'required|integer',
-            'project_id' => 'required|integer'
-        ]);
-
+        
         $proyecto = Proyecto::findOrFail($request->project_id);
         $user = User::findOrFail($request->user_id);
 

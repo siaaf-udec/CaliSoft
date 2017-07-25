@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Support\Facades\Storage;
+use App\Container\Calisoft\Src\Requests\DocumentosUpdateRequest;
 
 class DocumentoController extends Controller
 {
@@ -89,13 +90,8 @@ class DocumentoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Documentos $documentacion)
+    public function update(DocumentosUpdateRequest $request, Documentos $documentacion)
     {
-        $this->validate($request, [
-            'url'                => 'required|string',
-            'FK_ProyectoId'      => 'required|integer',
-            'FK_TipoDocumentoId' => 'required|integer',
-        ]);
         $documentacion->fill($request->all());
         $documentacion->save();
     }
@@ -144,9 +140,7 @@ class DocumentoController extends Controller
                     ]);
                 }
             }
-
         }
-
     }
 
     public function getfile($file)
@@ -166,7 +160,5 @@ class DocumentoController extends Controller
 
         //$pathtoFile = storage_path() . '\uploads\am_fundamentals.pdf.pdf';
         //return response()->download($pathtoFile);
-
     }
-
 }
