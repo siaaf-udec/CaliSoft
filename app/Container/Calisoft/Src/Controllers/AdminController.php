@@ -30,11 +30,6 @@ class AdminController extends Controller
         return view('calisoft.admin.admin-tipo-documento');
     }
 
-    public function peticiones()
-    {
-        return view('calisoft.admin.admin-peticiones');
-    }
-
     public function componentes(TiposDocumento $tdocumento)
     {
         return view('calisoft.admin.admin-componentes', compact('tdocumento'));

@@ -5,16 +5,25 @@
 ])
 @endcomponent
 
-@component('components.nav-link', ['icon' => 'fa fa-university', 'link' => route('peticiones'), 'title' => 'Peticiones'])
+@component('components.nav-link', [
+    'icon' => 'fa fa-folder-open',
+    'link' => route('proyecto.admin'),
+    'title' => 'Proyectos'
+])
 @endcomponent
 
-@component('components.nav-link', ['icon' => 'fa fa-folder-open', 'link' => route('proyecto.admin'), 'title' => 'Proyectos'])
+@component('components.nav-link', [
+    'icon' => 'fa fa-pie-chart',
+    'link' => route('categorias'),
+    'title' => 'Categorias'
+])
 @endcomponent
 
-@component('components.nav-link', ['icon' => 'fa fa-pie-chart', 'link' => route('categorias'), 'title' => 'Categorias'])
-@endcomponent
-
-@component('components.nav-link', ['icon' => 'fa fa-book', 'link' => route('tdocumentos'), 'title' => 'Documentos'])
+@component('components.nav-link', [
+    'icon' => 'fa fa-book',
+    'link' => route('tdocumentos'),
+    'title' => 'Documentos'
+])
 @endcomponent
 
 @component('components.nav-link', [
