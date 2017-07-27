@@ -36,4 +36,9 @@ class StudentController extends Controller
     {
         return view('calisoft.student.student-invitaciones');
     }
+
+    public function modelobd()
+    {
+        return view('calisoft.student.student-modelobd');
+    }
 }
