@@ -88,13 +88,13 @@
                             <li class="external">
 
                                 <h3><span class="bold">Proyectos</span> en propuesta</h3>
-                                <a href="{{ route('peticiones') }}">Ver todos </a>
+                                <a href="#">Ver todos </a>
                             </li>
                             <li>
                                 <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
                                     @foreach(auth()->user()->Notifications as $notifications)
                                     <li>
-                                        <a href="{{ route('peticiones') }}">
+                                        <a href="#">
                                             <span class="time">{{$notifications->created_at}}</span>
                                             <span class="details">
                                             <span class="label label-sm label-icon label-success">
@@ -110,7 +110,7 @@
                                     @foreach($content as $Content)
 
                                     <li>
-                                        <a href="{{ route('peticiones') }}">
+                                        <a href="#">
                                             <span class="time">{{$Content->created_at}}</span>
                                             <span class="details">
                                             <span class="label label-sm label-icon label-danger">

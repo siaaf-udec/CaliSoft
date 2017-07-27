@@ -17,7 +17,7 @@ $factory->define(Proyecto::class, function (Faker\Generator $faker) {
 
     return [
         'nombre' => $faker->catchPhrase(),
-        'state' => $faker->randomElement(['creacion', 'propuesta', 'activo']),
+        'state' => 'propuesta',
         'FK_GrupoDeInvestigacionId' => $faker->randomElement($grupos),
         'FK_SemilleroId' => $faker->randomElement($semilleros),
         'FK_CategoriaId' => $faker->randomElement($categorias)
