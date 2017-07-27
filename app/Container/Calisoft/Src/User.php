@@ -2,15 +2,15 @@
 
 namespace App\Container\Calisoft\Src;
 
-use Illuminate\Notifications\Notifiable;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Container\Calisoft\Src\Proyecto;
+use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Notifications\Notifiable;
 
 class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table = "TBL_Usuarios";
+    protected $table      = "TBL_Usuarios";
     protected $primaryKey = "PK_id";
 
     /**
@@ -25,7 +25,7 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password','role',
+        'name', 'email', 'password', 'role', 'foto',
     ];
 
     /**
@@ -34,9 +34,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $hidden = [
-        'password', 'remember_token'
+        'password', 'remember_token',
     ];
-
 
     /**
      * Retorna la url del dash del usuario

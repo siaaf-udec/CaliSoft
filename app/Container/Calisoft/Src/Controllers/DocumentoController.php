@@ -27,7 +27,6 @@ class DocumentoController extends Controller
 
     public function index(DocumentosIndexRequest $request)
     {
-
         $proyectoId = auth()->user()->proyectos()->first();
         //$documents  = Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)->get();
         //return $documents;
@@ -37,75 +36,41 @@ class DocumentoController extends Controller
         return Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)
             ->with('tipoDocumento')
             ->when($tipo, function ($query) use ($tipo) {
-                return $query->where('FK_TipoDocumentoIds', $tipo);
+                return $query->where('FK_TipoDocumentoId', $tipo);
             })->paginate(5);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
     public function store(Request $request)
     {
 
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function show($id)
     {
         //
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function edit($id)
     {
         //
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function update(DocumentosUpdateRequest $request, Documentos $documentacion)
     {
         $documentacion->fill($request->all());
         $documentacion->save();
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
     public function destroy(Documentos $documentacion)
     {
+        Storage::disk('docuEst')->delete($documentacion->url);
         $documentacion->delete();
+
     }
 
     public function getTipos()
@@ -135,20 +100,11 @@ class DocumentoController extends Controller
 
     public function getfile($file)
     {
-        //$url = Storage::disk('docuEst')->url($file);
         return response()->file("../storage/uploads/documentos/" . $file);
     }
 
     public function download($file)
     {
         return response()->download("../storage/uploads/documentos/" . $file);
-        //return redirect()->route('../storage/uploads/documentos/8_am_fundamentals.pdf');
-        //return redirect()->route("../storage/uploads/documentos/" . $file);
-        //$publicacion = Documentos::find($file);
-        //$rutaarchivo = '../storage/uploads/' . $publicacion->url . '.pdf';
-        //return response()->download($rutaarchivo);
-
-        //$pathtoFile = storage_path() . '\uploads\am_fundamentals.pdf.pdf';
-        //return response()->download($pathtoFile);
     }
 }

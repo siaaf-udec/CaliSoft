@@ -8,8 +8,12 @@
                 <div class="portlet light profile-sidebar-portle">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-                        <img src="../assets/pages/media/profile/profile_user.jpg" class="img-responsive" alt="">
 
+                        @component('components.imgProfile', [
+                                    'img' => auth()->user()->foto,
+                                    'class' => 'img-responsive',
+                                    ])
+                        @endcomponent
                       </div>
                     <!-- END SIDEBAR USERPIC -->
                     <!-- SIDEBAR USER TITLE -->
@@ -80,36 +84,47 @@
                                   <strong>{{session('mensaje')}}</strong>
                                 </div>
                                 @endif
+                                @if(session()->has('error'))
+                                            <div class="alert alert-danger alert-dismissable">
+                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                <strong>{{session('error')}}</strong>
+                                            </div>
+                                        @endif
                               </div>
 
                             <!-- END PERSONAL INFO TAB -->
                             <!-- CHANGE AVATAR TAB -->
                             <div class="tab-pane" id="tab_1_2">
-                                <p> Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. </p>
-                                <form action="#" role="form">
-                                    <div class="form-group">
-                                        <div class="fileinput fileinput-new" data-provides="fileinput">
-                                            <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
-                                                <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image" alt="" /> </div>
-                                            <div class="fileinput-preview fileinput-exists thumbnail" style="max-width: 200px; max-height: 150px;"> </div>
-                                            <div>
-                                                <span class="btn default btn-file">
-                                                                                    <span class="fileinput-new"> Select image </span>
-                                                <span class="fileinput-exists"> Change </span>
-                                                <input type="file" name="..."> </span>
-                                                <a href="javascript:;" class="btn default fileinput-exists" data-dismiss="fileinput"> Remove </a>
-                                            </div>
-                                        </div>
-                                        <div class="clearfix margin-top-10">
-                                            <span class="label label-danger">NOTE! </span>
-                                            <span>Attached image thumbnail is supported in Latest Firefox, Chrome, Opera, Safari and Internet Explorer 10 only </span>
-                                        </div>
-                                    </div>
+
+                                <form id="f_subir_imagen" name="f_subir_imagen" method="POST"  action="{{route('foto.student')}}" class="formarchivo" enctype="multipart/form-data">
+
+
+                                    {{csrf_field()}}
+                                    @component('components.fileinputPhotoProfile',[
+                                      'name'=>'foto',
+                                      'attributes'=>'required',
+                                      'title1' => 'Seleccione una imagen',
+                                      'label1' => 'Cambiar',
+                                      'label2' => 'Remover',
+                                      'url' => auth()->user()->foto,
+                                    ])
+                                    @endcomponent
+
                                     <div class="margin-top-10">
-                                        <a href="javascript:;" class="btn green"> Submit </a>
-                                        <a href="javascript:;" class="btn default"> Cancel </a>
-                                    </div>
+                                        <button type="submit" class="btn red left-block">
+                                        <i class="fa fa-refresh"></i>Actualizar foto
+                                        </button>
+                                        </div>
+
+                                        @if(session()->has('mensaje'))
+                                            <div class="alert alert-info alert-dismissable">
+                                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                                <strong>{{session('mensaje')}}</strong>
+                                            </div>
+                                        @endif
                                 </form>
+
+
                             </div>
                             <!-- END CHANGE AVATAR TAB -->
                             <!-- CHANGE PASSWORD TAB -->
@@ -173,5 +188,21 @@
 @endsection
 
 @push('styles')
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css" />
     <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+     <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+@endpush
+
+@push('functions')
+
+    <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script src="../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
+    <script src="../assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+
+
+
+
 @endpush

@@ -43,24 +43,29 @@ return [
 
     'disks'   => [
 
-        'local'   => [
+        'local'       => [
             'driver' => 'local',
             'root'   => storage_path('app'),
         ],
 
-        'docuEst' => [
+        'docuEst'     => [
             'driver' => 'local',
             'root'   => storage_path('uploads/documentos'),
         ],
 
-        'public'  => [
+        'fotoProfile' => [
+            'driver' => 'local',
+            'root'   => public_path('uploads/fotos'),
+        ],
+
+        'public'      => [
             'driver'     => 'local',
             'root'       => storage_path('app/public'),
             'url'        => env('APP_URL') . '/storage',
             'visibility' => 'public',
         ],
 
-        's3'      => [
+        's3'          => [
             'driver' => 's3',
             'key'    => env('AWS_KEY'),
             'secret' => env('AWS_SECRET'),

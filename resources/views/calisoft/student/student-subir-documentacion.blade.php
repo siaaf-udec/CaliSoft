@@ -186,7 +186,6 @@
     <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
 
-    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
 
 
 
@@ -196,7 +195,7 @@
 
 @push('functions')
 
-    <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+
     <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script>
 
@@ -217,6 +216,10 @@
             acceptedFiles: '.pdf',
             addRemoveLinks: true,
             dictRemoveFile: "Retirar archivo",
+            success: function(a) {
+                toastr.info('Documento subido correctamente');
+                return a.previewElement ? a.previewElement.classList.add("dz-success") : void 0
+            },
         };
     </script>
 
@@ -227,6 +230,6 @@
 
 
 @push('plugins')
-    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+
 
 @endpush

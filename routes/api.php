@@ -40,14 +40,12 @@ Route::get('tdocumentos/{tdocumento}/componentes', 'TiposDocumentoController@get
 
 Route::get('/user/project', 'UserController@proyecto');
 
-
 Route::prefix('student')->group(function () {
     Route::get('search', 'UserController@searchFreeStudents');
     Route::get('invitations', 'UserController@invitaciones');
 });
 
 Route::get('/evaluator/search', 'UserController@searchEvaluators');
-
 
 Route::resource('invitations', 'InvitationController', [
     'only'       => ['store', 'update', 'destroy'],
@@ -59,7 +57,6 @@ Route::resource('invitations', 'InvitationController', [
 Route::resource('componentes', 'ComponenteController', [
     'only' => ['store', 'update', 'destroy', 'index'],
 ]);
-
 
 // Inicio proyectos
 Route::prefix('proyectos/{proyecto}')->group(function () {
@@ -73,8 +70,13 @@ Route::resource('proyectos', 'ProyectoController', [
 ]);
 // Fin proyectos
 
-
-
+// subir documentación estudiante
 Route::post('file', 'DocumentoController@postfile');
 Route::get('seeFile/{file}', 'DocumentoController@getfile');
 Route::get('downloadFile/{file}', 'DocumentoController@download');
+// fin subir documentación estudiante
+
+//perfil subir foto
+Route::post('fotoUp', 'PerfilController@fotoUp')
+    ->name('foto.student');
+//fin perfil subir foto
