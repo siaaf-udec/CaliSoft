@@ -22,3 +22,19 @@
 
   @endif
 @endsection
+
+@push('styles')
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
+ @endpush
+
+@push('plugins')
+    <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+    <script>
+        window.pusherKey = "{{ config('broadcasting.connections.pusher.key') }}";
+        window.userId = "{{ auth()->id() }}";
+        Object.assign(toastr.options, {
+            positionClass: "toast-bottom-right",
+            timeOut: 10000,
+        })
+    </script>
+@endpush

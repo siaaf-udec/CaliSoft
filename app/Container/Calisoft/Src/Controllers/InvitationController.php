@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
-use App\Container\Calisoft\Src\Notifications\Invitacion;
+use App\Container\Calisoft\Src\Notifications\InvitacionEnviada;
 use App\Container\Calisoft\Src\User;
 use App\Container\Calisoft\Src\Requests\InvitationStoreRequest;
 
@@ -17,12 +17,12 @@ class InvitationController extends Controller
     */
     public function store(InvitationStoreRequest $request)
     {
-        
+
         $proyecto = Proyecto::findOrFail($request->project_id);
         $user = User::findOrFail($request->user_id);
 
-        $proyecto->usuarios()->attach($user->PK_id, ['tipo' => 'invitado']);
-        $user->notify(new Invitacion($request->user(), $proyecto));
+        $proyecto->usuarios()->syncWithoutDetaching($user->PK_id, ['tipo' => 'invitado']);
+        $user->notify(new InvitacionEnviada($request->user(), $proyecto));
     }
 
     /**

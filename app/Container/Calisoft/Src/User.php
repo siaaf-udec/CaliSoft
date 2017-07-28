@@ -37,24 +37,9 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
-    /**
-     * Retorna la url del dash del usuario
-     *
-     * @return string
-     */
-    public function home()
+    public function receivesBroadcastNotificationsOn()
     {
-        return route($this->role);
-    }
-
-    /**
-     * Redireciona dash del usuario
-     *
-     * @return Response
-     */
-    public function goHome()
-    {
-        return redirect()->route($this->role);
+        return 'users.'.$this->PK_id;
     }
 
     /**
