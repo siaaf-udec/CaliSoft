@@ -85,7 +85,7 @@
         @include('material.partials.dash-scripts')
     {{-- END SCRIPTS --}}
     {{-- BEGIN CUSTOM FUNCTIONS --}}
-        <script src="{{ asset('/js/noti.js') }}"></script>
+        
         @stack('functions')
 
     {{-- END CUSTOM FUNCTIONS --}}
