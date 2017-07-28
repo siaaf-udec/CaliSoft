@@ -6,15 +6,16 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
+use App\Container\Calisoft\Traits\DataBroadcast;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\User;
 
-class Invitacion extends Notification implements ShouldQueue
+class InvitacionEnviada extends Notification implements ShouldQueue
 {
-    use Queueable;
+    use Queueable, DataBroadcast;
 
-    private $proyecto;
-    private $from;
+    public $proyecto;
+    public $from;
 
     /**
      * Create a new notification instance.
@@ -35,7 +36,7 @@ class Invitacion extends Notification implements ShouldQueue
      */
     public function via($notifiable)
     {
-        return ['mail'];
+        return ['mail', 'database', 'broadcast'];
     }
 
     /**
@@ -57,14 +58,17 @@ class Invitacion extends Notification implements ShouldQueue
 
     /**
      * Get the array representation of the notification.
-     *
+     * :user: te ha invitado ha ser parte del proyecto :proyecto:
      * @param  mixed  $notifiable
      * @return array
      */
     public function toArray($notifiable)
     {
         return [
-            //
+            'type' => 'invitacion-recibida',
+            'url' => route('invitaciones'),
+            'proyecto' => $this->proyecto->nombre,
+            'user' => $this->from->name;
         ];
     }
 }

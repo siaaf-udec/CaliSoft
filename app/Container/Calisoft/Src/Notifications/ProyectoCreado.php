@@ -3,21 +3,27 @@
 namespace App\Container\Calisoft\Src\Notifications;
 
 use Illuminate\Bus\Queueable;
+use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
-class ProyectoCreado extends Notification
-{
-    use Queueable;
+use App\Container\Calisoft\Src\Proyecto;
+use App\Container\Calisoft\Traits\DataBroadcast;
 
+class ProyectoCreado extends Notification implements ShouldQueue
+{
+    use Queueable, DataBroadcast;
+
+
+    public $proyecto;
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct($admin)
+    public function __construct($proyecto)
     {
-        $this->admin = $admin;
+        $this->proyecto = $proyecto;
     }
 
     /**
@@ -28,7 +34,7 @@ class ProyectoCreado extends Notification
      */
     public function via($notifiable)
     {
-        return ['database'];
+        return ['database', 'broadcast'];
     }
 
     /**
@@ -51,11 +57,14 @@ class ProyectoCreado extends Notification
      * @param  mixed  $notifiable
      * @return array
      */
-    public function toDatabase($notifiable)
+    public function toArray($notifiable)
     {
         return [
-            'admin' => $this->admin,
-            'user'  => auth()->user(),
+            'type' => 'proyecto-creado',
+            'proyecto' => $this->proyecto->nombre,
+            'url' => '/proyecto'
         ];
     }
+
+
 }

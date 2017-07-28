@@ -68,7 +68,7 @@
     </div>
     <p class="text-justify" v-else>
         Todavia no has creado una propuesta de proyecto,
-        puedes crearla <a href="/student/proyectos">Aqui.</a>
+        puedes crearla <a href="/proyectos">Aqui.</a>
     </p>
 
     <!-- comienzo modal de edicion-->

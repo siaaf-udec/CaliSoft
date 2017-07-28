@@ -2,16 +2,14 @@
 
 namespace App\Container\Calisoft\Src\Controllers;
 
-use App\Container\Calisoft\Src\Categoria as Categoria;
-use App\Container\Calisoft\Src\GrupoDeInvestigacion as Grupo;
 use App\Container\Calisoft\Src\Notifications\ProyectoCreado;
-use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
 use App\Container\Calisoft\Src\Requests\ProyectoUpdateRequest;
-use App\Container\Calisoft\Src\Semillero;
 use App\Container\Calisoft\Src\User;
+use App\Container\Calisoft\Src\Proyecto;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
+use Illuminate\Support\Facades\Notification;
 
 class ProyectoController extends Controller
 {
@@ -39,7 +37,7 @@ class ProyectoController extends Controller
             'FK_SemilleroId'            => $request->semillero,
             'FK_CategoriaId'            => $request->categoria,
         ], [
-            'tipo' => 'integrante',
+            'tipo' => 'integrante'
         ]);
 
         return redirect()->route('home');
@@ -67,15 +65,15 @@ class ProyectoController extends Controller
      */
     public function propuesta(Proyecto $proyecto)
     {
-        // Envío de noticifación a admin BEGIN
-        $admin = User::where('role', 'admin')->first();
-
-        $admin->notify(new ProyectoCreado($admin));
-        // Envío de noticifación a admin ENDING
 
         $proyecto->usuarios()->wherePivot('tipo', 'invitado')->delete();
         $proyecto->state = 'propuesta';
         $proyecto->save();
+
+        // Envío de noticifación a admin BEGIN
+        $admins = User::where('role', 'admin')->get();
+        Notification::send($admins, new ProyectoCreado($proyecto));
+
         return $proyecto;
     }
 

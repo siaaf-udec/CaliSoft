@@ -301,10 +301,7 @@
 </div>
 
 @endsection
-@push('styles')
-<link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
- @endpush
- @push('functions')
-<script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+
+@push('functions')
 <script src="/js/categorias.js"></script>
 @endpush

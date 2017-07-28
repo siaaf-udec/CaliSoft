@@ -11,6 +11,11 @@
 |
  */
 
+Route::resource('notificaciones', 'NotificationController', [
+    'only' => ['index', 'destroy', 'update']
+]);
+
+
 Route::resource('semilleros', 'SemilleroController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);

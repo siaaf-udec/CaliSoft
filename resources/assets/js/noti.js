@@ -1,3 +1,0 @@
-function notificacionesLeidas() {
-    $.get('/markAsRead');
-}
