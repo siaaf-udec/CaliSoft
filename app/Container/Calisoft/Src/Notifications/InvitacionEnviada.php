@@ -6,7 +6,7 @@ use Illuminate\Bus\Queueable;
 use Illuminate\Notifications\Notification;
 use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Messages\MailMessage;
-use App\Container\Calisoft\Traits\DataBroadcast;
+use App\Container\Calisoft\Src\Traits\DataBroadcast;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\User;
 
@@ -68,7 +68,7 @@ class InvitacionEnviada extends Notification implements ShouldQueue
             'type' => 'invitacion-recibida',
             'url' => route('invitaciones'),
             'proyecto' => $this->proyecto->nombre,
-            'user' => $this->from->name;
+            'user' => $this->from->name
         ];
     }
 }

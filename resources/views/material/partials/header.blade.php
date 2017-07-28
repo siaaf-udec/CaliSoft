@@ -265,11 +265,10 @@
                     {{-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte --}}
                     <li class="dropdown dropdown-user">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
-                            @component('components.imgProfile', [
-                                    'img' => auth()->user()->foto,
-                                    'class' => 'img-circle',
-                                    ])
-                            @endcomponent
+
+                            <img alt="" class="img-circle"
+                                src="{{'storage/uploads/fotos/' . (auth()->user()->foto ?: 'profile.png') }}" />
+
                             <span class="username username-hide-on-mobile"> {{ Auth::user()->name }} </span>
                             <i class="fa fa-angle-down"></i>
                         </a>
