@@ -8,7 +8,7 @@ use Illuminate\Notifications\Messages\MailMessage;
 use Illuminate\Notifications\Notification;
 
 use App\Container\Calisoft\Src\Proyecto;
-use App\Container\Calisoft\Traits\DataBroadcast;
+use App\Container\Calisoft\Src\Traits\DataBroadcast;
 
 class ProyectoCreado extends Notification implements ShouldQueue
 {

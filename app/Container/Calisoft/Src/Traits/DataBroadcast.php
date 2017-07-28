@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Container\Calisoft\Traits;
+namespace App\Container\Calisoft\Src\Traits;
 
 use Illuminate\Notifications\Messages\BroadcastMessage;
 
