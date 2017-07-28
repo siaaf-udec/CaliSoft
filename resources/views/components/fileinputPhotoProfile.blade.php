@@ -14,9 +14,9 @@
                                             <div class="fileinput-new thumbnail" style="width: 200px; height: 150px;">
 
                                                 @if($url == null)
-                                                    <img src="{{asset('uploads/fotos/profile.png')}}" alt=""  id="fotografia_usuario" />
+                                                <img alt="" src="storage/uploads/fotos/profile.png" id="fotografia_usuario" />
                                                 @else
-                                                <img alt="" src="{{asset('uploads/fotos/'.$url)}}" id="fotografia_usuario" />
+                                                <img alt="" src="{{'storage/uploads/fotos/'.$url}}" id="fotografia_usuario" />
                                                 @endif
 
                                             </div>

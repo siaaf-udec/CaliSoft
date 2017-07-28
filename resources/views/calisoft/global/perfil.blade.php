@@ -8,7 +8,6 @@
                 <div class="portlet light profile-sidebar-portle">
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
-
                         @component('components.imgProfile', [
                                     'img' => auth()->user()->foto,
                                     'class' => 'img-responsive',
