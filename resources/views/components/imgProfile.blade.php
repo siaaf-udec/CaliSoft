@@ -7,8 +7,8 @@
 --}}
 
 @if($img == null)
-    <img alt="" class="{{$class}}" src="{{asset('uploads/fotos/profile.png')}}" />
+    <img alt="" class="{{$class}}" src="storage/uploads/fotos/profile.png" />
 @else
-    <img alt="" class="{{$class}}" src="{{asset('uploads/fotos/'.$img)}}" />
+    <img alt="" class="{{$class}}" src="{{'storage/uploads/fotos/'.$img}}" />
 
 @endif

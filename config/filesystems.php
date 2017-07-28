@@ -50,12 +50,12 @@ return [
 
         'docuEst'     => [
             'driver' => 'local',
-            'root'   => storage_path('uploads/documentos'),
+            'root'   => storage_path('app/public/uploads/documentos'),
         ],
 
         'fotoProfile' => [
             'driver' => 'local',
-            'root'   => public_path('uploads/fotos'),
+            'root'   => Storage_path('app/public/uploads/fotos'),
         ],
 
         'public'      => [
