@@ -56,8 +56,8 @@ class PerfilController extends Controller
     public function fotoUp(PerfilFotoRequest $request)
     {
         $user = $request->user();
-        $path = $request->commit($user->foto); //actualiza el archivo
-        $user->update([ 'foto' => $path ]);
+        $user->foto = $request->commit($user->foto); //actualiza el archivo
+        $user->save();
         $request->session()->flash('mensaje', __('Su foto se actualizó correctamente'));
         return back();
     }
