@@ -9,7 +9,7 @@
                     <!-- SIDEBAR USERPIC -->
                     <div class="profile-userpic">
                         <img alt="" class="img-responsive"
-                            src="{{'storage/uploads/fotos/' . (auth()->user()->foto ?: 'profile.png') }}" />
+                            src="{{auth()->user()->foto ?: '/img/default.png' }}"/>
 
                       </div>
                     <!-- END SIDEBAR USERPIC -->
@@ -97,7 +97,7 @@
 
 
                                     {{csrf_field()}}
-                                    @component('components.fileinputPhotoProfile',[
+                                    @component('components.fileinput-photo-profile',[
                                       'name'=>'foto',
                                       'attributes'=>'required',
                                       'title1' => 'Seleccione una imagen',
@@ -185,21 +185,14 @@
 @endsection
 
 @push('styles')
-    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css" />
-    <link href="../assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
-     <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" />
+     <link href="/assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
 @endpush
 
 @push('functions')
-
-    <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
-    <script src="../assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
-
-
-
-
+    <script src="/assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
 @endpush

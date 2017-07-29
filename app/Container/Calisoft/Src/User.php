@@ -5,6 +5,8 @@ namespace App\Container\Calisoft\Src;
 use App\Container\Calisoft\Src\Proyecto;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
+
 
 class User extends Authenticatable
 {
@@ -37,10 +39,15 @@ class User extends Authenticatable
         'password', 'remember_token',
     ];
 
+    /**
+    * Canal de notificaciones
+    */
     public function receivesBroadcastNotificationsOn()
     {
         return 'users.'.$this->PK_id;
     }
+
+    
 
     /**
      * Relacion evaluador -> proyectos asignados

@@ -14,21 +14,21 @@
           </ul>
 
           <modal id="invite-modal" title="Invitar Usuario">
-            <student-search @invite='invitar'></student-search>
+            <user-search url='/api/student/search/' button-text="invitar" @selected="invitar"></user-search>
           </modal>
         </div>
     </div>
 </template>
 
 <script>
-import StudentSearch from './student-search';
+import UserSearch from './user-search';
 import Modal from './modal';
 
 export default {
     props: ['invitados', 'proyectoId'],
 
     components: {
-      StudentSearch, Modal
+      UserSearch, Modal
     },
 
     data() {

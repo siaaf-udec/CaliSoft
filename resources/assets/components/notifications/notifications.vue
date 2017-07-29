@@ -29,9 +29,6 @@
 <script>
 import ProyectoCreado from './proyecto-creado';
 
-const NOTI_EVENT = '.Illuminate\\Notifications\\Events\\BroadcastNotificationCreated';
-
-
 export default {
     components: { ProyectoCreado },
     data(){
@@ -44,7 +41,7 @@ export default {
         });
     },
     mounted(){
-        window.Echo.private('users.' + window.userId).listen(NOTI_EVENT, notificacion => {
+        window.Echo.private('users.' + window.userId).notification(notificacion => {
             this.notificaciones.push(notificacion);
             this.count += 1;
             toastr.info('Has recibido una notificacion');

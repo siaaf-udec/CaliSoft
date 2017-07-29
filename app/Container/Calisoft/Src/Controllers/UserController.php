@@ -77,14 +77,14 @@ class UserController extends Controller
     *  Retorna los estudiantes que no tienen
     *  proyectos, filtra por nombre
     */
-    public function searchFreeStudents(UserSearchFreeStudentsRequest $request)
+    public function searchFreeStudents()
     {
-        return $this->users->searchFreeStudents($request->name);
+        return $this->users->searchFreeStudents();
     }
 
-    public function searchEvaluators(UserSearchEvaluatorsRequest $request)
+    public function searchEvaluators()
     {
-        return $this->users->searchEvaluators($request->name);
+        return $this->users->searchEvaluators();
     }
 
     public function invitaciones()

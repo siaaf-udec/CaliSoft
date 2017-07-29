@@ -37,11 +37,10 @@ class PerfilController extends Controller
             $user->password = bcrypt($request->pass_new);
             $user->save();
             $request->session()->flash('mensaje', __('Contraseñas actualizadas correctamente'));
-            return back();
         } else {
             $request->session()->flash('error', __('Error al cambiar contraseñas'));
-            return back();
         }
+        return back();
     }
 
     public function update(PerfilUpdateRequest $request)
@@ -56,26 +55,11 @@ class PerfilController extends Controller
 
     public function fotoUp(PerfilFotoRequest $request)
     {
-
-        $user     = auth()->user();
-        $old      = $user->foto;
-        $foto     = $request->file('foto');
-        $fileName = rand(1000, 9999) . '_' . $foto->getClientOriginalName();
-
-        if (Input::hasFile('foto')) {
-
-            Storage::disk('fotoProfile')->put($fileName, File::get($foto));
-
-            $user->foto = $fileName;
-            $user->save();
-            if ($old != 'profile.png') {Storage::disk('fotoProfile')->delete($old);}
-            $request->session()->flash('mensaje', __('Su foto se actualizó correctamente'));
-            return back();
-
-        } else {
-            $request->session()->flash('error', __('Ocurrio un problema en actualizar la foto'));
-            return back();
-        }
+        $user = $request->user();
+        $path = $request->commit($user->foto); //actualiza el archivo
+        $user->update([ 'foto' => $path ]);
+        $request->session()->flash('mensaje', __('Su foto se actualizó correctamente'));
+        return back();
     }
 
 }

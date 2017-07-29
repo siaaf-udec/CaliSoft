@@ -74,7 +74,7 @@
         </modal>
 
         <modal id="evaluador" title="Asignar Evaluador">
-            <evaluator-search></evaluator-search>
+            <user-search url="/api/evaluator/search" button-text="Asignar"></user-search>
         </modal>
 
     </div>
@@ -83,10 +83,10 @@
 
 <script>
 import Modal from './modal';
-import EvaluatorSearch from './evaluator-search';
+import UserSearch from './user-search.vue'
 
 export default {
-    components: { Modal, EvaluatorSearch },
+    components: { Modal, UserSearch },
     props: ['proyecto'],
     methods:{
       filtrar(tipo){
