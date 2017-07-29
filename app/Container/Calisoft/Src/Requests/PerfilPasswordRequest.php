@@ -25,7 +25,7 @@ class PerfilPasswordRequest extends FormRequest
     {
         return [
             'pass_actual' => 'required',
-            'pass_new' => 'required|string|min:7|confirmed',
+            'pass_new' => 'required|string|min:5|confirmed',
         ];
     }
 }

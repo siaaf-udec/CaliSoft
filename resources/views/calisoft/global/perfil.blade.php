@@ -93,7 +93,7 @@
                             <!-- CHANGE AVATAR TAB -->
                             <div class="tab-pane" id="tab_1_2">
 
-                                <form id="f_subir_imagen" name="f_subir_imagen" method="POST"  action="{{route('foto.student')}}" class="formarchivo" enctype="multipart/form-data">
+                                <form id="f_subir_imagen" name="f_subir_imagen" method="POST"  action="{{route('perfil.foto')}}" class="formarchivo" enctype="multipart/form-data">
 
 
                                     {{csrf_field()}}

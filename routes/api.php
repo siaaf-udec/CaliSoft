@@ -80,8 +80,3 @@ Route::post('file', 'DocumentoController@postfile');
 Route::get('seeFile/{file}', 'DocumentoController@getfile');
 Route::get('downloadFile/{file}', 'DocumentoController@download');
 // fin subir documentación estudiante
-
-//perfil subir foto
-Route::post('fotoUp', 'PerfilController@fotoUp')
-    ->name('foto.student');
-//fin perfil subir foto

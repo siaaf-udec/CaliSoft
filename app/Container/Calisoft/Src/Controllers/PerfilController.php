@@ -7,10 +7,7 @@ use App\Container\Calisoft\Src\Requests\PerfilPasswordRequest;
 use App\Container\Calisoft\Src\Requests\PerfilUpdateRequest;
 use App\Container\Calisoft\Src\User;
 use App\Http\Controllers\Controller;
-use Hash;
-use Illuminate\Support\Facades\File;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\Storage;
+
 
 class PerfilController extends Controller
 {
@@ -36,9 +33,9 @@ class PerfilController extends Controller
         if (Hash::check($request->pass_actual, $user->password)) {
             $user->password = bcrypt($request->pass_new);
             $user->save();
-            $request->session()->flash('mensaje', __('Contraseñas actualizadas correctamente'));
+            $request->session()->flash('mensaje', __('perfil.contraseña_exito'));
         } else {
-            $request->session()->flash('error', __('Error al cambiar contraseñas'));
+            $request->session()->flash('error', __('perfil.contraseña_error'));
         }
         return back();
     }
@@ -48,7 +45,7 @@ class PerfilController extends Controller
         $user = $request->user();
         $user->fill($request->all());
         $user->save();
-        $request->session()->flash('mensaje', __('Informacion Personal Editada Correctamente'));
+        $request->session()->flash('mensaje', __('perfil.actualizado'));
         return back();
 
     }
@@ -58,7 +55,7 @@ class PerfilController extends Controller
         $user = $request->user();
         $user->foto = $request->commit($user->foto); //actualiza el archivo
         $user->save();
-        $request->session()->flash('mensaje', __('Su foto se actualizó correctamente'));
+        $request->session()->flash('mensaje', __('perfil.foto_exito'));
         return back();
     }
 
