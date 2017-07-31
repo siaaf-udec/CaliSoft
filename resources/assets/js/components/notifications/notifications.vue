@@ -28,9 +28,10 @@
 
 <script>
 import ProyectoCreado from './proyecto-creado';
+import InvitacionRecibida from './invitacion-recibida'
 
 export default {
-    components: { ProyectoCreado },
+    components: { ProyectoCreado, InvitacionRecibida },
     data(){
         return { count: 0, notificaciones: [] };
     },
