@@ -21,6 +21,6 @@ $factory->define(User::class, function (Faker\Generator $faker) {
         'email' => $faker->unique()->safeEmail,
         'password' => bcrypt('secret'),
         'remember_token' => str_random(10),
-        'role' => $faker->randomElement(['student', 'admin', 'evaluator'])
+        'role' => $faker->randomElement(['student', 'evaluator'])
     ];
 });

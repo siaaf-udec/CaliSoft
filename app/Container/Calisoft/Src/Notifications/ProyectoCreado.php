@@ -62,7 +62,8 @@ class ProyectoCreado extends Notification implements ShouldQueue
         return [
             'type' => 'proyecto-creado',
             'proyecto' => $this->proyecto->nombre,
-            'url' => '/proyecto'
+            'url' => '/proyecto',
+            'alert' => 'Se ha registrado un nuevo proyecto'
         ];
     }
 

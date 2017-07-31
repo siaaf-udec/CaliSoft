@@ -12,8 +12,8 @@
             </li>
             <li>
                 <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
-                    <li v-for="notificacion in notificaciones">
-                        <a href="javascript:;">
+                    <li v-for="notificacion in notificaciones" :key="notificacion.id">
+                        <a href="javascript:;" >
                             <span class="time">
                                 {{ new Date(notificacion.created_at || null).toLocaleDateString() }}
                             </span>
@@ -44,7 +44,7 @@ export default {
         window.Echo.private('users.' + window.userId).notification(notificacion => {
             this.notificaciones.push(notificacion);
             this.count += 1;
-            toastr.info('Has recibido una notificacion');
+            toastr.info(notificacion.alert);
         });
     }
 }
