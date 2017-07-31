@@ -12,7 +12,8 @@ let vm = new Vue({
         proyectos: [],
         seleccion: {},
         paginator: new Paginator([], 9),
-        categoriaId: null
+        estado: "",
+        search: ""
     },
 
     created() {
