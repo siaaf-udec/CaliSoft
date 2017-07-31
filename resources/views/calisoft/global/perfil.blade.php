@@ -195,4 +195,5 @@
     <script src="/assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
     <script src="/assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
     <script src="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+    <script src="/js/bootstrap.js"></script>
 @endpush

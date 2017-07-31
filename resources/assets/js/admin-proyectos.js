@@ -35,6 +35,19 @@ let vm = new Vue({
         }
     },
     watch: {
-        
+        search(query){
+            this.paginator.data = this.proyectos.filter(p => {
+                let test = new RegExp(query, 'i').test(p.nombre)
+                if(this.estado) return test && this.estado == p.state;
+                return test;
+            })
+
+        },
+        estado(state){
+            this.search = "";
+            this.paginator.data = this.proyectos.filter(p => {
+                return this.estado ? (this.estado == p.state) : true;                
+            });
+        }
     }
 });
