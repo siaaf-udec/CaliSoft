@@ -3,6 +3,7 @@ import Vue from "vue";
 import Modal from "./components/modal";
 import CategoryList from "./components/category-list";
 
+
 let vm = new Vue({
     el: '#app',
     components: { Modal, CategoryList },

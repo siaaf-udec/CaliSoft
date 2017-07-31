@@ -19,6 +19,7 @@ let vm = new Vue({
         fillCategoria: {},
         elimiCategoria: {},
 
+
     },
     created() {
         axios.get('/api/categorias')
