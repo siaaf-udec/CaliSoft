@@ -26,7 +26,7 @@ class PerfilFotoRequest extends FormRequest
     public function rules()
     {
         return [
-            'foto' => 'required|image|max:900',
+            'foto' => 'required|image|max:1000',
         ];
     }
 
