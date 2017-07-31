@@ -8,5 +8,5 @@ class Categoria extends Model
 {
     protected $primaryKey = "PK_id";
     protected $table="TBL_Categorias";
-    protected $fillable = ['nombre','plataforma','modelado','clases','uso','despliegue','sequencia','actividades','entidad_relacion'];
+    protected $fillable = ['nombre','plataforma','modelado','base_datos','codificacion','descripcion'];
 }

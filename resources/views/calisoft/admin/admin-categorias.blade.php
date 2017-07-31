@@ -7,7 +7,7 @@
 
         <!-- Table de categorias -->
         <div class="table-responsive">
-            <table class="table table-hover table-bordered table-condensed">
+            <table class="table table-striped table-bordered table-hover dt-responsive" width="100%">
                 <thead>
                     <th class="text-center">Nombre</th>
                     <th class="text-center">Plataforma</th>
@@ -22,17 +22,17 @@
                         <td v-text="categoria.nombre"></td>
                         <td v-text="categoria.plataforma"></td>
                         <td v-text="categoria.modelado"></td>
-                        <td></td>
-                        <td></td>
+                        <td v-text="categoria.base_datos"></td>
+                        <td v-text="categoria.codificacion"></td>
                         
                         
                         <td class="text-center">
-                        <popover title="Popover Title" placement="bottom">
+                        <popover title="Descripción" placement="bottom" >
                             <button type="button" class="btn btn-default btn-xs" data-role="trigger" title="Descripción" >
                             <span class="fa fa-map-o"></span>
                             </button>
                             <div slot="popover">
-                                <h1>Hello world!</h1>
+                                @{{categoria.descripcion}}
                             </div>
                         </popover>
 
@@ -99,60 +99,37 @@
                 <div class="row">
 
                     <div class="form-group col-sm-6">
-                        <label for="despliegue">Diagrama de despliegue</label>
-                        <input type="number" name="despliegue" class="form-control" v-model="newCategoria.despliegue" min="0" max="100" required/>
-                        <span v-if="formErrors['despliegue']" class="error text-danger">
-                                @{{formErrors.despliegue[0]}}
+                        <label for="base_datos">Evaluación de Base de datos</label>
+                        <input type="number" name="base_datos" class="form-control" v-model="newCategoria.base_datos" min="0" max="100" required/>
+                        <span v-if="formErrors['base_datos']" class="error text-danger">
+                                @{{formErrors.base_datos[0]}}
                             </span>
                     </div>
 
                     <div class="form-group col-sm-6">
-                        <label for="entidad_relacion">Modelo Entidad Relación</label>
-                        <input type="number" name="entidad_relacion" class="form-control" v-model="newCategoria.entidad_relacion" min="0" max="100" required/>
-                        <span v-if="formErrors['entidad_relacion']" class="error text-danger">
-                                @{{formErrors.entidad_relacion[0]}}
+                        <label for="codificacion">Evaluación Codificación</label>
+                        <input type="number" name="codificacion" class="form-control" v-model="newCategoria.codificacion" min="0" max="100" required/>
+                        <span v-if="formErrors['codificacion']" class="error text-danger">
+                                @{{formErrors.codificacion[0]}}
                             </span>
                     </div>
 
                 </div>
 
-                <div class="row">
-
-                    <div class="form-group col-sm-6">
-                        <label for="clases">Diagrama de clases</label>
-                        <input type="number" name="clases" class="form-control" v-model="newCategoria.clases" min="0" max="100" required/>
-                        <span v-if="formErrors['clases']" class="error text-danger">
-                                @{{formErrors.clases[0]}}
-                            </span>
-                    </div>
-
-                    <div class="form-group col-sm-6">
-                        <label for="actividades">Diagrama de actividades</label>
-                        <input type="number" name="actividades" class="form-control" v-model="newCategoria.actividades" min="0" max="100" required/>
-                        <span v-if="formErrors['actividades']" class="error text-danger">
-                                @{{formErrors.actividades[0]}}
-                            </span>
-                    </div>
-
-                </div>
+                
 
                 <div class="row">
 
-                    <div class="form-group col-sm-6">
-                        <label for="sequencia">Diagrama de secuencias</label>
-                        <input type="number" name="sequencia" class="form-control" v-model="newCategoria.sequencia" min="0" max="100" required/>
-                        <span v-if="formErrors['sequencia']" class="error text-danger">
-                                @{{formErrors.sequencia[0]}}
+                    <div class="form-group col-sm-12">
+                        <label for="descripcion">Descripción</label>
+                        <textarea  name="descripcion" class="form-control" v-model="newCategoria.descripcion" maxlength="200" required style="resize: none" rows="3"/>
+                        </textarea>
+                        <span v-if="formErrors['descripcion']" class="error text-danger">
+                                @{{formErrors.descripcion[0]}}
                             </span>
                     </div>
 
-                    <div class="form-group col-sm-6">
-                        <label for="uso">Diagrama de casos de uso.</label>
-                        <input type="number" name="uso" class="form-control" v-model="newCategoria.uso" min="0" max="100" required/>
-                        <span v-if="formErrors['uso']" class="error text-danger">
-                                @{{formErrors.uso[0]}}
-                            </span>
-                    </div>
+                   
 
                 </div>
                 <div class="modal-footer">
@@ -200,60 +177,37 @@
                 <div class="row">
 
                     <div class="form-group col-sm-6">
-                        <label for="title">Diagrama de clases</label>
-                        <input type="number" name="clases" class="form-control" v-model="fillCategoria.clases" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['clases']" class="error text-danger">
-                                @{{formErrorsUpdate.clases[0]}}
+                        <label for="title">Evaluación de Base de datos</label>
+                        <input type="number" name="base_datos" class="form-control" v-model="fillCategoria.base_datos" min="0" max="100" required/>
+                        <span v-if="formErrorsUpdate['base_datos']" class="error text-danger">
+                                @{{formErrorsUpdate.base_datos[0]}}
                             </span>
                     </div>
 
                     <div class="form-group col-sm-6">
-                        <label for="title">Diagrama de despliegue</label>
-                        <input type="number" name="despliegue" class="form-control" v-model="fillCategoria.despliegue" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['despliegue']" class="error text-danger">
-                                @{{formErrorsUpdate.despliegue[0]}}
+                        <label for="title">Evaluación Codificación</label>
+                        <input type="number" name="codificacion" class="form-control" v-model="fillCategoria.codificacion" min="0" max="100" required/>
+                        <span v-if="formErrorsUpdate['codificacion']" class="error text-danger">
+                                @{{formErrorsUpdate.codificacion[0]}}
                             </span>
                     </div>
 
                 </div>
 
-                <div class="row">
-
-                    <div class="form-group col-sm-6">
-                        <label for="title">Modelo Entidad Relación</label>
-                        <input type="number" name="entidad_relacion" class="form-control" v-model="fillCategoria.entidad_relacion" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['entidad_relacion']" class="error text-danger">
-                                @{{formErrorsUpdate.entidad_relacion[0]}}
-                            </span>
-                    </div>
-
-                    <div class="form-group col-sm-6">
-                        <label for="title">Diagrama de actividades</label>
-                        <input type="number" name="actividades" class="form-control" v-model="fillCategoria.actividades" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['actividades']" class="error text-danger">
-                                @{{formErrorsUpdate.actividades[0]}}
-                            </span>
-                    </div>
-
-                </div>
+                
 
                 <div class="row">
 
-                    <div class="form-group col-sm-6">
-                        <label for="title">Diagrama de secuencias</label>
-                        <input type="number" name="sequencia" class="form-control" v-model="fillCategoria.sequencia" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['sequencia']" class="error text-danger">
-                                @{{formErrorsUpdate.sequencia[0]}}
+                   <div class="form-group col-sm-12">
+                        <label for="descripcion">Descripción</label>
+                        <textarea  name="descripcion" class="form-control" v-model="fillCategoria.descripcion" maxlength="200" required style="resize: none" rows="3"/>
+                        </textarea>
+                        <span v-if="formErrors['descripcion']" class="error text-danger">
+                                @{{formErrors.descripcion[0]}}
                             </span>
                     </div>
 
-                    <div class="form-group col-sm-6">
-                        <label for="title">Diagrama de casos de uso.</label>
-                        <input type="number" name="uso" class="form-control" v-model="fillCategoria.uso" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['uso']" class="error text-danger">
-                                @{{formErrorsUpdate.uso[0]}}
-                            </span>
-                    </div>
+                
 
                 </div>
                 <div class="modal-footer">

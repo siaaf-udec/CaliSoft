@@ -14,35 +14,26 @@ class CategoriesTableSeeder extends Seeder
         DB::table('TBL_Categorias')->insert([
             [
                 'nombre' => 'sistemas de información',
-                'plataforma' => 80,
-                'modelado'=> 20,
-                'clases'=> 15,
-                'uso'=> 15,
-                'despliegue'=> 15,
-                'sequencia'=> 15,
-                'actividades'=> 15,
-                'entidad_relacion'=> 25
+                'plataforma' => 25,
+                'modelado'=> 25,
+                'base_datos'=> 25,
+                'codificacion'=> 25,
+                'descripcion'=>'es cualquier sistema informático que se utilice para obtener, almacenar, manipular, administrar, controlar, procesar, transmitir o recibir datos, para satisfacer una necesidad de información'
             ],[
                 'nombre' => 'sistemas de embebidos',
-                'plataforma' => 80,
-                'modelado'=> 20,
-                'clases' => 15,
-                'uso' => 15,
-                'despliegue' => 15,
-                'sequencia' => 15,
-                'actividades'=> 15,
-                'entidad_relacion' => 25
+                'plataforma' => 25,
+                'modelado'=> 25,
+                'base_datos'=> 25,
+                'codificacion'=> 25,
+                'descripcion'=>' es un sistema de computación diseñado para realizar una o algunas pocas funciones dedicadas,​​ frecuentemente en un sistema de computación en tiempo real'
             ],
             [
                 'nombre' => 'sistema artificial',
-                'plataforma' => 80,
-                'modelado' => 20,
-                'clases' => 40,
-                'uso' => 0,
-                'despliegue' => 0,
-                'sequencia' => 60,
-                'actividades' => 0,
-                'entidad_relacion' => 0
+                'plataforma' => 25,
+                'modelado'=> 25,
+                'base_datos'=> 25,
+                'codificacion'=> 25,
+                'descripcion'=>'es un sistema físico o representativo, que interactua como variable dependiente de un sistema social.'
             ]
         ]);
     }

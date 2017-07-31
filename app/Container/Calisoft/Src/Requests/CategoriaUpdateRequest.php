@@ -28,12 +28,10 @@ class CategoriaUpdateRequest extends FormRequest
           'nombre' => sprintf('string|unique:TBL_Categorias,nombre,%d,PK_id', $this->PK_id),
           'plataforma' => 'integer',
           'modelado' => 'integer',
-          'despliegue' =>'integer',
-          'entidad_relacion'=>'integer',
-          'clases' => 'integer',
-          'actividades' => 'integer',
-          'sequencia'=>'integer',
-          'uso'=>'integer',
+          'base_datos' =>'integer',
+          'codificacion'=>'integer',
+          'descripcion' => 'string|max:200',
+          
         ];
     }
 }

@@ -18,12 +18,9 @@ class CreateCategoriesTable extends Migration
             $table->string('nombre')->unique();
             $table->integer('plataforma');
             $table->integer('modelado');
-            $table->integer('clases');
-            $table->integer('uso');
-            $table->integer('despliegue');
-            $table->integer('sequencia');
-            $table->integer('actividades');
-            $table->integer('entidad_relacion');
+            $table->integer('base_datos');
+            $table->integer('codificacion');
+            $table->text('descripcion');
             $table->timestamps();
         });
     }

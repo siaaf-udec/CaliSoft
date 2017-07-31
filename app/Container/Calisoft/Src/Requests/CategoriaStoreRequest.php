@@ -27,12 +27,10 @@ class CategoriaStoreRequest extends FormRequest
           'nombre' => 'required|string|unique:TBL_Categorias',
           'plataforma' => 'required|integer',
           'modelado' => 'required|integer',
-          'despliegue' => 'required|integer',
-          'entidad_relacion' => 'required|integer',
-          'clases' => 'required|integer',
-          'actividades' => 'required|integer',
-          'sequencia' => 'required|integer',
-          'uso' => 'required|integer',
+          'base_datos' => 'required|integer',
+          'codificacion' => 'required|integer',
+          'descripcion' => 'required|string|max:200',
+          
         ];
     }
 }
