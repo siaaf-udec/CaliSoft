@@ -12,6 +12,9 @@
                     <th class="text-center">Nombre</th>
                     <th class="text-center">Plataforma</th>
                     <th class="text-center">Modelado</th>
+                    <th class="text-center">Base de datos</th>
+                    <th class="text-center">Codificación</th>
+                   
                     <th class="text-center">Operaciones</th>
                 </thead>
                 <tbody>
@@ -19,12 +22,25 @@
                         <td v-text="categoria.nombre"></td>
                         <td v-text="categoria.plataforma"></td>
                         <td v-text="categoria.modelado"></td>
-
+                        <td></td>
+                        <td></td>
+                        
+                        
                         <td class="text-center">
+                        <popover title="Popover Title" placement="bottom">
+                            <button type="button" class="btn btn-default btn-xs" data-role="trigger" title="Descripción" >
+                            <span class="fa fa-map-o"></span>
+                            </button>
+                            <div slot="popover">
+                                <h1>Hello world!</h1>
+                            </div>
+                        </popover>
 
                             <button class="editar-categoria btn blue btn-xs" title="Editar Categoria" @click.prevent="openEditModal(categoria)">
                                     <span class="glyphicon glyphicon-pencil"></span>
                                 </button>
+                            
+
                             <button class="editar-modal btn red btn-xs" title="Eliminar Categoria" @click.prevent="openDeleteModal(categoria)">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
@@ -35,29 +51,9 @@
             </table>
             <div class="table-responsive">
                 <table class="table table-hover table-bordered table-condensed">
-                    <thead>
-                        <th class="text-center">Nombre</th>
-                        <th class="text-center">Despliegue</th>
-                        <th class="text-center">Entidad/relación</th>
-                        <th class="text-center">Clases</th>
-                        <th class="text-center">Actividades</th>
-                        <th class="text-center">secuencia</th>
-                        <th class="text-center">Uso</th>
-
-                    </thead>
+                   
                     <tbody>
-                        <tr v-for="categoria in categorias" class="text-center">
-                            <td v-text="categoria.nombre"></td>
-                            <td v-text="categoria.despliegue"></td>
-                            <td v-text="categoria.entidad_relacion"></td>
-                            <td v-text="categoria.clases"></td>
-                            <td v-text="categoria.actividades"></td>
-                            <td v-text="categoria.sequencia"></td>
-                            <td v-text="categoria.uso"></td>
-
-
-                            </td>
-                        </tr>
+                        
                     </tbody>
                 </table>
             </div>

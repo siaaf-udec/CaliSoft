@@ -1,6 +1,7 @@
 import "./bootstrap";
 import Vue from "vue";
 import Modal from "./components/modal";
+import { Popover } from "uiv";
 
 const PORCENTAJES = ['modelado', 'plataforma'];
 const DIAGRAMAS = ['despliegue', 'entidad_relacion', 'clases', 'actividades', 'sequencia', 'uso'];
@@ -8,7 +9,7 @@ const DIAGRAMAS = ['despliegue', 'entidad_relacion', 'clases', 'actividades', 's
 
 let vm = new Vue({
     el: '#app',
-    components: { Modal },
+    components: { Modal, Popover },
     data: {
         categorias: [],
         offset: 4,
