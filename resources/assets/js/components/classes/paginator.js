@@ -1,8 +1,13 @@
 export default class Paginator {
 
-    constructor(data, show){
-        this.data = data || [];
-        this.show = show || 10;
+    /**
+     * 
+     * @param {array} data 
+     * @param {number} show numero de items por pagina 
+     */
+    constructor(data = [], show = 10){
+        this.data = data;
+        this.show = show;
         this.page = 1;
     }
 

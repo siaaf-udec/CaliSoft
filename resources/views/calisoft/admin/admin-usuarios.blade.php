@@ -47,7 +47,7 @@
             </div>
             <!-- End Table -->
 
-            <!-- Paginacion -->
+            
             <div class="row">
                 <!-- Boton de crear usuario -->
                 <div class="col-sm-6">
@@ -58,85 +58,12 @@
                 </div>
 
                 <!-- Pagination Buttons-->
-                <div class="col-sm-6" v-show="paginacion.last_page > 1">
-                    <ul class="pagination pager pull-right">
-                        <li>
-                            <a :class="{disabled: !paginacion.prev_page_url}" @click="refresh(paginacion.prev_page_url)">
-                        <i class="fa fa-angle-double-left" aria-hidden="true"></i>
-                    </a>
-                        </li>
-                        <li v-for="index in paginacion.last_page">
-                            <a @click="refresh('/api/usuarios', { page: index })">@{{index}}</a>
-                        </li>
-                        <li>
-                            <a :class="{disabled: !paginacion.next_page_url}" @click="refresh(paginacion.next_page_url)">
-                        <i class="fa fa-angle-double-right" aria-hidden="true"></i>
-                    </a>
-                        </li>
-                    </ul>
+                <div class="col-sm-6 text-right" v-show="paginacion.last_page > 1">
+                    <pagination v-model="page" :total-page="paginacion.last_page" @change="refresh" boundary-links></pagination>
                 </div>
                 <!-- End Pagination Buttons-->
 
-            </div>
-
-            <!--Inicio Modal crear Usuarios-->
-            <div class="modal fade" id="crear-usuari" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-              <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                  <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Crear Usuarios</h5>
-                  </div>
-                  <div class="modal-body">
-                    <form @submit.prevent="store()" id="registro">
-                      <div class="form-group form-md-line-input">
-                          <div class="input-icon">
-                              <input  class="form-control" id="name" name="name" type="text" maxlength="10" v-model="newUser.name"/>
-                              <label  class="control-label">Nombre</label>
-                              <span class="help-block">Digite el Nombre</span>
-                              <i class="fa fa-user"></i>
-                          </div>
-                      </div>
-                      <div class="form-group form-md-line-input">
-                          <div class="input-icon">
-                              <input  class="form-control" id="correo" name="correo" type="email" maxlength="50" v-model="newUser.email"/>
-                              <label  class="control-label">Correo</label>
-
-                              <i class="fa fa-envelope-o"></i>
-                          </div>
-                      </div>
-                      <div class="form-group form-md-line-input">
-                          <div class="input-icon">
-                              <input  class="form-control" id="password" name="password" type="password" maxlength="10" v-model="newUser.password"/>
-                              <label  class="control-label">Contraseña</label>
-                              <span class="help-block">Digite la contraseña</span>
-                              <i class="fa fa-envelope-o"></i>
-                          </div>
-                      </div>
-                      <div class="form-group form-md-line-input">
-                          <div class="input-icon">
-                              <input  class="form-control" name="password" type="password" maxlength="10" v-model="newUser.password_confirmation"/>
-                              <label  class="control-label">Confirmar Contraseña</label>
-                              <span class="help-block">Confirmar la contraseña</span>
-                              <i class="fa fa-envelope-o"></i>
-                          </div>
-                      </div>
-                    </form>
-                  </div>
-                  <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Save changes</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <!--Fin modal crear usuarios-->
-
-
-
-
-
-
+            </div>            
 
             <!--Inicio Modal crear usuarios-->
             <<modal id="crear-usuario" title="Crear Usuario">

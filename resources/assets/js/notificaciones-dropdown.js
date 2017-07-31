@@ -6,7 +6,7 @@
 
 import Echo from 'laravel-echo'
 import Vue from 'vue';
-import Notifications from '../components/notifications/notifications'
+import Notifications from './components/notifications/notifications'
 
 
 window.Pusher = require('pusher-js');

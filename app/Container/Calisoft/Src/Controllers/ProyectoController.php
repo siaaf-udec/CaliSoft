@@ -25,7 +25,7 @@ class ProyectoController extends Controller
     {
         return Proyecto::with('semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios')
             ->where('state', '<>', 'creacion')
-            ->paginate(9);
+            ->get();
     }
 
     public function store(ProyectoStoreRequest $request)

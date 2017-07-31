@@ -7,14 +7,14 @@
         </span>
     </div>
     <ul class="list-group" style="margin-top: 2%">
-        <li class="list-group-item" v-for="user in this.paginator.items">
+        <li class="list-group-item" v-for="user in this.paginator.items" :key="user.id">
             {{ `${user.name} - ${user.email}` }}
             <button class="btn btn-success btn-xs pull-right" @click="$emit('selected', user)">
           {{ buttonText }}
         </button>
         </li>
         <div class="text-center">
-            <pager :show="paginator.show" :last-page="paginator.lastPage" :page="paginator.page" @change="changePage"></pager>
+            <pagination v-model="paginator.page" :total-page="paginator.lastPage"></pagination>
         </div>
     </ul>
 
@@ -23,10 +23,10 @@
 
 <script>
 import Paginator from './classes/paginator';
-import Pager from './utils/pager';
+import { Pagination } from 'uiv'
 
 export default {
-    components: { Pager },
+    components: { Pagination },
     props: ['url', 'buttonText'],
     data() {
         return {

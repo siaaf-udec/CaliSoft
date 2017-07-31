@@ -1,7 +1,7 @@
 import "./bootstrap";
 import Vue from "vue";
-import Modal from "../components/modal";
-import CategoryList from "../components/category-list";
+import Modal from "./components/modal";
+import CategoryList from "./components/category-list";
 
 let vm = new Vue({
     el: '#app',

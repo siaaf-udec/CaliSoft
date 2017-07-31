@@ -1,35 +1,27 @@
 import "./bootstrap";
 import Vue from "vue";
-import proyectoTabla from "../components/proyecto-tabla";
-import BsSelect from "../components/bs-select";
+import proyectoTabla from "./components/proyecto-tabla";
+import BsSelect from "./components/bs/bs-select";
+import Paginator from './components/classes/paginator';
+import { Pagination } from 'uiv'
 
 let vm = new Vue({
     el: '#app',
-    components: { proyectoTabla, BsSelect },
+    components: { proyectoTabla, BsSelect, Pagination },
     data: {
         proyectos: [],
         seleccion: {},
-        paginacion: {},
+        paginator: new Paginator([], 9),
         categoriaId: null
     },
 
     created() {
-        //axios.get('/api/proyectos').then(res => this.proyectos = res.data);
-        this.refresh('/api/proyectos');
+        axios.get('/api/proyectos').then(response => {
+            this.proyectos = this.paginator.data = response.data
+        });
     },
 
     methods: {
-        seleccionar(proyecto) {
-            this.seleccion = proyecto;
-        },
-        refresh(url, params) {
-            //axios.get('/api/proyectos').then(res => this.proyectos = res.data);
-            if (!url) return;
-            axios.get(url, { params }).then(response => {
-                this.paginacion = response.data;
-                this.proyectos = this.paginacion.data;
-            });
-        },
         update(proyecto){
             this.seleccion = proyecto;
             this.proyectos = this.proyectos.map(pro => {
@@ -38,14 +30,10 @@ let vm = new Vue({
         },
         remove(proyecto){
             this.seleccion = {};
-            this.proyectos = this.proyectos.filter(pro => pro.PK_id != proyecto.PK_id);
+            this.proyectos = this.paginator.data = this.proyectos.filter(pro => pro.PK_id != proyecto.PK_id);
         }
     },
     watch: {
-        categoriaId(val) {
-            let params = { page: this.paginacion.current_page };
-            if (val) params.categoriaId = val;
-            this.refresh('/api/proyectos', params);
-        }
+        
     }
 });

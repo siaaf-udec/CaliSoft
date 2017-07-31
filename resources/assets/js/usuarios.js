@@ -1,21 +1,23 @@
 import "./bootstrap";
 import Vue from "vue";
-import Modal from "../components/modal";
-import BsSelect from "../components/bs-select"
+import Modal from "./components/modal";
+import BsSelect from "./components/bs/bs-select"
+import { Pagination } from "uiv";
 
 new Vue({
     el: '#app',
-    components: { Modal, BsSelect },
+    components: { Modal, BsSelect, Pagination },
     data: {
         newUser: {},
         usuarios: [],
         errors: {},
         deleteUser: {},
-        paginacion:{},
+        paginacion: {},
+        page: 1,
         role: ""
     },
     created() {
-        this.refresh('/api/usuarios');
+        this.refresh();
     },
     methods: {
         store() {
@@ -30,9 +32,9 @@ new Vue({
                     this.errors = error.response.data
                 });
         },
-        openDeleteModal(user){
-          this.deleteUser = user;
-          $('#eliminar-usuarios').modal("show");
+        openDeleteModal(user) {
+            this.deleteUser = user;
+            $('#eliminar-usuarios').modal("show");
         },
         destroy(user) {
             axios.delete('/api/usuarios/' + user.PK_id)
@@ -42,21 +44,17 @@ new Vue({
                     toastr.info('Usuario Eliminado Correctamente');
                 });
         },
-        refresh(url, params){
-          if(!url) return;
-          axios.get(url, { params }).then(response => {
-              this.paginacion = response.data;
-              this.usuarios = this.paginacion.data;
-          });
+        refresh(page) {
+            let params = { page };
+            axios.get('/api/usuarios', { params }).then(response => {
+                this.paginacion = response.data;
+                this.usuarios = this.paginacion.data;
+            });
         },
     },
 
     watch: {
-        role(val) {
-            let params = { page: this.paginacion.current_page };
-            if(val) params.role = val;
-            this.refresh('/api/usuarios', params);
-        }
+        
     }
 
 

@@ -1,7 +1,7 @@
 import "./bootstrap";
 import Vue from "vue";
-import BsSwitch from "../components/bs-switch";
-import Modal from "../components/modal";
+import BsSwitch from "./components/bs/bs-switch";
+import Modal from "./components/modal";
 
 new Vue({
     el: "#app",
