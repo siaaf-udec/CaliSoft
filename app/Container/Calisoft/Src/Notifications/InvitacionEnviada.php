@@ -66,7 +66,8 @@ class InvitacionEnviada extends Notification implements ShouldQueue
     {
         return [
             'type' => 'invitacion-recibida',
-            'url' => route('invitaciones'),
+            'url' => '/invitaciones',
+            'alert' => 'Has recibido una invitacion!',
             'proyecto' => $this->proyecto->nombre,
             'user' => $this->from->name
         ];
