@@ -1,5 +1,4 @@
 @extends('layouts.dash')
-
 @section('content')
 <div class="col-md-12">
     @component('components.portlet', ['icon' => 'fa fa-users', 'title' => 'Usuarios'])
@@ -20,7 +19,6 @@
                 </div>
 
             </div>
-
             <!-- Table -->
             <div class="table-responsive">
                 <table class="table table-hover table-bordered table-condensed">
@@ -47,7 +45,7 @@
             </div>
             <!-- End Table -->
 
-            
+
             <div class="row">
                 <!-- Boton de crear usuario -->
                 <div class="col-sm-6">
@@ -63,10 +61,10 @@
                 </div>
                 <!-- End Pagination Buttons-->
 
-            </div>            
+            </div>
 
             <!--Inicio Modal crear usuarios-->
-            <<modal id="crear-usuario" title="Crear Usuario">
+            <modal id="crear-usuario" title="Crear Usuario">
                 <form @submit.prevent="store()">
                     <div class="form-group form-md-line-input">
                         <div class="input-icon">
@@ -131,31 +129,29 @@
                 </div>
             </modal>
             <!-- Fin Modal Eliminar -->
-            @include('partials.modalHelpUsuario')
+
         </div>
+        @include('partials.modal-help-usuario')
     @endcomponent
 </div>
 @endsection
-
 @push('styles')
-    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
-    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
+  <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
+  <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
 @endpush
 
 @push('functions')
   <script src="{{ asset('assets/global/plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/jquery-validation/js/additional-methods.min.js') }}" type="text/javascript"></script>
-<script src="{{ asset('assets/global/plugins/jquery-validation/js/localization/messages_es.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('assets/global/plugins/jquery-validation/js/additional-methods.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('assets/global/plugins/jquery-validation/js/localization/messages_es.js') }}" type="text/javascript"></script>
 
-<script src="{{ asset('assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js') }}" type="text/javascript"></script>
+  <script src="{{ asset('assets/global/plugins/bootstrap-maxlength/bootstrap-maxlength.min.js') }}" type="text/javascript"></script>
 
-    <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
-    <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
-    <script src="/js/usuarios.js"></script>
+  <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+  <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
+  <script src="/js/usuarios.js"></script>
 
-    <script>
-      $("#registro").validate();
-    </script>
-
-
+  <script>
+    $("#registro").validate();
+  </script>
 @endpush
