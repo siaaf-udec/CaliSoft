@@ -52,7 +52,7 @@
                 </form>
             </div>
         @endcomponent
-        @include('partials.modalHelpRegistroProyecto')
+        @include('partials.modal-help-registro-proyecto')
     </div>
 
 @endsection
