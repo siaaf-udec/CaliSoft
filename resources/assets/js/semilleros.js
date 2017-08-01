@@ -1,6 +1,6 @@
 import "./bootstrap";
 import Vue from "vue";
-import ListGroupCrud from "./components/list-group-crud";
+import ListGroupCrud from "./components/utils/list-group-crud";
 
 new Vue({
     el: '#app',

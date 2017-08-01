@@ -67,6 +67,7 @@ Route::resource('componentes', 'ComponenteController', [
 Route::prefix('proyectos/{proyecto}')->group(function () {
     Route::put('propuesta', 'ProyectoController@propuesta');
     Route::put('aceptar', 'ProyectoController@aceptar');
+    Route::put('asignar', 'ProyectoController@asignar');
     Route::get('documentacion', 'ProyectoController@documentos');
 });
 

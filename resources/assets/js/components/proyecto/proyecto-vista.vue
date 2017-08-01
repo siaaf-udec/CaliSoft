@@ -107,7 +107,7 @@
 import ProyectoIntegrantes from "./proyecto-integrantes";
 import ProyectoEvaluadores from "./proyecto-evaluadores";
 import ProyectoInvitados from "./proyecto-invitados";
-import Modal from "./modal";
+import Modal from "../utils/modal";
 import proyectoEditar from "./proyecto-editar";
 
 export default {

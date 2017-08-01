@@ -21,7 +21,9 @@ class InvitationController extends Controller
         $proyecto = Proyecto::findOrFail($request->project_id);
         $user = User::findOrFail($request->user_id);
 
-        $proyecto->usuarios()->syncWithoutDetaching($user->PK_id, ['tipo' => 'invitado']);
+        $proyecto->usuarios()->syncWithoutDetaching([ $user->PK_id => [
+            'tipo' => 'invitado'
+        ]]);
         $user->notify(new InvitacionEnviada($request->user(), $proyecto));
     }
 

@@ -45,7 +45,7 @@ export default {
         window.Echo.private('users.' + window.userId).notification(notificacion => {
             this.notificaciones.push(notificacion);
             this.count += 1;
-            toastr.info(notificacion.alert);
+            toastr.info(notificacion.data.alert);
         });
     }
 }

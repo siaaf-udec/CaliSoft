@@ -3,7 +3,7 @@
         <div class="panel-heading bg-grey text-center font-grey-cascade">INVITADOS</div>
         <div class="panel-body bg-grey">
           <ul class="list-group">
-              <li class="list-group-item text-center" v-for="usuario in allUsers">
+              <li class="list-group-item text-center" v-for="usuario in allUsers" :key="usuario.id">
                   {{ usuario.name }} - {{ usuario.email }}
               </li>
               <button class="list-group-item list-group-item-info text-center" data-toggle="modal" data-target="#invite-modal">
@@ -21,8 +21,8 @@
 </template>
 
 <script>
-import UserSearch from './user-search';
-import Modal from './modal';
+import UserSearch from '../utils/user-search';
+import Modal from '../utils/modal';
 
 export default {
     props: ['invitados', 'proyectoId'],

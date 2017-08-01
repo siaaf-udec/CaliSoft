@@ -1,6 +1,6 @@
 import "./bootstrap";
 import Vue from "vue";
-import Modal from "./components/modal";
+import Modal from "./components/utils/modal";
 import { Popover } from "uiv";
 
 const PORCENTAJES = ['modelado', 'plataforma', 'base_datos', 'codificacion'];
