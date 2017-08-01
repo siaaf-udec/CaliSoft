@@ -68,12 +68,15 @@
         <modal id="crear-categoria" title="Crear Categoria">
             <form @submit.prevent="store()">
 
-                <div class="form-group">
-                    <label for="nombre">Nombre de la Categoría </label>
-                    <input type="text" name="nombre" class="form-control" v-model="newCategoria.nombre" required/>
-                    <span v-if="formErrors['nombre']" class="error text-danger">
+                <div class="form-group form-md-line-input">
+                    <div class="input-icon">
+                        <i class="fa fa-envelope-o"></i>
+                        <label for="nombre">Nombre de la Categoría </label>
+                        <input type="text" name="nombre" class="form-control" v-model="newCategoria.nombre" required/>
+                        <span v-if="formErrors['nombre']" class="error text-danger">
                             @{{formErrors.nombre[0]}}
                         </span>
+                    </div>
                 </div>
 
                 <!-- Fila De Porcentajes -->
