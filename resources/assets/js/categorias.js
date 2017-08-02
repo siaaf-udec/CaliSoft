@@ -1,6 +1,7 @@
 import "./bootstrap";
 import Vue from "vue";
 import Modal from "./components/utils/modal";
+import CategoryMix from './components/mixins/category-mix';
 import { Popover } from "uiv";
 import TextInput from "./components/inputs/text-input";
 
@@ -10,16 +11,18 @@ const PORCENTAJES = ['modelado', 'plataforma', 'base_datos', 'codificacion'];
 
 let vm = new Vue({
     el: '#app',
+    mixins: [CategoryMix],
     components: { Modal, Popover, TextInput },
-    data: {
-        categorias: [],
-        offset: 4,
-        formErrors: {},
-        formErrorsUpdate: {},
-        newCategoria: {},
-        fillCategoria: {},
-        elimiCategoria: {},
-
+    data() {
+        return {
+            categorias: [],
+            offset: 4,
+            formErrors: {},
+            formErrorsUpdate: {},
+            newCategoria: this.schema(),
+            fillCategoria: {},
+            elimiCategoria: {},
+        }
 
     },
     created() {
@@ -29,12 +32,14 @@ let vm = new Vue({
             });
     },
     methods: {
+        
         store() {
             if (!this.sumaPorcentajes()) return;
             axios.post('/api/categorias', this.newCategoria)
                 .then(response => {
                     this.categorias.push(response.data);
-                    this.newCategoria = this.formErrors = {};
+                    this.formErrors = {};
+                    this.newCategoria = this.schema();
                     $("#crear-categoria").modal("hide");
                     toastr.success('Categoría creada correctamente');
                 })
@@ -100,12 +105,5 @@ let vm = new Vue({
             }
             return true;
         },
-
-
-
-
-
-
-
     }
 });
