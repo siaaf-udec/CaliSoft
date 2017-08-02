@@ -1,31 +1,31 @@
 @extends('layouts.dash')
 
 @push('styles')
-  <link rel="stylesheet" href="/styles/style.css" media="all" />
+  <link rel="stylesheet" href="/modulobd/styles/style.css" media="all" />
 	<!--[if IE 6]><link rel="stylesheet" type="text/css" href="styles/ie6.css" /><![endif]-->
 	<!--[if IE 7]><link rel="stylesheet" type="text/css" href="styles/ie7.css" /><![endif]-->
-	<link rel="stylesheet" href="/styles/print.css" type="text/css" media="print" />
+	<link rel="stylesheet" href="/modulobd/styles/print.css" type="text/css" media="print" />
 
   <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js"></script>
 
-	<script src="/js/oz.js"></script>
-	<script src="/js/config.js"></script>
-	<script src="/js/globals.js"></script>
-	<script src="/js/visual.js"></script>
-	<script src="/js/row.js"></script>
-	<script src="/js/table.js"></script>
-	<script src="/js/relation.js"></script>
-	<script src="/js/key.js"></script>
-	<script src="/js/rubberband.js"></script>
-	<script src="/js/map.js"></script>
-	<script src="/js/toggle.js"></script>
-	<script src="/js/io.js"></script>
-	<script src="/js/tablemanager.js"></script>
-	<script src="/js/rowmanager.js"></script>
-	<script src="/js/keymanager.js"></script>
-	<script src="/js/window.js"></script>
-	<script src="/js/options.js"></script>
-	<script src="/js/wwwsqldesigner.js"></script>
+	<script src="/modulobd/js/oz.js"></script>
+	<script src="/modulobd/js/config.js"></script>
+	<script src="/modulobd/js/globals.js"></script>
+	<script src="/modulobd/js/visual.js"></script>
+	<script src="/modulobd/js/row.js"></script>
+	<script src="/modulobd/js/table.js"></script>
+	<script src="/modulobd/js/relation.js"></script>
+	<script src="/modulobd/js/key.js"></script>
+	<script src="/modulobd/js/rubberband.js"></script>
+	<script src="/modulobd/js/map.js"></script>
+	<script src="/modulobd/js/toggle.js"></script>
+	<script src="/modulobd/js/io.js"></script>
+	<script src="/modulobd/js/tablemanager.js"></script>
+	<script src="/modulobd/js/rowmanager.js"></script>
+	<script src="/modulobd/js/keymanager.js"></script>
+	<script src="/modulobd/js/window.js"></script>
+	<script src="/modulobd/js/options.js"></script>
+	<script src="/modulobd/js/wwwsqldesigner.js"></script>
 @endpush
 
 @section('content')
@@ -70,7 +70,7 @@
   <div id="background"></div>
 
   <div id="window">
-    <div id="windowtitle"><img id="throbber" src="/images/throbber.gif" alt="" title=""/></div>
+    <div id="windowtitle"><img id="throbber" src="/modulobd/images/throbber.gif" alt="" title=""/></div>
     <div id="windowcontent"></div>
     <input type="button" id="windowok" />
     <input type="button" id="windowcancel" />
