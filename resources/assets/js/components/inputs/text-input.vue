@@ -17,13 +17,12 @@ export default {
         return { local: this.value }
     },
 
-    beforeUpdate(){
-        this.local = this.value
-    },
-
     watch: {
         local(value) {
             this.$emit('input', this.local);
+        },
+        value(val) {
+            this.local = val
         }
     }
 }

@@ -22,7 +22,7 @@ let vm = new Vue({
             formErrors: {},
             formErrorsUpdate: {},
             newCategoria: this.schema(),
-            fillCategoria: {},
+            fillCategoria: this.schema(),
             elimiCategoria: {},
         }
 
@@ -62,7 +62,7 @@ let vm = new Vue({
                     this.categorias = this.categorias.map(value => {
                         return value.PK_id == this.fillCategoria.PK_id ? this.fillCategoria : value;
                     });
-                    this.fillCategoria = {};
+                    this.fillCategoria = this.schema();
                     $("#editar-categoria").modal("hide");
                     toastr.info('Categoría editada correctamente');
                 })
