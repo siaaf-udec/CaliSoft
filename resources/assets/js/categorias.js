@@ -2,6 +2,7 @@ import "./bootstrap";
 import Vue from "vue";
 import Modal from "./components/utils/modal";
 import { Popover } from "uiv";
+import TextInput from "./components/inputs/text-input";
 
 const PORCENTAJES = ['modelado', 'plataforma', 'base_datos', 'codificacion'];
 
@@ -9,7 +10,7 @@ const PORCENTAJES = ['modelado', 'plataforma', 'base_datos', 'codificacion'];
 
 let vm = new Vue({
     el: '#app',
-    components: { Modal, Popover },
+    components: { Modal, Popover, TextInput },
     data: {
         categorias: [],
         offset: 4,

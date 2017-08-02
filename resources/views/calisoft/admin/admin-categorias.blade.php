@@ -68,16 +68,9 @@
             <form @submit.prevent="store()">
 
 
-                <div class="form-group form-md-line-input" :class="{'has-error':formErrors.nombre}">
-                    <div class="input-icon">
-                        <input type="text" name="nombre" id="nombre" class="form-control" v-model="newCategoria.nombre" required/>
-                        <label for="nombre" class="control-label">Nombre de la Categoría </label>
-                        <span v-if="formErrors['nombre']" class=" help-block">
-                        <strong>@{{formErrors.nombre[0]}}</strong>
-                    </span>
-                        <i class="fa fa-pie-chart"></i>
-                    </div>
-                </div>
+
+                <text-input name="nombre" :error="formErrors.nombre" v-model="newCategoria.nombre" label="Nombre de la Categoría" icon="fa fa-pie-chart" required></text-input>
+
 
                 <!-- Fila De Porcentajes -->
                 <div class="row">
@@ -93,6 +86,7 @@
                             <i class="fa fa-percent"></i>
                         </div>
                     </div>
+
 
                     <div class="form-group col-sm-6 form-md-line-input" :class="{'has-error':formErrors.modelado}">
                         <div class="input-icon">
