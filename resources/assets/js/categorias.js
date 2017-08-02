@@ -1,8 +1,11 @@
 import "./bootstrap";
 import Vue from "vue";
 import Modal from "./components/utils/modal";
+import CategoryMix from './components/mixins/category-mix';
 import { Popover } from "uiv";
 import TextInput from "./components/inputs/text-input";
+import NumberInput from "./components/inputs/number-input";
+import TextareaInput from "./components/inputs/textarea-input";
 
 const PORCENTAJES = ['modelado', 'plataforma', 'base_datos', 'codificacion'];
 
@@ -10,16 +13,18 @@ const PORCENTAJES = ['modelado', 'plataforma', 'base_datos', 'codificacion'];
 
 let vm = new Vue({
     el: '#app',
-    components: { Modal, Popover, TextInput },
-    data: {
-        categorias: [],
-        offset: 4,
-        formErrors: {},
-        formErrorsUpdate: {},
-        newCategoria: {},
-        fillCategoria: {},
-        elimiCategoria: {},
-
+    mixins: [CategoryMix],
+    components: { Modal, Popover, TextInput, NumberInput, TextareaInput },
+    data() {
+        return {
+            categorias: [],
+            offset: 4,
+            formErrors: {},
+            formErrorsUpdate: {},
+            newCategoria: this.schema(),
+            fillCategoria: this.schema(),
+            elimiCategoria: {},
+        }
 
     },
     created() {
@@ -29,12 +34,14 @@ let vm = new Vue({
             });
     },
     methods: {
+
         store() {
             if (!this.sumaPorcentajes()) return;
             axios.post('/api/categorias', this.newCategoria)
                 .then(response => {
                     this.categorias.push(response.data);
-                    this.newCategoria = this.formErrors = {};
+                    this.formErrors = {};
+                    this.newCategoria = this.schema();
                     $("#crear-categoria").modal("hide");
                     toastr.success('Categoría creada correctamente');
                 })
@@ -55,7 +62,7 @@ let vm = new Vue({
                     this.categorias = this.categorias.map(value => {
                         return value.PK_id == this.fillCategoria.PK_id ? this.fillCategoria : value;
                     });
-                    this.fillCategoria = {};
+                    this.fillCategoria = this.schema();
                     $("#editar-categoria").modal("hide");
                     toastr.info('Categoría editada correctamente');
                 })
@@ -100,12 +107,5 @@ let vm = new Vue({
             }
             return true;
         },
-
-
-
-
-
-
-
     }
 });

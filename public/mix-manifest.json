@@ -1,6 +1,7 @@
 {
     "/js/proyectos.js": "/js/proyectos.js",
     "/js/admin-proyectos.js": "/js/admin-proyectos.js",
+    "/js/categorias.js": "/js/categorias.js",
     "/js/usuarios.js": "/js/usuarios.js",
     "/js/categorias.js": "/js/categorias.js",
     "/js/categorias-show.js": "/js/categorias-show.js",
