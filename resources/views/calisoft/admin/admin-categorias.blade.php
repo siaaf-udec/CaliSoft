@@ -66,29 +66,20 @@
         <!--Modal de creacion de categoria -->
         <modal id="crear-categoria" title="Crear Categoria">
             <form @submit.prevent="store()">
-
-
-
                 <text-input name="nombre" :error="formErrors.nombre" v-model="newCategoria.nombre" label="Nombre de la Categoría" icon="fa fa-pie-chart" required></text-input>
-
                 <!-- Fila De Porcentajes -->
                 <div class="row">
-
                     <number-input name="plataforma" :error="formErrors.plataforma" v-model="newCategoria.plataforma" label="Evaluación de plataforma" icon="fa fa-percent" min="0" max="100" required>
                     </number-input>
-
                     <number-input name="modelado" :error="formErrors.modelado" v-model="newCategoria.modelado" label="Evaluación de modelado" icon="fa fa-percent" min="0" max="100" required>
                     </number-input>
                 </div>
 
                 <div class="row">
-
                     <number-input name="base_datos" :error="formErrors.base_datos" v-model="newCategoria.base_datos" label="Evaluación de Base de datos" icon="fa fa-percent" min="0" max="100" required>
                     </number-input>
-
                     <number-input name="codificacion" :error="formErrors.codificacion" v-model="newCategoria.codificacion" label="Evaluación de Codificación" icon="fa fa-percent" min="0" max="100" required>
                     </number-input>
-
                 </div>
 
                 <textarea-input name="descripcion" :error="formErrors.descripcion" v-model="newCategoria.descripcion" label="Descripción" maxlength="200" required></textarea-input>
@@ -109,63 +100,22 @@
         <!--Comienzo Modal de edicion -->
         <modal id="editar-categoria" title="Editar Categoria">
             <form @submit.prevent="update(fillCategoria.PK_id)">
-
-
                 <text-input name="nombre" :error="formErrorsUpdate.nombre" v-model="fillCategoria.nombre" label="Nombre de la Categoría" icon="fa fa-pie-chart" required></text-input>
-
                 <div class="row">
-                    <div class="form-group col-sm-6">
-                        <label for="title">Evaluación de la plataforma</label>
-                        <input type="number" name="plataforma" class="form-control" v-model="fillCategoria.plataforma" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['plataforma']" class="error text-danger">
-                                @{{formErrorsUpdate.plataforma[0]}}
-                            </span>
-                    </div>
-                    <div class="form-group col-sm-6">
-                        <label for="title">Evaluación del modelado</label>
-                        <input type="number" name="modelado" class="form-control" v-model="fillCategoria.modelado" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['modelado']" class="error text-danger">
-                                @{{formErrorsUpdate.modelado[0]}}
-                            </span>
-                    </div>
+                    <number-input name="plataforma" :error="formErrorsUpdate.plataforma" v-model="fillCategoria.plataforma" label="Evaluación de plataforma" icon="fa fa-percent" min="0" max="100" required>
+                    </number-input>
+                    <number-input name="modelado" :error="formErrorsUpdate.modelado" v-model="fillCategoria.modelado" label="Evaluación de modelado" icon="fa fa-percent" min="0" max="100" required>
+                    </number-input>
+                </div>
+                <div class="row">
+                    <number-input name="base_datos" :error="formErrorsUpdate.base_datos" v-model="fillCategoria.base_datos" label="Evaluación de Base de datos" icon="fa fa-percent" min="0" max="100" required>
+                    </number-input>
+                    <number-input name="codificacion" :error="formErrorsUpdate.codificacion" v-model="fillCategoria.codificacion" label="Evaluación de Codificación" icon="fa fa-percent" min="0" max="100" required>
+                    </number-input>
                 </div>
 
-                <div class="row">
+                <textarea-input name="descripcion" :error="formErrorsUpdate.descripcion" v-model="fillCategoria.descripcion" label="Descripción" maxlength="200" required></textarea-input>
 
-                    <div class="form-group col-sm-6">
-                        <label for="title">Evaluación de Base de datos</label>
-                        <input type="number" name="base_datos" class="form-control" v-model="fillCategoria.base_datos" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['base_datos']" class="error text-danger">
-                                @{{formErrorsUpdate.base_datos[0]}}
-                            </span>
-                    </div>
-
-                    <div class="form-group col-sm-6">
-                        <label for="title">Evaluación Codificación</label>
-                        <input type="number" name="codificacion" class="form-control" v-model="fillCategoria.codificacion" min="0" max="100" required/>
-                        <span v-if="formErrorsUpdate['codificacion']" class="error text-danger">
-                                @{{formErrorsUpdate.codificacion[0]}}
-                            </span>
-                    </div>
-
-                </div>
-
-
-
-                <div class="row">
-
-                    <div class="form-group col-sm-12">
-                        <label for="descripcion">Descripción</label>
-                        <textarea name="descripcion" class="form-control" v-model="fillCategoria.descripcion" maxlength="200" required style="resize: none" rows="3" />
-                        </textarea>
-                        <span v-if="formErrors['descripcion']" class="error text-danger">
-                                @{{formErrors.descripcion[0]}}
-                            </span>
-                    </div>
-
-
-
-                </div>
                 <div class="modal-footer">
                     <div class="form-group">
                         <button type="submit" class="btn green-jungle">
@@ -176,7 +126,6 @@
                         </button>
                     </div>
                 </div>
-
             </form>
         </modal>
         <!-- Fin de Modal de edicion -->
