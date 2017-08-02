@@ -41,7 +41,7 @@ new Vue({
                     $("#crear-componente").modal("hide");
                     toastr.info('Componente subido correctamente');
                 })
-                .catch(err => this.formErrors = err.response.data)
+                .catch(err => this.formErrors = err.response.data);
         },
 
         //actualiza el componente

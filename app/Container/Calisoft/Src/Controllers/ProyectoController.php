@@ -3,13 +3,18 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Container\Calisoft\Src\Notifications\ProyectoCreado;
+use App\Container\Calisoft\Src\Notifications\ProyectoDenegado;
+
 use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
 use App\Container\Calisoft\Src\Requests\ProyectoUpdateRequest;
+use App\Container\Calisoft\Src\Requests\ProyectoDenegadoRequest;
+
 use App\Container\Calisoft\Src\User;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Response;
 use Illuminate\Support\Facades\Notification;
+use Illuminate\Http\Request;
 
 class ProyectoController extends Controller
 {
@@ -48,8 +53,12 @@ class ProyectoController extends Controller
         $proyecto->update($request->all());
     }
 
-    public function destroy(Proyecto $proyecto)
+    public function destroy(Proyecto $proyecto, ProyectoDenegadoRequest $request)
     {
+        //Envía notificación a usuario de eliminación junto con las razones
+        $usuarios = $proyecto->usuarios()->get();
+        Notification::send($usuarios, new ProyectoDenegado($proyecto->nombre, $request->text));
+        
         $proyecto->delete();
     }
 

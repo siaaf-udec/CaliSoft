@@ -69,6 +69,16 @@
         <modal v-model="destroyModal" title="Eliminar Proyecto" :footer="false">
             <p class="text-center">
                 Esta seguro de eliminar el proyecto {{ proyecto.nombre }}?
+
+                <div class="form-group col-sm-12">
+                    <label for="text">Razón</label>
+                    <textarea  name="text" class="form-control" v-model="text" maxlength="200" required style="resize: none" rows="3"/>
+                    </textarea>
+                    <span v-if="formErrors['text']" class="error text-danger">
+                                @{{formErrors.text[0]}}
+                    </span>
+                </div>
+
                 <div class="form-group">
                     <button class="btn red center-block" @click="eliminar()">Eliminar</button>
                 </div>
@@ -90,7 +100,7 @@ export default {
     components: { Modal, UserSearch },
     props: ['proyecto'],
     data() {
-        return { asignedModal: false, destroyModal: false, acceptModal: false }
+        return { asignedModal: false, destroyModal: false, acceptModal: false, formErrors: {}, text:"" }
     },
     methods: {
         filtrar(tipo) {
@@ -105,11 +115,11 @@ export default {
             });
         },
         eliminar() {
-            axios.delete('/api/proyectos/' + this.proyecto.PK_id).then(() => {
+            axios.delete('/api/proyectos/' + this.proyecto.PK_id ,{ params: { text: this.text  }  }).then(() => {
                 this.destroyModal = false
                 toastr.info('Haz eliminado del proyecto ' + this.proyecto.nombre);
                 this.$emit('removed', this.proyecto)
-            });
+            }).catch(err => this.formErrors = err.response.data);
         }
     },
     computed: {
