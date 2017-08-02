@@ -4,6 +4,8 @@ import Modal from "./components/utils/modal";
 import CategoryMix from './components/mixins/category-mix';
 import { Popover } from "uiv";
 import TextInput from "./components/inputs/text-input";
+import NumberInput from "./components/inputs/number-input";
+import TextareaInput from "./components/inputs/textarea-input";
 
 const PORCENTAJES = ['modelado', 'plataforma', 'base_datos', 'codificacion'];
 
@@ -12,7 +14,7 @@ const PORCENTAJES = ['modelado', 'plataforma', 'base_datos', 'codificacion'];
 let vm = new Vue({
     el: '#app',
     mixins: [CategoryMix],
-    components: { Modal, Popover, TextInput },
+    components: { Modal, Popover, TextInput, NumberInput, TextareaInput },
     data() {
         return {
             categorias: [],
@@ -32,7 +34,7 @@ let vm = new Vue({
             });
     },
     methods: {
-        
+
         store() {
             if (!this.sumaPorcentajes()) return;
             axios.post('/api/categorias', this.newCategoria)
