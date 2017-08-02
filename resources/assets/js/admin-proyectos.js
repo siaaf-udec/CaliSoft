@@ -1,6 +1,6 @@
 import "./bootstrap";
 import Vue from "vue";
-import proyectoTabla from "./components/proyecto-tabla";
+import proyectoTabla from "./components/proyecto/proyecto-tabla";
 import BsSelect from "./components/bs/bs-select";
 import Paginator from './components/classes/paginator';
 import { Pagination } from 'uiv'

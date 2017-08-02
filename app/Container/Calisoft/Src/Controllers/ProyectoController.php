@@ -9,6 +9,7 @@ use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
 use App\Container\Calisoft\Src\Requests\ProyectoUpdateRequest;
 use App\Container\Calisoft\Src\Requests\ProyectoDenegadoRequest;
 
+use App\Container\Calisoft\Src\Requests\ProyectoAsignarRequest;
 use App\Container\Calisoft\Src\User;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Http\Controllers\Controller;
@@ -21,8 +22,8 @@ class ProyectoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:student')->except('index', 'aceptar', 'destroy');
-        $this->middleware('role:admin')->only('index', 'aceptar');
+        $this->middleware('role:student')->except('index', 'aceptar', 'destroy', 'asignar');
+        $this->middleware('role:admin')->only('index', 'aceptar', 'asignar');
         //$this->middleware('can:update,proyecto')->only('update');
     }
 
@@ -93,13 +94,12 @@ class ProyectoController extends Controller
         return $proyecto;
     }
 
-    public function invitados(Proyecto $proyecto)
-    {
-        return $proyecto->usuarios()->wherePivot('tipo', 'invitado')->get();
-    }
+    public function asignar(ProyectoAsignarRequest $request, Proyecto $proyecto){
 
-    public function integrantes(Proyecto $proyecto)
-    {
-        return $proyecto->usuarios()->wherePivot('tipo', 'integrante')->get();
+        $proyecto->usuarios()->syncWithoutDetaching([ $request->user_id => [ 
+            'tipo' => 'evaluador'
+        ]]);
+
+        return $proyecto->usuarios;
     }
 }

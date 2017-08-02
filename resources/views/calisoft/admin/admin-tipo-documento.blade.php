@@ -96,7 +96,7 @@
                     <button class="btn default" data-dismiss="modal"><i class="fa fa-ban"></i>Cancelar</button>
                 </div>
             </modal>
-            @include('partials.modalHelpTipoDocumento')
+            @include('partials.modal-help-tipo-documento')
         </div>
     @endcomponent
 </div>

@@ -113,7 +113,7 @@
 
 
             <!-- Fin de Modal de edicion -->
-              @include('partials.modalHelpComponentes')
+              @include('partials.modal-help-componentes')
           </div>
             @endcomponent
     </div>

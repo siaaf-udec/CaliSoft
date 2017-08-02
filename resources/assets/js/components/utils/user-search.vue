@@ -22,7 +22,7 @@
 </template>
 
 <script>
-import Paginator from './classes/paginator';
+import Paginator from '../classes/paginator';
 import { Pagination } from 'uiv'
 
 export default {

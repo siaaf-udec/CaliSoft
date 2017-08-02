@@ -86,7 +86,7 @@
         </modal>
     
         <modal v-model="asignedModal" title="Asignar Evaluador" :footer="false">
-            <user-search url="/api/evaluator/search" button-text="Asignar"></user-search>
+            <user-search url="/api/evaluator/search" button-text="Asignar" @selected="asignar"></user-search>
         </modal>
     
     </div>
@@ -94,7 +94,7 @@
 
 <script>
 import { Modal } from 'uiv';
-import UserSearch from './user-search.vue'
+import UserSearch from '../utils/user-search.vue'
 
 export default {
     components: { Modal, UserSearch },
@@ -113,6 +113,16 @@ export default {
                 toastr.success('Haz Aceptado la propuesta del proyecto ' + this.proyecto.nombre);
                 this.$emit('updated', Object.assign({}, this.proyecto, res.data));
             });
+        },
+        asignar(user){
+            axios.put(`/api/proyectos/${this.proyecto.PK_id}/asignar`, { user_id: user.PK_id })
+                .then(res => {
+                    this.$emit('updated', Object.assign({}, this.proyecto, {
+                        usuarios: res.data
+                    }));
+                    toastr.info(`el evaluador ${user.name} ha sido asignado a ${this.proyecto.nombre}`);
+                    this.asignedModal = false
+                })
         },
         eliminar() {
             axios.delete('/api/proyectos/' + this.proyecto.PK_id ,{ params: { text: this.text  }  }).then(() => {
