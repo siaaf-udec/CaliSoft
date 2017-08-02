@@ -65,43 +65,47 @@
 
             <!--Inicio Modal crear usuarios-->
             <modal id="crear-usuario" title="Crear Usuario">
-                <form @submit.prevent="store()">
-                    <div class="form-group form-md-line-input">
-                        <div class="input-icon">
-                            <i class="fa fa-user"></i>
-                            <input type="text" name="name" required="" id="name" placeholder="Nombre" maxlength="50" class="form-control" autocomplete='off' v-model="newUser.name"/>
-                        </div>
-                    </div>
-                    <div class="form-group form-md-line-input" :class="{'has-error': errors.email }">
-                        <div class="input-icon">
-                            <i class="fa fa-envelope-o"></i>
-                            <input type="email" name="email" id="name" required="" placeholder="Correo" class="form-control" autocomplete='off' v-model="newUser.email">
-                            <label class="help-block" v-if="errors.email">@{{errors.email.join(' ')}}</label>
-                        </div>
-                    </div>
-                    <div class="form-group form-md-line-input" :class="{'has-error': errors.password }" >
-                        <div class="input-icon">
-                            <i class="fa fa-key"></i>
-                            <input type="password" name="pass" id="pass" placeholder="Contraseña" class="form-control" v-model="newUser.password" required>
-                            <label v-if="errors.password">@{{errors.password.join(' ')}}</label>
-                        </div>
-                    </div>
-                    <div class="form-group form-md-line-input">
-                        <div class="input-icon">
-                            <i class="fa fa-key"></i>
-                            <input type="password" name="pass" id="pass" required="" placeholder="Confirmar Contraseña" class="form-control" v-model="newUser.password_confirmation">
-                        </div>
-                    </div>
-                    <div class="form-group form-md-line-input">
-                        <div class="input-icon">
-                            <i class="fa fa-users"></i>
-                            <label for="role">Rol</label>
-                            <select id="role" class="form-control" v-model="newUser.role" required>
-                                <option value="admin">Administrador</option>
-                                <option value="evaluator">Evaluador</option>
-                            </select>
-                        </div>
-                    </div>
+                <form @submit.prevent="store()" id="user-create">
+                  <div class="form-group form-md-line-input">
+                              <div class="input-icon">
+                                <input type="text" name="name" required="" id="name" placeholder="Nombre" class="form-control" v-model="newUser.name"/>
+                                <label for="name" class="control-label"></label>
+                                <i class="fa fa-user"></i>
+                              </div>
+                            </div>
+                            <div class="form-group form-md-line-input" :class="{'has-error': errors.email }">
+                              <div class="input-icon">
+                                <input type="email"  name="email"  required="" id="name" placeholder="Correo" class="form-control" v-model="newUser.email"/>
+                                <label for="email" class="control-label"></label>
+                                <label class="help-block" v-if="errors.email">@{{errors.email.join(' ')}}</label>
+                                <i class="fa fa-envelope-o"></i>
+                              </div>
+                            </div>
+                            <div class="form-group form-md-line-input" :class="{'has-error': errors.password }">
+                              <div class="input-icon">
+                                <input type="password"  name="pass" required="" id="pass" placeholder="Contraseña" class="form-control" v-model="newUser.password"/>
+                                <label for="password" class="control-label"></label>
+                                <label v-if="errors.password">@{{errors.password.join(' ')}}</label>
+                                <i class="fa fa-key"></i>
+                              </div>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                              <div class="input-icon">
+                                <input type="password"  name="pass" required="" id="pass" placeholder="Confirmar Contraseña" class="form-control" v-model="newUser.password_confirmation"/>
+                                <label for="confirm-password" class="control-label"></label>
+                                <i class="fa fa-key"></i>
+                              </div>
+                            </div>
+                            <div class="form-group form-md-line-input">
+                              <div class="input-icon">
+                                <select id="role" class="form-control" v-model="newUser.role" required="">
+                                          <option value="admin">Administrador</option>
+                                          <option value="evaluator">Evaluador</option>
+                                      </select>
+                                <label for="role" class="control-label"></label>
+                                <i class="fa fa-users"></i>
+                              </div>
+                            </div>
                     <div class="form-group modal-footer">
                       <button type="submit" class="btn green-jungle">
                           <i class="fa fa-plus"></i>Registrar
@@ -151,7 +155,5 @@
   <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
   <script src="/js/usuarios.js"></script>
 
-  <script>
-    $("#registro").validate();
-  </script>
+
 @endpush
