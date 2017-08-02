@@ -52,7 +52,7 @@
                 </form>
             </div>
         @endcomponent
-        @include('partials.modal-help-registro-proyecto')
+        @include('partials.modal-help-registro-proyecto', compact('categorias'))
     </div>
 
 @endsection

@@ -17,24 +17,12 @@
             <div id="collapse2" class="panel-collapse collapse">
               <div class="panel-body">
                 <dl>
-                  <dt>
-                    <li>Sistema de Información</li>
-                  </dt>
-                  <dd>La categoria de sistema de información abarca proyectos
-                     creados a web y aplicativos de escritorio
-                  </dd>
-                  <dt>
-                    <li>Sistema de Embebidos</li>
-                  </dt>
-                  <dd>La categotia de sistema de embebidos abarca proyectos creados
-                      a diversas formas de ayudar.
-                  </dd>
-                  <dt>
-                    <li>Sistemas Artifcial</li>
-                  </dt>
-                  <dd>La categotia de sistemas artificial abarca proyectos de software que
-                    manipulen sistemas inteligentes.
-                  </dd>
+                  @foreach ($categorias as $categoria)
+                    <dt>
+                      <li>{{$categoria->nombre}}</li>
+                    </dt>
+                    <dd>{{$categoria->descripcion}}</dd>
+                  @endforeach
                 </dl>
               </div>
             </div>
