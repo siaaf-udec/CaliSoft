@@ -74,16 +74,12 @@
                   <email-input name="email" :error="errors.email"  v-model="newUser.email" label="Correo" icon="fa fa-envelope-o" required></email-input>
                   <password-input name="password" :error="errors.password"  v-model="newUser.password" label="Contraseña" icon="fa fa-key" required></password-input>
                   <password-input name="password"  v-model="newUser.password_confirmation" label="Confirmar Contraseña" icon="fa fa-key" required></password-input>
-                  <div class="form-group form-md-line-input">
-                    <div class="input-icon">
-                      <select id="role" class="form-control" v-model="newUser.role" required="">
-                                <option value="admin">Administrador</option>
-                                <option value="evaluator">Evaluador</option>
-                            </select>
-                      <label for="role" class="control-label"></label>
-                      <i class="fa fa-users"></i>
-                    </div>
-                  </div>
+                  
+                  <select-input v-model="newUser.role" name="role" icon="fa fa-users" label="Role" required>
+                    <option value="admin">Administrador</option>
+                    <option value="evaluator">Evaluador</option>
+                  </select-input>
+                  
                     <div class="form-group modal-footer">
                       <button type="submit" class="btn green-jungle">
                           <i class="fa fa-plus"></i>Registrar

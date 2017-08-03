@@ -45,6 +45,7 @@ let vm = new Vue({
         },
         estado(state){
             this.search = "";
+            this.paginator.page = 1;
             this.paginator.data = this.proyectos.filter(p => {
                 return this.estado ? (this.estado == p.state) : true;                
             });

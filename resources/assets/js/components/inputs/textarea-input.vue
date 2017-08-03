@@ -4,7 +4,7 @@
         </textarea>
         <label :for="name">{{label}}</label>
         <span v-if="error" class=" help-block">
-                <strong>{{error}}</strong>
+                <strong>{{error[0]}}</strong>
         </span>
    </div>
 </template>

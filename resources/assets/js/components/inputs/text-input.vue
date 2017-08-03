@@ -4,7 +4,7 @@
             <input type="text" :name="name" class="form-control" v-model="local" :required="required" />
             <label :for="name" class="control-label">{{label}}</label>
             <span v-if="error" class=" help-block">
-                <strong>{{error}}</strong>
+                <strong>{{error[0]}}</strong>
             </span>
             <i :class="icon"></i>
         </div>

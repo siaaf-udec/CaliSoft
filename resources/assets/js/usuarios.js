@@ -4,20 +4,23 @@ import Modal from "./components/utils/modal";
 import TextInput from "./components/inputs/text-input";
 import EmailInput from "./components/inputs/email-input";
 import PasswordInput from "./components/inputs/password-input";
+import SelectInput from "./components/inputs/select-input";
 import BsSelect from "./components/bs/bs-select"
 import { Pagination } from "uiv";
 
 new Vue({
     el: '#app',
-    components: { Modal, BsSelect, Pagination,TextInput,EmailInput,PasswordInput },
-    data: {
-        newUser: {},
-        usuarios: [],
-        errors: {},
-        deleteUser: {},
-        paginacion: {},
-        page: 1,
-        role: ""
+    components: { Modal, BsSelect, Pagination, TextInput, EmailInput, PasswordInput, SelectInput },
+    data() {
+        return {
+            newUser: this.schema(),
+            usuarios: [],
+            errors: {},
+            deleteUser: {},
+            paginacion: {},
+            page: 1,
+            role: ""
+        }
     },
     created() {
         this.refresh();
@@ -27,7 +30,8 @@ new Vue({
             axios.post('/api/usuarios', this.newUser)
                 .then(response => {
                     this.usuarios.push(response.data);
-                    this.newUser = {};
+                    this.newUser = this.schema();
+                    this.errors = {};
                     $("#crear-usuario").modal("hide");
                     toastr.success('Usuario Creado Correctamente');
                 })
@@ -54,6 +58,9 @@ new Vue({
                 this.usuarios = this.paginacion.data;
             });
         },
+        schema() {
+            return { name: "", email: "", password: "", password_confirmation: "", role: "" }
+        }
     },
 
     watch: {
