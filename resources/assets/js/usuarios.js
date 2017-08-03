@@ -1,12 +1,15 @@
 import "./bootstrap";
 import Vue from "vue";
 import Modal from "./components/utils/modal";
+import TextInput from "./components/inputs/text-input";
+import EmailInput from "./components/inputs/email-input";
+import PasswordInput from "./components/inputs/password-input";
 import BsSelect from "./components/bs/bs-select"
 import { Pagination } from "uiv";
 
 new Vue({
     el: '#app',
-    components: { Modal, BsSelect, Pagination },
+    components: { Modal, BsSelect, Pagination,TextInput,EmailInput,PasswordInput },
     data: {
         newUser: {},
         usuarios: [],
@@ -54,7 +57,7 @@ new Vue({
     },
 
     watch: {
-        
+
     }
 
 
