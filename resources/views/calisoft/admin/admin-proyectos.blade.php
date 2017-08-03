@@ -6,15 +6,14 @@
     <div id="app">
 
         <div class="row">
+        
             <div class="col-md-3 col-sm-3 col-xs-12" style="margin-bottom: 2%">
-
                 <div class="input-group">
                     <input type="text" class="form-control" placeholder="Buscar" v-model="search">
                     <span class="input-group-addon">
                     <i class="glyphicon glyphicon-search"></i>
                     </span>
                 </div>
-
             </div>
 
           <div class="form-group col-md-3 col-sm-3 col-xs-12">

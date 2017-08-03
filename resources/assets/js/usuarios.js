@@ -18,7 +18,7 @@ new Vue({
             usuarios: [],
             errors: {},
             deleteUser: {},
-            paginator: new Paginator([],5),
+            paginator: new Paginator(),
             search:""
         }
     },
@@ -59,6 +59,15 @@ new Vue({
             return { name: "", email: "", password: "", password_confirmation: "", role: "" }
         }
     },
+
+    watch: {
+        search(query) {
+            this.paginator.data = this.usuarios.filter(user => {
+                return new RegExp(query, 'ig')
+                    .test(`${user.name} ${user.email} ${user.role}`)
+            })
+        }
+    }
 
 
 

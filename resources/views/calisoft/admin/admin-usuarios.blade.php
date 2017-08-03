@@ -9,16 +9,24 @@
             <!-- Filtro de usuarios -->
             <div class="row">
 
-                <div class="form-group col-md-9 col-xs-12">
-                    <!--<bs-select id="role-filter" title="Rol" v-model="role">
-                        <option value="">Todos</option>
-                        <option value="admin">Administrador</option>
-                        <option value="evaluator">Evaluador</option>
-                        <option value="student">Estudiante</option>
-                    </bs-select>-->
-                </div>
-                <div class="col-md-3 col-sm-3 col-xs-12" style="margin-bottom: 2%">
+                
+                    <div class="col-sm-4 col-xs-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="" class="control-label col-xs-4">Mostrar</label>
+                                <div class="col-xs-4 col-sm-5">
+                                    <select  class="form-control" v-model="paginator.show">
+                                        <option value="5">5</option>
+                                        <option value="10" selected>10</option>
+                                        <option value="15">15</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
 
+                <div class="col-sm-offset-4 col-sm-4 col-xs-12" style="margin-bottom: 2%">
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Buscar" v-model="search">
                         <span class="input-group-addon">
