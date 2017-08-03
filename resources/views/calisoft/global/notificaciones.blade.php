@@ -10,39 +10,24 @@
 
                     <div class="portlet-body">
                                     <div class="mt-element-list">
-                                        <div class="mt-list-head list-news ext-1 font-white bg-yellow-crusta">
-                                            <div class="list-head-title-container">
-                                                <h3 class="list-title">Historial</h3>
-                                            </div>
-                                            <div class="list-count pull-right bg-yellow-saffron">@{{ notificaciones.length }}</div>
-                                        </div>
                                         <div class="mt-list-container list-news ext-2">
                                             <ul>
                                                 <li class="mt-list-item" v-for="notificacion in notificaciones">
 
                                                     <!--Rutas de las diferentes notificaciones-->                                                    
-                                                    <div v-if="notificacion.data.type === 'proyecto-creado'" class="list-icon-container">
-                                                        <a href="/proyecto">
+                                                    <div class="list-icon-container">
+                                                        <a :href="notificacion.data.url">
                                                             <i class="fa fa-angle-right"></i>
                                                         </a>
                                                     </div>
-                                                    <div v-if="notificacion.data.type === 'proyecto-denegado'" class="list-icon-container">
-                                                        
-                                                    </div>
-                                                    <div v-if="notificacion.data.type === 'invitacion-recibida'" class="list-icon-container">
-                                                        <a href="#">
-                                                            <i class="fa fa-angle-right"></i>
-                                                        </a>
-                                                    </div>
+                                                    
                                                     <!--Fin de rutas de las diferentes notificaciones-->
                                                     <!--Imagenes de perfil-->        
                                                     <div class="list-thumb">
-                                                        <a v-if="notificacion.data.foto" href="javascript:;">
-                                                            <img class="img-circle" alt="" src="/img/default.png" />
+                                                        <a href="javascript:;">
+                                                            <img class="img-circle" alt="" src="/img/proyecto-creado.png" />
                                                         </a>
-                                                        <a v-else href="javascript:;">
-                                                            <img class="img-circle" alt="" src="/img/default.png" />
-                                                        </a>
+                                            
                                                     </div>
                                                     <!--Fin imagenes de perfil-->    
                                                     <!--Texto según notificación-->    

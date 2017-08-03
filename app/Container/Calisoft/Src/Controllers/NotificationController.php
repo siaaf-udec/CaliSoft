@@ -24,6 +24,6 @@ class NotificationController extends Controller
     }
     public function vista()
     {
-        return view('calisoft.global.notificacionesAll');
+        return view('calisoft.global.notificaciones');
     }
 }

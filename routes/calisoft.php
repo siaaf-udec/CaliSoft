@@ -8,4 +8,4 @@ Route::prefix('/perfil')->group(function (){
     Route::post('foto', 'PerfilController@fotoUp')->name('perfil.foto');
 });
 
-Route::get('/notificaciones', 'NotificationController@vista')->name('notificacionesVista');
+Route::get('/notificaciones', 'NotificationController@vista')->name('notificaciones');
