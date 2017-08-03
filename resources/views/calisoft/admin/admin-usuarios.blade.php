@@ -9,15 +9,15 @@
             <!-- Filtro de usuarios -->
             <div class="row">
 
-                <div class="form-group col-md-4 col-xs-12">
-                    <bs-select id="role-filter" title="Rol" v-model="role">
+                <div class="form-group col-md-9 col-xs-12">
+                    <!--<bs-select id="role-filter" title="Rol" v-model="role">
                         <option value="">Todos</option>
                         <option value="admin">Administrador</option>
                         <option value="evaluator">Evaluador</option>
                         <option value="student">Estudiante</option>
-                    </bs-select>
+                    </bs-select>-->
                 </div>
-              <!--  <div class="col-md-3 col-sm-3 col-xs-12" style="margin-bottom: 2%">
+                <div class="col-md-3 col-sm-3 col-xs-12" style="margin-bottom: 2%">
 
                     <div class="input-group">
                         <input type="text" class="form-control" placeholder="Buscar" v-model="search">
@@ -26,7 +26,7 @@
                         </span>
                     </div>
 
-                </div>-->
+                </div>
             </div>
             <!-- Table -->
             <div class="table-responsive">
@@ -38,7 +38,7 @@
                         <th class="text-center">Operacion</th>
                     </thead>
                     <tbody>
-                        <tr v-for="user in usuarios" class="text-center">
+                        <tr v-for="user in paginator.items" class="text-center">
                             <td v-text="user.name"></td>
                             <td v-text="user.email"></td>
                             <td v-text="user.role"></td>
@@ -62,8 +62,8 @@
                     </button>
                 </div>
                 <!-- Pagination Buttons-->
-                <div class="col-sm-6 text-right" v-show="paginacion.last_page > 1">
-                    <pagination v-model="page" :total-page="paginacion.last_page" @change="refresh" boundary-links></pagination>
+                <div class="col-sm-6 text-right" v-show="paginator.lastPage > 1">
+                    <pagination v-model="paginator.page" :total-page="paginator.lastPage" boundary-links></pagination>
                 </div>
                 <!-- End Pagination Buttons-->
             </div>
@@ -74,12 +74,12 @@
                   <email-input name="email" :error="errors.email"  v-model="newUser.email" label="Correo" icon="fa fa-envelope-o" required></email-input>
                   <password-input name="password" :error="errors.password"  v-model="newUser.password" label="Contraseña" icon="fa fa-key" required></password-input>
                   <password-input name="password"  v-model="newUser.password_confirmation" label="Confirmar Contraseña" icon="fa fa-key" required></password-input>
-                  
+
                   <select-input v-model="newUser.role" name="role" icon="fa fa-users" label="Role" required>
                     <option value="admin">Administrador</option>
                     <option value="evaluator">Evaluador</option>
                   </select-input>
-                  
+
                     <div class="form-group modal-footer">
                       <button type="submit" class="btn green-jungle">
                           <i class="fa fa-plus"></i>Registrar

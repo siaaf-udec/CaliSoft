@@ -10,6 +10,7 @@ use App\Container\Calisoft\Src\Requests\UserIndexRequest;
 use App\Container\Calisoft\Src\Requests\UserStoreRequest;
 use App\Container\Calisoft\Src\Requests\UserSearchEvaluatorsRequest;
 use App\Container\Calisoft\Src\Requests\UserSearchFreeStudentsRequest;
+use App\Container\Calisoft\Src\Notifications\UsuarioCreado;
 
 class UserController extends Controller
 {
@@ -28,12 +29,7 @@ class UserController extends Controller
      */
     public function index(UserIndexRequest $request)
     {
-        $role = $request->role;
-
-        //Filtra por role si existe el parametro role, si no, retorna todo
-        return User::when($role, function ($query) use ($role) {
-            return $query->where('role', $role);
-        })->paginate(5);
+      return User::all();
     }
 
     /**
@@ -44,12 +40,15 @@ class UserController extends Controller
      */
     public function store(UserStoreRequest $request)
     {
-        return User::create([
+
+        $user=User::create([
           'name' => $request['name'],
           'email' => $request['email'],
           'role' => $request['role'],
           'password' => bcrypt($request['password']),
         ]);
+        $user->notify(new UsuarioCreado($request->password));
+        return $user;
     }
 
     /**
