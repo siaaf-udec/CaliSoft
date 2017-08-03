@@ -7,3 +7,5 @@ Route::prefix('/perfil')->group(function (){
     Route::post('password', 'PerfilController@updatePassword')->name('perfil.password');
     Route::post('foto', 'PerfilController@fotoUp')->name('perfil.foto');
 });
+
+Route::get('/notificaciones', 'NotificationController@vista')->name('notificacionesVista');

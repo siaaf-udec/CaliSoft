@@ -5,7 +5,7 @@
         </span>
 
         <span>
-            Se le elimino el proyecto: <strong>{{ notificacion.data.proyecto }}</strong>. <br>Presione click para ver la razón.
+            Se eliminó el proyecto: <strong>{{ notificacion.data.proyecto }}</strong>. <br>Presione click para ver la razón.
         </span>
     </span>
 </template>

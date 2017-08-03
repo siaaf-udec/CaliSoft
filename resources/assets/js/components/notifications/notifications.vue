@@ -8,12 +8,12 @@
         <ul class="dropdown-menu">
             <li class="external">
                 <h3>notificaciones</h3>
-                <a href="#">Ver todos </a>
+                <a href="/notificaciones">Ver todos </a>
             </li>
             <li>
                 <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
                     <li v-for="notificacion in notificaciones" :key="notificacion.id">
-                        <a href="javascript:;" >
+                        <a href="/notificaciones" >
                             <span class="time">
                                 {{ new Date(notificacion.created_at || null).toLocaleDateString() }}
                             </span>

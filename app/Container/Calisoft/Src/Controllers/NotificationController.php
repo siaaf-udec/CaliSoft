@@ -22,4 +22,8 @@ class NotificationController extends Controller
     function delete($id){
 
     }
+    public function vista()
+    {
+        return view('calisoft.global.notificacionesAll');
+    }
 }

@@ -1,5 +1,6 @@
 {
     "/js/proyectos.js": "/js/proyectos.js",
+    "/js/categorias.js": "/js/categorias.js",
     "/js/admin-proyectos.js": "/js/admin-proyectos.js",
     "/js/usuarios.js": "/js/usuarios.js",
     "/js/categorias-show.js": "/js/categorias-show.js",
@@ -7,9 +8,8 @@
     "/js/documentos.js": "/js/documentos.js",
     "/js/componentes.js": "/js/componentes.js",
     "/js/semilleros.js": "/js/semilleros.js",
-    "/js/categorias.js": "/js/categorias.js",
-    "/js/peticiones.js": "/js/peticiones.js",
     "/js/bootstrap.js": "/js/bootstrap.js",
     "/css/app.css": "/css/app.css",
+    "/js/notificaciones.js": "/js/notificaciones.js",
     "/js/invitaciones.js": "/js/invitaciones.js"
 }
