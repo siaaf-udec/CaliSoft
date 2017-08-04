@@ -23,12 +23,22 @@
                                                     
                                                     <!--Fin de rutas de las diferentes notificaciones-->
                                                     <!--Imagenes de perfil-->        
-                                                    <div class="list-thumb">
+                                                    <div class="list-thumb" v-if="notificacion.data.type === 'proyecto-creado'">
                                                         <a href="javascript:;">
                                                             <img class="img-circle" alt="" src="/img/proyecto-creado.png" />
                                                         </a>
-                                            
                                                     </div>
+                                                    <div class="list-thumb" v-if="notificacion.data.type === 'proyecto-denegado'">
+                                                        <a href="javascript:;">
+                                                            <img class="img-circle" alt="" src="/img/proyecto-denegado.png" />
+                                                        </a>
+                                                    </div>
+                                                    <div class="list-thumb" v-if="notificacion.data.type === 'invitacion-recibida'">
+                                                        <a href="javascript:;">
+                                                            <img class="img-circle" alt="" src="/img/invitacion-recibida.png" />
+                                                        </a>
+                                                    </div>
+                                                    
                                                     <!--Fin imagenes de perfil-->    
                                                     <!--Texto según notificación-->    
                                                     <div class="list-datetime bold uppercase font-yellow-casablanca" v-text="notificacion.created_at"></div>

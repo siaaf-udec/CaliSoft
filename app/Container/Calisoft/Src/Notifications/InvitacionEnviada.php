@@ -26,6 +26,11 @@ class InvitacionEnviada extends Notification implements ShouldQueue
     {
         $this->from = $from;
         $this->proyecto = $proyecto;
+        
+        if($this->from->foto == null){
+            $this->from->foto = '/img/default.png';
+        }
+
     }
 
     /**
@@ -69,6 +74,7 @@ class InvitacionEnviada extends Notification implements ShouldQueue
             'url' => '/invitaciones',
             'alert' => 'Has recibido una invitacion!',
             'proyecto' => $this->proyecto->nombre,
+            'foto' => $this->from->foto,
             'user' => $this->from->name
         ];
     }

@@ -33,7 +33,7 @@
                 <td v-text="documento.url"></td>
                 <td v-text="documento.tipo_documento.nombre"></td>
                 <td class="text-center">
-                    <div class="btn-group">
+                    
 
                     <button class="editar-categoria btn btn-warning btn-xs" @click.prevent="openEditModal(documento)">
                     <span class="glyphicon glyphicon-edit"></span>
@@ -54,7 +54,7 @@
                     <button class="editar-modal btn btn-danger btn-xs" @click.prevent="destroy(documento)">
                     <span class="glyphicon glyphicon-trash"></span>
                     </button>
-                    </div>
+                    
 
                 </td>
             </tr>
@@ -109,7 +109,7 @@
                 <label class="control-label">Tipo de documento</label>
 
                 <div class="row">
-                    <div class="form-group col-md-4 col-xs-12">
+                    <div class="form-group col-md-8 col-xs-12">
                         <bs-select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="newDocumentos.FK_TipoDocumentoId" required>
                             <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
                             </option>

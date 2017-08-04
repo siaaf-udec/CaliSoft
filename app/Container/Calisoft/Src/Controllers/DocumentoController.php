@@ -100,11 +100,11 @@ class DocumentoController extends Controller
 
     public function getfile($file)
     {
-        return response()->file("../storage/uploads/documentos/" . $file);
+        return response()->file("storage/uploads/documentos/" . $file);
     }
 
     public function download($file)
     {
-        return response()->download("../storage/uploads/documentos/" . $file);
+        return response()->download("storage/uploads/documentos/" . $file);
     }
 }
