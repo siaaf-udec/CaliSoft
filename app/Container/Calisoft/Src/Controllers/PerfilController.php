@@ -7,6 +7,7 @@ use App\Container\Calisoft\Src\Requests\PerfilPasswordRequest;
 use App\Container\Calisoft\Src\Requests\PerfilUpdateRequest;
 use App\Container\Calisoft\Src\User;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
 
 
 class PerfilController extends Controller
