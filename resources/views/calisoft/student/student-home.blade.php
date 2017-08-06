@@ -14,13 +14,14 @@
     @endcomponent
 </div>
 
+@can('create', 'App\Proyecto')
+    @push('functions')
+        <script src="/js/bootstrap.js"></script>
+    @endpush
+@endcan
+
 @cannot('create', 'App\Proyecto')
   @push('functions')
-    <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script src="/js/proyectos.js"></script>
-  @endpush
-
-  @push('styles')
-    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css">
   @endpush
 @endcannot

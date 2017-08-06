@@ -1,7 +1,7 @@
 <template>
     <li class="dropdown dropdown-extended dropdown-notification">
         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-            data-close-others="true" @click="count = 0">
+            data-close-others="true" @click="mark()">
             <i class="icon-bell"></i>
             <span class="badge badge-default" v-show="count > 0">{{ count }}</span>
         </a>
@@ -13,7 +13,7 @@
             <li>
                 <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
                     <li v-for="notificacion in notificaciones" :key="notificacion.id">
-                        <a href="/notificaciones" >
+                        <a :href="notificacion.data.url" >
                             <span class="time">
                                 {{ new Date(notificacion.created_at || null).toLocaleDateString() }}
                             </span>
@@ -48,6 +48,12 @@ export default {
             this.count += 1;
             toastr.info(notificacion.data.alert);
         });
+    },
+    methods: {
+        mark(){
+            if(!this.count) return;
+            axios.post('/api/notificaciones').then(() => this.count = 0);
+        }
     }
 }
 </script>

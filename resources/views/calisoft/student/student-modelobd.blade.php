@@ -6,62 +6,42 @@
 	<!--[if IE 7]><link rel="stylesheet" type="text/css" href="styles/ie7.css" /><![endif]-->
 	<link rel="stylesheet" href="/modulobd/styles/print.css" type="text/css" media="print" />
 
-  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js"></script>
-
-	<script src="/modulobd/js/oz.js"></script>
-	<script src="/modulobd/js/config.js"></script>
-	<script src="/modulobd/js/globals.js"></script>
-	<script src="/modulobd/js/visual.js"></script>
-	<script src="/modulobd/js/row.js"></script>
-	<script src="/modulobd/js/table.js"></script>
-	<script src="/modulobd/js/relation.js"></script>
-	<script src="/modulobd/js/key.js"></script>
-	<script src="/modulobd/js/rubberband.js"></script>
-	<script src="/modulobd/js/map.js"></script>
-	<script src="/modulobd/js/toggle.js"></script>
-	<script src="/modulobd/js/io.js"></script>
-	<script src="/modulobd/js/tablemanager.js"></script>
-	<script src="/modulobd/js/rowmanager.js"></script>
-	<script src="/modulobd/js/keymanager.js"></script>
-	<script src="/modulobd/js/window.js"></script>
-	<script src="/modulobd/js/options.js"></script>
-	<script src="/modulobd/js/wwwsqldesigner.js"></script>
 @endpush
 
 @section('content')
   <div class="col-md-12">
-<div class="container">
-  <div id="area"></div>
+    <div class="container">
+      <div id="area"></div>
 
-<div id="controls">
-  <div id="bar">
-    <div id="toggle"></div>
-    <input type="button" id="saveload" />
+        <div id="controls">
+          <div id="bar">
+            <div id="toggle"></div>
+            <input type="button" id="saveload" />
 
-    <hr/>
+            <hr/>
 
-    <input type="button" id="addtable" />
-    <input type="button" id="edittable" />
-    <input type="button" id="tablekeys" />
-    <input type="button" id="removetable" />
-    <input type="button" id="aligntables" />
-    <input type="button" id="cleartables" />
+            <input type="button" id="addtable" />
+            <input type="button" id="edittable" />
+            <input type="button" id="tablekeys" />
+            <input type="button" id="removetable" />
+            <input type="button" id="aligntables" />
+            <input type="button" id="cleartables" />
 
-    <hr/>
+            <hr/>
 
-    <input type="button" id="addrow" />
-    <input type="button" id="editrow" />
-    <input type="button" id="uprow" class="small" /><input type="button" id="downrow" class="small"/>
-    <input type="button" id="foreigncreate" />
-    <input type="button" id="foreignconnect" />
-    <input type="button" id="foreigndisconnect" />
-    <input type="button" id="removerow" />
+            <input type="button" id="addrow" />
+            <input type="button" id="editrow" />
+            <input type="button" id="uprow" class="small" /><input type="button" id="downrow" class="small"/>
+            <input type="button" id="foreigncreate" />
+            <input type="button" id="foreignconnect" />
+            <input type="button" id="foreigndisconnect" />
+            <input type="button" id="removerow" />
 
-    <hr/>
+            <hr/>
 
-    <input type="button" id="options" />
-    <a href="https://github.com/ondras/wwwsqldesigner/wiki" target="_blank"><input type="button" id="docs" value="" /></a>
-  </div>
+            <input type="button" id="options" />
+            <a href="https://github.com/ondras/wwwsqldesigner/wiki" target="_blank"><input type="button" id="docs" value="" /></a>
+          </div>
 
   <div id="rubberband"></div>
 
@@ -274,7 +254,27 @@
 @endsection
 
 @push('functions')
+  <script src="/js/bootstrap.js"></script>
+  <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/dropbox.js/0.10.2/dropbox.min.js"></script>
+	<script src="/modulobd/js/oz.js"></script>
+	<script src="/modulobd/js/config.js"></script>
+	<script src="/modulobd/js/globals.js"></script>
+	<script src="/modulobd/js/visual.js"></script>
+	<script src="/modulobd/js/row.js"></script>
+	<script src="/modulobd/js/table.js"></script>
+	<script src="/modulobd/js/relation.js"></script>
+	<script src="/modulobd/js/key.js"></script>
+	<script src="/modulobd/js/rubberband.js"></script>
+	<script src="/modulobd/js/map.js"></script>
+	<script src="/modulobd/js/toggle.js"></script>
+	<script src="/modulobd/js/io.js"></script>
+	<script src="/modulobd/js/tablemanager.js"></script>
+	<script src="/modulobd/js/rowmanager.js"></script>
+	<script src="/modulobd/js/keymanager.js"></script>
+	<script src="/modulobd/js/window.js"></script>
+	<script src="/modulobd/js/options.js"></script>
+	<script src="/modulobd/js/wwwsqldesigner.js"></script>
   <script type="text/javascript">
-  		var d = new SQL.Designer();
-  	</script>
+    var d = new SQL.Designer();
+  </script>
 @endpush

@@ -63,4 +63,5 @@
 
 @push('functions')
     <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
 @endpush

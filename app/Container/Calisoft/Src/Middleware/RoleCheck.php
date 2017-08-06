@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src\Middleware;
 
 use Closure;
@@ -15,7 +14,11 @@ class RoleCheck
      */
     public function handle($request, Closure $next, $role)
     {
-        if($request->user()->role != $role) return abort(403);
+        if ($request->user()->role != $role) {
+            return $request->expectsJson()  
+                ? response()->json(['error' => 'Unauthorized'], 403)
+                : abort(403);
+        }
 
         $response = $next($request);
         return $response->header("Cache-Control", "no-cache, no-store, must-revalidate");

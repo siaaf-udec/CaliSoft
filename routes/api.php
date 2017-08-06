@@ -12,7 +12,7 @@
  */
 
 Route::resource('notificaciones', 'NotificationController', [
-    'only' => ['index', 'destroy', 'update']
+    'only' => ['index', 'store']
 ]);
 
 

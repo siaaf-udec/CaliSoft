@@ -199,7 +199,7 @@
     <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script>
 
-    window.proyectId =  {{$co->pivot->FK_ProyectoId}} ;
+    window.proyectId =  {{ $co->pivot->FK_ProyectoId }} ;
     </script>
 
     <script src="/js/documentos.js"></script>

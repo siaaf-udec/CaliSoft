@@ -44,7 +44,7 @@ new Vue({
             }).catch(error => this.formErrorsUpdate = error.response.data);
         },
         destroy(documento) {
-            axios.delete('../api/documentacion/' + documento.PK_id).then(() => {
+            axios.delete('/api/documentacion/' + documento.PK_id).then(() => {
                 this.documentos = this.documentos.filter(value => value != documento);
                 toastr.info('Documento eliminado correctamente');
             });

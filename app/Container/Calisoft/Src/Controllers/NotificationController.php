@@ -4,6 +4,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Carbon\Carbon;
 
 class NotificationController extends Controller
 {
@@ -15,13 +16,13 @@ class NotificationController extends Controller
         return auth()->user()->notifications;
     }
 
-    function update($id){
-
+    function store(){
+        auth()->user()->unreadNotifications()->update([
+            'read_at' => Carbon::now()
+        ]);
     }
 
-    function delete($id){
-
-    }
+    
     public function vista()
     {
         return view('calisoft.global.notificaciones');

@@ -8,7 +8,7 @@
             <p class="text-center" v-if="accepted.nombre">
                 Haz aceptado la invitacion del proyecto
                 <strong>@{{accepted.nombre}}</strong><br>
-                Ya puedes ver el proyecto <a href="{{ route('student') }}">Aqui.</a>
+                Ya puedes ver el proyecto <a href="{{ route('home') }}">Aqui.</a>
             </p>
 
             <ul class="list-group col-xs-10 col-xs-offset-1" v-else>
