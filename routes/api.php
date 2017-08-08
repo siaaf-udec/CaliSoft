@@ -43,7 +43,7 @@ Route::resource('tdocumentos', 'TiposDocumentoController', [
 Route::get('tdocumentos/{tdocumento}/componentes', 'TiposDocumentoController@getComponents')
     ->name('tdocumentos.componentes');
 
-Route::get('/user/project', 'UserController@proyecto');
+Route::get('/user/proyectos', 'UserController@proyectos');
 
 Route::prefix('student')->group(function () {
     Route::get('search', 'UserController@searchFreeStudents');

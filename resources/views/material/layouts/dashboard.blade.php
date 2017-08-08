@@ -8,7 +8,15 @@
     <meta content="width=device-width, initial-scale=1" name="viewport"/>
     <meta content="{{ config( 'app.description' ) }}" name="description"/>
     <meta content="{{ config( 'app.author', 'Siaaf' ) }}" name="author"/>
+
     <meta content="{{ csrf_token() }}" name="csrf-token" />
+
+    {{--  Pusher Config   --}}
+    <meta name="pusher-key" content="{{ config('broadcasting.connections.pusher.key') }}">
+    <meta name="pusher-cluster" content="{{ config('broadcasting.connections.pusher.options.cluster') }}">
+    <meta name="user-id" content="{{ auth()->id() }}">
+    
+    
     @include('material.partials.head')
 
     {{-- BEGIN THEME LAYOUT STYLES --}}

@@ -8,19 +8,15 @@
 @endphp
 
 @section('links')
-  @if ($role == 'admin')
+  
 
-    @include('calisoft.admin.admin-dash')
+    @includeWhen($role == 'admin', 'calisoft.admin.admin-dash') 
 
-  @elseif ($role == 'student')
+    @includeWhen($role == 'student', 'calisoft.student.student-dash')
 
-    @include('calisoft.student.student-dash')
+    @includeWhen($role == 'evaluator', 'calisoft.evaluator.evaluator-dash')
 
-  @else
-
-    @include('calisoft.evaluator.evaluator-dash')
-
-  @endif
+  
 @endsection
 
 @push('styles')
@@ -30,11 +26,8 @@
 @push('plugins')
     <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script>
-        window.pusherKey = "{{ config('broadcasting.connections.pusher.key') }}";
-        window.userId = "{{ auth()->id() }}";
         Object.assign(toastr.options, {
-            positionClass: "toast-bottom-right",
-            timeOut: 10000,
+            positionClass: "toast-bottom-right"
         })
     </script>
 @endpush

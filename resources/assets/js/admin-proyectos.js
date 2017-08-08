@@ -25,7 +25,7 @@ let vm = new Vue({
     methods: {
         update(proyecto){
             this.seleccion = proyecto;
-            this.proyectos = this.proyectos.map(pro => {
+            this.proyectos = this.paginator.data = this.proyectos.map(pro => {
                 return pro.PK_id == proyecto.PK_id ? proyecto : pro;
             });
         },

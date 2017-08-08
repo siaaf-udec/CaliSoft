@@ -12,11 +12,19 @@
                     </tr>
                     <tr>
                         <th>Integrantes:</th>
-                        <td>{{integrantes.join(", ")}}</td>
+                        <td>
+                            <span class="badge badge-info" v-for="integrante in integrantes" :key="integrante" style="margin-right: 1%">
+                                {{ integrante }}
+                            </span>
+                        </td>
                     </tr>
                     <tr v-if="evaluadores.length">
                         <th>Evaluadores:</th>
-                        <td>{{evaluadores.join(", ")}}</td>
+                        <td>
+                            <span class="badge badge-info" v-for="evaluador in evaluadores" :key="evaluador" style="margin-right: 1%">
+                                {{ evaluador }} <a href="" class="fa fa-close text-danger"></a>
+                            </span>
+                        </td>
                     </tr>
                     <tr>
                         <th>Estado:</th>
@@ -42,15 +50,15 @@
             </table>
     
             
-                    <div class="btn-group btn-group-justified">
-                        <template v-if="propuesta">
-                            <a class="btn blue btn-sm" @click.prevent="acceptModal = true">Aceptar Proyecto</a>
-                            <a class="btn red btn-sm" @click.prevent="destroyModal = true">Eliminar</a>
-                        </template>
-                        <template v-if="activo">
-                            <a class="btn blue btn-sm" @click.prevent="asignedModal = true">Asignar Evaluador</a>
-                        </template>
-                    </div>
+            <div class="btn-group btn-group-justified">
+                <template v-if="propuesta">
+                    <a class="btn blue btn-sm" @click.prevent="acceptModal = true">Aceptar Proyecto</a>
+                    <a class="btn red btn-sm" @click.prevent="destroyModal = true">Eliminar</a>
+                </template>
+                <template v-if="activo">
+                    <a class="btn blue btn-sm" @click.prevent="asignedModal = true">Asignar Evaluador</a>
+                </template>
+            </div>
                 
     
         </div>
@@ -86,7 +94,11 @@
         </modal>
     
         <modal v-model="asignedModal" title="Asignar Evaluador" :footer="false">
-            <user-search url="/api/evaluator/search" button-text="Asignar" @selected="asignar"></user-search>
+            <user-search url="/api/evaluator/search" button-text="Asignar" @selected="asignar">
+                <template slot="extra" scope="props">
+                    <span class="badge" v-show="props.user.proyectos_count">{{ props.user.proyectos_count }}</span>
+                </template>
+            </user-search>
         </modal>
     
     </div>
@@ -150,8 +162,7 @@ export default {
 </script>
 
 <style scoped>
-.borderless td,
-.borderless th {
-    border: none;
-}
+    .borderless td, .borderless th {
+        border: none;
+    }
 </style>

@@ -8,4 +8,8 @@ Route::prefix('/perfil')->group(function (){
     Route::post('foto', 'PerfilController@fotoUp')->name('perfil.foto');
 });
 
+
+Route::get('porcentajes', 'UserController@porcentajes')->name('porcentajes');
+
+
 Route::get('/notificaciones', 'NotificationController@vista')->name('notificaciones');

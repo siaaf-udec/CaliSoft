@@ -12,12 +12,12 @@ class RoleCheck
      * @param  \Closure  $next
      * @return mixed
      */
-    public function handle($request, Closure $next, $role)
+    public function handle($request, Closure $next)
     {
-        if ($request->user()->role != $role) {
-            return $request->expectsJson()  
-                ? response()->json(['error' => 'Unauthorized'], 403)
-                : abort(403);
+        $roles = array_slice(func_get_args(), 2);
+        
+        if (array_search($request->user()->role, $roles) === FALSE) {
+            return abort(403);
         }
 
         $response = $next($request);

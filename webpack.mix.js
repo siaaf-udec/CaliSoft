@@ -23,4 +23,5 @@ mix
     .js('resources/assets/js/categorias-show.js', 'public/js')
     .js('resources/assets/js/invitaciones.js', 'public/js')
     .js('resources/assets/js/admin-proyectos.js', 'public/js')
+    .js('resources/assets/js/evaluator-proyectos.js', 'public/js')
     .js('resources/assets/js/notificaciones.js', 'public/js')
