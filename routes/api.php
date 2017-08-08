@@ -81,3 +81,6 @@ Route::post('file', 'DocumentoController@postfile');
 Route::get('seeFile/{file}', 'DocumentoController@getfile');
 Route::get('downloadFile/{file}', 'DocumentoController@download');
 // fin subir documentación estudiante
+Route::resource('basedatos', 'BaseDatosController', [
+    'only' => ['index', 'store', 'update', 'destroy'],
+]);

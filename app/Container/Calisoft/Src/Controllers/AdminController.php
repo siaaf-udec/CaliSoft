@@ -39,4 +39,8 @@ class AdminController extends Controller
     {
         return view('calisoft.admin.admin-proyectos', ['categorias' => Categoria::all()]);
     }
+    public function baseDatos()
+    {
+        return view('calisoft.admin.admin-base-datos');
+    }
 }
