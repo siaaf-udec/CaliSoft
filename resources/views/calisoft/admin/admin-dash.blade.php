@@ -32,3 +32,9 @@
     'link' => route('semilleros')
 ])
 @endcomponent
+@component('components.nav-link', [
+    'icon' => 'fa fa-database',
+    'title' => 'Base de Datos',
+    'link' => route('basedatos')
+])
+@endcomponent
