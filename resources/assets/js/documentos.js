@@ -1,7 +1,9 @@
 import "./bootstrap";
 import Vue from "vue";
-import Modal from "./components/utils/modal";
-import BsSelect from "./components/bs/bs-select"
+import {  Modal } from "uiv";
+import BsSelect from "./components/bs/bs-select";
+
+
 new Vue({
     el: "#app",
     components: {
@@ -18,7 +20,8 @@ new Vue({
         tiposDocumentos: [],
         paginacion: {},
         proyectoId: window.proyectId,
-        tipo: ""
+        tipo: "",
+        modalState: false 
     },
     created() {
         this.refresh('/api/documentacion');
@@ -59,6 +62,7 @@ new Vue({
             });
         },
         watch: {
+           
             tipo(val) {
                 let params = {
                     page: this.paginacion.current_page

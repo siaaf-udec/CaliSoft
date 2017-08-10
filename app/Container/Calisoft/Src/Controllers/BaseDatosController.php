@@ -3,6 +3,7 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Controllers\Controller;
 
 class BaseDatosController extends Controller
 {

@@ -21,6 +21,10 @@ class RoleCheck
         }
 
         $response = $next($request);
-        return $response->header("Cache-Control", "no-cache, no-store, must-revalidate");
+        $response->headers->set('Access-Control-Allow-Origin' , '*');
+        $response->headers->set('Access-Control-Allow-Methods', 'POST, GET, OPTIONS, PUT, DELETE');
+        $response->headers->set('Access-Control-Allow-Headers', 'Content-Type, Accept, Authorization, X-Requested-With, Application');
+        $response->headers->set("Cache-Control", "no-cache, no-store, must-revalidate");
+        return $response;
     }
 }

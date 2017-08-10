@@ -30,9 +30,10 @@
 import ProyectoCreado from './proyecto-creado';
 import InvitacionRecibida from './invitacion-recibida';
 import ProyectoDenegado from './proyecto-denegado';
+import ProyectoAsignado from './proyecto-asignado';
 
 export default {
-    components: { ProyectoCreado, InvitacionRecibida, ProyectoDenegado },
+    components: { ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado },
     data(){
         return { count: 0, notificaciones: [] };
     },

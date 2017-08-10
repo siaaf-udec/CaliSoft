@@ -64,9 +64,9 @@
 
     <!-- Paginacion -->
             <div class="row">
-                <!-- Boton de crear usuario -->
+                <!-- Boton de subir documento -->
                 <div class="col-sm-6">
-                    <button type="button"  @click.prevent="show()" class="btn blue center-block">
+                    <button type="button"  @click.prevent="modalState = true" class="btn blue center-block">
                     <i class="fa fa-plus"></i>
                     Subir Documento
                 </button>
@@ -96,8 +96,7 @@
             </div>
 
 <!--Creación modal Documentación -->
-
-    <modal id="subir-documentos" title="Subir documentación">
+    <modal v-model="modalState" title="Subir documentación" @hide="refresh('/api/documentacion')" :footer="false">
 
                 {{Form::open(array(
                 'url'=>'api/file/',
@@ -181,24 +180,14 @@
 
 @push('styles')
 
-    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-toastr/toastr.min.css" />
-
     <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
     <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
-
-
-
-
-
 
 @endpush
 
 @push('functions')
 
-
-    <script src="../assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>
     <script>
-
     window.proyectId =  {{ $co->pivot->FK_ProyectoId }} ;
     </script>
 

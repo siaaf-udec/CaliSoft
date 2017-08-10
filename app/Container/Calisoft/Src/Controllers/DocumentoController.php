@@ -101,6 +101,7 @@ class DocumentoController extends Controller
     public function getfile($file)
     {
         return response()->file("storage/uploads/documentos/" . $file);
+        //return Storage::url("uploads/documentos/" . $file);
     }
 
     public function download($file)
