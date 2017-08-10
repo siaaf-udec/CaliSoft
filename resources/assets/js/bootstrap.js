@@ -16,4 +16,18 @@ if (token) {
     console.error('CSRF token not found: https://laravel.com/docs/csrf#csrf-x-csrf-token');
 }
 
+
+import Echo from 'laravel-echo';
+import 'pusher-js';
+
+
+window.Echo = new Echo({
+    broadcaster: 'pusher',
+    key: $("meta[name='pusher-key']").attr('content'),
+    cluster: $("meta[name='pusher-cluster']").attr('content'),
+    encrypted: true
+});
+
+
 require('./notificaciones-dropdown');
+

@@ -1,24 +1,28 @@
 <template>
-<section>
-    <div class="input-group">
-        <input type="text" class="form-control" placeholder="Buscar" v-model="search">
-        <span class="input-group-addon">
-          <i class="glyphicon glyphicon-search"></i>
-        </span>
-    </div>
-    <ul class="list-group" style="margin-top: 2%">
-        <li class="list-group-item" v-for="user in this.paginator.items" :key="user.id">
-            {{ `${user.name} - ${user.email}` }}
-            <button class="btn btn-success btn-xs pull-right" @click="$emit('selected', user)">
-          {{ buttonText }}
-        </button>
-        </li>
-        <div class="text-center">
-            <pagination v-model="paginator.page" :total-page="paginator.lastPage"></pagination>
+    <section>
+        <div class="input-group">
+            <input type="text" class="form-control" placeholder="Buscar" v-model="search">
+            <span class="input-group-addon">
+                <i class="glyphicon glyphicon-search"></i>
+            </span>
         </div>
-    </ul>
-
-</section>
+        <ul class="list-group" style="margin-top: 2%">
+            <li class="list-group-item" v-for="user in this.paginator.items" :key="user.id">
+                <span>
+                    {{ `${user.name} - ${user.email}` }}
+                    <slot name="extra" :user="user"></slot>
+                </span>
+    
+                <button class="btn btn-success btn-xs pull-right" @click="$emit('selected', user)">
+                    {{ buttonText }}
+                </button>
+            </li>
+            <div class="text-center">
+                <pagination v-model="paginator.page" :total-page="paginator.lastPage"></pagination>
+            </div>
+        </ul>
+    
+    </section>
 </template>
 
 <script>
@@ -27,7 +31,7 @@ import { Pagination } from 'uiv'
 
 export default {
     components: { Pagination },
-    props: ['url', 'buttonText'],
+    props: ['url', 'buttonText', 'count'],
     data() {
         return {
             search: "",
@@ -35,22 +39,22 @@ export default {
             paginator: new Paginator()
         };
     },
-    created(){
+    created() {
         axios.get(this.url).then(res => {
             this.users = res.data
             this.paginator.data = this.users
         })
     },
     methods: {
-        changePage(page){
+        changePage(page) {
             this.paginator.page = page;
             this.$forceUpdate();
         }
     },
     watch: {
         search(query) {
-            let data =  this.users;
-            if(query) {
+            let data = this.users;
+            if (query) {
                 data = this.users.filter(u => {
                     return new RegExp(query, 'i').test(`${u.name} ${u.email}`)
                 });

@@ -20,6 +20,7 @@ class UserController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:admin')->only('index', 'store', 'destroy');
+        $this->middleware('role:student,evaluator')->only('porcentajes');
         $this->users = $users;
     }
     /**
@@ -65,11 +66,11 @@ class UserController extends Controller
     /**
      * Retorna el proyecto del usuario logeado
      */
-    public function proyecto()
+    public function proyectos()
     {
         return request()->user()->proyectos()->with(
             'semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios'
-        )->first();
+        )->get();
     }
 
     /**
@@ -89,5 +90,11 @@ class UserController extends Controller
     public function invitaciones()
     {
         return request()->user()->proyectos()->wherePivot('tipo', 'invitado')->get();
+    }
+
+    public function porcentajes()
+    {
+        
+        return view('calisoft.student.student-ver-porcentajes');
     }
 }

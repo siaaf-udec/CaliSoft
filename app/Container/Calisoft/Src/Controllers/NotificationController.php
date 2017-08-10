@@ -17,9 +17,7 @@ class NotificationController extends Controller
     }
 
     function store(){
-        auth()->user()->unreadNotifications()->update([
-            'read_at' => Carbon::now()
-        ]);
+        auth()->user()->unreadNotifications->markAsRead();
     }
 
     

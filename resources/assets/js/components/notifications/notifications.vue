@@ -44,7 +44,8 @@ export default {
         });
     },
     mounted(){
-        window.Echo.private('users.' + window.userId).notification(notificacion => {
+        let id = $("meta[name='user-id']").attr('content');
+        window.Echo.private('users.' + id).notification(notificacion => {
             this.notificaciones.push(notificacion);
             this.count += 1;
             toastr.info(notificacion.data.alert);
@@ -58,6 +59,3 @@ export default {
     }
 }
 </script>
-
-<style lang="css">
-</style>

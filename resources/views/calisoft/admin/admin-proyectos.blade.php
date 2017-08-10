@@ -31,19 +31,18 @@
             <div class="col-sm-6">
                 <div class="list-group">
                     <a v-for="proyecto in paginator.items" class="list-group-item"
-                        :class="{ 'list-group-item-info': seleccion == proyecto}"
+                        :class="{ 'bg-grey': seleccion == proyecto }"
                         @click.prevent="seleccion = proyecto">
 
                         @{{proyecto.nombre}}
 
-                        <span title="propuesta" class="badge bg-green-seagreen bg-font-green-seagreen"
-                            v-if="proyecto.state == 'propuesta'">
+                        <span title="propuesta" class="badge" v-if="proyecto.state == 'propuesta'">
                             P
                         </span>
                     </a>
                 </div>
 
-                <center>
+                <center v-show="paginator.lastPage > 1">
                     <pagination v-model="paginator.page" :total-page="paginator.lastPage" ></pagination>
                 </center>
 

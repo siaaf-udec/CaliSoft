@@ -12,10 +12,6 @@
  */
 Auth::routes();
 
-Route::get('/markAsRead', function () {
-    auth()->user()->unreadNotifications->markAsRead();
-});
-
 Route::get('/', function () {
     return view('calisoft.global.home');
 })->middleware('auth')->name('home');

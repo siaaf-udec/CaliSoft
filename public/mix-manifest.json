@@ -1,8 +1,8 @@
 {
     "/js/proyectos.js": "/js/proyectos.js",
     "/js/usuarios.js": "/js/usuarios.js",
-    "/js/categorias.js": "/js/categorias.js",
     "/js/admin-proyectos.js": "/js/admin-proyectos.js",
+    "/js/categorias.js": "/js/categorias.js",
     "/js/categorias-show.js": "/js/categorias-show.js",
     "/js/tipo-documento.js": "/js/tipo-documento.js",
     "/js/componentes.js": "/js/componentes.js",
@@ -11,5 +11,6 @@
     "/js/bootstrap.js": "/js/bootstrap.js",
     "/css/app.css": "/css/app.css",
     "/js/notificaciones.js": "/js/notificaciones.js",
-    "/js/invitaciones.js": "/js/invitaciones.js"
+    "/js/invitaciones.js": "/js/invitaciones.js",
+    "/js/evaluator-proyectos.js": "/js/evaluator-proyectos.js"
 }

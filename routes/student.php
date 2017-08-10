@@ -8,9 +8,6 @@ Route::post('/proyectos', 'ProyectoController@store')
     ->name('proyectos.store')
     ->middleware('create-project');
 
-Route::get('/porcentajes', 'StudentController@porcentajes')
-    ->name('porcentajes');
-
 Route::get('/documentacion', 'StudentController@documentos')
     ->name('documentacion');
 

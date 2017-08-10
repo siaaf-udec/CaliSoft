@@ -124,7 +124,7 @@ export default {
         };
     },
     created(){
-        axios.get('/api/user/project').then(res => this.proyecto = res.data);
+        axios.get('/api/user/proyectos').then(res => this.proyecto = res.data[0]);
     },
 
     computed: {

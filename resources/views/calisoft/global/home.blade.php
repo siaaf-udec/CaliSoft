@@ -7,18 +7,10 @@
 
 @section('content')
 
-  @if ($role == 'admin')
+    @includeWhen($role == 'admin', 'calisoft.admin.admin-home') 
 
-    @include('calisoft.admin.admin-home')
+    @includeWhen($role == 'student', 'calisoft.student.student-home')
 
-  @elseif ($role == 'student')
-
-    @include('calisoft.student.student-home')
-
-  @else
-
-    @include('calisoft.evaluator.evaluator-dash')
-
-  @endif
+    @includeWhen($role == 'evaluator', 'calisoft.evaluator.evaluator-home')
 
 @endsection
