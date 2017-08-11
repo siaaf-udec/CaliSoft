@@ -16,10 +16,9 @@ class CreateScriptsTable extends Migration
         Schema::create('TBL_Scripts', function (Blueprint $table) {
             $table->increments('PK_id');
             $table->string('url');
-            $table->integer('puntaje');
             $table->boolean('estado');
             $table->integer('FK_ProyectoId')->unsigned();
-            
+
             $table->foreign('FK_ProyectoId')->references('PK_id')
             ->on('TBL_Proyectos')->onUpdate('cascade');
             $table->timestamps('');

@@ -15,12 +15,14 @@ class CreateNotaCodificacionTable extends Migration
     {
         Schema::create('TBL_NotaCodificacion', function (Blueprint $table) {
             $table->increments('PK_id');
-            $table->string('nota');
-            $table->integer('FK_ProyectoId')->unsigned();
+            $table->float('nota');
+            $table->integer('total');
+            $table->integer('acertadas');
+            $table->integer('FK_ScriptsId')->unsigned();
             $table->integer('FK_ItemsId')->unsigned();
 
-            $table->foreign('FK_ProyectoId')->references('PK_id')
-            ->on('TBL_Proyectos')->onUpdate('cascade');
+            $table->foreign('FK_ScriptsId')->references('PK_id')
+            ->on('TBL_Scripts')->onUpdate('cascade');
 
             $table->foreign('FK_ItemsId')->references('PK_id')
             ->on('TBL_ItemsCodificacion')->onUpdate('cascade');
