@@ -84,3 +84,7 @@ Route::get('downloadFile/{file}', 'DocumentoController@download');
 Route::resource('basedatos', 'BaseDatosController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
+
+Route::resource('codificacion', 'ItemsCodificacionController', [
+    'only' => ['index','update'],
+]);

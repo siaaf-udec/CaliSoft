@@ -12,5 +12,6 @@
     "/css/app.css": "/css/app.css",
     "/js/notificaciones.js": "/js/notificaciones.js",
     "/js/invitaciones.js": "/js/invitaciones.js",
-    "/js/evaluator-proyectos.js": "/js/evaluator-proyectos.js"
+    "/js/evaluator-proyectos.js": "/js/evaluator-proyectos.js",
+    "/js/ItemsCodificacion.js": "/js/ItemsCodificacion.js"
 }

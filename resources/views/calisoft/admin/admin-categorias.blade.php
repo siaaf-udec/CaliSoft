@@ -155,9 +155,11 @@
 
 </div>
 
-@endsection @push('styles')
+@endsection 
+@push('styles')
 <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
-<link href="/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" /> @endpush @push('functions')
+<link href="/assets/pages/css/profile.min.css" rel="stylesheet" type="text/css" /> @endpush 
+@push('functions')
 <script src="/js/categorias.js"></script>
 <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 @endpush
