@@ -38,3 +38,9 @@
     'link' => route('basedatos')
 ])
 @endcomponent
+@component('components.nav-link',[
+    'icon' => 'fa fa-code',
+    'title' => 'Codificación',
+    'link' => route('codificacion')
+])
+@endcomponent

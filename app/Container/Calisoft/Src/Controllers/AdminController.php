@@ -43,4 +43,8 @@ class AdminController extends Controller
     {
         return view('calisoft.admin.admin-base-datos');
     }
+    public function  codificacion()
+    {
+        return view('calisoft.admin.admin-codificacion');
+    }
 }

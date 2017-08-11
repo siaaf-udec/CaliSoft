@@ -16,3 +16,6 @@
 * Servidor -> `php artisan serve`
 * Mix Javascript -> `npm run watch`
 * Cola -> `php artisan queue:work --tries=3` 
+
+## para aceptar los seeders 
+* `composer dump-autoload `
