@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Documentos extends Model
+class Documento extends Model
 {
     protected $table = "TBL_Documentos";
     protected $primaryKey = "PK_id";
@@ -13,7 +13,7 @@ class Documentos extends Model
         'created_at', 'updated_at'
     ];
 
-    public function tipoDocumento()
+    public function tipo()
     {
         return $this->belongsTo(TiposDocumento::class, 'FK_TipoDocumentoId', 'PK_id');
     }

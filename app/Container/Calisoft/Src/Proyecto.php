@@ -19,7 +19,7 @@ class Proyecto extends Model
 
     public function documentos()
     {
-        return $this->hasMany(Documentos::class, 'FK_ProyectoId', 'PK_id');
+        return $this->hasMany(Documento::class, 'FK_ProyectoId', 'PK_id');
     }
 
     public function semillero()

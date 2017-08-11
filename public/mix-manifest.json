@@ -6,11 +6,10 @@
     "/js/categorias-show.js": "/js/categorias-show.js",
     "/js/tipo-documento.js": "/js/tipo-documento.js",
     "/js/componentes.js": "/js/componentes.js",
-    "/js/semilleros.js": "/js/semilleros.js",
     "/js/documentos.js": "/js/documentos.js",
-    "/js/bootstrap.js": "/js/bootstrap.js",
-    "/css/app.css": "/css/app.css",
+    "/js/semilleros.js": "/js/semilleros.js",
     "/js/notificaciones.js": "/js/notificaciones.js",
     "/js/invitaciones.js": "/js/invitaciones.js",
-    "/js/evaluator-proyectos.js": "/js/evaluator-proyectos.js"
+    "/js/evaluator-proyectos.js": "/js/evaluator-proyectos.js",
+    "/js/bootstrap.js": "/js/bootstrap.js"
 }
