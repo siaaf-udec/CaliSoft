@@ -16,3 +16,9 @@ Route::get('/invitaciones', 'StudentController@invitaciones')
 
 Route::get('/modelobd', 'StudentController@modelobd')
     ->name('modelobd');
+
+Route::get('/documentosCodificacion','StudentController@documentosCodificacion')
+    ->name('documentosCodificacion');
+
+Route::get('documentosBd','StudentController@documentosBd')
+    ->name('documentosBd');

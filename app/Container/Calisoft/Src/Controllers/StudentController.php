@@ -34,4 +34,16 @@ class StudentController extends Controller
     {
         return view('calisoft.student.student-modelobd');
     }
+
+    public function documentosCodificacion()
+    {
+        return view('calisoft.student.student-documentacion-codificacion');
+    }
+
+    public function documentosBd()
+    {
+        return view('calisoft.student.student-documentacion-bd');
+    }
 }
+
+    
