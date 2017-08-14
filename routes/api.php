@@ -74,6 +74,7 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
 Route::resource('proyectos', 'ProyectoController', [
     'only' => ['index', 'update', 'destroy'],
 ]);
+
 // Fin proyectos
 
 // subir documentación estudiante

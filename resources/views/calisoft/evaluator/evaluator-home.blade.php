@@ -1,8 +1,22 @@
 <div class="col-md-12">
     @component('components.portlet', ['icon' => 'fa fa-home', 'title' => 'Proyectos Asignados'])
         <div id="app">
-            <div class="well well-sm" v-for="proyecto in proyectos">
-                <h3>@{{ proyecto.nombre }}</h3>
+            <div class="panel-group">
+                <div class="panel panel-info" v-for="proyecto in proyectos">
+                    <div class="panel-heading">
+                        <h4 class="panel-header" style="display: inline">@{{ proyecto.nombre }}</h4>
+                        <div class="btn-group pull-right">
+                            <a :href="`/proyectos/${proyecto.PK_id}/modelacion`" class="btn btn-xs btn-primary">modelación</a>
+                            <a href="#" class="btn btn-xs btn-warning">plataforma</a>
+                            <a href="#" class="btn btn-xs btn-success">codificación</a>
+                            <a href="#" class="btn btn-xs btn-danger">base de datos</a>
+
+
+
+                        </div>
+                    </div>
+                    <div class="panel-body"></div>
+                </div>
             </div>
         </div>
     @endcomponent
