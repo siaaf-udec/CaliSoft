@@ -4,7 +4,7 @@
         {{-- BEGIN LOGO --}}
         <div class="page-logo">
             <a href="javascript:;">
-                <img src="{{ asset('assets/layouts/layout2/img/logo-default.png') }}" alt="Logo SIAAF" class="logo-default" />
+                <img src="{{ asset('assets/layouts/layout2/img/calisoft.png') }}" alt="Logo SIAAF" class="logo-default" />
             </a>
             <div class="menu-toggler sidebar-toggler">
                 {{-- DOC: Remove the above "hide" to enable the sidebar toggler button on header --}}
@@ -152,7 +152,7 @@
                     {{-- END INBOX DROPDOWN --}}
                     {{-- BEGIN TODO DROPDOWN --}}
                     {{-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte --}}
-                    
+
                     {{--  <li class="dropdown dropdown-extended dropdown-tasks" id="header_task_bar">
                         <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
                             <i class="icon-calendar"></i>
@@ -260,7 +260,7 @@
                                 </ul>
                             </li>
                         </ul>
-                    </li>  --}} 
+                    </li>  --}}
                     {{-- END TODO DROPDOWN --}}
                     {{-- BEGIN USER LOGIN DROPDOWN --}}
                     {{-- DOC: Apply "dropdown-dark" class after below "dropdown-extended" to change the dropdown styte --}}

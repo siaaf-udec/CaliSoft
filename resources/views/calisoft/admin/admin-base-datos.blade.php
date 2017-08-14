@@ -7,15 +7,15 @@
             <table class="table table-hover table-bordered table-condensed">
                 <thead>
                     <th class="text-center">Componente</th>
-                    <th class="text-center">Prioridad</th>
-                    <th class="text-center">Porcentaje</th>
+                    <th class="text-center">Estandar</th>
+                    <th class="text-center">Valor</th>
                     <th class="text-center">Operacion</th>
                 </thead>
                 <tbody>
-                    <tr  class="text-center">
-                        <td ></td>
-                        <td ></td>
-                        <td></td>
+                    <tr  class="text-center" v-for="componente in componentes">
+                        <td v-text="componente.nombre"></td>
+                        <td v-text="componente.estandar"></td>
+                        <td v-text="componente.valor"></td>
                         <td>
                             <button class="editar-modal btn btn-danger" title="Eliminar Usuario">
                             <!--<button class="editar-modal btn btn-danger" @click.prevent="destroy(user)">-->
