@@ -9,7 +9,7 @@
 @endpush
 
 @section('content')
-  <div class="col-md-12">
+  <div class="col-md-6">
     <div class="container">
       <div id="area"></div>
 
@@ -40,7 +40,7 @@
             <hr/>
 
             <input type="button" id="options" />
-            <a href="https://github.com/ondras/wwwsqldesigner/wiki" target="_blank"><input type="button" id="docs" value="" /></a>
+            <a href="https://github.com/ondras/wwwsqldesigner/wiki" target="_blank"><input style="display: none;" type="button" id="docs" value="" /></a>
           </div>
 
   <div id="rubberband"></div>
@@ -140,35 +140,35 @@
       <tr>
         <td style="width:60%">
           <fieldset>
-            <legend id="client"></legend>
-            <div id="singlerow">
+            <legend style="display: none;" id="client"></legend>
+            <input type="button" id="clientsql" />
+            <div id="singlerow" style="display: none;">
             <input type="button" id="clientsave" />
             <input type="button" id="clientload" />
             </div>
-            <div id="singlerow">
+            <div id="singlerow" style="display: none;">
             <input type="button" id="clientlocalsave" />
             <input type="button" id="clientlocalload" />
             <input type="button" id="clientlocallist" />
             </div>
-            <div id="singlerow">
+            <div id="singlerow" style="display: none;">
               <input type="button" id="dropboxsave" /><!-- may get hidden by dropBoxInit() -->
               <input type="button" id="dropboxload" /><!-- may get hidden by dropBoxInit() -->
               <input type="button" id="dropboxlist" /><!-- may get hidden by dropBoxInit() -->
             </div>
             <hr/>
-            <input type="button" id="clientsql" />
           </fieldset>
         </td>
         <td style="width:40%">
           <fieldset>
-            <legend id="server"></legend>
-            <label for="backend" id="backendlabel"></label> <select id="backend"><option></option></select>
+            <legend style="display: none;" id="server"></legend>
+            <label style="display: none;" for="backend" id="backendlabel"></label> <select style="display: none;" id="backend"><option></option></select>
             <hr/>
-            <input type="button" id="serversave" />
-            <input type="button" id="quicksave" />
-            <input type="button" id="serverload" />
-            <input type="button" id="serverlist" />
-            <input type="button" id="serverimport" />
+            <input style="display: none;" type="button" id="serversave" />
+            <input style="display: none;" type="button" id="quicksave" />
+            <input style="display: none;" type="button" id="serverload" />
+            <input style="display: none;" type="button" id="serverlist" />
+            <input style="display: none;" type="button" id="serverimport" />
           </fieldset>
         </td>
       </tr>
