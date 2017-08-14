@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
         $this->call(SemillerosTableSeeder::class);
         $this->call(GrupoInvestigacionTableSeeder::class);
         $this->call(ItemsCodificacionTableSeeder::class);
-        $this->call(ModulosTableSeeder::class);        
+        $this->call(ModulosTableSeeder::class);
+        $this->call(TipoNomenclaturaTableSeeder::class);
     }
 }

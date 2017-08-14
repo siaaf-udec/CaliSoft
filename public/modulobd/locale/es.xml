@@ -54,7 +54,7 @@
 	<string name="hide">¿Ocultar conectores de tablas al arrastrar?</string>
 	<string name="vector">¿Dibujar conectores suaves (si son soportados por el navegador)?</string>
 	<string name="showsize">¿Mostrar tamaño del campo en el diseño de tabla?</string>
-	<string name="showtype">¿Mostrar tipo de dato del campo en el diseño de tabla?</string>	
+	<string name="showtype">¿Mostrar tipo de dato del campo en el diseño de tabla?</string>
 
 	<!-- keys -->
 	<string name="tablekeys">Claves</string>
@@ -68,38 +68,11 @@
 	<string name="keyremove">Eliminar clave</string>
 
 	<!-- io -->
-	<string name="saveload">Guardar / Cargar</string>
-	<string name="empty">Por favor, pega los datos XML dentro del área de texto de abajo y vuelve a intentar.</string>
-	<string name="client">Cliente</string>
-	<string name="server">Servidor</string>
-	<string name="output">Entrada / Salida</string>
-	<string name="clientsave">Guardar XML</string>
-	<string name="clientload">Cargar XML</string>
-	<string name="clientlocalsave">Guardar en el Navegador</string>
-	<string name="clientlocalload">Cargar desde el Navegador</string>
-	<string name="clientlocallist">Listar desde el Navegador</string>
-	<string name="dropboxsave">Guardar en Dropbox</string>
-	<string name="dropboxload">Cargar desde Dropbox</string>
-	<string name="dropboxlist">Listar desde Dropbox</string>
+	<string name="saveload">Guardar Base de Datos</string>
 	<string name="clientsql">Generar SQL</string>
-	<string name="backendlabel">Servidor de fondo:</string>
-	<string name="serversave">Guardar</string>
-	<string name="quicksave">Guardar rápido</string>
-	<string name="serverload">Cargar</string>
-	<string name="serverlist">Listar elementos</string>
-	<string name="serverimport">Importar desde Base de Datos</string>
-	<string name="serverloadprompt">Ingrese la palabra clave bajo la cual tu diseño fue guardado:</string>
-	<string name="serversaveprompt">Ingrese una palabra clave bajo la cual tu diseño será guardado:</string>
-	<string name="serverimportprompt">Ingresa el nombre de la base de datos a ser importada:</string>
-	<string name="httpresponse">Respuesta del servidor</string>
-	<string name="http201">Guardado</string>
-	<string name="http404">No Encontrado</string>
-	<string name="http500">Error Interno del Servidor</string>
-	<string name="http501">No Implementado</string>
-	<string name="http503">Servicio No Disponible</string>
-	
+
 	<!-- misc -->
 	<string name="xmlerror">Error XML</string>
 	<string name="docs">Documentación</string>
-	
+
 </locale>

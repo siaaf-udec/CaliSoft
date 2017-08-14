@@ -26,5 +26,5 @@
     @endcomponent
 @endcan
 
-@component('components.nav-link', ['icon' => 'fa fa-pencil-square', 'link' => route('modelobd'), 'title' => 'Modelación Base de Datos'])
+@component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('modelobd'), 'title' => 'Modelación Base de Datos'])
     @endcomponent
