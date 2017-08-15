@@ -9,7 +9,15 @@
                 <document-progress :documentos="documentos" :tipos="tiposDocumentos"></document-progress>
 
                 {{--  Tabla de documentos  --}}
-                <document-list :documentos="documentos" :tipos="tiposDocumentos"  @edit="openEditModal" @destroy="destroy">
+                <document-list :documentos="documentos" :tipos="tiposDocumentos">    
+                    <template slot="buttons" scope="props">
+                        <a title="editar" class="editar-categoria btn btn-warning btn-xs" @click.prevent="openEditModal(props.doc)">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>    
+                        <a title="eliminar" class="editar-modal btn btn-danger btn-xs" @click.prevent="destroy(props.doc)">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </a>
+                    </template>
                 </document-list>
          
                 {{-- Boton de subir documento --}}
@@ -34,10 +42,6 @@
                                 </bs-select>
                             </div>
                        
-
-                    
-
-                        
 
                     </form>
                 </modal>

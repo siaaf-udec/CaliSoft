@@ -53,6 +53,11 @@ return [
             'root'   => storage_path('app/public/uploads/documentos'),
         ],
 
+        'docuScript'  =>[
+            'driver' => 'local',
+            'root'   => storage_path('app/public/uploads/scripts'),
+        ],
+
         'fotoProfile' => [
             'driver' => 'local',
             'root'   => storage_path('app/public/uploads/fotos'),

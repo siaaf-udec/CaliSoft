@@ -36,6 +36,10 @@ Route::resource('documentacion', 'DocumentoController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
+Route::resource('documentacion-scripts','ScriptController',[
+    'only' =>['index','store','update','destroy'],
+]);
+
 Route::resource('tdocumentos', 'TiposDocumentoController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
@@ -72,7 +76,7 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
 });
 
 Route::resource('proyectos', 'ProyectoController', [
-    'only' => ['index', 'update', 'destroy'],
+    'only' => ['index', 'update', 'destroy', 'show'],
 ]);
 
 // Fin proyectos
@@ -82,6 +86,11 @@ Route::post('file', 'DocumentoController@postfile');
 Route::get('seeFile/{file}', 'DocumentoController@getfile');
 Route::get('downloadFile/{file}', 'DocumentoController@download');
 // fin subir documentación estudiante
+
+//subir documentacion de codificacion
+Route::post('file','ScriptController@postfile');
+// fin documentacion codificacion
+
 Route::resource('basedatos', 'BaseDatosController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);

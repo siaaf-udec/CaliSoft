@@ -20,9 +20,7 @@ class DocumentoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:student', [
-            'except' => ['index'],
-        ]);
+        $this->middleware('role:student')->except('index', 'download', 'getfile');
     }
 
     public function index(DocumentosIndexRequest $request)
