@@ -76,7 +76,7 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
 });
 
 Route::resource('proyectos', 'ProyectoController', [
-    'only' => ['index', 'update', 'destroy'],
+    'only' => ['index', 'update', 'destroy', 'show'],
 ]);
 
 // Fin proyectos

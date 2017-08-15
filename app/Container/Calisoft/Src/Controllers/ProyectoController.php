@@ -23,9 +23,9 @@ class ProyectoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:student')->except('index', 'aceptar', 'destroy', 'asignar');
+        $this->middleware('role:student')->only('destroy', 'update', 'propuesta');
         $this->middleware('role:admin')->only('index', 'aceptar', 'asignar');
-        //$this->middleware('can:update,proyecto')->only('update');
+        $this->middleware('role:evaluator')->only('show');
     }
 
     public function index()
@@ -35,9 +35,12 @@ class ProyectoController extends Controller
             ->get();
     }
 
+    public function show(Proyecto $proyecto) {
+        return $proyecto;
+    }
+
     public function store(ProyectoStoreRequest $request)
     {
-
         $request->user()->proyectos()->create([
             'nombre'                    => $request->nombre,
             'FK_GrupoDeInvestigacionId' => $request->grupo,
@@ -56,7 +59,7 @@ class ProyectoController extends Controller
     }
 
     public function destroy(Proyecto $proyecto, ProyectoDenegadoRequest $request)
-    {
+    {   
         //Envía notificación a usuario de eliminación junto con las razones
         $usuarios = $proyecto->usuarios()->get();
         Notification::send($usuarios, new ProyectoDenegado($proyecto->nombre, $request->text));
@@ -66,7 +69,9 @@ class ProyectoController extends Controller
 
     public function documentos(Proyecto $proyecto)
     {
-        return $proyecto->documentos;
+        return $proyecto->documentos->load([ 'tipo' => function($query) {
+            $query->select('PK_id', 'nombre');
+        }]);
     }
 
     /**

@@ -1,0 +1,40 @@
+
+import Vue from 'vue';
+import axios from 'axios';
+
+import { Modal } from 'uiv';
+import BsPdf from './components/bs/bs-pdf';
+
+import DocumentList from './components/documentacion/document-list'
+
+new Vue({
+    el: '#app',
+    components: { 
+        DocumentList,
+        Modal,
+        BsPdf
+    },
+    data() {
+        return { 
+            tipos: [],
+            documentos: [],
+            evModal: false,
+            selected: {}
+        }
+    },
+    created(){
+        axios.all([
+            axios.get(`/api/proyectos/${window.proyectoId}/documentacion`),
+            axios.get('/api/tdocumentos')
+        ]).then(axios.spread((documentos, tipos) => {
+            this.documentos = documentos.data;
+            this.tipos = tipos.data;
+        }))
+    },
+    methods: {
+        open(doc) {
+            this.selected = doc;
+            this.evModal = true;
+        }
+    }
+})
