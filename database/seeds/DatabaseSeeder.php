@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
         $this->call(ItemsCodificacionTableSeeder::class);
         $this->call(ModulosTableSeeder::class);
         $this->call(TipoNomenclaturaTableSeeder::class);
+        $this->call(TipoBdTableSeeder::class);
     }
 }

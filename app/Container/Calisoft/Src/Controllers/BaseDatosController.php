@@ -4,17 +4,21 @@ namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Container\Calisoft\Src\TipoNomenclatura;
 
 class BaseDatosController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+   public function __construct()
+    {
+        $this->middleware('auth');
+        $this->middleware('role:admin', [
+            'except' => ['index']
+        ]);
+    }
+
     public function index()
     {
-        //
+        return TipoNomenclatura::all();
     }
 
     /**
