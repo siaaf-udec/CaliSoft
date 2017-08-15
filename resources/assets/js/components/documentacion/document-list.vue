@@ -10,7 +10,7 @@
                 <div class="col-sm-8 col-xs-12">
                     <div class="text-right">
                         <popover v-for="doc in filter(tipo)" :title="doc.url" :key="doc.PK_id">
-                            <a href="#" class="label label-danger" data-role="trigger" style="margin-left: 1%">
+                            <a href="javascript:;" class="label label-danger" data-role="trigger" style="margin-left: 1%">
                                 <span class="fa fa-file-pdf-o"></span>
                                 {{ doc.url }}
                             </a>
