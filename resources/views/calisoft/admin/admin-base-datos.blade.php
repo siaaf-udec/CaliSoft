@@ -12,21 +12,27 @@
                     <th class="text-center">Operacion</th>
                 </thead>
                 <tbody>
-                    <tr  class="text-center" v-for="componente in componentes">
+                    <tr v-for="componente in componentes" class="text-center">
                         <td v-text="componente.nombre"></td>
                         <td v-text="componente.estandar"></td>
                         <td v-text="componente.valor"></td>
                         <td>
-                            <button class="editar-modal btn btn-danger" title="Eliminar Usuario">
-                            <!--<button class="editar-modal btn btn-danger" @click.prevent="destroy(user)">-->
-                                <span class="glyphicon glyphicon-trash"></span>
+                            <button class="editar-modal btn blue" title="Editar Componentes">
+                                <span class="glyphicon glyphicon-pencil"></span>
                             </button>
                         </td>
                     </tr>
                 </tbody>
             </table>
+            <!--inicio modal editar estandar y valor de la nomenclatura de base de datos-->
+            
         </div>
       </div>
     @endcomponent
 </div>
 @endsection
+
+@push('functions')
+<script src="js/tipo-nomenclatura.js"></script>
+<script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
+@endpush
