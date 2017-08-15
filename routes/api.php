@@ -88,7 +88,7 @@ Route::get('downloadFile/{file}', 'DocumentoController@download');
 // fin subir documentación estudiante
 
 //subir documentacion de codificacion
-Route::post('file','ScriptController@postfile');
+Route::post('fileScript','ScriptController@postfile');
 // fin documentacion codificacion
 
 Route::resource('basedatos', 'BaseDatosController', [

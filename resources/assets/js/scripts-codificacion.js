@@ -11,6 +11,7 @@ new Vue({
         fillDocumentos: {},
         formErrors: {},
         formErrorsUpdate: {},
+        modalState: false,
     },
     created() {
         this.refresh();
