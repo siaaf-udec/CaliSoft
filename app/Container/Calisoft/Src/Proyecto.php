@@ -39,6 +39,7 @@ class Proyecto extends Model
         return $this->belongsTo(GrupoDeInvestigacion::class, 'FK_GrupoDeInvestigacionId')
             ->select('PK_id', 'nombre');
     }
+    
 
 
     /*
@@ -64,5 +65,9 @@ class Proyecto extends Model
     public function invitados()
     {
         return $this->usuarios()->wherePivot('tipo', 'invitado');
+    }
+    public function scripts()
+    {
+        return $this->hasMany(Script::class, 'FK_ProyectoId', 'PK_id');
     }
 }
