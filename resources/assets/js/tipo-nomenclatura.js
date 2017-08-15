@@ -22,7 +22,7 @@ new Vue({
       },
       methods:{
         update (){
-          axios.put('/api/basedatos' + this.fillNomenclatura.PK_id, this.fillNomenclatura)
+          axios.put('/api/basedatos/' + this.fillNomenclatura.PK_id, this.fillNomenclatura)
             .then(response => {
               this.componentes = this.componentes.map(value => {
                 return value.PK_id == this.fillNomenclatura.PK_id ? this.fillNomenclatura : value;

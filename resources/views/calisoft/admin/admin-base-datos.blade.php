@@ -48,6 +48,7 @@
             <!--Fin Modal editar estandar y valor de la nomenclatura de base de datos-->
         </div>
       </div>
+      @include('partials.modal-help-base-datos')
     @endcomponent
 </div>
 @endsection
