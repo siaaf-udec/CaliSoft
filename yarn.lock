@@ -3814,6 +3814,10 @@ node-emoji@^1.4.1:
   dependencies:
     lodash.toarray "^4.4.0"
 
+node-ensure@^0.0.0:
+  version "0.0.0"
+  resolved "https://registry.yarnpkg.com/node-ensure/-/node-ensure-0.0.0.tgz#ecae764150de99861ec5c810fd5d096b183932a7"
+
 node-forge@0.6.33:
   version "0.6.33"
   resolved "https://registry.yarnpkg.com/node-forge/-/node-forge-0.6.33.tgz#463811879f573d45155ad6a9f43dc296e8e85ebc"
@@ -4225,6 +4229,13 @@ pbkdf2@^3.0.3:
     ripemd160 "^2.0.1"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+pdfjs-dist@^1.7.418:
+  version "1.9.432"
+  resolved "https://registry.yarnpkg.com/pdfjs-dist/-/pdfjs-dist-1.9.432.tgz#1661d9d37042703cf98e979d9d2b2a3a067f77ff"
+  dependencies:
+    node-ensure "^0.0.0"
+    worker-loader "^0.8.0"
 
 pend@~1.2.0:
   version "1.2.0"
@@ -5866,6 +5877,17 @@ vue-loader@^12.1.1:
     vue-style-loader "^3.0.0"
     vue-template-es2015-compiler "^1.2.2"
 
+vue-pdf@^1.2.4:
+  version "1.2.4"
+  resolved "https://registry.yarnpkg.com/vue-pdf/-/vue-pdf-1.2.4.tgz#4f7cc64452986038995e03ccf8c99eb0be2d5a70"
+  dependencies:
+    pdfjs-dist "^1.7.418"
+    vue-resize-sensor "^1.0.0"
+
+vue-resize-sensor@^1.0.0:
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/vue-resize-sensor/-/vue-resize-sensor-1.1.1.tgz#0e8a09c939083d4c605341ae7c08f364ffcef1cd"
+
 vue-style-loader@^3.0.0:
   version "3.0.1"
   resolved "https://registry.yarnpkg.com/vue-style-loader/-/vue-style-loader-3.0.1.tgz#c8b639bb2f24baf9d78274dc17e4f264c1deda08"
@@ -6037,6 +6059,13 @@ window-size@0.1.0:
 wordwrap@0.0.2:
   version "0.0.2"
   resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.2.tgz#b79669bb42ecb409f83d583cad52ca17eaa1643f"
+
+worker-loader@^0.8.0:
+  version "0.8.1"
+  resolved "https://registry.yarnpkg.com/worker-loader/-/worker-loader-0.8.1.tgz#e8e995331ea34df5bf68296824bfb7f0ad578d43"
+  dependencies:
+    loader-utils "^1.0.2"
+    schema-utils "^0.3.0"
 
 wrap-ansi@^2.0.0:
   version "2.1.0"
