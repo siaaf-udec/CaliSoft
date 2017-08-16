@@ -16,26 +16,48 @@
         <div id="controls">
           <div id="bar">
             <div id="toggle"></div>
-            <input type="button" id="saveload" />
+            <button type="button" id="saveload" class="btn btn-warning">Guardar SQL</button>
 
-            <hr/>
+            <button type="button" id="addtable" class="btn btn-primary">Agregar Tabla</button>
+            <br>
+            <br>
+            <button type="button" id="edittable" class="btn btn-primary">Editar Tabla</button>
+            <br>
+            <br>
+            <button type="button" id="tablekeys" class="btn btn-primary">Llaves</button>
+            <br>
+            <br>
+            <button type="button" id="removetable" class="btn btn-primary">Eliminar Tabla</button>
+            <br>
+            <br>
+            <button type="button" id="aligntables" class="btn btn-primary">Alinear Tabla</button>
+            <br>
+            <br>
+            <button type="button" id="cleartables" class="btn btn-primary">Limpiar Tabla</button>
 
-            <input type="button" id="addtable" />
-            <input type="button" id="edittable" />
-            <input type="button" id="tablekeys" />
-            <input type="button" id="removetable" />
-            <input type="button" id="aligntables" />
-            <input type="button" id="cleartables" />
+            <br>
+            <br>
+            <br>
 
-            <hr/>
-
-            <input type="button" id="addrow" />
-            <input type="button" id="editrow" />
-            <input type="button" id="uprow" class="small" /><input type="button" id="downrow" class="small"/>
-            <input type="button" id="foreigncreate" />
-            <input type="button" id="foreignconnect" />
-            <input type="button" id="foreigndisconnect" />
-            <input type="button" id="removerow" />
+            <button type="button" id="addrow" class="btn btn-primary">Agregar Campo</button>
+            <br>
+            <br>
+            <button type="button" id="editrow" class="btn btn-primary">Editar Campo</button>
+            <br>
+            <br>
+            <button type="button" id="uprow" class="btn btn-primary">Arriba</button><button type="button" id="downrow" class="btn btn-primary">Abajo</button>
+            <br>
+            <br>
+            <button type="button" id="foreigncreate" class="btn btn-primary">Crear Llave Foranea</button>
+            <br>
+            <br>
+            <button type="button" id="foreignconnect" class="btn btn-primary">Conectar Llave Foranea</button>
+            <br>
+            <br>
+            <button type="button" id="foreigndisconnect" class="btn btn-primary">Eliminar Llave Foranea</button>
+            <br>
+            <br>
+            <button type="button" id="removerow" class="btn btn-primary">Eliminar Campo</button>
 
             <hr/>
 
