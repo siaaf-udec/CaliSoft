@@ -19,3 +19,6 @@
 
 ## para aceptar los seeders 
 * `composer dump-autoload `
+
+##para generar archivos proyectos
+* `factory('App\Container\Calisoft\Src\Proyecto', 50)->create()->each(function($p) {$p->usuarios()->save(factory('App\Container\Calisoft\Src\User')->make(['role' => 'student']), ['tipo' => 'integrante']);});`

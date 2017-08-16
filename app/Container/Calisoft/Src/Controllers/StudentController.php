@@ -22,7 +22,7 @@ class StudentController extends Controller
     public function documentos()
     {
         $co = auth()->user()->proyectos()->first();
-        return view('calisoft.student.student-subir-documentacion', compact('co'));
+        return view('calisoft.student.student-documentacion', compact('co'));
     }
 
     public function invitaciones()
@@ -34,4 +34,16 @@ class StudentController extends Controller
     {
         return view('calisoft.student.student-modelobd');
     }
+
+    public function documentosCodificacion()
+    {
+        return view('calisoft.student.student-documentacion-codificacion');
+    }
+
+    public function documentosBd()
+    {
+        return view('calisoft.student.student-documentacion-bd');
+    }
 }
+
+    

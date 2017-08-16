@@ -13,7 +13,6 @@ const { mix } = require('laravel-mix');
 mix
     .js('resources/assets/js/bootstrap.js', 'public/js')
     .js('resources/assets/js/semilleros.js', 'public/js')
-    .sass('resources/assets/sass/app.scss', 'public/css')
     .js('resources/assets/js/categorias.js', 'public/js')
     .js('resources/assets/js/usuarios.js', 'public/js')
     .js('resources/assets/js/proyectos.js', 'public/js')
@@ -25,4 +24,7 @@ mix
     .js('resources/assets/js/admin-proyectos.js', 'public/js')
     .js('resources/assets/js/evaluator-proyectos.js', 'public/js')
     .js('resources/assets/js/notificaciones.js', 'public/js')
-    .js('resources/assets//js//ItemsCodificacion', 'public/js')
+    .js('resources/assets/js/items-codificacion.js', 'public/js')
+    .js('resources/assets/js/modelacion.js', 'public/js')
+    .js('resources/assets/js/tipo-nomenclatura.js', 'public/js')
+    .js('resources/assets/js/nomenclaturas-show.js', 'public/js')

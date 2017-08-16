@@ -2,7 +2,7 @@
 
 namespace App\Container\Calisoft\Src\Controllers;
 
-use App\Container\Calisoft\Src\Documentos;
+use App\Container\Calisoft\Src\Documento;
 use App\Container\Calisoft\Src\Requests\DocumentosIndexRequest;
 use App\Container\Calisoft\Src\Requests\DocumentosStoreRequest;
 use App\Container\Calisoft\Src\Requests\DocumentosUpdateRequest;
@@ -20,24 +20,14 @@ class DocumentoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:student', [
-            'except' => ['index'],
-        ]);
+        $this->middleware('role:student')->except('index', 'download', 'getfile');
     }
 
     public function index(DocumentosIndexRequest $request)
     {
-        $proyectoId = auth()->user()->proyectos()->first();
-        //$documents  = Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)->get();
-        //return $documents;
-
-        $tipo = $request->tipo;
-
-        return Documentos::where('FK_ProyectoId', $proyectoId->pivot->FK_ProyectoId)
-            ->with('tipoDocumento')
-            ->when($tipo, function ($query) use ($tipo) {
-                return $query->where('FK_TipoDocumentoId', $tipo);
-            })->paginate(5);
+        $proyecto = auth()->user()->proyectos()->first();
+        return $proyecto->documentos->load('tipo');
+        
     }
 
     public function create()
@@ -60,13 +50,13 @@ class DocumentoController extends Controller
         //
     }
 
-    public function update(DocumentosUpdateRequest $request, Documentos $documentacion)
+    public function update(DocumentosUpdateRequest $request, Documento $documentacion)
     {
         $documentacion->fill($request->all());
         $documentacion->save();
     }
 
-    public function destroy(Documentos $documentacion)
+    public function destroy(Documento $documentacion)
     {
         Storage::disk('docuEst')->delete($documentacion->url);
         $documentacion->delete();
@@ -90,7 +80,7 @@ class DocumentoController extends Controller
 
             Storage::disk('docuEst')->put($fileName, File::get($fileInput));
 
-            return Documentos::create([
+            return Documento::create([
                 'url'                => $fileName,
                 'FK_ProyectoId'      => $idProyecto->PK_id,
                 'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,

@@ -48,6 +48,6 @@
 @endsection
 
 @push('functions')
-<script src="js/itemsCodificacion.js"></script>
+<script src="js/items-codificacion.js"></script>
 <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 @endpush

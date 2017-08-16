@@ -15,7 +15,7 @@ class CreateTypeNomenclaturaTable extends Migration
     {
         Schema::create('TBL_TipoNomenclatura',function(Blueprint $table){
           $table->increments('PK_id');
-          $table->string('nombre')->unique();
+          $table->string('nombre');
           $table->string('estandar');
           $table->integer('valor');
           $table->timestamps();

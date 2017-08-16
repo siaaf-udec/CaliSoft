@@ -15,7 +15,7 @@ class CreateTipoBdTable extends Migration
     {
         Schema::create('TBL_TipoBd',function(Blueprint $table){
           $table->increments('PK_id');
-          $table->string('nombre')->unique();
+          $table->string('nombre');
           $table->timestamps();
         });
     }

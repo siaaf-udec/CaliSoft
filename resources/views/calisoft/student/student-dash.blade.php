@@ -1,4 +1,12 @@
-@component('components.nav-link', ['icon' => 'fa fa-book', 'link' => route('documentacion'), 'title' => 'Documentacion'])
+@component('components.nav-dropdown', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
+    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => route('documentacion'), 'title' => 'Modelación'])
+    @endcomponent
+
+    @component('components.nav-link', ['icon' => 'fa fa-code', 'link' => route('documentosCodificacion'),'title' => 'Codificación'])
+    @endcomponent
+
+    @component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('documentosBd'),'title' => 'Base De Datos'])
+    @endcomponent
 @endcomponent
 
 @component('components.nav-dropdown', ['icon' => 'fa fa-check', 'title' => 'Evaluación'])
@@ -14,8 +22,17 @@
 
 @endcomponent
 
-@component('components.nav-link', ['icon' => 'fa fa-percent', 'link' => route('porcentajes'),'title' => 'Porcentajes'])
+@component('components.nav-dropdown', ['icon' => 'fa fa-percent', 'title' => 'Porcentajes'])
+    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => route('porcentajes'),'title' => 'Categorias'])
+    @endcomponent
+
+    @component('components.nav-link', ['icon' => 'fa fa-code', 'link' => '#','title' => 'Codificación'])
+    @endcomponent
+
+    @component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('porcentajesbd'),'title' => 'Bases de Datos'])
+    @endcomponent
 @endcomponent
+
 
 @can('create', 'App\Proyecto')
     @component('components.nav-link', [
