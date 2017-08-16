@@ -93,8 +93,11 @@ class UserController extends Controller
     }
 
     public function porcentajes()
-    {
-        
-        return view('calisoft.student.student-ver-porcentajes');
+    {        
+        return view('calisoft.global.categoria-porcentaje');
+    }
+    public function porcentajesBD()
+    {        
+        return view('calisoft.global.bd-porcentaje');
     }
 }

@@ -27,3 +27,4 @@ mix
     .js('resources/assets/js/items-codificacion.js', 'public/js')
     .js('resources/assets/js/modelacion.js', 'public/js')
     .js('resources/assets/js/tipo-nomenclatura.js', 'public/js')
+    .js('resources/assets/js/nomenclaturas-show.js', 'public/js')
