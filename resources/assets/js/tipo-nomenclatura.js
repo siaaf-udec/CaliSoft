@@ -19,5 +19,24 @@ new Vue({
         .then(response => {
           this.componentes = response.data;
         });
+      },
+      methods:{
+        update (){
+          axios.put('/api/basedatos/' + this.fillNomenclatura.PK_id, this.fillNomenclatura)
+            .then(response => {
+              this.componentes = this.componentes.map(value => {
+                return value.PK_id == this.fillNomenclatura.PK_id ? this.fillNomenclatura : value;
+              });
+              $('#editar-componente').modal("hide");
+              this.fillNomenclatura = {};
+              
+              toastr.info('Componente Editado Correctamente');
+            })
+            .catch(error => this.errorsUpdate = error.response.data);
+        },
+        openEditModal(componente){
+          this.fillNomenclatura =Object.assign({},componente);
+          $('#editar-componente').modal("show");
+        },
       }
 });
