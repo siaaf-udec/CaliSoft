@@ -3,7 +3,6 @@ import Vue from "vue";
 import ProyectoTabla from "./components/proyecto/proyecto-tabla";
 import BsSelect from "./components/bs/bs-select";
 import Fade from "./components/utils/fade";
-import FadeGroup from "./components/utils/fade-group";
 import Paginator from './components/classes/paginator';
 import { Pagination } from 'uiv'
 
@@ -13,8 +12,7 @@ let vm = new Vue({
         ProyectoTabla, 
         BsSelect, 
         Pagination,
-        Fade,
-        FadeGroup
+        Fade
     },
     data: {
         proyectos: [],

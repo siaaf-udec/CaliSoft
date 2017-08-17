@@ -29,7 +29,8 @@
                 <form @submit.prevent="update(fillNomenclatura.PK_id)">
                     <div class="row">
                         <div class="col-md-6">
-                            <text-input name="estandar" :error="errorsUpdate.estandar" v-model="fillNomenclatura.estandar" label="Estandar" icon="fa fa-user" required></text-input>                    
+                            <text-input name="estandar" :error="errorsUpdate.estandar" v-model="fillNomenclatura.estandar" 
+                                label="Estandar" icon="fa fa-user" required maxlength="5"></text-input>                    
                         </div>
                         <number-input name="valor" :error="errorsUpdate.valor" v-model="fillNomenclatura.valor" label="Valor" icon="fa fa-sort-numeric-asc" min="0" max="5" required></number-input>
                     </div>
