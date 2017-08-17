@@ -4,6 +4,7 @@ import Modal from "./components/utils/modal";
 import TextInput from "./components/inputs/text-input";
 import NumberInput from "./components/inputs/number-input";
 
+
 let vm = new Vue({
     el: '#app',
     components: { Modal, TextInput, NumberInput },
