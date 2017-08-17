@@ -100,4 +100,8 @@ class UserController extends Controller
     {        
         return view('calisoft.global.bd-porcentaje');
     }
+    public function porcentajesCodificacion()
+    {        
+        return view('calisoft.global.codificacion-porcentaje');
+    }
 }

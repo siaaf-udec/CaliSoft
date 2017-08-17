@@ -8,7 +8,7 @@
                 <thead>
                     <th class="text-center">Items</th>
                     <th class="text-center">Valor</th>
-                    <th class="text-center">Operacion</th>
+                    <th class="text-center">Operación</th>
                 </thead>
                 <tbody>
                     <tr class="text-center" v-for="item in items">
@@ -16,7 +16,7 @@
                         <td v-text="item.valor"></td>
                         
                         <td>
-                            <button class="editar-item btn btn-blue" title="editar codificacion" @click.prevent="openEditModal(item)">
+                            <button class="editar-item btn blue" title="editar codificacion" @click.prevent="openEditModal(item)">
                                 <span class="glyphicon glyphicon-pencil"></span>
                             </button>
                         </td>
@@ -26,7 +26,7 @@
 
             <modal id="editar-item" :title="'Editar item: ' + fillItem.item">
             <form @submit.prevent="update(fillItem.PK_id)">
-                    <number-input name="Valor" :error="formErrorsUpdate.valor" v-model="fillItem.valor" label="Valor" icon="fa fa-percent" min="0" max="10" required>
+                    <number-input name="Valor" :error="formErrorsUpdate.valor" v-model="fillItem.valor" label="Valor" icon="fa fa-sort-numeric-asc" min="1" max="5" required>
                     </number-input>
 
                 <div class="modal-footer">

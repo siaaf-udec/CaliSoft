@@ -25,7 +25,7 @@ class ItemsCodificacionUpdateRequest extends FormRequest
     {
         return [
             'PK_id' => 'required|integer',
-            'valor' => 'integer',
+            'valor' => 'integer|min:1|max:5',
             
         ];
     }

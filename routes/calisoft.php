@@ -12,5 +12,7 @@ Route::prefix('/perfil')->group(function (){
 Route::get('porcentajes', 'UserController@porcentajes')->name('porcentajes');
 Route::get('porcentajesbd', 'UserController@porcentajesBD')->name('porcentajesbd');
 
+Route::get('porcentajesCodificacion','UserController@porcentajesCodificacion')->name('porcentajesCod');
+
 
 Route::get('/notificaciones', 'NotificationController@vista')->name('notificaciones');
