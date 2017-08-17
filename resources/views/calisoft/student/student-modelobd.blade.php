@@ -9,61 +9,40 @@
 @endpush
 
 @section('content')
-  <div class="col-md-6">
-    <div class="container">
+  <div class="col-md-12">
+    @component('components.portlet', ['icon' => 'fa fa-database', 'title' => 'Diseño y Modelación de Base de Datos'])
       <div id="area"></div>
 
         <div id="controls">
+          <div class="col-md-24">
+            <div class="col-md-24">
           <div id="bar">
             <div id="toggle"></div>
-            <button type="button" id="saveload" class="btn btn-warning">Guardar SQL</button>
+            <input type="button" class="btn green-jungle" id="saveload" />
+            <input type="button" class="btn btn-danger" id="options" />
 
-            <button type="button" id="addtable" class="btn btn-primary">Agregar Tabla</button>
-            <br>
-            <br>
-            <button type="button" id="edittable" class="btn btn-primary">Editar Tabla</button>
-            <br>
-            <br>
-            <button type="button" id="tablekeys" class="btn btn-primary">Llaves</button>
-            <br>
-            <br>
-            <button type="button" id="removetable" class="btn btn-primary">Eliminar Tabla</button>
-            <br>
-            <br>
-            <button type="button" id="aligntables" class="btn btn-primary">Alinear Tabla</button>
-            <br>
-            <br>
-            <button type="button" id="cleartables" class="btn btn-primary">Limpiar Tabla</button>
+            <input type="button" class="btn btn-primary" id="addtable" />
+            <input type="button" class="btn btn-primary" id="edittable" />
+            <input type="button" class="btn btn-primary" id="tablekeys" />
+            <input type="button" class="btn btn-primary" id="removetable" />
+            <input type="button" style="display: none;" class="btn btn-primary" id="aligntables" />
+            <input type="button" class="btn btn-primary" id="cleartables" />
 
-            <br>
-            <br>
-            <br>
+            <hr>
 
-            <button type="button" id="addrow" class="btn btn-primary">Agregar Campo</button>
-            <br>
-            <br>
-            <button type="button" id="editrow" class="btn btn-primary">Editar Campo</button>
-            <br>
-            <br>
-            <button type="button" id="uprow" class="btn btn-primary">Arriba</button><button type="button" id="downrow" class="btn btn-primary">Abajo</button>
-            <br>
-            <br>
-            <button type="button" id="foreigncreate" class="btn btn-primary">Crear Llave Foranea</button>
-            <br>
-            <br>
-            <button type="button" id="foreignconnect" class="btn btn-primary">Conectar Llave Foranea</button>
-            <br>
-            <br>
-            <button type="button" id="foreigndisconnect" class="btn btn-primary">Eliminar Llave Foranea</button>
-            <br>
-            <br>
-            <button type="button" id="removerow" class="btn btn-primary">Eliminar Campo</button>
-
+            <input type="button" class="btn btn-primary" id="addrow" />
+            <input type="button" class="btn btn-primary" id="editrow" />
+            <input type="button" class="btn btn-primary" id="uprow" /><input type="button" class="btn btn-primary" id="downrow" />
+            <input type="button" class="btn btn-primary" id="foreigncreate" />
+            <input type="button" class="btn btn-primary" id="foreignconnect" />
+            <input type="button" class="btn btn-primary" id="foreigndisconnect" />
+            <input type="button" class="btn btn-primary" id="removerow" />
             <hr/>
 
-            <input type="button" id="options" />
-            <a href="https://github.com/ondras/wwwsqldesigner/wiki" target="_blank"><input style="display: none;" type="button" id="docs" value="" /></a>
+            <input style="display: none;" type="button" id="docs" value="" />
           </div>
+        </div>
+      </div>
 
   <div id="rubberband"></div>
 
@@ -74,67 +53,67 @@
   <div id="window">
     <div id="windowtitle"><img id="throbber" src="/modulobd/images/throbber.gif" alt="" title=""/></div>
     <div id="windowcontent"></div>
-    <input type="button" id="windowok" />
-    <input type="button" id="windowcancel" />
+    <input type="button" style="align: center;" class="btn btn-primary" id="windowok" />
+    <input type="button" class="btn btn-danger" style="align: center;" id="windowcancel" />
   </div>
 </div> <!-- #controls -->
 
 <div id="opts">
-  <table>
+  <table class="table-bordered">
     <tbody>
       <tr>
-        <td>
-          * <label id="language" for="optionlocale"></label>
+        <td style="display: none;">
+       <label style="display: none;" id="language" for="optionlocale"></label>
         </td>
-        <td>
-          <select id="optionlocale"><option></option></select>
+        <td style="display: none;">
+          <select style="display: none;" id="optionlocale"><option></option></select>
         </td>
       </tr>
       <tr>
         <td>
-          * <label id="db" for="optiondb"></label>
+          <label id="db" for="optiondb"></label>
         </td>
         <td>
           <select id="optiondb"><option></option></select>
         </td>
       </tr>
       <tr>
-        <td>
-          <label id="snap" for="optionsnap"></label>
+        <td style="display: none;">
+          <label style="display: none;" id="snap" for="optionsnap"></label>
         </td>
-        <td>
-          <input type="text" size="4" id="optionsnap" />
-          <span class="small" id="optionsnapnotice"></span>
+        <td style="display: none;">
+          <input style="display: none;" type="text" size="4" id="optionsnap" />
+          <span style="display: none;" class="small" id="optionsnapnotice"></span>
         </td>
       </tr>
       <tr>
-        <td>
+        <td style="display: none;">
           <label id="pattern" for="optionpattern"></label>
         </td>
-        <td>
+        <td style="display: none;">
           <input type="text" size="6" id="optionpattern" />
           <span class="small" id="optionpatternnotice"></span>
         </td>
       </tr>
       <tr>
-        <td>
+        <td style="display: none;">
           <label id="hide" for="optionhide"></label>
         </td>
-        <td>
+        <td style="display: none;">
           <input type="checkbox" id="optionhide" />
         </td>
       </tr>
       <tr>
         <td>
-          * <label id="vector" for="optionvector"></label>
+          <label id="vector" for="optionvector"></label>
         </td>
         <td>
-          <input type="checkbox" id="optionvector" />
+          <input style="align: center;" type="checkbox" id="optionvector" />
         </td>
       </tr>
       <tr>
         <td>
-          * <label id="showsize" for="optionshowsize"></label>
+          <label id="showsize" for="optionshowsize"></label>
         </td>
         <td>
           <input type="checkbox" id="optionshowsize" />
@@ -142,7 +121,7 @@
       </tr>
       <tr>
         <td>
-          * <label id="showtype" for="optionshowtype"></label>
+          <label id="showtype" for="optionshowtype"></label>
         </td>
         <td>
           <input type="checkbox" id="optionshowtype" />
@@ -151,19 +130,17 @@
     </tbody>
   </table>
 
-  <hr />
-
-  * <span class="small" id="optionsnotice"></span>
+  <span style="display: none;" class="small" id="optionsnotice"></span>
 </div>
 
 <div id="io">
   <table>
     <tbody>
       <tr>
-        <td style="width:60%">
+        <td>
           <fieldset>
             <legend style="display: none;" id="client"></legend>
-            <input type="button" id="clientsql" />
+            <button type="button" id="clientsql" class="btn btn-primary"><i class="fa fa-database"> Generar SQL</i></button>
             <div id="singlerow" style="display: none;">
             <input type="button" id="clientsave" />
             <input type="button" id="clientload" />
@@ -178,14 +155,13 @@
               <input type="button" id="dropboxload" /><!-- may get hidden by dropBoxInit() -->
               <input type="button" id="dropboxlist" /><!-- may get hidden by dropBoxInit() -->
             </div>
-            <hr/>
           </fieldset>
         </td>
         <td style="width:40%">
           <fieldset>
             <legend style="display: none;" id="server"></legend>
             <label style="display: none;" for="backend" id="backendlabel"></label> <select style="display: none;" id="backend"><option></option></select>
-            <hr/>
+
             <input style="display: none;" type="button" id="serversave" />
             <input style="display: none;" type="button" id="quicksave" />
             <input style="display: none;" type="button" id="serverload" />
@@ -197,7 +173,8 @@
       <tr>
         <td colspan="2">
           <fieldset>
-            <legend id="output"></legend>
+            <br>
+            <legend style="display: none;" id="output"></legend>
             <textarea id="textarea" rows="1" cols="1"></textarea><!--modified by javascript later-->
           </fieldset>
         </td>
@@ -261,6 +238,7 @@
           <input id="tablename" type="text" />
         </td>
       </tr>
+
       <tr>
         <td>
           <label id="tablecommentlabel" for="tablecomment"></label>
@@ -272,6 +250,7 @@
     </tbody>
   </table>
 </div>
+@endcomponent
 </div>
 @endsection
 
