@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src;
 
 use Illuminate\Database\Eloquent\Model;
 
-class TipoNomenclatura extends Model
+class BaseDatos extends Model
 {
     protected $primaryKey = "PK_id";
     protected $table = "TBL_TipoNomenclatura";

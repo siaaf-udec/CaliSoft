@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class TipoNomenclaturaUpdateRequest extends FormRequest
+class BaseDatosUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.

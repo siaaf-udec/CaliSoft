@@ -32,7 +32,7 @@
                             <text-input name="estandar" :error="errorsUpdate.estandar" v-model="fillNomenclatura.estandar" 
                                 label="Estandar" icon="fa fa-user" required maxlength="5"></text-input>                    
                         </div>
-                        <number-input name="valor" :error="errorsUpdate.valor" v-model="fillNomenclatura.valor" label="Valor" icon="fa fa-sort-numeric-asc" min="0" max="5" required></number-input>
+                        <number-input name="valor" :error="errorsUpdate.valor" v-model="fillNomenclatura.valor" label="Valor" icon="fa fa-sort-numeric-asc" min="1" max="5" required></number-input>
                     </div>
                     <div class="modal-footer">
                         <div class="form-group">
