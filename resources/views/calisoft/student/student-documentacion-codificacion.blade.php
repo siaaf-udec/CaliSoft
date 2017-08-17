@@ -25,10 +25,10 @@
 @endpush
 
 @push('functions')
-<script src="js/scripts-codificacion.js"></script>
+<script src="/js/scripts-codificacion.js"></script>
 <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
-<script src="../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
-<script src="../assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
+<script src="/assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
+<script src="/assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
 
 <script>
         Dropzone.options.myAwesomeDropzone = {

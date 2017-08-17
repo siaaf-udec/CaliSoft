@@ -4,6 +4,7 @@ import axios from 'axios';
 
 import { Modal } from 'uiv';
 import BsPdf from './components/bs/bs-pdf';
+import BsSwitch from './components/bs/bs-switch';
 
 import DocumentList from './components/documentacion/document-list'
 
@@ -12,7 +13,8 @@ new Vue({
     components: { 
         DocumentList,
         Modal,
-        BsPdf
+        BsPdf,
+        BsSwitch
     },
     data() {
         return { 

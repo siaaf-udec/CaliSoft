@@ -30,30 +30,35 @@
 
             <div class="col-sm-6">
                 <div class="list-group">
-                    <a v-for="proyecto in paginator.items" class="list-group-item"
-                        :class="{ 'bg-grey': seleccion == proyecto }"
-                        @click.prevent="seleccion = proyecto">
+                    
+                        <a v-for="proyecto in paginator.items" class="list-group-item" :key="proyecto.PK_id"
+                            
+                            :class="{ 'bg-grey': seleccion == proyecto }"
+                            @click.prevent="seleccion = {}; seleccion = proyecto">
 
-                        @{{proyecto.nombre}}
+                            @{{proyecto.nombre}}
 
-                        <span title="propuesta" class="badge" v-if="proyecto.state == 'propuesta'">
-                            P
-                        </span>
-                    </a>
+                            <span title="propuesta" class="badge" v-if="proyecto.state == 'propuesta'">
+                                P
+                            </span>
+                        </a>
+                    
                 </div>
 
-                <center v-show="paginator.lastPage > 1">
+                <div class="text-center" v-show="paginator.lastPage > 1">
                     <pagination v-model="paginator.page" :total-page="paginator.lastPage" ></pagination>
-                </center>
+                </div>
 
             </div>
-
-            <div class="col-sm-6" v-if="seleccion.nombre">
-
-                <proyecto-tabla :proyecto="seleccion" @updated="update" @removed="remove">
-                </proyecto-tabla>
-
+            
+            
+            <div class="col-sm-6" >
+                <fade mode="out-in">
+                    <proyecto-tabla v-if="seleccion.PK_id" :key="seleccion.PK_id" 
+                        :proyecto="seleccion" @updated="update" @removed="remove"/>
+                </fade>
             </div>
+            
         </div>
 
         @include('partials.modal-help-proyecto')
@@ -69,6 +74,7 @@
 @endpush
 
 @push('functions')
+
 <script src="{{ asset('assets/global/plugins/select2/js/select2.full.min.js') }}"></script>
 <script src="/assets/global/plugins/bootstrap-select/js/bootstrap-select.min.js"></script>
 <script src="/assets/global/plugins/bootstrap-toastr/toastr.min.js"></script>

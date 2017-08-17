@@ -23,6 +23,11 @@
                             prefix="/api/seeFile/" container="#pdf-container"></bs-pdf>
                     </div>
                 </div>
+                <div class="row">
+                    <div class="col-md-12 text-center">
+                        <bs-switch id="doc-cal" v-model="selected.checked" label="VALIDO" off="danger"></bs-switch>
+                    </div>
+                </div>
             </modal>
         </div>
         

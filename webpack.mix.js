@@ -25,6 +25,7 @@ mix
     .js('resources/assets/js/evaluator-proyectos.js', 'public/js')
     .js('resources/assets/js/notificaciones.js', 'public/js')
     .js('resources/assets/js/items-codificacion.js', 'public/js')
+    .js('resources/assets/js/scripts-codificacion.js', 'public/js')
     .js('resources/assets/js/modelacion.js', 'public/js')
     .js('resources/assets/js/tipo-nomenclatura.js', 'public/js')
     .js('resources/assets/js/nomenclaturas-show.js', 'public/js')

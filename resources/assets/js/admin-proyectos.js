@@ -1,13 +1,21 @@
 import "./bootstrap";
 import Vue from "vue";
-import proyectoTabla from "./components/proyecto/proyecto-tabla";
+import ProyectoTabla from "./components/proyecto/proyecto-tabla";
 import BsSelect from "./components/bs/bs-select";
+import Fade from "./components/utils/fade";
+import FadeGroup from "./components/utils/fade-group";
 import Paginator from './components/classes/paginator';
 import { Pagination } from 'uiv'
 
 let vm = new Vue({
     el: '#app',
-    components: { proyectoTabla, BsSelect, Pagination },
+    components: { 
+        ProyectoTabla, 
+        BsSelect, 
+        Pagination,
+        Fade,
+        FadeGroup
+    },
     data: {
         proyectos: [],
         seleccion: {},
