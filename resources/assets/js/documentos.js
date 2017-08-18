@@ -17,7 +17,7 @@ new Vue({
         fillDocumentos: {},
         formErrors: {},
         formErrorsUpdate: {},
-     
+
         modalState: false,
         editModalState: false
     },

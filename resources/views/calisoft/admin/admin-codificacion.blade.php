@@ -7,7 +7,7 @@
             <table class="table table-hover table-bordered table-condensed">
                 <thead>
                     <th class="text-center">Items</th>
-                    <th class="text-center">Valor</th>
+                    <th class="text-center">Prioridad</th>
                     <th class="text-center">Operación</th>
                 </thead>
                 <tbody>

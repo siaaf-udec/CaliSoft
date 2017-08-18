@@ -4,6 +4,26 @@
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-code', 'title' => 'Documentos de Codificación'])
             <div id="app">
+                <div class="table-responsive">
+                    <table class="table table-striped table-bordered table-hover dt-responsive" width="100%">
+                        <thead>
+                            <th class="text-center">Nombre Del Archivo</th>
+                            <th class="text-center">estado</th>
+                            <th class="text-center">operaciones</th>
+                        </thead>
+                        <tbody >
+                            <tr v-for="scripts in script" class="text-center">
+                                <td v-text="scripts.url"></td>
+                                <td v-text="scripts.estado"></td>
+                                <td class="text-center">
+                                    <button class="editar-modal btn red " title="Eliminar documento" @click.prevent="openDeleteModal(scripts)">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </td>
+                            </tr>    
+                        </tbody>
+                    </table>
+                </div>
                 <button type="button"  @click.prevent="modalState = true" class="btn blue center-block">
                     <i class="fa fa-plus"></i>
                     Subir Documentos
@@ -14,6 +34,21 @@
                         {{ csrf_field() }}
                     </form>
                 </modal>
+                <!-- inicio modal eliminar-->
+        <modal v-model="deleteModalState" title="Eliminar script">
+            ¿Desea eliminar el script @{{elimiScript.url}}?
+
+            <div class="modal-footer" slot="footer">
+                <button class="btn green-jungle" @click="destroy(elimiScript)">
+                    <i class="fa fa-edit"></i>Eliminar Script
+                </button>
+                <button type="button" class="btn red" data-dismiss="modal">
+                    <i class="fa fa-ban"></i>Cancelar
+                </button>
+            </div>
+        </modal>
+        <!-- Fin Modal Eliminar -->
+
             </div>
         @endcomponent
     </div>

@@ -43,10 +43,10 @@ class ScriptController extends Controller
 
 
     
-    public function destroy(Script $scripts)
+    public function destroy(Script $documentacion_script)
     {
-        Storage::disk('docuScript')->delete($scripts->url);
-        $scripts->delete();
+        Storage::disk('docuScript')->delete($documentacion_script->url);
+        $documentacion_script->delete();
     }
     
     public function postfile(DocumentosScriptsStoreRequest $request)
