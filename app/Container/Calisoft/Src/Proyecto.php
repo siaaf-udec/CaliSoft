@@ -70,4 +70,8 @@ class Proyecto extends Model
     {
         return $this->hasMany(Script::class, 'FK_ProyectoId', 'PK_id');
     }
+    public function archivobd()
+    {
+        return $this->hasOne(ArchivoSql::class,'FK_ProyectoId','PK_id');
+    }
 }
