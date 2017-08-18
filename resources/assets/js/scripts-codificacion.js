@@ -36,6 +36,9 @@ new Vue({
             this.deleteModalState = true;
 
         },
+        closeDeleteModal() {
+            this.deleteModalState = false;
+        }
     },
 
 

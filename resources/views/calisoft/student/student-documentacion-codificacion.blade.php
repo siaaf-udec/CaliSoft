@@ -42,7 +42,7 @@
                 <button class="btn green-jungle" @click="destroy(elimiScript)">
                     <i class="fa fa-edit"></i>Eliminar Script
                 </button>
-                <button type="button" class="btn red" data-dismiss="modal">
+                <button type="button" class="btn red" @click.prevent="closeDeleteModal()">
                     <i class="fa fa-ban"></i>Cancelar
                 </button>
             </div>
