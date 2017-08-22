@@ -13,16 +13,17 @@
                     <tr>
                         <th>Integrantes:</th>
                         <td>
-                            <span class="badge badge-info" v-for="integrante in integrantes" :key="integrante" style="margin-right: 1%">
-                                {{ integrante }}
+                            <span class="badge badge-info" v-for="integrante in integrantes" :key="integrante.PK_id" style="margin-right: 1%">
+                                {{ integrante.name }}
                             </span>
                         </td>
                     </tr>
                     <tr v-if="evaluadores.length">
                         <th>Evaluadores:</th>
                         <td>
-                            <span class="badge badge-info" v-for="evaluador in evaluadores" :key="evaluador" style="margin-right: 1%">
-                                {{ evaluador }} <a href="" class="fa fa-close text-danger"></a>
+                            <span class="badge badge-info" v-for="(evaluador, index) in evaluadores" :key="evaluador.PK_id" style="margin-right: 1%">
+                                {{ evaluador.name }}
+                                <a @click.prevent="desasignar(evaluador)" class="fa fa-close text-danger"></a>
                             </span>
                         </td>
                     </tr>
@@ -48,8 +49,7 @@
                     </tr>
                 </tbody>
             </table>
-    
-            
+
             <div class="btn-group btn-group-justified">
                 <template v-if="propuesta">
                     <a class="btn blue btn-sm" @click.prevent="acceptModal = true">Aceptar Proyecto</a>
@@ -59,10 +59,9 @@
                     <a class="btn blue btn-sm" @click.prevent="asignedModal = true">Asignar Evaluador</a>
                 </template>
             </div>
-                
-    
+
         </div>
-    
+
         <modal v-model="acceptModal" title="Aceptar propuesta" :footer="false">
             <p class="text-center">
                 Deseas aprobar la propuesta de proyecto {{ proyecto.nombre }}?
@@ -73,17 +72,17 @@
                 <button class="btn blue center-block" @click="aceptar()">Aceptar propuesta de proyecto</button>
             </div>
         </modal>
-    
+
         <modal v-model="destroyModal" title="Eliminar Proyecto" :footer="false">
             <p class="text-center">
                 Esta seguro de eliminar el proyecto {{ proyecto.nombre }}?
 
                 <div class="form-group col-sm-12">
                     <label for="text">Razón</label>
-                    <textarea  name="text" class="form-control" v-model="text" maxlength="200" required style="resize: none" rows="3"/>
+                    <textarea name="text" class="form-control" v-model="text" maxlength="200" required style="resize: none" rows="3" />
                     </textarea>
                     <span v-if="formErrors['text']" class="error text-danger">
-                                @{{formErrors.text[0]}}
+                        @{{formErrors.text[0]}}
                     </span>
                 </div>
 
@@ -92,7 +91,7 @@
                 </div>
             </p>
         </modal>
-    
+
         <modal v-model="asignedModal" title="Asignar Evaluador" :footer="false">
             <user-search url="/api/evaluator/search" button-text="Asignar" @selected="asignar">
                 <template slot="extra" scope="props">
@@ -100,7 +99,7 @@
                 </template>
             </user-search>
         </modal>
-    
+
     </div>
 </template>
 
@@ -112,12 +111,11 @@ export default {
     components: { Modal, UserSearch },
     props: ['proyecto'],
     data() {
-        return { asignedModal: false, destroyModal: false, acceptModal: false, formErrors: {}, text:"" }
+        return { asignedModal: false, destroyModal: false, acceptModal: false, formErrors: {}, text: "" }
     },
     methods: {
         filtrar(tipo) {
-            return this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo)
-                .map(usuario => usuario.name);
+            return this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo);
         },
         aceptar() {
             axios.put(`/api/proyectos/${this.proyecto.PK_id}/aceptar`).then(res => {
@@ -126,7 +124,7 @@ export default {
                 this.$emit('updated', Object.assign({}, this.proyecto, res.data));
             });
         },
-        asignar(user){
+        asignar(user) {
             axios.put(`/api/proyectos/${this.proyecto.PK_id}/asignar`, { user_id: user.PK_id })
                 .then(res => {
                     this.$emit('updated', Object.assign({}, this.proyecto, {
@@ -136,8 +134,18 @@ export default {
                     this.asignedModal = false
                 })
         },
+        desasignar(evaluador) {
+            axios.put(`/api/proyectos/${this.proyecto.PK_id}/desasignar`, { user_id: evaluador.PK_id })
+                .then(res => {
+                    this.$emit('updated', Object.assign({}, this.proyecto, {
+                        usuarios: res.data
+                    }));
+                    toastr.info(`el evaluador ${evaluador.name} ha sido desasignado de ${this.proyecto.nombre}`);
+                    this.asignedModal = false
+                })
+        },
         eliminar() {
-            axios.delete('/api/proyectos/' + this.proyecto.PK_id ,{ params: { text: this.text  }  }).then(() => {
+            axios.delete('/api/proyectos/' + this.proyecto.PK_id, { params: { text: this.text } }).then(() => {
                 this.destroyModal = false
                 toastr.info('Haz eliminado del proyecto ' + this.proyecto.nombre);
                 this.$emit('removed', this.proyecto)
@@ -162,7 +170,8 @@ export default {
 </script>
 
 <style scoped>
-    .borderless td, .borderless th {
-        border: none;
-    }
+.borderless td,
+.borderless th {
+    border: none;
+}
 </style>

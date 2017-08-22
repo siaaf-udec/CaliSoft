@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Container\Calisoft\Src\Notifications\ProyectoCreado;
@@ -35,17 +34,18 @@ class ProyectoController extends Controller
             ->get();
     }
 
-    public function show(Proyecto $proyecto) {
+    public function show(Proyecto $proyecto)
+    {
         return $proyecto;
     }
 
     public function store(ProyectoStoreRequest $request)
     {
         $request->user()->proyectos()->create([
-            'nombre'                    => $request->nombre,
+            'nombre' => $request->nombre,
             'FK_GrupoDeInvestigacionId' => $request->grupo,
-            'FK_SemilleroId'            => $request->semillero,
-            'FK_CategoriaId'            => $request->categoria,
+            'FK_SemilleroId' => $request->semillero,
+            'FK_CategoriaId' => $request->categoria,
         ], [
             'tipo' => 'integrante'
         ]);
@@ -63,13 +63,13 @@ class ProyectoController extends Controller
         //Envía notificación a usuario de eliminación junto con las razones
         $usuarios = $proyecto->usuarios()->get();
         Notification::send($usuarios, new ProyectoDenegado($proyecto->nombre, $request->text));
-        
+
         $proyecto->delete();
     }
 
     public function documentos(Proyecto $proyecto)
     {
-        return $proyecto->documentos->load([ 'tipo' => function($query) {
+        return $proyecto->documentos->load(['tipo' => function ($query) {
             $query->select('PK_id', 'nombre');
         }]);
     }
@@ -100,9 +100,10 @@ class ProyectoController extends Controller
         return $proyecto;
     }
 
-    public function asignar(ProyectoAsignarRequest $request, Proyecto $proyecto){
+    public function asignar(ProyectoAsignarRequest $request, Proyecto $proyecto)
+    {
 
-        $proyecto->usuarios()->syncWithoutDetaching([ $request->user_id => [ 
+        $proyecto->usuarios()->syncWithoutDetaching([$request->user_id => [
             'tipo' => 'evaluador'
         ]]);
         //Notificación 
@@ -111,4 +112,14 @@ class ProyectoController extends Controller
 
         return $proyecto->usuarios;
     }
+
+    public function desasignar(Request $request, Proyecto $proyecto)
+    {
+        $this->validate($request, [
+            'user_id' => 'required|integer|exists:TBL_Usuarios,PK_id'
+        ]);
+        $proyecto->usuarios()->detach($request->user_id);
+        return $proyecto->usuarios;
+    }
+
 }
