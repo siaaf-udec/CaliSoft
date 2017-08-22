@@ -5,7 +5,7 @@ import BsSelect from "./components/bs/bs-select";
 import DocumentList from "./components/documentacion/document-list";
 import DocumentProgress from "./components/documentacion/document-progress";
 
-new Vue({
+let vm = new Vue({
     el: "#app",
     components: { Modal, BsSelect, DocumentList, DocumentProgress },
     props: ['src'],
@@ -54,3 +54,19 @@ new Vue({
         }
     }
 });
+
+Dropzone.options.myAwesomeDropzone = {
+    uploadMultiple: false,
+    maxFilezise: 1000,
+    acceptedFiles: '.pdf',
+    success: function (a, doc) {
+        vm.$data.documentos.push(doc);
+        toastr.info('Documento subido correctamente');
+        return a.previewElement ? a.previewElement.classList.add("dz-success") : void 0
+    },
+    error(file, message, xhr) {
+        this.removeFile(file);
+        let response = JSON.parse(xhr.responseText);
+        for (error in response) toastr.error(response[error]);
+    }
+};

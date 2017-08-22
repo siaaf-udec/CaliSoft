@@ -27,8 +27,8 @@
                 </button>             
 
                 {{-- Creacion de documento   --}}
-                <modal v-model="modalState" title="Subir documentación" @hide="refresh()" :footer="false">
-                    <form action="/api/file" id="my-awesome-dropzone" method="post" class="dropzone">
+                <modal v-model="modalState" title="Subir documentación" :footer="false">
+                    <form action="/api/documentacion" id="my-awesome-dropzone" method="post" class="dropzone">
                         {{ csrf_field() }}
                         
                         
@@ -91,38 +91,7 @@
 @endpush
 
 @push('functions')
-
+    <script src="/assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
     <script src="/js/documentos.js"></script>
-    <script src="../assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
-    <script src="../assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
-
-    <script>
-        Dropzone.options.myAwesomeDropzone = {
-            uploadMultiple: false,
-            maxFilezise: 1000,
-            maxFiles: 5,
-            acceptedFiles: '.pdf',
-            addRemoveLinks: true,
-            dictRemoveFile: "Retirar archivo",
-            success: function(a) {
-                toastr.info('Documento subido correctamente');
-                return a.previewElement ? a.previewElement.classList.add("dz-success") : void 0
-            },
-            error(file, message, xhr){
-                this.removeFile(file);
-                let response = JSON.parse(xhr.responseText);
-                for(error in response) toastr.error(response[error]);
-            }
-        };
-    </script>
-
-
-
-@endpush
-
-
-
-@push('plugins')
-
-
 @endpush

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
@@ -30,7 +29,7 @@ class UserController extends Controller
      */
     public function index(UserIndexRequest $request)
     {
-      return User::all();
+        return User::all();
     }
 
     /**
@@ -42,11 +41,11 @@ class UserController extends Controller
     public function store(UserStoreRequest $request)
     {
 
-        $user=User::create([
-          'name' => $request['name'],
-          'email' => $request['email'],
-          'role' => $request['role'],
-          'password' => bcrypt($request['password']),
+        $user = User::create([
+            'name' => $request['name'],
+            'email' => $request['email'],
+            'role' => $request['role'],
+            'password' => bcrypt($request['password']),
         ]);
         $user->notify(new UsuarioCreado($request->password));
         return $user;
@@ -69,14 +68,17 @@ class UserController extends Controller
     public function proyectos()
     {
         return request()->user()->proyectos()->with(
-            'semillero', 'categoria', 'grupoDeInvestigacion', 'usuarios'
+            'semillero',
+            'categoria',
+            'grupoDeInvestigacion',
+            'usuarios'
         )->get();
     }
 
     /**
-    *  Retorna los estudiantes que no tienen
-    *  proyectos, filtra por nombre
-    */
+     *  Retorna los estudiantes que no tienen
+     *  proyectos, filtra por nombre
+     */
     public function searchFreeStudents()
     {
         return $this->users->searchFreeStudents();
@@ -93,15 +95,18 @@ class UserController extends Controller
     }
 
     public function porcentajes()
-    {        
+    {
         return view('calisoft.global.categoria-porcentaje');
     }
+
     public function porcentajesBD()
-    {        
+    {
         return view('calisoft.global.bd-porcentaje');
     }
+
     public function porcentajesCodificacion()
-    {        
+    {
         return view('calisoft.global.codificacion-porcentaje');
     }
+
 }

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Policies;
 
 use App\Container\Calisoft\Src\User;
@@ -33,10 +32,10 @@ class ProjectPolicy
     public function update(User $user, Proyecto $proyecto)
     {
         return $user->proyectos()
-          ->wherePivot('tipo', 'integrante')
-          ->where('PK_id', $proyecto->PK_id)
-          ->where('state', 'creacion')
-          ->count() > 0;
+            ->wherePivot('tipo', 'integrante')
+            ->where('PK_id', $proyecto->PK_id)
+            ->where('state', 'creacion')
+            ->count() > 0;
     }
 
     /**
@@ -46,8 +45,8 @@ class ProjectPolicy
      * @param  \App\Proyecto  $proyecto
      * @return mixed
      */
-    public function delete(User $user, Proyecto $proyecto)
+    public function upload(User $user)
     {
-        //
+        return $user->proyectos()->where('state', 'activo')->count() > 0;
     }
 }

@@ -1,26 +1,41 @@
-@component('components.nav-dropdown', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
-    @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => route('documentacion'), 'title' => 'Modelación'])
+@can('create', 'App\Proyecto')
+    @component('components.nav-link', [
+        'icon' => 'fa fa-pencil-square',
+        'title' => 'Registro Proyecto',
+        'link' => route('proyectos'),
+    ])
+    @endcomponent
+@endcan
+
+@can('upload', 'App\Proyecto')
+    @component('components.nav-dropdown', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
+        @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => route('documentacion'), 'title' => 'Modelación'])
+        @endcomponent
+
+        @component('components.nav-link', ['icon' => 'fa fa-code', 'link' => route('documentosCodificacion'),'title' => 'Codificación'])
+        @endcomponent
+
+        @component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('documentosBd'),'title' => 'Base De Datos'])
+        @endcomponent
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-code', 'link' => route('documentosCodificacion'),'title' => 'Codificación'])
+    @component('components.nav-dropdown', ['icon' => 'fa fa-check', 'title' => 'Evaluación'])
+
+        @component('components.nav-link', ['icon' => 'fa fa-users', 'link' => '#', 'title' => 'Evaluadores'])
+        @endcomponent
+
+        @component('components.nav-link', ['icon' => 'fa fa-bar-chart-o', 'link' => '#', 'title' => 'Modelado'])
+        @endcomponent
+
+        @component('components.nav-link', ['icon' => 'fa fa-cubes', 'link' => '#', 'title' => 'Plataforma'])
+        @endcomponent
+
     @endcomponent
 
-    @component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('documentosBd'),'title' => 'Base De Datos'])
+
+    @component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('modelobd'), 'title' => 'Modelación Base de Datos'])
     @endcomponent
-@endcomponent
-
-@component('components.nav-dropdown', ['icon' => 'fa fa-check', 'title' => 'Evaluación'])
-
-    @component('components.nav-link', ['icon' => 'fa fa-users', 'link' => '#', 'title' => 'Evaluadores'])
-    @endcomponent
-
-    @component('components.nav-link', ['icon' => 'fa fa-bar-chart-o', 'link' => '#', 'title' => 'Modelado'])
-    @endcomponent
-
-    @component('components.nav-link', ['icon' => 'fa fa-cubes', 'link' => '#', 'title' => 'Plataforma'])
-    @endcomponent
-
-@endcomponent
+@endcan
 
 @component('components.nav-dropdown', ['icon' => 'fa fa-percent', 'title' => 'Porcentajes'])
     @component('components.nav-link', ['icon' => 'fa fa-book', 'link' => route('porcentajes'),'title' => 'Categorias'])
@@ -34,14 +49,6 @@
 @endcomponent
 
 
-@can('create', 'App\Proyecto')
-    @component('components.nav-link', [
-        'icon' => 'fa fa-pencil-square',
-        'title' => 'Registro Proyecto',
-        'link' => route('proyectos'),
-    ])
-    @endcomponent
-@endcan
 
-@component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('modelobd'), 'title' => 'Modelación Base de Datos'])
-    @endcomponent
+
+

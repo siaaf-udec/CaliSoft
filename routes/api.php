@@ -32,12 +32,10 @@ Route::resource('usuarios', 'UserController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
-Route::resource('documentacion', 'DocumentoController', [
-    'only' => ['index', 'store', 'update', 'destroy'],
-]);
 
-Route::resource('documentacion-scripts','ScriptController',[
-    'only' =>['index','store','update','destroy'],
+
+Route::resource('documentacion-scripts', 'ScriptController', [
+    'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
 Route::resource('tdocumentos', 'TiposDocumentoController', [
@@ -57,7 +55,7 @@ Route::prefix('student')->group(function () {
 Route::get('/evaluator/search', 'UserController@searchEvaluators');
 
 Route::resource('invitations', 'InvitationController', [
-    'only'       => ['store', 'update', 'destroy'],
+    'only' => ['store', 'update', 'destroy'],
     'parameters' => [
         'invitations' => 'proyecto',
     ],
@@ -82,19 +80,19 @@ Route::resource('proyectos', 'ProyectoController', [
 // Fin proyectos
 
 // subir documentación estudiante
-Route::post('file', 'DocumentoController@postfile');
-Route::get('seeFile/{file}', 'DocumentoController@getfile');
-Route::get('downloadFile/{file}', 'DocumentoController@download');
+Route::resource('documentacion', 'DocumentoController', [
+    'only' => ['index', 'store', 'update', 'destroy'],
+]);
 // fin subir documentación estudiante
 
 //subir documentacion de codificacion
-Route::post('fileScript','ScriptController@postfile');
-// fin documentacion codificacion
+Route::post('fileScript', 'ScriptController@postfile'); //Resource !!
+// fin documentacion codificacion 
 
 Route::resource('basedatos', 'BaseDatosController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
 Route::resource('codificacion', 'ItemsCodificacionController', [
-    'only' => ['index','update'],
+    'only' => ['index', 'update'],
 ]);

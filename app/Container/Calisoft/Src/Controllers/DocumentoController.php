@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src\Controllers;
 
 use App\Container\Calisoft\Src\Documento;
@@ -21,33 +20,25 @@ class DocumentoController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:student')->except('index', 'download', 'getfile');
+        $this->middleware('can:upload,App\Proyecto')->only('store');
     }
 
     public function index(DocumentosIndexRequest $request)
     {
         $proyecto = auth()->user()->proyectos()->first();
         return $proyecto->documentos->load('tipo');
-        
     }
 
-    public function create()
+    public function store(DocumentosStoreRequest $request)
     {
-        //
-    }
-
-    public function store(Request $request)
-    {
-
-    }
-
-    public function show($id)
-    {
-        //
-    }
-
-    public function edit($id)
-    {
-        //
+        $proyecto = $request->user()->proyectos()->first(); //obtiene el proyecto del usuario logeado
+        $doc = new Documento(); //inicializa el documento a guardar
+        $file = $request->file('file'); //obtiene el archivo
+        $doc->url = $file->store('/', 'documentos'); //guarda el archivo
+        $doc->nombre = $file->getClientOriginalName();
+        $doc->FK_TipoDocumentoId = $request->FK_TipoDocumentoId; //asigna el tipo
+        $proyecto->documentos()->save($doc); //guarda y asigna el documento al proyecto
+        return $doc;
     }
 
     public function update(DocumentosUpdateRequest $request, Documento $documentacion)
@@ -58,44 +49,8 @@ class DocumentoController extends Controller
 
     public function destroy(Documento $documentacion)
     {
-        Storage::disk('docuEst')->delete($documentacion->url);
+        Storage::disk('documentos')->delete($documentacion->getOriginal('url'));
         $documentacion->delete();
-
     }
 
-    public function getTipos()
-    {
-        return $tdocumento = TiposDocumento::all();
-    }
-
-    public function postfile(DocumentosStoreRequest $request)
-    {
-
-        $fileInput  = $request->file('file');
-        $tipoInput  = $request->FK_TipoDocumentoId;
-        $idProyecto = auth()->user()->proyectos()->first();
-        $fileName   = rand(1000, 9999) . '_' . $fileInput->getClientOriginalName();
-
-        if (Input::hasFile('file')) {
-
-            Storage::disk('docuEst')->put($fileName, File::get($fileInput));
-
-            return Documento::create([
-                'url'                => $fileName,
-                'FK_ProyectoId'      => $idProyecto->PK_id,
-                'FK_TipoDocumentoId' => $request->FK_TipoDocumentoId,
-            ]);
-        }
-    }
-
-    public function getfile($file)
-    {
-        return response()->file("storage/uploads/documentos/" . $file);
-        //return Storage::url("uploads/documentos/" . $file);
-    }
-
-    public function download($file)
-    {
-        return response()->download("storage/uploads/documentos/" . $file);
-    }
 }
