@@ -12,12 +12,7 @@
 ])
 @endcomponent
 
-@component('components.nav-link', [
-    'icon' => 'fa fa-pie-chart',
-    'link' => route('categorias'),
-    'title' => 'Categorias'
-])
-@endcomponent
+
 
 @component('components.nav-link', [
     'icon' => 'fa fa-book',
@@ -32,15 +27,27 @@
     'link' => route('semilleros')
 ])
 @endcomponent
-@component('components.nav-link', [
-    'icon' => 'fa fa-database',
-    'title' => 'Base de Datos',
-    'link' => route('basedatos')
-])
-@endcomponent
-@component('components.nav-link',[
-    'icon' => 'fa fa-code',
-    'title' => 'Codificación',
-    'link' => route('codificacion')
-])
+
+@component('components.nav-dropdown', ['icon' => 'fa fa-percent', 'title' => 'Porcentajes'])
+
+    @component('components.nav-link', [
+        'icon' => 'fa fa-pie-chart',
+        'link' => route('categorias'),
+        'title' => 'Categorias'
+    ])
+    @endcomponent
+
+
+    @component('components.nav-link', [
+        'icon' => 'fa fa-database',
+        'title' => 'Base de Datos',
+        'link' => route('basedatos')
+    ])
+    @endcomponent
+    @component('components.nav-link',[
+        'icon' => 'fa fa-code',
+        'title' => 'Codificación',
+        'link' => route('codificacion')
+    ])
+    @endcomponent
 @endcomponent
