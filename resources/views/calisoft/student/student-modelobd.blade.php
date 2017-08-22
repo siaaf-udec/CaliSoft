@@ -20,7 +20,7 @@
             <div id="toggle"></div>
             <input type="button" class="btn green-jungle" id="saveload" />
             <input type="button" class="btn btn-danger" id="options" />
-
+  
             <input type="button" class="btn btn-primary" id="addtable" />
             <input type="button" class="btn btn-primary" id="edittable" />
             <input type="button" class="btn btn-primary" id="tablekeys" />
