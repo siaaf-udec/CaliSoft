@@ -18,7 +18,7 @@
 
                                 <slot name="buttons" :doc="doc"></slot>
 
-                                <a title="descargar" class="btn btn-info btn-xs" :href="`${doc.url}`">
+                                <a title="descargar" class="btn btn-info btn-xs" :href="`${doc.url}`" target="_blank">
                                     <span class="glyphicon glyphicon-download-alt"></span>
                                 </a>
 
