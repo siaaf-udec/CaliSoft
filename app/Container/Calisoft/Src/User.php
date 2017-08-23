@@ -1,18 +1,19 @@
 <?php
-
 namespace App\Container\Calisoft\Src;
 
 use App\Container\Calisoft\Src\Proyecto;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Facades\Storage;
+use App\Container\Calisoft\Src\Notifications\ResetPassword;
+
 
 
 class User extends Authenticatable
 {
     use Notifiable;
 
-    protected $table      = "TBL_Usuarios";
+    protected $table = "TBL_Usuarios";
     protected $primaryKey = "PK_id";
 
     /**
@@ -40,14 +41,19 @@ class User extends Authenticatable
     ];
 
     /**
-    * Canal de notificaciones
-    */
+     * Canal de notificaciones
+     */
     public function receivesBroadcastNotificationsOn()
     {
-        return 'users.'.$this->PK_id;
+        return 'users.' . $this->PK_id;
     }
 
-    
+    public function sendPasswordResetNotification($token)
+    {
+        $this->notify(new ResetPassword($token));
+    }
+
+
 
     /**
      * Relacion evaluador -> proyectos asignados

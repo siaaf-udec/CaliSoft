@@ -15,7 +15,6 @@ class CreateDocumentsTable extends Migration
         Schema::create('TBL_Documentos', function (Blueprint $table) {
             $table->increments('PK_id');
             $table->string('url');
-            $table->string('nombre');
             $table->integer('FK_ProyectoId')->unsigned();
             $table->integer('FK_TipoDocumentoId')->unsigned();
             $table->timestamps();
