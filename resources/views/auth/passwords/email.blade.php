@@ -15,7 +15,7 @@
         ])
         @endcomponent
         <div class="form-actions">
-            <button id="back-btn" class="btn green btn-outline" type="button">Cancelar</button>
+            <a href="{{ route('login') }}" class="btn green btn-outline" type="button">Cancelar</a>
             <input class="btn btn-success uppercase pull-right" type="submit" value="Enviar">
         </div>
     </form>

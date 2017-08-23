@@ -48,7 +48,7 @@ export default {
 
 <style scoped>
 .big {
-    font-size: 15px;
+    font-size: 11px;
 }
 </style>
 
