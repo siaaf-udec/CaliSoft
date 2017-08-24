@@ -97,3 +97,10 @@ Route::resource('basedatos', 'BaseDatosController', [
 Route::resource('codificacion', 'ItemsCodificacionController', [
     'only' => ['index', 'update'],
 ]);
+
+//subir archivo sql
+Route::post('fileSql','ArchivoSqlController@postfile');
+//ruta de javascript vue archivo sql
+Route::resource('documentacion-sql','ArchivoSqlController',[
+    'only' =>['index','store','update','destroy'],
+]);
