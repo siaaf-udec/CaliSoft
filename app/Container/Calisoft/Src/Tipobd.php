@@ -11,7 +11,7 @@ class Tipobd extends Model
     protected $fillable = ['nombre'];
 
     public function archivobd(){
-        return $this->hasOne(ArchivoSql::class,'FK_TipoBdId','PK_id');
+        return $this->hasMany(ArchivoSql::class,'FK_TipoBdId','PK_id');
     }
 }
 
