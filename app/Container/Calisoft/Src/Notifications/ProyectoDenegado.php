@@ -16,6 +16,7 @@ class ProyectoDenegado extends Notification implements ShouldQueue
 
     public $proyecto;
     public $text;
+    public $img;
 
     /**
      * Create a new notification instance.
@@ -26,6 +27,7 @@ class ProyectoDenegado extends Notification implements ShouldQueue
     {
         $this->proyecto = $proyecto;
         $this->text = $text;
+        $this->img = '/img/proyecto-denegado.png';
     }
 
     /**
@@ -67,9 +69,10 @@ class ProyectoDenegado extends Notification implements ShouldQueue
         return [
             'type' => 'proyecto-denegado',
             'url' => '/proyectoDene',
-            'alert' => 'Has recibido una notificación!',
+            'alert' => '¡Has recibido una notificación!',
             'proyecto' => $this->proyecto,
-            'text' => $this->text
+            'text' => $this->text,
+            'img' => $this->img
         ];
     }
 }

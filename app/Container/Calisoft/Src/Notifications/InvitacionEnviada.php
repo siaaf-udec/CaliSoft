@@ -16,6 +16,7 @@ class InvitacionEnviada extends Notification implements ShouldQueue
 
     public $proyecto;
     public $from;
+    public $img;
 
     /**
      * Create a new notification instance.
@@ -26,10 +27,7 @@ class InvitacionEnviada extends Notification implements ShouldQueue
     {
         $this->from = $from;
         $this->proyecto = $proyecto;
-        
-        if($this->from->foto == null){
-            $this->from->foto = '/img/default.png';
-        }
+        $this->img = '/img/invitacion-enviada.png';
 
     }
 
@@ -53,7 +51,7 @@ class InvitacionEnviada extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-          ->subject('Has recibido una invitacion')
+          ->subject('Has recibido una invitación')
           ->markdown('mail.invitacion', [
             'user' => $notifiable,
             'proyecto' => $this->proyecto,
@@ -72,9 +70,9 @@ class InvitacionEnviada extends Notification implements ShouldQueue
         return [
             'type' => 'invitacion-recibida',
             'url' => '/invitaciones',
-            'alert' => 'Has recibido una invitacion!',
+            'alert' => '¡Has recibido una invitación!',
             'proyecto' => $this->proyecto->nombre,
-            'foto' => $this->from->foto,
+            'img' => $this->img,
             'user' => $this->from->name
         ];
     }

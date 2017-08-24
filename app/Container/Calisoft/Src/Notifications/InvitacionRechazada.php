@@ -10,24 +10,25 @@ use App\Container\Calisoft\Src\Traits\DataBroadcast;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\User;
 
-class ProyectoAsignado extends Notification implements ShouldQueue
+class InvitacionRechazada extends Notification implements ShouldQueue
 {
     use Queueable, DataBroadcast;
 
     public $proyecto;
+    public $from;
     public $img;
-    
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Proyecto $proyecto)
+    public function __construct($from, Proyecto $proyecto)
     {
-        
+        $this->from = $from;
         $this->proyecto = $proyecto;
-        $this->img = '/img/proyecto-asignado.png';
+        $this->img = '/img/invitacion-rechazada.png';
+
     }
 
     /**
@@ -50,10 +51,11 @@ class ProyectoAsignado extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-          ->subject('Se te ha asignado un proyecto')
-          ->markdown('mail.asignado', [
+          ->subject('Han rechazado tu invitación :(')
+          ->markdown('mail.invitacion-rechazada', [
             'user' => $notifiable,
-            'proyecto' => $this->proyecto
+            'proyecto' => $this->proyecto,
+            'from' => $this->from
           ]);
     }
 
@@ -66,10 +68,12 @@ class ProyectoAsignado extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'type' => 'proyecto-asignado',
-            'url' => '/proyecto',
-            'alert' => '¡Se te ha asignado un proyecto!',
-            'proyecto' => $this->proyecto->nombre
+            'type' => 'invitacion-rechazada',
+            'url' => '/invitaciones',
+            'alert' => '¡Has recibido una invitación!',
+            'proyecto' => $this->proyecto->nombre,
+            'user' => $this->from,
+            'img' => $this->img
         ];
     }
 }
