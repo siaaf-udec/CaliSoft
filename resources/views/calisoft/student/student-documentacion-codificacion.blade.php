@@ -4,6 +4,35 @@
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-code', 'title' => 'Documentos de Codificación'])
             <div id="app">
+            <div class="row">
+
+                
+                    <div class="col-sm-4 col-xs-12">
+                        <div class="form-horizontal">
+                            <div class="form-group">
+                                <label for="" class="control-label col-xs-4">Mostrar</label>
+                                <div class="col-xs-4 col-sm-5">
+                                    <select  class="form-control" v-model="paginator.show">
+                                        <option value="5">5</option>
+                                        <option value="10" selected>10</option>
+                                        <option value="15">15</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+
+                <div class="col-sm-offset-4 col-sm-4 col-xs-12" style="margin-bottom: 2%">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Buscar" >
+                        <span class="input-group-addon">
+                        <i class="glyphicon glyphicon-search"></i>
+                        </span>
+                    </div>
+
+                </div>
+            </div>
                 <div class="table-responsive">
                     <table class="table table-striped table-bordered table-hover dt-responsive" width="100%">
                         <thead>

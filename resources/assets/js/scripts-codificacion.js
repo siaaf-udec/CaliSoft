@@ -1,16 +1,19 @@
 import "./bootstrap";
 import Vue from "vue";
 import { Modal } from "uiv";
+import Paginator from './components/classes/paginator';
+import { Pagination } from "uiv";
 
 new Vue({
     el: "#app",
-    components: { Modal },
+    components: { Modal, Pagination },
     data: {
         script: [],
         newDocumentos: {},
         formErrors: {},
         formErrorsUpdate: {},
         modalState: false,
+        paginator: new Paginator(),
         deleteModalState: false,
         elimiScript: {},
 
