@@ -16,6 +16,7 @@ class ProyectoCreado extends Notification implements ShouldQueue
 
 
     public $proyecto;
+    public $img;
     /**
      * Create a new notification instance.
      *
@@ -24,6 +25,7 @@ class ProyectoCreado extends Notification implements ShouldQueue
     public function __construct($proyecto)
     {
         $this->proyecto = $proyecto;
+        $this->img = '/img/proyecto-creado.png';
     }
 
     /**
@@ -63,7 +65,8 @@ class ProyectoCreado extends Notification implements ShouldQueue
             'type' => 'proyecto-creado',
             'proyecto' => $this->proyecto->nombre,
             'url' => '/proyecto',
-            'alert' => 'Se ha registrado un nuevo proyecto'
+            'alert' => '¡Se ha registrado un nuevo proyecto!',
+            'img' => $this->img
         ];
     }
 

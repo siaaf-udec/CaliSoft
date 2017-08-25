@@ -23,26 +23,12 @@
                                                     
                                                     <!--Fin de rutas de las diferentes notificaciones-->
                                                     <!--Imagenes de perfil-->        
-                                                    <div class="list-thumb" v-if="notificacion.data.type === 'proyecto-creado'">
+                                                    <div class="list-thumb">
                                                         <a href="javascript:;">
-                                                            <img class="img-circle" alt="" src="/img/proyecto-creado.png" />
+                                                            <img class="img-circle" alt="" :src="notificacion.data.img" />
                                                         </a>
                                                     </div>
-                                                    <div class="list-thumb" v-if="notificacion.data.type === 'proyecto-denegado'">
-                                                        <a href="javascript:;">
-                                                            <img class="img-circle" alt="" src="/img/proyecto-denegado.png" />
-                                                        </a>
-                                                    </div>
-                                                    <div class="list-thumb" v-if="notificacion.data.type === 'invitacion-recibida'">
-                                                        <a href="javascript:;">
-                                                            <img class="img-circle" alt="" src="/img/invitacion-recibida.png" />
-                                                        </a>
-                                                    </div>
-                                                    <div class="list-thumb" v-if="notificacion.data.type === 'proyecto-asignado'">
-                                                        <a href="javascript:;">
-                                                            <img class="img-circle" alt="" src="/img/proyecto-asignado.png" />
-                                                        </a>
-                                                    </div>
+                                                    
                                                     
                                                     <!--Fin imagenes de perfil-->    
                                                     <!--Texto según notificación-->    
@@ -54,6 +40,9 @@
                                                         <p v-if="notificacion.data.type === 'proyecto-creado'">Nueva propuesta de proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>
                                                         <p v-if="notificacion.data.type === 'proyecto-denegado'">Se eliminó el proyecto: <strong>@{{notificacion.data.proyecto}}</strong>. Por la siguienre razón: <strong>@{{notificacion.data.text}}</strong> </p>
                                                         <p v-if="notificacion.data.type === 'invitacion-recibida'"><strong>@{{notificacion.data.user}}</strong> te ha invitado a ser parte del proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>
+                                                        <p v-if="notificacion.data.type === 'invitacion-rechazada'"><strong>@{{notificacion.data.user}}</strong> ha rechazado la invitación del proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>                                                    
+                                                        <p v-if="notificacion.data.type === 'invitacion-aceptada'"><strong>@{{notificacion.data.user}}</strong> ha aceptado la invitación al proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>                                                    
+                                                        <p v-if="notificacion.data.type === 'proyecto-aceptado'">Se ha aceptado el proyecto: <strong>@{{notificacion.data.proyecto}} ¡Felicitaciones!</strong></p>
                                                         <p v-if="notificacion.data.type === 'proyecto-asignado'">Se te ha asignado el proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>
                                                     </div>
                                                     <!--Fin texto según notificación-->    

@@ -29,11 +29,16 @@
 <script>
 import ProyectoCreado from './proyecto-creado';
 import InvitacionRecibida from './invitacion-recibida';
+import InvitacionAceptada from './invitacion-aceptada';
+import InvitacionRechazada from './invitacion-rechazada';
 import ProyectoDenegado from './proyecto-denegado';
 import ProyectoAsignado from './proyecto-asignado';
+import ProyectoAceptado from './proyecto-aceptado';
+
 
 export default {
-    components: { ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado },
+    components: { ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado, InvitacionRechazada,
+                  InvitacionAceptada, ProyectoAceptado },
     data(){
         return { count: 0, notificaciones: [] };
     },
