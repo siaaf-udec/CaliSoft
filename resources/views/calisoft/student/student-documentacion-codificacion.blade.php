@@ -107,8 +107,8 @@
 <script>
         Dropzone.options.myAwesomeDropzone = {
             uploadMultiple: false,
-            maxFilezise: 1000,
-            maxFiles: 5,
+            maxFilezise: 250,
+            maxFiles: 20,
             acceptedFiles: '.php',
             addRemoveLinks: true,
             dictRemoveFile: "Retirar archivo",
