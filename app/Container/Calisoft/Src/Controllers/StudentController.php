@@ -22,7 +22,12 @@ class StudentController extends Controller
     public function documentos()
     {
         $co = auth()->user()->proyectos()->first();
-        return view('calisoft.student.student-documentacion', compact('co'));
+        if($co->state != "activo"){
+            return view('calisoft.student.student-acceso-denegado', compact('co'));
+        }else{
+            return view('calisoft.student.student-documentacion', compact('co'));
+        }   
+       
     }
 
     public function invitaciones()

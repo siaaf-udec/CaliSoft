@@ -4,6 +4,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 use App\Container\Calisoft\Src\Notifications\ProyectoCreado;
 use App\Container\Calisoft\Src\Notifications\ProyectoDenegado;
 use App\Container\Calisoft\Src\Notifications\ProyectoAsignado;
+use App\Container\Calisoft\Src\Notifications\EvaluadorAsignado;
 use App\Container\Calisoft\Src\Notifications\ProyectoAceptado;
 
 use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
@@ -111,9 +112,15 @@ class ProyectoController extends Controller
         $proyecto->usuarios()->syncWithoutDetaching([$request->user_id => [
             'tipo' => 'evaluador'
         ]]);
-        //Notificación 
+        //Notificación a evaluador
         $user = User::findOrFail($request->user_id);
         $user->notify(new ProyectoAsignado($proyecto));
+
+        //Notificacion a integrantes
+        $usuarios = $proyecto->usuarios()->where('role','=','student')->get();
+        Notification::send($usuarios, new EvaluadorAsignado($user,$proyecto));
+
+
 
         return $proyecto->usuarios;
     }

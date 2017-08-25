@@ -10,11 +10,12 @@ use App\Container\Calisoft\Src\Traits\DataBroadcast;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\User;
 
-class ProyectoAsignado extends Notification implements ShouldQueue
+class EvaluadorAsignado extends Notification implements ShouldQueue
 {
     use Queueable, DataBroadcast;
 
     public $proyecto;
+    public $user;
     public $img;
     
 
@@ -23,11 +24,12 @@ class ProyectoAsignado extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct(Proyecto $proyecto)
+    public function __construct(User $user, Proyecto $proyecto)
     {
         
         $this->proyecto = $proyecto;
-        $this->img = '/img/proyecto-asignado.png';
+        $this->user = $user;
+        $this->img = '/img/evaluador-asignado.png';
     }
 
     /**
@@ -50,9 +52,10 @@ class ProyectoAsignado extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-          ->subject('Se te ha asignado un proyecto')
-          ->markdown('mail.asignado', [
+          ->subject('Se te ha asignado un evaluador')
+          ->markdown('mail.evaluador-asignado', [
             'user' => $notifiable,
+            'from' => $this->user,
             'proyecto' => $this->proyecto
           ]);
     }
@@ -66,11 +69,13 @@ class ProyectoAsignado extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'type' => 'proyecto-asignado',
-            'url' => '/proyecto',
-            'alert' => '¡Se te ha asignado un proyecto!',
-            'proyecto' => $this->proyecto->nombre,
-            'img' => $this->img
+            'type' => 'evaluador-asignado',
+            'url' => '/documentacion',
+            'from' => $this->user->name,
+            'mail' => $this->user->email,
+            'alert' => '¡Se te ha asignado un evaluador!',
+            'img' => $this->img,
+            'proyecto' => $this->proyecto->nombre
         ];
     }
 }

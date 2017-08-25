@@ -43,6 +43,7 @@
                                                         <p v-if="notificacion.data.type === 'invitacion-rechazada'"><strong>@{{notificacion.data.user}}</strong> ha rechazado la invitación del proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>                                                    
                                                         <p v-if="notificacion.data.type === 'invitacion-aceptada'"><strong>@{{notificacion.data.user}}</strong> ha aceptado la invitación al proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>                                                    
                                                         <p v-if="notificacion.data.type === 'proyecto-aceptado'">Se ha aceptado el proyecto: <strong>@{{notificacion.data.proyecto}} ¡Felicitaciones!</strong></p>
+                                                        <p v-if="notificacion.data.type === 'evaluador-asignado'">Se te ha asignado el evaluador: <strong>@{{notificacion.data.from}}</strong></p>
                                                         <p v-if="notificacion.data.type === 'proyecto-asignado'">Se te ha asignado el proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>
                                                     </div>
                                                     <!--Fin texto según notificación-->    

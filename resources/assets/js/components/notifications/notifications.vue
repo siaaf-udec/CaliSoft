@@ -33,12 +33,13 @@ import InvitacionAceptada from './invitacion-aceptada';
 import InvitacionRechazada from './invitacion-rechazada';
 import ProyectoDenegado from './proyecto-denegado';
 import ProyectoAsignado from './proyecto-asignado';
+import EvaluadorAsignado from './evaluador-asignado';
 import ProyectoAceptado from './proyecto-aceptado';
 
 
 export default {
     components: { ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado, InvitacionRechazada,
-                  InvitacionAceptada, ProyectoAceptado },
+                  InvitacionAceptada, ProyectoAceptado, EvaluadorAsignado },
     data(){
         return { count: 0, notificaciones: [] };
     },
