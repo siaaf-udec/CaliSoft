@@ -5,8 +5,12 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\Notifications\InvitacionEnviada;
+use App\Container\Calisoft\Src\Notifications\InvitacionRechazada;
+use App\Container\Calisoft\Src\Notifications\InvitacionAceptada;
 use App\Container\Calisoft\Src\User;
 use App\Container\Calisoft\Src\Requests\InvitationStoreRequest;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Notification;
 
 class InvitationController extends Controller
 {
@@ -35,6 +39,11 @@ class InvitationController extends Controller
         request()->user()->proyectos()->sync([ $proyecto->PK_id => [
           'tipo' => 'integrante'
       ]]);
+        
+        $user = Auth::user();
+        $usuarios = $proyecto->usuarios()->where('PK_id' ,'!=', $user->PK_id)->get();
+        Notification::send($usuarios, new InvitacionAceptada($user->name, $proyecto));
+
     }
 
     /**
@@ -42,6 +51,11 @@ class InvitationController extends Controller
     */
     public function destroy(Proyecto $proyecto)
     {
+        
+        $user = Auth::user();
+        $usuarios = $proyecto->usuarios()->where('PK_id' ,'!=', $user->PK_id)->get();
+        Notification::send($usuarios, new InvitacionRechazada($user->name, $proyecto));
         request()->user()->proyectos()->detach($proyecto->PK_id);
+
     }
 }

@@ -4,6 +4,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 use App\Container\Calisoft\Src\Notifications\ProyectoCreado;
 use App\Container\Calisoft\Src\Notifications\ProyectoDenegado;
 use App\Container\Calisoft\Src\Notifications\ProyectoAsignado;
+use App\Container\Calisoft\Src\Notifications\ProyectoAceptado;
 
 use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
 use App\Container\Calisoft\Src\Requests\ProyectoUpdateRequest;
@@ -97,6 +98,10 @@ class ProyectoController extends Controller
     {
         $proyecto->state = 'activo';
         $proyecto->save();
+        //Envío de notificación hacia los integrantes del proyecto
+        $usuarios = $proyecto->usuarios()->get();
+        Notification::send($usuarios, new ProyectoAceptado($proyecto));
+
         return $proyecto;
     }
 

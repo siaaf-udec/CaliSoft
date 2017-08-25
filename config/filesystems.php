@@ -59,6 +59,13 @@ return [
             'root' => storage_path('app/public/uploads/scripts'),
         ],
 
+        'sql' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/uploads/sql'),
+            'url' => '/storage/uploads/sql',
+            'visibility' => 'public',
+        ],
+
         'public' => [
             'driver' => 'local',
             'root' => storage_path('app/public'),

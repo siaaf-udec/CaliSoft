@@ -17,8 +17,7 @@ class CreateArchivoBdTable extends Migration
           $table->increments('PK_id');
           $table->string('url');
           $table->integer('FK_ProyectoId')->unsigned();
-          $table->integer('FK_TipoBdId')->unsigned();
-          $table->integer('FK_ReglasId')->unsigned();
+          $table->integer('FK_TipoBdId')->unsigned();          
 
           $table->foreign('FK_ProyectoId')->references('PK_id')
           ->on('TBL_Proyectos')->onUpdate('cascade');
@@ -26,9 +25,8 @@ class CreateArchivoBdTable extends Migration
           $table->foreign('FK_TipoBdId')->references('PK_id')
           ->on('TBL_TipoBd')->onUpdate('cascade');
 
-          $table->foreign('FK_ReglasId')->references('PK_id')
-          ->on('TBL_Reglas')->onUpdate('cascade');
           $table->timestamps();
+          
         });
     }
 

@@ -10,24 +10,23 @@ use App\Container\Calisoft\Src\Traits\DataBroadcast;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\User;
 
-class ProyectoAsignado extends Notification implements ShouldQueue
+class ProyectoAceptado extends Notification implements ShouldQueue
 {
     use Queueable, DataBroadcast;
 
     public $proyecto;
+    public $text;
     public $img;
-    
 
     /**
      * Create a new notification instance.
      *
      * @return void
      */
-    public function __construct(Proyecto $proyecto)
+    public function __construct($proyecto)
     {
-        
         $this->proyecto = $proyecto;
-        $this->img = '/img/proyecto-asignado.png';
+        $this->img = '/img/proyecto-aceptado.png';
     }
 
     /**
@@ -50,8 +49,8 @@ class ProyectoAsignado extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-          ->subject('Se te ha asignado un proyecto')
-          ->markdown('mail.asignado', [
+          ->subject('Su proyecto fue aceptado ¡Felicitaciones!')
+          ->markdown('mail.proyecto-aceptado', [
             'user' => $notifiable,
             'proyecto' => $this->proyecto
           ]);
@@ -66,10 +65,11 @@ class ProyectoAsignado extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'type' => 'proyecto-asignado',
-            'url' => '/proyecto',
-            'alert' => '¡Se te ha asignado un proyecto!',
-            'proyecto' => $this->proyecto->nombre
+            'type' => 'proyecto-aceptado',
+            'url' => '/documentacion',
+            'alert' => '¡Tu proyecto a sido aceptado!',
+            'proyecto' => $this->proyecto->nombre,
+            'img' => $this->img
         ];
     }
 }
