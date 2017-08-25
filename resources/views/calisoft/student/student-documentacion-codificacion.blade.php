@@ -25,7 +25,7 @@
 
                 <div class="col-sm-offset-4 col-sm-4 col-xs-12" style="margin-bottom: 2%">
                     <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Buscar" >
+                        <input type="text" class="form-control" placeholder="Buscar" v-model="search">
                         <span class="input-group-addon">
                         <i class="glyphicon glyphicon-search"></i>
                         </span>
