@@ -16,6 +16,7 @@ new Vue({
         paginator: new Paginator(),
         deleteModalState: false,
         elimiScript: {},
+        search: "",
 
     },
     created() {
@@ -24,12 +25,12 @@ new Vue({
     methods: {
         refresh() {
             axios.get('/api/documentacion-scripts/')
-                .then(response => this.script = response.data);
+                .then(response => this.script = this.paginator.data = response.data);
         },
         destroy(script) {
             axios.delete('/api/documentacion-scripts/' + script.PK_id)
                 .then(() => {
-                    this.script = this.script.filter(value => value != script);
+                    this.script = this.paginator.data = this.script.filter(value => value != script);
                     this.deleteModalState = false;
                     toastr.warning('Documento Eliminado Correctamente');
                 });
@@ -43,6 +44,14 @@ new Vue({
             this.deleteModalState = false;
         }
     },
+    watch: {
+        search(query) {
+            this.paginator.data = this.script.filter(script => {
+                return new RegExp(query, 'ig')
+                    .test(`${script.url}`)
+            })
+        }
+    }
 
 
 });

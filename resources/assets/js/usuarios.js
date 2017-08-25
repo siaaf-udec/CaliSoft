@@ -19,20 +19,20 @@ new Vue({
             errors: {},
             deleteUser: {},
             paginator: new Paginator(),
-            search:""
+            search: ""
         }
     },
     created() {
-      axios.get('/api/usuarios').then(response => {
-          this.usuarios = this.paginator.data = response.data;
-      });
+        axios.get('/api/usuarios').then(response => {
+            this.usuarios = this.paginator.data = response.data;
+        });
     },
     methods: {
         store() {
             axios.post('/api/usuarios', this.newUser)
                 .then(response => {
                     this.usuarios.push(response.data);
-                    this.paginator.data=this.usuarios;
+                    this.paginator.data = this.usuarios;
                     this.newUser = this.schema();
                     this.errors = {};
                     $("#crear-usuario").modal("hide");
@@ -49,7 +49,7 @@ new Vue({
         destroy(user) {
             axios.delete('/api/usuarios/' + user.PK_id)
                 .then(() => {
-                    this.usuarios = this.paginator.data =  this.usuarios.filter(value => value != user);
+                    this.usuarios = this.paginator.data = this.usuarios.filter(value => value != user);
                     $('#eliminar-usuarios').modal("hide");
                     toastr.info('Usuario Eliminado Correctamente');
                 });
