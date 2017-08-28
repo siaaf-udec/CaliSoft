@@ -34,8 +34,8 @@ class DocumentoController extends Controller
         $proyecto = $request->user()->proyectos()->first(); //obtiene el proyecto del usuario logeado
         $doc = new Documento(); //inicializa el documento a guardar
         $file = $request->file('file'); //obtiene el archivo
-        $filename = rand(1000, 9999) . '_' . $file->getClientOriginalName(); //nombre del archivp
-        $doc->url = $file->storeAs('/', $filename, 'documentos'); //guarda el archivo
+        $doc->nombre = $file->getClientOriginalName(); //nombre del archivp
+        $doc->url = $file->store('/', 'documentos'); //guarda el archivo
         $doc->FK_TipoDocumentoId = $request->FK_TipoDocumentoId; //asigna el tipo
         $proyecto->documentos()->save($doc); //guarda y asigna el documento al proyecto
         return $doc;

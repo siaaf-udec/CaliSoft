@@ -9,6 +9,12 @@ use App\Container\Calisoft\Src\Semillero;
 class StudentController extends Controller
 {
 
+    function __construct()
+    {
+        $this->middleware('can:upload,App\Proyecto')
+            ->only('documentos', 'modelobd', 'documentosCoddificacion', 'documentosBd');
+    }
+
     public function proyectos()
     {
         return view('calisoft.student.student-register-pro', [
@@ -22,12 +28,7 @@ class StudentController extends Controller
     public function documentos()
     {
         $co = auth()->user()->proyectos()->first();
-        if($co->state != "activo"){
-            return view('calisoft.student.student-acceso-denegado', compact('co'));
-        }else{
-            return view('calisoft.student.student-documentacion', compact('co'));
-        }   
-       
+        return view('calisoft.student.student-documentacion', compact('co'));
     }
 
     public function invitaciones()

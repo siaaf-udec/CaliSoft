@@ -1,7 +1,6 @@
 <template>
     <li class="dropdown dropdown-extended dropdown-notification">
-        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-            data-close-others="true" @click="mark()">
+        <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" @click="mark()">
             <i class="icon-bell"></i>
             <span class="badge badge-default" v-show="count > 0">{{ count }}</span>
         </a>
@@ -13,7 +12,7 @@
             <li>
                 <ul class="dropdown-menu-list scroller" style="height: 250px;" data-handle-color="#637283">
                     <li v-for="notificacion in notificaciones" :key="notificacion.id">
-                        <a :href="notificacion.data.url" >
+                        <a :href="notificacion.data.url">
                             <span class="time">
                                 {{ new Date(notificacion.created_at || null).toLocaleDateString() }}
                             </span>
@@ -36,30 +35,35 @@ import ProyectoAsignado from './proyecto-asignado';
 import EvaluadorAsignado from './evaluador-asignado';
 import ProyectoAceptado from './proyecto-aceptado';
 
+const USER_ID = $("meta[name='user-id']").attr('content');
 
 export default {
-    components: { ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado, InvitacionRechazada,
-                  InvitacionAceptada, ProyectoAceptado, EvaluadorAsignado },
-    data(){
+    components: {
+        ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado, InvitacionRechazada,
+        InvitacionAceptada, ProyectoAceptado, EvaluadorAsignado
+    },
+    data() {
         return { count: 0, notificaciones: [] };
     },
-    created(){
+    created() {
         axios.get('/api/notificaciones').then(res => {
             this.notificaciones = res.data;
             this.count = this.notificaciones.filter(noti => !noti.read_at).length;
         });
     },
-    mounted(){
-        let id = $("meta[name='user-id']").attr('content');
-        window.Echo.private('users.' + id).notification(notificacion => {
-            this.notificaciones.push(notificacion);
+    mounted() {
+        window.Echo.private('users.' + USER_ID).notification(notificacion => {
+            this.notificaciones.unshift(notificacion);
             this.count += 1;
             toastr.info(notificacion.data.alert);
         });
     },
+    destroyed() {
+        window.Echo.leave('users.' + USER_ID)
+    },
     methods: {
-        mark(){
-            if(!this.count) return;
+        mark() {
+            if (!this.count) return;
             axios.post('/api/notificaciones').then(() => this.count = 0);
         }
     }

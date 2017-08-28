@@ -66,7 +66,6 @@ Dropzone.options.myAwesomeDropzone = {
     },
     error(file, message, xhr) {
         this.removeFile(file);
-        let response = JSON.parse(xhr.responseText);
-        for (error in response) toastr.error(response[error]);
+        toastr.error('El tipo de documento es obligatorio');
     }
 };

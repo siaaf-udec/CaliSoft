@@ -24,9 +24,10 @@ class ProyectoController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
-        $this->middleware('role:student')->only('destroy', 'update', 'propuesta');
+        $this->middleware('role:student')->only('update', 'propuesta');
         $this->middleware('role:admin')->only('index', 'aceptar', 'asignar');
         $this->middleware('role:evaluator')->only('show');
+        $this->middleware('role:admin,student')->only('destroy');
     }
 
     public function index()
@@ -117,8 +118,8 @@ class ProyectoController extends Controller
         $user->notify(new ProyectoAsignado($proyecto));
 
         //Notificacion a integrantes
-        $usuarios = $proyecto->usuarios()->where('role','=','student')->get();
-        Notification::send($usuarios, new EvaluadorAsignado($user,$proyecto));
+        $usuarios = $proyecto->usuarios()->where('role', '=', 'student')->get();
+        Notification::send($usuarios, new EvaluadorAsignado($user, $proyecto));
 
 
 
