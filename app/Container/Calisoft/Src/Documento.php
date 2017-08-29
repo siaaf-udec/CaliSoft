@@ -25,6 +25,16 @@ class Documento extends Model
 
     public function proyecto()
     {
-        return $this->belongsTo(proyecto::class, 'FK_ProyectoId', 'PK_id');
+        return $this->belongsTo(Proyecto::class, 'FK_ProyectoId', 'PK_id');
+    }
+
+    public function evaluaciones()
+    {
+        return $this->belongsToMany(
+            Componente::class,
+            'TBL_EvaluacionDocumento',
+            'FK_DocumentoId',
+            'FK_ComponenteId'
+        )->withPivot('observacion', 'checked');
     }
 }

@@ -10,25 +10,11 @@
         <div id="app">
             <document-list :documentos="documentos" :tipos="tipos">
                 <template slot="buttons" scope="props">
-                    <a title="calificar" class="btn btn-warning btn-xs" @click.prevent="open(props.doc)">
+                    <a :href="'/evaluar/' + props.doc.PK_id" title="calificar" class="btn btn-warning btn-xs">
                         <span class="fa fa-asterisk"></span>
                     </a>
                 </template>
             </document-list>
-
-            <modal v-model="evModal" :footer="false" :header="false" size="lg">
-                <div class="row">
-                    <div class="col-md-12" id="pdf-container">
-                        <bs-pdf id="doc-preview" :src="selected.url" v-if="selected.url" 
-                            prefix="/api/seeFile/" container="#pdf-container"></bs-pdf>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12 text-center">
-                        <bs-switch id="doc-cal" v-model="selected.checked" label="VALIDO" off="danger"></bs-switch>
-                    </div>
-                </div>
-            </modal>
         </div>
         
             

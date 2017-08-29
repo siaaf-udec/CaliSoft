@@ -31,3 +31,4 @@ mix
     .js('resources/assets/js/nomenclaturas-show.js', 'public/js')
     .js('resources/assets/js/items-show.js', 'public/js')
     .js('resources/assets/js/archivo-sql.js', 'public/js')
+    .js('resources/assets/js/evaluator-docs.js', 'public/js')

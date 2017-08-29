@@ -99,8 +99,16 @@ Route::resource('codificacion', 'ItemsCodificacionController', [
 ]);
 
 //subir archivo sql
-Route::post('fileSql','ArchivoSqlController@postfile');
+Route::post('fileSql', 'ArchivoSqlController@postfile');
 //ruta de javascript vue archivo sql
-Route::resource('documentacion-sql','ArchivoSqlController',[
-    'only' =>['index','store','update','destroy'],
+Route::resource('documentacion-sql', 'ArchivoSqlController', [
+    'only' => ['index', 'store', 'update', 'destroy'],
+]);
+
+
+Route::resource('evaluaciones', 'DocumentEvalController', [
+    'only' => ['show', 'update'],
+    'parameters' => [
+        'evaluaciones' => 'documento'
+    ]
 ]);

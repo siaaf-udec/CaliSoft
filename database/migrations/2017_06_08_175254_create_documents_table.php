@@ -16,10 +16,10 @@ class CreateDocumentsTable extends Migration
             $table->increments('PK_id');
             $table->string('url');
             $table->string('nombre');
+            $table->float('nota', 8, 2)->nullable();
             $table->integer('FK_ProyectoId')->unsigned();
             $table->integer('FK_TipoDocumentoId')->unsigned();
             $table->timestamps();
-
             $table->foreign('FK_ProyectoId')->references('PK_id')->on('TBL_Proyectos')->onDelete('cascade');
             $table->foreign('FK_TipoDocumentoId')->references('PK_id')->on('TBL_TiposDocumento')->onDelete('cascade');
         });

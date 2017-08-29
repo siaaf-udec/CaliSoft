@@ -1,4 +1,4 @@
-
+import './bootstrap';
 import Vue from 'vue';
 import axios from 'axios';
 
@@ -10,21 +10,21 @@ import DocumentList from './components/documentacion/document-list'
 
 new Vue({
     el: '#app',
-    components: { 
+    components: {
         DocumentList,
         Modal,
         BsPdf,
         BsSwitch
     },
     data() {
-        return { 
+        return {
             tipos: [],
             documentos: [],
             evModal: false,
             selected: {}
         }
     },
-    created(){
+    created() {
         axios.all([
             axios.get(`/api/proyectos/${window.proyectoId}/documentacion`),
             axios.get('/api/tdocumentos')
@@ -32,11 +32,5 @@ new Vue({
             this.documentos = documentos.data;
             this.tipos = tipos.data;
         }))
-    },
-    methods: {
-        open(doc) {
-            this.selected = doc;
-            this.evModal = true;
-        }
     }
 })
