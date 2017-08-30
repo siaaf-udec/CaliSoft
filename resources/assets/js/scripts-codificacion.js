@@ -1,11 +1,11 @@
 import "./bootstrap";
 import Vue from "vue";
-import VueHighlightJS from 'vue-highlightjs';
+import VueCodeMirror from 'vue-codemirror';
 import { Modal } from "uiv";
 import Paginator from './components/classes/paginator';
 import { Pagination } from "uiv";
 
-Vue.use(VueHighlightJS);
+Vue.use(VueCodeMirror);
 
 new Vue({
     el: "#app",
@@ -22,6 +22,12 @@ new Vue({
         search: "",
         prevScript: {},
         prevModal: false,
+        codeOptions: {
+            lineNumbers: true,
+            mode: 'application/x-httpd-php',
+            readOnly: true,
+            theme: 'eclipse'
+        }
     },
     created() {
         this.refresh();
@@ -48,11 +54,16 @@ new Vue({
             this.deleteModalState = false;
         },
         preview(script) {
-            axios.post('/api/scripts/preview/' + script.url).then(res => {
-                script.code = res.data.code;
+            if (script.code) {
                 this.prevScript = script;
                 this.prevModal = true;
-            });
+            } else {
+                axios.post('/api/scripts/preview/' + script.url).then(res => {
+                    script.code = res.data.code;
+                    this.prevScript = script;
+                    this.prevModal = true;
+                });
+            }
         }
     },
     watch: {

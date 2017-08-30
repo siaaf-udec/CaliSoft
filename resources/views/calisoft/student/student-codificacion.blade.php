@@ -79,12 +79,8 @@
                     </form>
                 </modal>
 
-                <modal v-model="prevModal" :title="prevScript.url" :footer="false">
-                    <pre>
-                        <code class="javascript">
-                            @{{ prevScript.code }}
-                        </code>
-                    </pre>
+                <modal v-model="prevModal" :title="prevScript.url" :footer="false" size="lg">
+                        <codemirror :code="prevScript.code" :options="codeOptions"></codemirror>
                 </modal>
 
                 <!-- inicio modal eliminar-->
