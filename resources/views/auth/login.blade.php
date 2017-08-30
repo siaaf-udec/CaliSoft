@@ -102,7 +102,7 @@
             <div class="col-sm-12 text-right">
                 <div class="forgot-password">
                     <a href="{{ route('password.request') }}" class="forget-password">
-                        ¿Se te olvidó tu contraseña?
+                        ¿Ha olvidado su contraseña?
                     </a>
                     <br>
                     <a href="{{ route('register') }}" class="font-blue-dark">

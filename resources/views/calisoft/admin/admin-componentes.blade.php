@@ -12,7 +12,7 @@
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Obligatorio</th>
                         <th class="text-center">Descripción</th>
-                        <th class="text-center">Acciones</th>
+                        <th class="text-center">Operaciones</th>
                     </thead>
                     <tbody>
                         <tr v-for="componente in componentes" class="text-center">

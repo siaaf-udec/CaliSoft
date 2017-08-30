@@ -43,7 +43,7 @@
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Correo</th>
                         <th class="text-center">Rol</th>
-                        <th class="text-center">Operacion</th>
+                        <th class="text-center">Operación</th>
                     </thead>
                     <tbody>
                         <tr v-for="user in paginator.items" class="text-center">
@@ -102,7 +102,7 @@
 
             <!--Inicio modal Eliminar usuarios-->
             <modal id="eliminar-usuarios" title="Eliminar Usuarios">
-                ¿Desea eliminar el Usuario @{{deleteUser.name}}?
+                ¿Desea eliminar el Usuario <strong>@{{deleteUser.name}}</strong>?
                 <div class="modal-footer" slot="footer">
                     <button class="btn green-jungle" @click="destroy(deleteUser)">
                         <i class="glyphicon glyphicon-trash"></i>Eliminar Usuario

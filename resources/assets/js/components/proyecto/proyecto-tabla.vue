@@ -40,7 +40,7 @@
                         <td>{{ proyecto.semillero.nombre }}</td>
                     </tr>
                     <tr>
-                        <th>Grupo de investigacion:</th>
+                        <th>Grupo de investigación:</th>
                         <td>{{ proyecto.grupo_de_investigacion.nombre }}</td>
                     </tr>
                     <tr>
@@ -64,7 +64,7 @@
 
         <modal v-model="acceptModal" title="Aceptar propuesta" :footer="false">
             <p class="text-center">
-                Deseas aprobar la propuesta de proyecto {{ proyecto.nombre }}?
+                ¿Desea aprobar la propuesta de proyecto {{ proyecto.nombre }}?
                 <br>
                 <strong>Despues de esta acción no se podra eliminar el proyecto</strong>
             </p>
@@ -75,7 +75,7 @@
 
         <modal v-model="destroyModal" title="Eliminar Proyecto" :footer="false">
             <p class="text-center">
-                Esta seguro de eliminar el proyecto {{ proyecto.nombre }}?
+                ¿Está seguro de eliminar el proyecto <strong>{{ proyecto.nombre }}</strong>?
 
                 <div class="form-group col-sm-12">
                     <label for="text">Razón</label>
@@ -120,7 +120,7 @@ export default {
         aceptar() {
             axios.put(`/api/proyectos/${this.proyecto.PK_id}/aceptar`).then(res => {
                 this.acceptModal = false
-                toastr.success('Haz Aceptado la propuesta del proyecto ' + this.proyecto.nombre);
+                toastr.success('Ha Aceptado la propuesta del proyecto ' + this.proyecto.nombre);
                 this.$emit('updated', Object.assign({}, this.proyecto, res.data));
             });
         },
@@ -130,7 +130,7 @@ export default {
                     this.$emit('updated', Object.assign({}, this.proyecto, {
                         usuarios: res.data
                     }));
-                    toastr.info(`el evaluador ${user.name} ha sido asignado a ${this.proyecto.nombre}`);
+                    toastr.info(`El evaluador ${user.name} ha sido asignado a ${this.proyecto.nombre}`);
                     this.asignedModal = false
                 })
         },
@@ -140,14 +140,14 @@ export default {
                     this.$emit('updated', Object.assign({}, this.proyecto, {
                         usuarios: res.data
                     }));
-                    toastr.info(`el evaluador ${evaluador.name} ha sido desasignado de ${this.proyecto.nombre}`);
+                    toastr.info(`El evaluador ${evaluador.name} ha sido desasignado de ${this.proyecto.nombre}`);
                     this.asignedModal = false
                 })
         },
         eliminar() {
             axios.delete('/api/proyectos/' + this.proyecto.PK_id, { params: { text: this.text } }).then(() => {
                 this.destroyModal = false
-                toastr.info('Haz eliminado del proyecto ' + this.proyecto.nombre);
+                toastr.info('Ha eliminado del proyecto ' + this.proyecto.nombre);
                 this.$emit('removed', this.proyecto)
             }).catch(err => this.formErrors = err.response.data);
         }

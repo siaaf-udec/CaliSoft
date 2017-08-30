@@ -9,7 +9,7 @@
                 <list-group-crud rest="/api/semilleros/"></list-group-crud>
             </div>
             <div class="col-sm-5" style="">
-                <h3 class="text-center">Grupos de investigacion</h3>
+                <h3 class="text-center">Grupos de investigación</h3>
                 <list-group-crud rest="/api/grupos-de-investigacion/"></list-group-crud>
             </div>
             @include('partials.modal-help-semillero')

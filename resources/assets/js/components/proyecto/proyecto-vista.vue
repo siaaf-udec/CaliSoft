@@ -26,7 +26,7 @@
                                 <td>{{ proyecto.semillero.nombre }}</td>
                             </tr>
                             <tr>
-                                <th>Grupo de investigacion:</th>
+                                <th>Grupo de investigación:</th>
                                 <td>{{ proyecto.grupo_de_investigacion.nombre }}</td>
                             </tr>
                             <tr>
@@ -67,8 +67,8 @@
 
     </div>
     <p class="text-justify" v-else>
-        Todavia no has creado una propuesta de proyecto,
-        puedes crearla <a href="/proyectos">Aqui.</a>
+        Todavia no ha creado una propuesta de proyecto,
+        puede crearla <a href="/proyectos">Aqui.</a>
     </p>
 
     <!-- comienzo modal de edicion-->
@@ -81,8 +81,8 @@
     <modal id="propuesta" title="Propuesta">
       <p class="text-justified">
         Despues de pasar el proyecto como propuesta
-        <strong>no podras agregar integrantes ni editar los datos del mismo</strong>.
-        Deseas pasar el proyecto como propuesta?
+        <strong>no podra agregar integrantes ni editar los datos del mismo</strong>.
+        ¿Desea pasar el proyecto como propuesta?
       </p>
       <div class="form-group">
         <button class="btn blue center-block" @click="propuesta()">Pasar propuesta de proyecto</button>
@@ -92,8 +92,8 @@
     <!-- Eliminar proyecto -->
     <modal id="eliminar" title="Eliminar Proyecto">
       <p class="text-center">
-        todas las invitaciones seran canceladas y los integrantes seran liberados. <br>
-        Desea eliminar el proyecto?
+        Todas las invitaciones seran canceladas y los integrantes seran liberados. <br>
+        ¿Desea eliminar el proyecto?
         <div class="form-group">
           <button class="btn red center-block" @click="destroy()">Eliminar</button>
         </div>
@@ -156,14 +156,14 @@ export default {
           axios.put(`/api/proyectos/${this.proyecto.PK_id}/propuesta`).then(res => {
             this.proyecto = Object.assign({}, this.proyecto, res.data);
             $('#propuesta').modal('hide');
-            toastr.info('Has pasado el proyecto como propuesta');
+            toastr.info('Ha pasado el proyecto como propuesta');
           })
         },
         destroy(){
           axios.delete('/api/proyectos/' + this.proyecto.PK_id).then(() => {
             this.proyecto = {};
             $('#eliminar').modal('hide');
-            axios.info('Has eliminado el proyecto');
+            axios.info('Ha eliminado el proyecto');
           })
         }
     }

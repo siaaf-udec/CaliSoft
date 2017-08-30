@@ -31,7 +31,7 @@ let vm = new Vue({
                     $("#editar-item").modal("hide");
                     this.fillItem = {};
 
-                    toastr.info('item editado correctamente');
+                    toastr.info('Item editado correctamente');
                 })
                 .catch(error => this.formErrorsUpdate = error.response.data);
         },

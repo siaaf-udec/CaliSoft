@@ -6,7 +6,7 @@
 
         <span>
             <strong>{{ notificacion.data.user }}</strong> 
-            Te ha invitado ha ser parte del proyecto:
+            Ha sido invitado ha ser parte del proyecto:
             <strong>{{ notificacion.data.proyecto }}</strong>
         </span>
     </span>

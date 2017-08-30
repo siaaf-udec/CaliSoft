@@ -54,7 +54,7 @@ new Vue({
                     let index = this.tdocumentos.indexOf(this.tdocDel);
                     this.tdocumentos.splice(index, 1);
                     $("#destroy-tdoc").modal('hide');
-                    toastr.info("Tipo de documento eliminado");
+                    toastr.info("Tipo de Documento eliminado");
                 });
         },
 

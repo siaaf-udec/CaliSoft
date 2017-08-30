@@ -87,8 +87,8 @@
             {{-- Modal de elminar tipo de documento --}}
             <modal id="destroy-tdoc" title="Eliminar tipo de documento">
                 <p>
-                    Esta seguro de elminar el tipo de documento <strong>@{{ tdocDel.nombre }}</strong>?
-                    esta accion eliminara todos los componentes asociados al documento
+                    ¿Está seguro de elminar el tipo de documento <strong>@{{ tdocDel.nombre }}</strong>?
+                    Esta accion eliminara todos los componentes asociados al documento.
                 </p>
 
                 <div class="modal-footer" slot="footer">

@@ -5,7 +5,7 @@
         </span>
 
         <span>
-            nueva propuesta de proyecto: <strong>{{ notificacion.data.proyecto }}</strong>
+            Nueva propuesta de proyecto: <strong>{{ notificacion.data.proyecto }}</strong>
         </span>
     </span>
 </template>

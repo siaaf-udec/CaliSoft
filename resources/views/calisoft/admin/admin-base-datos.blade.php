@@ -9,7 +9,7 @@
                     <th class="text-center">Componente</th>
                     <th class="text-center">Estandar</th>
                     <th class="text-center">Valor</th>
-                    <th class="text-center">Operacion</th>
+                    <th class="text-center">Operación</th>
                 </thead>
                 <tbody>
                     <tr v-for="componente in componentes" class="text-center">

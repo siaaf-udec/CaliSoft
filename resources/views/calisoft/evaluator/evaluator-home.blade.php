@@ -7,9 +7,9 @@
                         <h4 class="panel-header" style="display: inline">@{{ proyecto.nombre }}</h4>
                         <div class="btn-group pull-right">
                             <a :href="`/proyectos/${proyecto.PK_id}/modelacion`" class="btn btn-xs btn-primary">modelación</a>
-                            <a href="#" class="btn btn-xs btn-warning">plataforma</a>
-                            <a href="#" class="btn btn-xs btn-success">codificación</a>
-                            <a href="#" class="btn btn-xs btn-danger">base de datos</a>
+                            <a href="#" class="btn btn-xs btn-warning">Plataforma</a>
+                            <a href="#" class="btn btn-xs btn-success">Codificación</a>
+                            <a href="#" class="btn btn-xs btn-danger">Base de datos</a>
 
 
 

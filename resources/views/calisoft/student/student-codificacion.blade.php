@@ -37,8 +37,8 @@
                     <table class="table table-striped table-bordered table-hover dt-responsive" width="100%">
                         <thead>
                             <th class="text-center">Nombre Del Archivo</th>
-                            <th class="text-center">estado</th>
-                            <th class="text-center">operaciones</th>
+                            <th class="text-center">Estado</th>
+                            <th class="text-center">Operaciones</th>
                         </thead>
                         <tbody >
                             <tr v-for="script in paginator.items" class="text-center">
@@ -84,8 +84,13 @@
                 </modal>
 
                 <!-- inicio modal eliminar-->
+<<<<<<< Updated upstream:resources/views/calisoft/student/student-codificacion.blade.php
                 <modal v-model="deleteModalState" title="Eliminar script">
                     ¿Desea eliminar el script @{{ elimiScript.url }}?
+=======
+        <modal v-model="deleteModalState" title="Eliminar script">
+            ¿Desea eliminar el script <strong>@{{elimiScript.url}}</strong>?
+>>>>>>> Stashed changes:resources/views/calisoft/student/student-documentacion-codificacion.blade.php
 
                     <div class="modal-footer" slot="footer">
                         <button class="btn green-jungle" @click="destroy(elimiScript)">

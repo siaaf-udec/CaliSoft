@@ -5,7 +5,7 @@
         </span>
 
         <span>
-            Se te ha asignado el proyecto:
+            Se ha asignado el proyecto:
             <strong>{{ notificacion.data.proyecto }}</strong>
         </span>
     </span>

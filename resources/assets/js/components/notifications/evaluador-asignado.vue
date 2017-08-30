@@ -5,7 +5,7 @@
         </span>
 
         <span>
-            Se te ha asignado el evaluador:
+            Se ha asignado el evaluador:
             <strong>{{ notificacion.data.from }}</strong>
         </span>
     </span>

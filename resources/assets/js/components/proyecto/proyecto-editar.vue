@@ -34,7 +34,7 @@
      <div class="form-group form-md-line-input">
         <div class="input-icon">
             <i class="fa fa-users"></i>
-            <label>Grupo de investigacion</label>
+            <label>Grupo de investigación</label>
             <select class="form-control" required v-model="proyectoEdit.FK_GrupoDeInvestigacionId">
                 <option v-for="grupo in grupos" :value="grupo.PK_id">
                   {{ grupo.nombre }}

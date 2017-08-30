@@ -10,7 +10,7 @@
                         <thead>
                             <th class="text-center">Nombre Del Archivo</th>
                             <th class="text-center">Base de Datos</th>
-                            <th class="text-center">operaciones</th>
+                            <th class="text-center">Operaciones</th>
                         </thead>
                         <tbody >
                             <tr v-for="archivosqls in archivosql"class="text-center">
@@ -55,7 +55,7 @@
                 {{--fin modal dropzone--}}
                 {{--Inicio modal eliminar archivo sql--}}
                 <modal v-model="deleteModalState" title="Eliminar Archivo Sql">
-                    ¿Desea eliminar el archivo sql @{{eliminarSql.url}}?
+                    ¿Desea eliminar el archivo sql <strong>@{{eliminarSql.url}}</strong>?
                     <div class="modal-footer" slot="footer">
                         <button class="btn green-jungle" @click="destroy(eliminarSql)">
                             <i class="fa fa-edit"></i>Eliminar

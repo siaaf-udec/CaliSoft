@@ -32,7 +32,7 @@
                                 <a href="#tab_1_1" data-toggle="tab">Información Personal</a>
                             </li>
                             <li>
-                                <a href="#tab_1_2" data-toggle="tab">Cambiar Foto data</a>
+                                <a href="#tab_1_2" data-toggle="tab">Cambiar Foto</a>
                             </li>
                             <li>
                                 <a href="#tab_1_3" data-toggle="tab">Cambiar Contraseña</a>

@@ -35,7 +35,7 @@
                                     {{--  Formulario para actualizar nota de componente  --}}
                                     <form @submit.prevent="update(componente)" >
                                         <div class="form-group">
-                                            <label>Observacion</label>
+                                            <label>Observación</label>
                                                 <textarea rows="2" class="form-control" style="resize: none" v-model="componente.pivot.observacion">
                                             </textarea>
                                         </div>
@@ -44,7 +44,7 @@
                                                 <bs-switch :id="index" label="VALIDO" v-model="componente.pivot.checked" :options="switchOptions"/>
                                             </div>
                                             <div class="col-sm-6 text-center">
-                                                <button type="submit" class="btn blue">guardar</button>
+                                                <button type="submit" class="btn blue">Guardar</button>
                                             </div>
                                         </div>
                                     </form>
