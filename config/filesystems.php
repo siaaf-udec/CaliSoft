@@ -54,9 +54,9 @@ return [
             'visibility' => 'public'
         ],
 
-        'docuScript' => [
+        'scripts' => [
             'driver' => 'local',
-            'root' => storage_path('app/public/uploads/scripts'),
+            'root' => storage_path('app/uploads/scripts')
         ],
 
         'sql' => [

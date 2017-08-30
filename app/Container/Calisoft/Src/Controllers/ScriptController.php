@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src\Controllers;
 
 
@@ -32,42 +31,43 @@ class ScriptController extends Controller
         return $proyecto->scripts;
     }
 
-    
-    public function store(Request $request)
+    /**
+     * Elimina el script de la base de datos y
+     * elimina el archivo
+     *
+     * @param Script $script
+     * @return void
+     */
+    public function destroy(Script $script)
     {
-        //
+        Storage::disk('scripts')->delete($script->url);
+        $script->delete();
     }
 
-    public function show(Script $scripts)
+    /**
+     * Guarda y registra el script
+     *
+     * @param DocumentosScriptsStoreRequest $request
+     * @return Illuminate\Http\Response
+     */
+    public function store(DocumentosScriptsStoreRequest $request)
     {
-        //
+
+        $file = $request->file('file');
+        $proyecto = auth()->user()->proyectos()->first();
+        $url = rand(1000, 9999) . '_' . $file->getClientOriginalName();
+        $file->storeAs('/', $url, 'scripts');
+        return $proyecto->scripts()->create(compact('url'));
     }
 
 
-    
-    public function destroy(Script $documentacion_script)
+    public function preview($url)
     {
-        Storage::disk('docuScript')->delete($documentacion_script->url);
-        $documentacion_script->delete();
+        $disk = Storage::disk('scripts');
+        abort_unless($disk->exists($url), 404);
+        $code = $disk->get($url);
+        return response()->json(compact('code'));
     }
-    
-    public function postfile(DocumentosScriptsStoreRequest $request)
-    {
 
-        $fileInput  = $request->file('file');
-        $idProyecto = auth()->user()->proyectos()->first();
-        $fileName   = rand(1000, 9999) . '_' . $fileInput->getClientOriginalName();
-
-        if (Input::hasFile('file')) {
-
-            Storage::disk('docuScript')->put($fileName, File::get($fileInput));
-
-            return Script::create([
-                'url'                => $fileName,
-                'FK_ProyectoId'      => $idProyecto->PK_id,
-            ]);
-        }
-    }
-    
 
 }

@@ -43,12 +43,12 @@ class StudentController extends Controller
 
     public function documentosCodificacion()
     {
-        return view('calisoft.student.student-documentacion-codificacion');
+        return view('calisoft.student.student-codificacion');
     }
 
     public function documentosBd()
     {
-        return view('calisoft.student.student-documentacion-bd');
+        return view('calisoft.student.student-bd');
     }
 }
 

@@ -102,8 +102,6 @@ class ComponenteTableSeeder extends Seeder
 
         //DIAGRAMA DE CASOS DE USO
 
-
-
         DB::table('TBL_ComponentesDocumento')->insert([
             'nombre' => 'Actores',
             'required' => false,

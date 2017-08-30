@@ -32,12 +32,6 @@ Route::resource('usuarios', 'UserController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
-
-
-Route::resource('documentacion-scripts', 'ScriptController', [
-    'only' => ['index', 'store', 'update', 'destroy'],
-]);
-
 Route::resource('tdocumentos', 'TiposDocumentoController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
@@ -87,8 +81,12 @@ Route::resource('documentacion', 'DocumentoController', [
 // fin subir documentación estudiante
 
 //subir documentacion de codificacion
-Route::post('fileScript', 'ScriptController@postfile'); //Resource !!
-// fin documentacion codificacion 
+Route::post('/scripts/preview/{url}', 'ScriptController@preview');
+
+Route::resource('scripts', 'ScriptController', [
+    'only' => ['store', 'destroy', 'index']
+]);
+//fin subir documentacion de codificacion
 
 Route::resource('basedatos', 'BaseDatosController', [
     'only' => ['index', 'store', 'update', 'destroy'],

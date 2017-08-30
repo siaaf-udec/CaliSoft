@@ -41,7 +41,7 @@
                                         </div>
                                         <div class="row">
                                             <div class="col-sm-6 text-center">
-                                                <bs-switch :id="index" label="valido" v-model="componente.pivot.checked" :options="switchOptions"/>
+                                                <bs-switch :id="index" label="VALIDO" v-model="componente.pivot.checked" :options="switchOptions"/>
                                             </div>
                                             <div class="col-sm-6 text-center">
                                                 <button type="submit" class="btn blue">guardar</button>

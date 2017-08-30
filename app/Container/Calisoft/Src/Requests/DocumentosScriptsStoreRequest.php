@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
@@ -24,7 +23,7 @@ class DocumentosScriptsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'file' => 'required',
+            'file' => 'required|file',
         ];
     }
 }

@@ -41,52 +41,66 @@
                             <th class="text-center">operaciones</th>
                         </thead>
                         <tbody >
-                            <tr v-for="scripts in paginator.items" class="text-center">
-                                <td v-text="scripts.url"></td>
-                                <td v-text="scripts.estado"></td>
+                            <tr v-for="script in paginator.items" class="text-center">
+                                <td v-text="script.url"></td>
+                                <td v-text="script.estado"></td>
                                 <td class="text-center">
-                                    <button class="editar-modal btn red " title="Eliminar documento" @click.prevent="openDeleteModal(scripts)">
-                                    <span class="glyphicon glyphicon-trash"></span>
+                                    <button class="btn red" title="Eliminar documento" @click.prevent="openDeleteModal(script)">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                    <button class="btn btn-primary" title="Vista Pervia" @click="preview(script)" >
+                                        <span class="fa fa-code"></span>
                                     </button>
                                 </td>
+
                             </tr>    
                         </tbody>
                     </table>
                 </div>
-                 <div class="row">
-                <!-- Boton de crear usuario -->
-                <div class="col-sm-6">
-                    <button type="button"  @click.prevent="modalState = true" class="btn green-jungle center-block">
+                <div class="row">
+
+                    <!-- Boton de crear usuario -->
+                    <div class="col-sm-6">
+                        <button type="button" @click.prevent="modalState = true" class="btn green-jungle center-block">
                             <i class="fa fa-plus"></i>
                             Subir Documentos
                         </button>
+                    </div>
+                    <!-- Pagination Buttons-->
+                    <div class="col-sm-6 text-right" v-show="paginator.lastPage > 1">
+                        <pagination v-model="paginator.page" :total-page="paginator.lastPage" boundary-links></pagination>
+                    </div>
+                    <!-- End Pagination Buttons-->
                 </div>
-                <!-- Pagination Buttons-->
-                <div class="col-sm-6 text-right" v-show="paginator.lastPage > 1">
-                    <pagination v-model="paginator.page" :total-page="paginator.lastPage" boundary-links></pagination>
-                </div>
-                <!-- End Pagination Buttons-->
-            </div>
 
                 <modal v-model="modalState" title="Subir documentación De Codificación" @hide="refresh()" :footer="false">
-                    <form action="/api/fileScript" id="my-awesome-dropzone" method="post" class="dropzone">
+                    <form action="/api/scripts" id="my-awesome-dropzone" method="post" class="dropzone">
                         {{ csrf_field() }}
                     </form>
                 </modal>
-                <!-- inicio modal eliminar-->
-        <modal v-model="deleteModalState" title="Eliminar script">
-            ¿Desea eliminar el script @{{elimiScript.url}}?
 
-            <div class="modal-footer" slot="footer">
-                <button class="btn green-jungle" @click="destroy(elimiScript)">
-                    <i class="fa fa-edit"></i>Eliminar Script
-                </button>
-                <button type="button" class="btn red" @click.prevent="closeDeleteModal()">
-                    <i class="fa fa-ban"></i>Cancelar
-                </button>
-            </div>
-        </modal>
-        <!-- Fin Modal Eliminar -->
+                <modal v-model="prevModal" :title="prevScript.url" :footer="false">
+                    <pre>
+                        <code class="javascript">
+                            @{{ prevScript.code }}
+                        </code>
+                    </pre>
+                </modal>
+
+                <!-- inicio modal eliminar-->
+                <modal v-model="deleteModalState" title="Eliminar script">
+                    ¿Desea eliminar el script @{{ elimiScript.url }}?
+
+                    <div class="modal-footer" slot="footer">
+                        <button class="btn green-jungle" @click="destroy(elimiScript)">
+                            <i class="fa fa-edit"></i>Eliminar Script
+                        </button>
+                        <button type="button" class="btn red" @click.prevent="closeDeleteModal()">
+                            <i class="fa fa-ban"></i>Cancelar
+                        </button>
+                    </div>
+                </modal>
+                <!-- Fin Modal Eliminar -->
 
             </div>
         @endcomponent
