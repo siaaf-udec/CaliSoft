@@ -84,13 +84,8 @@
                 </modal>
 
                 <!-- inicio modal eliminar-->
-<<<<<<< Updated upstream:resources/views/calisoft/student/student-codificacion.blade.php
-                <modal v-model="deleteModalState" title="Eliminar script">
-                    ¿Desea eliminar el script @{{ elimiScript.url }}?
-=======
         <modal v-model="deleteModalState" title="Eliminar script">
             ¿Desea eliminar el script <strong>@{{elimiScript.url}}</strong>?
->>>>>>> Stashed changes:resources/views/calisoft/student/student-documentacion-codificacion.blade.php
 
                     <div class="modal-footer" slot="footer">
                         <button class="btn green-jungle" @click="destroy(elimiScript)">
