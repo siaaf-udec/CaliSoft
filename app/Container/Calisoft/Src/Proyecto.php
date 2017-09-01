@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src;
 
 use Illuminate\Notifications\Notifiable;
@@ -14,7 +13,7 @@ class Proyecto extends Model
     protected $primaryKey = "PK_id";
 
     protected $fillable = [
-        'nombre', 'FK_GrupoDeInvestigacionId', 'FK_SemilleroId','FK_CategoriaId',
+        'nombre', 'FK_GrupoDeInvestigacionId', 'FK_SemilleroId', 'FK_CategoriaId',
     ];
 
     public function documentos()
@@ -48,8 +47,8 @@ class Proyecto extends Model
 
 
     /*
-    *  Relacion de proyecto con usuarios
-    */
+     *  Relacion de proyecto con usuarios
+     */
     public function usuarios()
     {
         return $this->belongsToMany(User::class, 'TBL_ProyectosAsignados', 'FK_ProyectoId', 'FK_UsuarioId')
@@ -75,8 +74,9 @@ class Proyecto extends Model
     {
         return $this->hasMany(Script::class, 'FK_ProyectoId', 'PK_id');
     }
-    public function archivobd()
+
+    public function sql()
     {
-        return $this->hasOne(ArchivoSql::class,'FK_ProyectoId','PK_id');
+        return $this->hasOne(ArchivoSql::class, 'FK_ProyectoId', 'PK_id');
     }
 }

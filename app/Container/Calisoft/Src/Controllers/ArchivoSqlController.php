@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src\Controllers;
 
 
@@ -22,33 +21,11 @@ class ArchivoSqlController extends Controller
             'except' => ['index'],
         ]);
     }
-    
+
     public function index()
     {
         $proyecto = auth()->user()->proyectos()->first();
-        return $proyecto->archivobd()->with('tipobd')->get();
-
-    }
-
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
+        return $proyecto->sql()->with('tipobd')->get();
     }
 
     /**
@@ -60,29 +37,13 @@ class ArchivoSqlController extends Controller
     public function show($id)
     {
         //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
+
+
+
+
+
     }
 
     /**
@@ -91,27 +52,33 @@ class ArchivoSqlController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy(ArchivoSql $documentacion_sql)
+    public function destroy(ArchivoSql $sql)
     {
-        Storage::disk('sql')->delete($documentacion_sql->url);
-        $documentacion_sql->delete();
+        Storage::disk('sql')->delete($sql->url);
+        $sql->delete();
     }
-    public function postfile(DocumentosSqlStoreRequest $request)
+
+
+    public function store(DocumentosSqlStoreRequest $request)
     {
 
-        $fileInput  = $request->file('file');
-        $idProyecto = auth()->user()->proyectos()->first();
-        $fileName   = rand(1000, 9999) . '_' . $fileInput->getClientOriginalName();
-
-        if (Input::hasFile('file')) {
-
-            Storage::disk('sql')->put($fileName, File::get($fileInput));
-
-            return ArchivoSql::create([
-                'url'                => $fileName,
-                'FK_ProyectoId'      => $idProyecto->PK_id,
-                'FK_TipoBdId'        => $request->FK_TipoBdId,
-            ]);
-        }
+        $file = $request->file('file');
+        $proyecto = auth()->user()->proyectos()->first();
+        $url = rand(1000, 9999) . '_' . $file->getClientOriginalName();
+        $file->storeAs('/', $url, 'sql');
+        return $proyecto->sql()->create([
+            'url' => $url,
+            'FK_TipoBdId' => $request->FK_TipoBdId,
+        ]);
     }
+
+
+    public function preview($url)
+    {
+        $disk = Storage::disk('sql');
+        abort_unless($disk->exists($url), 404);
+        $code = $disk->get($url);
+        return response()->json(compact('code'));
+    }
+
 }

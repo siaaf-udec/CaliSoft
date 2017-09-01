@@ -80,6 +80,7 @@
                     </form>
                 </modal>
 
+                {{--  Modal de vista previa  --}}
                 <modal v-model="prevModal" :title="prevScript.url" :footer="false" size="lg">
                         <codemirror :code="prevScript.code" :options="codeOptions"></codemirror>
                 </modal>

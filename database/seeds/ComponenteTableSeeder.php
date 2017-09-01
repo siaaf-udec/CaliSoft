@@ -229,11 +229,6 @@ class ComponenteTableSeeder extends Seeder
 
 
 
-
-
-
-
-
         //Diagrama de clase
 
 

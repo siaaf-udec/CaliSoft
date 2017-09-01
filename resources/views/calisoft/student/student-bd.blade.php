@@ -13,14 +13,14 @@
                             <th class="text-center">Operaciones</th>
                         </thead>
                         <tbody >
-                            <tr v-for="archivosqls in archivosql"class="text-center">
-                                <td v-text="archivosqls.url"></td>
-                                <td v-text="archivosqls.tipobd.nombre"></td>
+                            <tr v-for="sql in sqls"class="text-center">
+                                <td v-text="sql.url"></td>
+                                <td v-text="sql.tipobd.nombre"></td>
                                 <td  class="text-center">
-                                    {{--<button class="editar-modal btn yellow " title="Ver Documento">
+                                    <button class="btn btn-primary " title="Vista Previa" @click="preview(sql)">
                                         <span class="fa fa-eye"></span>
-                                    </button>--}}
-                                    <button class="editar-modal btn red " title="Eliminar documento" @click.prevent="openDeleteModal(archivosqls)">
+                                    </button>
+                                    <button class="editar-modal btn red " title="Eliminar documento" @click.prevent="openDeleteModal(sql)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>                                    
                                 </td>
@@ -30,42 +30,46 @@
                 </div>
             {{--fin tabla de sql--}}
             {{--Boton subir archivo sql--}}
-            <div  v-if="archivosql.length == 0">
+            <div  v-if="sqls.length == 0">
                 <button type="button" @click.prevent="modalState = true"  class="btn blue center-block">
                     <i class="fa fa-plus"></i>
                         Subir Documento
                 </button>
             </div>
 
-                {{--modal dropzone cargar archivo sql--}}
-                <modal  v-model="modalState" title="Subir Archivo Sql" @hide="refresh()" :footer="false">
-                    <form action="/api/fileSql" id="my-awesome-dropzone" method="post" class="dropzone">
-                        {{ csrf_field() }}
+            {{--modal dropzone cargar archivo sql--}}
+            <modal  v-model="modalState" title="Subir Archivo Sql" @hide="refresh()" :footer="false">
+                <form action="/api/sql" id="my-awesome-dropzone" method="post" class="dropzone">
+                    {{ csrf_field() }}
 
-                        <div class="form-group">
-                            <label>Tipo de documento</label>
-                                <select id="tidocu" name="FK_TipoBdId" class="form-control select2" required>
-                                    <option value=""></option>
-                                    <option value="1">MySql</option>
-                                    <option value="2">PostgreSql</option>
-                                <select>
-                        </div>
-                    </form>
-                </modal>
-                {{--fin modal dropzone--}}
-                {{--Inicio modal eliminar archivo sql--}}
-                <modal v-model="deleteModalState" title="Eliminar Archivo Sql">
-                    ¿Desea eliminar el archivo sql <strong>@{{eliminarSql.url}}</strong>?
-                    <div class="modal-footer" slot="footer">
-                        <button class="btn green-jungle" @click="destroy(eliminarSql)">
-                            <i class="fa fa-edit"></i>Eliminar
-                        </button>
-                        <button type="button" class="btn red" @click.prevent="closeDeleteModal()">
-                            <i class="fa fa-ban"></i>Cancelar
-                        </button>
+                    <div class="form-group">
+                        <label>Tipo de documento</label>
+                            <select id="tidocu" name="FK_TipoBdId" class="form-control select2" required>
+                                <option value=""></option>
+                                <option value="1">MySql</option>
+                                <option value="2">PostgreSql</option>
+                            <select>
                     </div>
+                </form>
+            </modal>
+            {{--fin modal dropzone--}}
+            {{--Inicio modal eliminar archivo sql--}}
+            <modal v-model="deleteModalState" title="Eliminar Archivo Sql">
+                ¿Desea eliminar el archivo sql <strong>@{{eliminarSql.url}}</strong>?
+                <div class="modal-footer" slot="footer">
+                    <button class="btn green-jungle" @click="destroy(eliminarSql)">
+                        <i class="fa fa-edit"></i>Eliminar
+                    </button>
+                    <button type="button" class="btn red" @click.prevent="closeDeleteModal()">
+                        <i class="fa fa-ban"></i>Cancelar
+                    </button>
+                </div>
+            </modal>
+            {{--Fin modal eliminar archivo sql --}}
+            {{--  Modal de vista previa  --}}
+                <modal v-model="prevModal" :title="prevSql.url" :footer="false" size="lg">
+                    <codemirror :code="prevSql.code" :options="codeOptions"></codemirror>
                 </modal>
-        {{--Fin modal eliminar archivo sql --}}
             </div>
             @include('partials.modal-help-subir-sql')
         @endcomponent

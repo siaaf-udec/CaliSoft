@@ -1,42 +1,62 @@
 import "./bootstrap";
 import Vue from "vue";
+import VueCodeMirror from 'vue-codemirror';
 import { Modal } from "uiv";
 import BsSelect from "./components/bs/bs-select";
 
+Vue.use(VueCodeMirror);
+
 new Vue({
-    el:"#app",
+    el: "#app",
     components: { Modal, BsSelect },
-    data:{
-        archivosql: [],
-
-        //tipobd: [],
-
+    data: {
+        sqls: [],
         modalState: false,
         deleteModalState: false,
         eliminarSql: {},
+        prevSql: {},
+        prevModal: false,
+        codeOptions: {
+            lineNumbers: true,
+            mode: 'text/x-sql',
+            readOnly: true,
+            theme: 'eclipse'
+        }
     },
-    created(){
+    created() {
         this.refresh();
     },
-    methods:{
-        refresh(){
-            axios.get('/api/documentacion-sql/')
-            .then(response => this.archivosql = response.data);
+    methods: {
+        refresh() {
+            axios.get('/api/sql/')
+                .then(response => this.sqls = response.data);
         },
-        destroy(archivosql){
-            axios.delete('/api/documentacion-sql/' + archivosql.PK_id)
-            .then(()=>{
-                this.archivosql = this.archivosql.filter(value => value != archivosql);
-                this.deleteModalState = false;
-                toastr.success('Documento Eliminado Correctamente');
-            });
+        destroy(sql) {
+            axios.delete('/api/sql/' + sql.PK_id)
+                .then(() => {
+                    this.sqls = this.sqls.filter(value => value != sql);
+                    this.deleteModalState = false;
+                    toastr.success('Documento Eliminado Correctamente');
+                });
         },
-        openDeleteModal(archivosql) {
-            this.eliminarSql = archivosql;
+        openDeleteModal(sql) {
+            this.eliminarSql = sql;
             this.deleteModalState = true;
         },
         closeDeleteModal() {
             this.deleteModalState = false;
         },
+        preview(sql) {
+            if (sql.code) {
+                this.prevSql = sql;
+                this.prevModal = true;
+            } else {
+                axios.post('/api/sql/preview/' + sql.url).then(res => {
+                    sql.code = res.data.code;
+                    this.prevSql = sql;
+                    this.prevModal = true;
+                });
+            }
+        }
     },
 });
