@@ -6,7 +6,7 @@
             <div id="app">
             <div class="row">
 
-                
+
                     <div class="col-sm-4 col-xs-12">
                         <div class="form-horizontal">
                             <div class="form-group">
@@ -21,7 +21,7 @@
                             </div>
                         </div>
                     </div>
-                
+
 
                 <div class="col-sm-offset-4 col-sm-4 col-xs-12" style="margin-bottom: 2%">
                     <div class="input-group">
@@ -45,15 +45,16 @@
                                 <td v-text="script.url"></td>
                                 <td v-text="script.estado"></td>
                                 <td class="text-center">
+                                    <button class="btn btn-primary" title="Vista Pervia" @click="preview(script)" >
+                                        <span class="fa fa-eye"></span>
+                                    </button>
+
                                     <button class="btn red" title="Eliminar documento" @click.prevent="openDeleteModal(script)">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
-                                    <button class="btn btn-primary" title="Vista Pervia" @click="preview(script)" >
-                                        <span class="fa fa-code"></span>
-                                    </button>
                                 </td>
 
-                            </tr>    
+                            </tr>
                         </tbody>
                     </table>
                 </div>
@@ -126,7 +127,7 @@
                 toastr.info('Documento subido correctamente');
                 return a.previewElement ? a.previewElement.classList.add("dz-success") : void 0
             },
-            
+
         };
     </script>
 
