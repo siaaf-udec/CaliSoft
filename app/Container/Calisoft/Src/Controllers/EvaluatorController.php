@@ -19,6 +19,11 @@ class EvaluatorController extends Controller
         return view('calisoft.evaluator.evaluator-modelacion', compact('proyecto'));
     }
 
+    public function plataforma(Proyecto $proyecto)
+    {
+        return view('calisoft.evaluator.evaluator-plataforma', compact('proyecto'));
+    }
+
     public function evaluar(Documento $documento)
     {
         return view('calisoft.evaluator.evaluator-docs', compact('documento'));

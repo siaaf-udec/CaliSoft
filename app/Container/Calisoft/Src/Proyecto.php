@@ -22,6 +22,11 @@ class Proyecto extends Model
         return $this->hasMany(Documento::class, 'FK_ProyectoId', 'PK_id');
     }
 
+    public function casoPruebas()
+    {
+        return $this->hasMany(CasoPrueba::class, 'FK_ProyectoId', 'PK_id');
+    }
+
     public function semillero()
     {
         return $this->belongsTo(Semillero::class, 'FK_SemilleroId')

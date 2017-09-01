@@ -66,6 +66,7 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
     Route::put('asignar', 'ProyectoController@asignar');
     Route::put('desasignar', 'ProyectoController@desasignar');
     Route::get('documentacion', 'ProyectoController@documentos');
+    Route::get('plataforma', 'ProyectoController@plataforma');
 });
 
 Route::resource('proyectos', 'ProyectoController', [
@@ -110,3 +111,10 @@ Route::resource('evaluaciones', 'DocumentEvalController', [
         'evaluaciones' => 'documento'
     ]
 ]);
+
+// crear Caso prueba
+
+Route::resource('casoPrueba', 'CasoPruebaController', [
+    'only' => ['index', 'store', 'update', 'destroy'],
+]);
+

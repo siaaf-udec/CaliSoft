@@ -77,6 +77,11 @@ class ProyectoController extends Controller
         }]);
     }
 
+    public function plataforma(Proyecto $proyecto)
+    {
+        return $proyecto->casoPruebas()->get();
+    }
+
     /**
      * Cambia el estado del proyecto como propuesta
      * @param Proyecto $proyecto
