@@ -30,6 +30,7 @@ new Vue({
     created() {
         axios.get(`/api/proyectos/${window.proyectoId}/plataforma`)
                 .then(res => this.casoPrueba = res.data);
+                
     },
     methods: {
         store() {
@@ -37,6 +38,7 @@ new Vue({
             axios.post('/api/casoPrueba', this.newCasoPrueba)
                 .then(response => {
                     this.casoPrueba.push(response.data);
+                    this.formErrors = {};
                     this.newCasoPrueba = {};
                     $("#crear-caso").modal("hide");
                     toastr.success('Caso Prueba Creado Correctamente');

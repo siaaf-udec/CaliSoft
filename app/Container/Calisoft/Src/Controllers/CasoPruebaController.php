@@ -3,6 +3,7 @@
 namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
+use App\Container\Calisoft\Src\Requests\CasoPruebaStoreRequest;
 use App\Container\Calisoft\Src\CasoPrueba;
 use App\Http\Controllers\Controller;
 
@@ -34,7 +35,7 @@ class CasoPruebaController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(CasoPruebaStoreRequest $request)
     {
         return CasoPrueba::create([
             'nombre' => $request->nombre,
@@ -46,7 +47,7 @@ class CasoPruebaController extends Controller
             'limite' => $request->limite,
             'formulario' => '-',
             'observacion' => '-',
-            'entrega' => '0',
+            'entrega' => 0,
             'FK_ProyectoId'=> $request->FK_ProyectoId,
             'FK_UsuarioId' => 6
 
