@@ -36,10 +36,11 @@
                         
                             <div class="form-group">
                                 <label>Tipo de documento</label>
-                                <bs-select id="tidocu" name="FK_TipoDocumentoId" class="form-control select2" v-model="newDocumentos.FK_TipoDocumentoId" required>
-                                    <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> @{{ tiposDocumento.nombre }}
+                                <select name="FK_TipoDocumentoId" class="form-control" required>
+                                    <option v-for="tiposDocumento in tiposDocumentos" v-bind:value="tiposDocumento.PK_id"> 
+                                        @{{ tiposDocumento.nombre }}
                                     </option>
-                                </bs-select>
+                                </select>
                             </div>
                        
 

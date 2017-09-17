@@ -13,7 +13,6 @@ let vm = new Vue({
         documentos: [],
         tiposDocumentos: [],
 
-        newDocumentos: {},
         fillDocumentos: {},
         formErrors: {},
         formErrorsUpdate: {},
