@@ -1,5 +1,5 @@
 <template>
-    <div class="form-group col-sm-12 form-md-line-input" :class="{'has-error':error}">
+    <div class="form-group form-md-line-input" :class="{'has-error':error}">
         <textarea :name="name" class="form-control" v-model="local" :maxlength="maxlength" :required="required" style="resize: none" rows="3" />
         </textarea>
         <label :for="name">{{label}}</label>
