@@ -28,5 +28,9 @@ class EvaluatorController extends Controller
     {
         return view('calisoft.evaluator.evaluator-docs', compact('documento'));
     }
+    public function codificacion(Proyecto $proyecto)
+    {
+        return view('calisoft.evaluator.evaluator-codificacion',compact('proyecto'));
+    }
 
 }
