@@ -24,7 +24,11 @@
         @component('components.nav-link', ['icon' => 'fa fa-users', 'link' => '#', 'title' => 'Evaluadores'])
         @endcomponent
 
-        @component('components.nav-link', ['icon' => 'fa fa-bar-chart-o', 'link' => '#', 'title' => 'Modelado'])
+        @component('components.nav-link', [
+            'icon' => 'fa fa-bar-chart-o', 
+            'title' => 'Modelación',
+            'link' => route('evalucion.modelacion')
+        ])
         @endcomponent
 
         @component('components.nav-link', ['icon' => 'fa fa-cubes', 'link' => '#', 'title' => 'Plataforma'])

@@ -1,8 +1,6 @@
 <template>
     <form @submit.prevent="$emit('update', componente)">
-        
         <textarea-input name="observacion" label="Observacion" v-model="componente.pivot.observacion"/>
-       
         <div class="row">
             <div class="col-sm-6 text-center">
                 <bs-switch :id="componente.PK_id" label="VALIDO" v-model="componente.pivot.checked" :options="switchOptions" />

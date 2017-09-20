@@ -12,7 +12,10 @@ class StudentController extends Controller
     function __construct()
     {
         $this->middleware('can:upload,App\Proyecto')
-            ->only('documentos', 'modelobd', 'documentosCoddificacion', 'documentosBd');
+            ->only([
+                'documentos', 'modelobd', 'documentosCodificacion', 'documentosBd', 
+                'evaluacionModelado'
+            ]);
     }
 
     public function proyectos()
@@ -24,11 +27,10 @@ class StudentController extends Controller
         ]);
     }
 
-    //Cambiar
     public function documentos()
     {
-        $co = auth()->user()->proyectos()->first();
-        return view('calisoft.student.student-documentacion', compact('co'));
+        $proyecto = auth()->user()->proyectos()->first();
+        return view('calisoft.student.student-documentacion', compact('proyecto'));
     }
 
     public function invitaciones()
@@ -49,6 +51,11 @@ class StudentController extends Controller
     public function documentosBd()
     {
         return view('calisoft.student.student-bd');
+    }
+
+
+    public function evaluacionModelado() {
+        return view('calisoft.student.student-eval-modelado');
     }
 }
 

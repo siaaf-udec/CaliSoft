@@ -22,3 +22,10 @@ Route::get('/documentosCodificacion','StudentController@documentosCodificacion')
 
 Route::get('documentosBd','StudentController@documentosBd')
     ->name('documentosBd');
+
+
+Route::prefix('evaluacion')->group(function () {
+
+    Route::get('modelacion', 'StudentController@evaluacionModelado')
+        ->name('evalucion.modelacion');
+});

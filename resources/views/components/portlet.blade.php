@@ -5,7 +5,18 @@
             <span class="caption-subject bold uppercase"> {{ $title }} </span>
         </div>
         <div class="actions">
-            {{ $actions or null }}
+            @yield('actions')
+
+            @if(isset($back))
+                @component('components.porlet-action', [
+                    'icon' => 'fa fa-undo',
+                    'link' => url()->previous(),
+                    'attributes' => "",
+                    'title'=>'Volver',
+                ])
+                @endcomponent
+            @endif
+            
 
             {{-- Boton de ayuda --}}
             @component('components.porlet-action', [
