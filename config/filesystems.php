@@ -54,6 +54,13 @@ return [
             'visibility' => 'public'
         ],
 
+        'casoPruebas' => [
+            'driver' => 'local',
+            'root' => storage_path('app/public/uploads/casoPruebas'),
+            'url' => '/storage/uploads/casoPruebas/',
+            'visibility' => 'public'
+        ],
+
         'scripts' => [
             'driver' => 'local',
             'root' => storage_path('app/uploads/scripts')

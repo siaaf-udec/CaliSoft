@@ -67,6 +67,7 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
     Route::put('desasignar', 'ProyectoController@desasignar');
     Route::get('documentacion', 'ProyectoController@documentos');
     Route::get('plataforma', 'ProyectoController@plataforma');
+    
 });
 
 Route::resource('proyectos', 'ProyectoController', [
@@ -119,3 +120,4 @@ Route::resource('casoPrueba', 'CasoPruebaController', [
     'only' => ['index', 'store', 'update', 'destroy'],
 ]);
 
+Route::post('enviarCasoPrueba/{casoPrueba}', 'CasoPruebaController@enviarCasoPrueba');

@@ -5,6 +5,7 @@ use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Categoria;
 use App\Container\Calisoft\Src\GrupoDeInvestigacion;
 use App\Container\Calisoft\Src\Semillero;
+use App\Container\Calisoft\Src\Proyecto;
 
 class StudentController extends Controller
 {
@@ -49,6 +50,13 @@ class StudentController extends Controller
     public function documentosBd()
     {
         return view('calisoft.student.student-bd');
+    }
+
+    public function plataforma()
+    {
+        $proyecto = auth()->user()->proyectos()->first();
+        $casos = $proyecto->casoPruebas()->get();
+        return view('calisoft.student.student-plataforma', compact('proyecto','casos'));
     }
 }
 

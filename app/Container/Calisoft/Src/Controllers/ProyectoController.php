@@ -81,6 +81,7 @@ class ProyectoController extends Controller
     {
         return $proyecto->casoPruebas()->get();
     }
+    
 
     /**
      * Cambia el estado del proyecto como propuesta

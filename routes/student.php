@@ -22,3 +22,6 @@ Route::get('/documentosCodificacion','StudentController@documentosCodificacion')
 
 Route::get('documentosBd','StudentController@documentosBd')
     ->name('documentosBd');
+
+Route::get('/plataformaStudent','StudentController@plataforma')
+    ->name('plataformaStudent');

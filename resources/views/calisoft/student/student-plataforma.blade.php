@@ -9,11 +9,6 @@
 
         <div id="app">
 
-                {{-- Boton crear caso prueba --}}
-                <button type="button" data-toggle="modal" data-target="#crear-caso" class="btn green-jungle center-block">
-                    <i class="fa fa-plus"></i>
-                    Crear Caso Prueba
-                </button>
                 <br> 
 
                 <div class="panel panel-info" v-for="caso in casoPrueba">
@@ -21,14 +16,10 @@
                         <h4 class="panel-header" style="display: inline">@{{ caso.nombre }}</h4>
                         <div class="btn-group pull-right">
                             <a data-toggle="collapse" :data-target="'#'+caso.PK_id" class="btn btn-xs btn-success">Detalles</a>
-                        
-                            <a v-if="caso.formulario !== '-'" href="#" class="btn btn-xs btn-primary">Calificar</a>
-                            <a v-else href="#" class="btn btn-xs btn-danger" disabled>Calificar</a>
                         </div>
                     </div>
                     <div class="panel-body">
                         <div :id="caso.PK_id" class="collapse">
-
                             <table class="table table-striped table-bordered table-hover" id="sample">
                                         <tbody>
                                             <tr>
@@ -63,53 +54,39 @@
                                                 <td style="vertical-align: middle">Archivo subido:</td>
                                                 <td style="vertical-align: middle">@{{ caso.formulario }} </td>
                                             </tr>
+                                            
                                         </tbody>
                             </table>
-
-                            <span v-if="caso.formulario == '-'" class="label label-sm label-danger"> El estudiante no a subido el Caso Prueba </span>
-                            
+                            <form method="POST"  :action="'/api/enviarCasoPrueba/'+caso.PK_id,caso" 
+                                class="formarchivo" enctype="multipart/form-data" v-if="caso.formulario == '-'">
+                                {{csrf_field()}}
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-sm-6">
+                                            <label for="textarea">(Opcional) Observación: </label>
+                                            <textarea id="textarea" name="observacion" rows="3" style="width: calc(100% - 45px);  height: auto;"></textarea>
+                                        </div>
+                                        <div class="col-sm-4">
+                                         @component('components.fileinput',[
+                                            'icon'=>'fa fa-file',
+                                            'atributo'=>'required',
+                                            'title1' => 'Caso Prueba',
+                                            'title2' => 'Seleccionar',
+                                            'nombre' => 'formulario',
+                                            ])
+                                        @endcomponent
+                                        </div>
+                                        
+                                    </div>                 
+                                    <button type="submit" class="btn green-jungle">
+                                        <i class="fa fa-message"></i>Subir Caso Prueba
+                                    </button>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>          
-
-                <!--Modal crear caso prueba-->
-                <modal id="crear-caso" title="Crear Caso Prueba">
-                    <form @submit.prevent="store()" id="caso-create">
-                        <div class="row">
-                            <div class="col-sm-6">
-                                <textarea-input name="nombre" v-model="newCasoPrueba.nombre" label="Nombre" maxlength="200" required></textarea-input>
-                                <textarea-input name="proposito" v-model="newCasoPrueba.proposito" label="Proposito" required></textarea-input>
-                                <textarea-input name="alcance" v-model="newCasoPrueba.alcance" label="Alcance" required></textarea-input>
-                                
-                            </div>  
-                            <div class="col-sm-6">
-                                <textarea-input name="resultado_esperado" v-model="newCasoPrueba.resultado_esperado" label="Resultado esperado" required></textarea-input>
-                                <textarea-input name="criterios" v-model="newCasoPrueba.criterios" label="Criterios" required></textarea-input>
-                                <select-input v-model="newCasoPrueba.prioridad" name="prioridad" label="Prioridad" required>    
-                                    <option value="alta">Alta</option>
-                                    <option value="media">Media</option>
-                                    <option value="baja">Baja</option>
-                                </select-input>
-                                <label>Limite: </label>
-                                <input type="date"  v-model="newCasoPrueba.limite" name="limite">
-                            </div>
-                            
-                        </div>
-                        
-
-                        <div class="form-group modal-footer">
-                            <button type="submit" class="btn green-jungle">
-                                <i class="fa fa-plus"></i>Crear
-                            </button>
-                            <button type="button" class="btn btn-danger" data-dismiss="modal">
-                                <i class="fa fa-ban"></i>Cancelar
-                            </button>
-                        </div>
-                    </form>
-                </modal>
-                <!-- End modal crear usuarios-->
-                
-                
+ 
             </div>
         
             
@@ -117,9 +94,22 @@
     </div>
 @endsection
 
+@push('styles')
+
+    <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
+    <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+        
+
+@endpush
 @push('functions')
+    <script src="/assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js" type="text/javascript"></script>
+    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
     <script>window.proyectoId = {{ $proyecto->PK_id }};</script>
-    <script src="/js/plataforma.js"></script>
+    <script src="/js/plataforma-student.js"></script>
+            
 
     
 @endpush

@@ -4,7 +4,7 @@ namespace App\Container\Calisoft\Src\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CasoPruebaStoreRequest extends FormRequest
+class CasoPruebaEnviarRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,14 +24,7 @@ class CasoPruebaStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'nombre' => 'required|string|max:50',
-            'proposito'=> 'required|string|max:50',
-            'alcance'=> 'required|string',
-            'resultado_esperado'=> 'required|string|max:50',
-            'criterios' => 'required|string',
-            'prioridad'=> 'required|string',
-            'limite' => 'required',
-            'FK_ProyectoId'=> 'required|integer',
+            'formulario' => 'required|mimes:pdf',
         ];
     }
 }

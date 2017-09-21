@@ -8,6 +8,9 @@
                 {{--  Progreso de los documentos  --}}
                 <document-progress :documentos="documentos" :tipos="tiposDocumentos"></document-progress>
 
+                                   
+                                
+
                 {{--  Tabla de documentos  --}}
                 <document-list :documentos="documentos" :tipos="tiposDocumentos">    
                     <template slot="buttons" scope="props">
