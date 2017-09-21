@@ -48,9 +48,9 @@
                                 <td v-text="script.url"></td>
                                 <td v-text="script.estado"></td>
                                 <td class="text-center">
-                                    <button class="btn yellow-crusta" title="Calificar" >
+                                    <a :href="`/evaluar-codificacion/${script.PK_id}`" class="btn yellow-crusta" title="Calificar" >
                                         <span class="fa fa-asterisk"></span>
-                                    </button>
+                                    </a>
                                 </td>
 
                             </tr>

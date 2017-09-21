@@ -1,7 +1,10 @@
 <?php
 
 namespace App\Container\Calisoft\Src;
+
+
 use Illuminate\Database\Eloquent\Model;
+use Storage;
 
 
 class Script extends Model
@@ -16,5 +19,9 @@ class Script extends Model
     public function proyecto()
     {
         return $this->belongsTo(Proyecto::class, 'FK_ProyectoId', 'PK_id');
+    }
+    public function getUrlAttribute($url)
+    {
+        return Storage::disk('scripts')->url($url);
     }
 }

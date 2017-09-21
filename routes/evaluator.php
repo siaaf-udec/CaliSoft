@@ -10,3 +10,6 @@ Route::get('/evaluar/{documento}', 'EvaluatorController@evaluar')
 
 Route::get('/proyectos/{proyecto}/codificacion','EvaluatorController@codificacion')
     ->name('evaluator-codificacion');
+
+Route::get('/evaluar-codificacion/{script}','EvaluatorController@evaluarScripts')
+    ->name('evaluator-eval-script');
