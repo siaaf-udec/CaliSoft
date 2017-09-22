@@ -11,6 +11,21 @@
                         <code-preview url="{{$script->url}}"></code-preview>
                     </div>
                     <div class="col-md-6">
+                        <button type="button"  class="btn green-jungle center-block">
+                            <i class="fa fa-arrow-circle-right"></i>
+                            Calificación Automatica
+                        </button>
+                        <br>
+                        <tabla-items :items="items"></tabla-items>
+                        @component('components.textarea',[
+                            'name' => 'observacion',
+                            'attributes' => "required",
+                            'label' => 'Observación',
+                            'help' => 'Comentario',
+                            
+                        ])
+                            
+                        @endcomponent
                     </div>
                 </div>
             </div>
