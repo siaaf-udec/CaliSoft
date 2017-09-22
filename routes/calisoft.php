@@ -16,3 +16,10 @@ Route::get('porcentajesCodificacion','UserController@porcentajesCodificacion')->
 
 
 Route::get('/notificaciones', 'NotificationController@vista')->name('notificaciones');
+
+
+
+Route::prefix('pdf')->group(function () {
+    
+    Route::post('proyecto/{proyecto}/modelacion', 'PdfController@modelacion')->name('pdf.modelacion');
+});

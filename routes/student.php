@@ -25,3 +25,10 @@ Route::get('documentosBd','StudentController@documentosBd')
 
 Route::get('/plataformaStudent','StudentController@plataforma')
     ->name('plataformaStudent');
+
+
+Route::prefix('evaluacion')->group(function () {
+
+    Route::get('modelacion', 'StudentController@evaluacionModelado')
+        ->name('evalucion.modelacion');
+});

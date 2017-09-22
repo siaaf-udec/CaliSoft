@@ -7,3 +7,9 @@ Route::get('/proyectos/{proyecto}/plataforma', 'EvaluatorController@plataforma')
 
 Route::get('/evaluar/{documento}', 'EvaluatorController@evaluar')
     ->name('evaluator-eval');
+
+Route::get('/proyectos/{proyecto}/codificacion','EvaluatorController@codificacion')
+    ->name('evaluator-codificacion');
+
+Route::get('/evaluar-codificacion/{script}','EvaluatorController@evaluarScripts')
+    ->name('evaluator-eval-script');

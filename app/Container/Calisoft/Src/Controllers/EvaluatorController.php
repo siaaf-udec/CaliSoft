@@ -1,10 +1,13 @@
 <?php
 namespace App\Container\Calisoft\Src\Controllers;
 
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
+use App\Container\Calisoft\Src\Script;
 use App\Container\Calisoft\Src\Documento;
+
 
 class EvaluatorController extends Controller
 {
@@ -28,5 +31,13 @@ class EvaluatorController extends Controller
     {
         return view('calisoft.evaluator.evaluator-docs', compact('documento'));
     }
+    public function codificacion(Proyecto $proyecto)
+    {
+        return view('calisoft.evaluator.evaluator-codificacion',compact('proyecto'));
+    }
 
+    public function evaluarScripts(Script $script)
+    {
+        return view('calisoft.evaluator.evaluator-scripts',compact('script'));
+    }
 }

@@ -3,6 +3,18 @@
 @section('content')
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
+            
+            @section('actions')
+                @component('components.porlet-post-action', [
+                    'title' => 'reporte',
+                    'icon' => 'fa fa-file-pdf-o',
+                    'id' => 'pdf-form',
+                    'url' => route('pdf.modelacion', compact('proyecto'))
+                ])
+                @endcomponent
+            @endsection
+
+
             <div id="app">
                 
                 {{--  Progreso de los documentos  --}}
