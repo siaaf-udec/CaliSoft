@@ -20,8 +20,5 @@ class Script extends Model
     {
         return $this->belongsTo(Proyecto::class, 'FK_ProyectoId', 'PK_id');
     }
-    public function getUrlAttribute($url)
-    {
-        return Storage::disk('scripts')->url($url);
-    }
+    
 }

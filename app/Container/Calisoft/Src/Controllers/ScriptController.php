@@ -22,8 +22,9 @@ class ScriptController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:student', [
-            'except' => ['index'],
+            'except' => ['index','preview']
         ]);
+        
     }
     public function index()
     {
@@ -68,6 +69,7 @@ class ScriptController extends Controller
         $code = $disk->get($url);
         return response()->json(compact('code'));
     }
+
 
 
 }
