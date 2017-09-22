@@ -17,15 +17,9 @@
                         </button>
                         <br>
                         <tabla-items :items="items"></tabla-items>
-                        @component('components.textarea',[
-                            'name' => 'observacion',
-                            'attributes' => "required",
-                            'label' => 'Observación',
-                            'help' => 'Comentario',
+                        <textarea-input name="observacion" label="Observación" v-model="observacion"/>
                             
-                        ])
-                            
-                        @endcomponent
+                        
                     </div>
                 </div>
             </div>

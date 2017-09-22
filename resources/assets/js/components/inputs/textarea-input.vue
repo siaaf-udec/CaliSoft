@@ -10,6 +10,7 @@
 </template>
 <script>
 export default {
+    name: 'textarea-input',
     props: ['name', 'error', 'value', 'label', 'required','maxlength'],
     data() {
         return { local: this.value }

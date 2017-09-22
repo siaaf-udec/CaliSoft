@@ -33,7 +33,7 @@ class EvaluatorController extends Controller
     }
     public function codificacion(Proyecto $proyecto)
     {
-        return view('calisoft.evaluator.evaluator-codificacion',compact('proyecto'));
+        return view('calisoft.evaluator.evaluator-codificacion', compact('proyecto'));
     }
 
     public function evaluarScripts(Script $script)

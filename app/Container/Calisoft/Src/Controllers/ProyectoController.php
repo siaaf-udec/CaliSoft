@@ -141,4 +141,10 @@ class ProyectoController extends Controller
         return $proyecto->usuarios;
     }
 
+
+    public function scripts(Proyecto $proyecto)
+    {
+        return $proyecto->scripts;
+    }
+
 }

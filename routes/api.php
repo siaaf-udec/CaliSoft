@@ -67,7 +67,7 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
     Route::put('desasignar', 'ProyectoController@desasignar');
     Route::get('documentacion', 'ProyectoController@documentos');
     Route::get('plataforma', 'ProyectoController@plataforma');
-    
+    Route::get('scripts', 'ProyectoController@scripts');
 });
 
 Route::resource('proyectos', 'ProyectoController', [

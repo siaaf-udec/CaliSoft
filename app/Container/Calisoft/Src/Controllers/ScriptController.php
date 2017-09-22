@@ -53,7 +53,6 @@ class ScriptController extends Controller
      */
     public function store(DocumentosScriptsStoreRequest $request)
     {
-
         $file = $request->file('file');
         $proyecto = auth()->user()->proyectos()->first();
         $url = rand(1000, 9999) . '_' . $file->getClientOriginalName();

@@ -36,4 +36,3 @@ mix
     .js('resources/assets/js/codificacion.js', 'public/js')
     .js('resources/assets/js/evaluator-script.js', 'public/js')
     .js('resources/assets/js/plataforma-student.js', 'public/js')
-    .js('resources/assets//js/codificacion.js', 'public/js')

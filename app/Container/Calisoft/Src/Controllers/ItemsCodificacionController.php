@@ -26,8 +26,7 @@ class ItemsCodificacionController extends Controller
     public function update(ItemsCodificacionUpdateRequest $request, ItemsCodificacion $codificacion )
     {
         $codificacion->valor=$request->valor;
-        $codificacion->save();
-        
+        $codificacion->save(); 
     }
 
 }

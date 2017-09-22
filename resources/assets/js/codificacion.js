@@ -7,6 +7,7 @@ new Vue({
     el: "#app",
     components: { Pagination },
     data: {
+        proyectoId: window.proyectoId,
         script: [],
         formErrors: {},
         formErrorsUpdate: {},
@@ -18,7 +19,7 @@ new Vue({
     },
     methods: {
         refresh() {
-            axios.get('/api/scripts/')
+            axios.get(`/api/proyectos/${window.proyectoId}/scripts`)
                 .then(response => this.script = this.paginator.data = response.data);
         },
     },
