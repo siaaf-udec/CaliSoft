@@ -6,12 +6,16 @@
             'icon' => 'fa fa-files', 
             'title' => 'Plataforma: ' . $proyecto->nombre 
         ])
-
+        <button class="btn green-sharp btn-large" data-toggle="confirmation" data-original-title="¿Esta seguro? una vez, enviado no se podrá modificar"
+             title="">Subir Caso Prueba</button>
         <div id="app">
-
+        <button class="btn green-sharp btn-large" data-toggle="confirmation" data-original-title="¿Esta seguro? una vez, enviado no se podrá modificar"
+             title="">Subir Caso Prueba</button>
                 <br> 
 
                 <div class="panel panel-info" v-for="caso in casoPrueba">
+                <button class="btn green-sharp btn-large" data-toggle="confirmation" data-original-title="¿Esta seguro? una vez, enviado no se podrá modificar"
+             title="">Subir Caso Prueba</button>
                     <div class="panel-heading">
                         <h4 class="panel-header" style="display: inline">@{{ caso.nombre }}</h4>
                         <div class="btn-group pull-right">
@@ -96,17 +100,17 @@
 
 @push('styles')
 
-    <link href="../assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
-    <link href="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
+    <link href="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
         
 
 @endpush
 @push('functions')
     <script src="/assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
     <script src="/assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js" type="text/javascript"></script>
-    <script src="../assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js" type="text/javascript"></script>
+    <script src="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
     <script>window.proyectoId = {{ $proyecto->PK_id }};</script>
     <script src="/js/plataforma-student.js"></script>
             

@@ -8,6 +8,7 @@ use App\Container\Calisoft\Src\Requests\CasoPruebaStoreRequest;
 use App\Container\Calisoft\Src\Requests\CasoPruebaEnviarRequest;
 use App\Container\Calisoft\Src\CasoPrueba;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 
 
 class CasoPruebaController extends Controller
@@ -118,8 +119,9 @@ class CasoPruebaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy(CasoPrueba $casoPrueba)
     {
-        //
+        Storage::disk('casoPruebas')->delete($casoPrueba->getOriginal('formulario'));
+        $casoPrueba->delete();
     }
 }

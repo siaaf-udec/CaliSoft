@@ -44,6 +44,12 @@ new Vue({
                     toastr.success('Caso Prueba Creado Correctamente');
                 })
                 .catch(error => this.formErrors = error.response.data);
-        }
+        },
+        destroy(caso) {
+            axios.delete('/api/casoPrueba/' + caso.PK_id).then(() => {
+                this.casoPrueba = this.casoPrueba.filter(value => value != caso);
+                toastr.info('Caso prueba eliminado correctamente');
+            });
+        },
     }
 })

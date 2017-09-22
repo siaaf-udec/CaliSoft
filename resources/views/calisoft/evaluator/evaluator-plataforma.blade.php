@@ -15,7 +15,7 @@
                     Crear Caso Prueba
                 </button>
                 <br> 
-
+                
                 <div class="panel panel-info" v-for="caso in casoPrueba">
                     <div class="panel-heading">
                         <h4 class="panel-header" style="display: inline">@{{ caso.nombre }}</h4>
@@ -24,6 +24,7 @@
                         
                             <a v-if="caso.formulario !== '-'" href="#" class="btn btn-xs btn-primary">Calificar</a>
                             <a v-else href="#" class="btn btn-xs btn-danger" disabled>Calificar</a>
+                            <a @click.prevent="destroy(caso)" class="btn btn-xs btn-danger" >Eliminar</a>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -77,10 +78,10 @@
                     <form @submit.prevent="store()" id="caso-create">
                         <div class="row">
                             <div class="col-sm-6">
-                                <textarea-input name="nombre" v-model="newCasoPrueba.nombre" label="Nombre" maxlength="200" required></textarea-input>
-                                <textarea-input name="proposito" v-model="newCasoPrueba.proposito" label="Proposito" required></textarea-input>
-                                <textarea-input name="alcance" v-model="newCasoPrueba.alcance" label="Alcance" required></textarea-input>
-                                
+                                <textarea-input name="nombre" :error="formErrors.nombre" v-model="newCasoPrueba.nombre" label="Nombre" maxlength="200" required></textarea-input>
+                                <textarea-input name="proposito" :error="formErrors.proposito" v-model="newCasoPrueba.proposito" label="Proposito" required></textarea-input>
+                                <textarea-input name="alcance" :error="formErrors.alcance" v-model="newCasoPrueba.alcance" label="Alcance" required></textarea-input>
+                               
                             </div>  
                             <div class="col-sm-6">
                                 <textarea-input name="resultado_esperado" v-model="newCasoPrueba.resultado_esperado" label="Resultado esperado" required></textarea-input>
@@ -90,8 +91,22 @@
                                     <option value="media">Media</option>
                                     <option value="baja">Baja</option>
                                 </select-input>
-                                <label>Limite: </label>
-                                <input type="date"  v-model="newCasoPrueba.limite" name="limite">
+                                
+                                <div class="form-group">
+                                    <label >Límite</label>
+                                    <div >
+                                        <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
+                                            <input type="text" name="limite" v-model="newCasoPrueba.limite" class="form-control" readonly>
+                                                <span class="input-group-btn"> 
+                                                    <button class="btn default" type="button">
+                                                        <i class="fa fa-calendar"></i>
+                                                    </button>
+                                                </span>
+                                        </div>
+                                        <!-- /input-group -->
+                                    </div>
+                                </div>
+                                
                             </div>
                             
                         </div>
@@ -117,7 +132,15 @@
     </div>
 @endsection
 
+@push('styles')  
+    <link href="/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+@endpush
+
+    
 @push('functions')
+    <script src="/assets/global/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js" type="text/javascript"></script>
+    <script src="/assets/pages/scripts/components-date-time-pickers.min.js" type="text/javascript"></script>
+            
     <script>window.proyectoId = {{ $proyecto->PK_id }};</script>
     <script src="/js/plataforma.js"></script>
 
