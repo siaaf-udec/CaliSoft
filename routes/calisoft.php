@@ -22,4 +22,6 @@ Route::get('/notificaciones', 'NotificationController@vista')->name('notificacio
 Route::prefix('pdf')->group(function () {
     
     Route::post('proyecto/{proyecto}/modelacion', 'PdfController@modelacion')->name('pdf.modelacion');
+    Route::post('usuarios', 'PdfController@usuarios')->name('pdf.usuarios');
+    
 });

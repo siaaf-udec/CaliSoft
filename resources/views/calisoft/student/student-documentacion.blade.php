@@ -2,17 +2,11 @@
 
 @section('content')
     <div class="col-md-12">
-        @component('components.portlet', ['icon' => 'fa fa-book', 'title' => 'Documentos'])
-            
-            @section('actions')
-                @component('components.porlet-post-action', [
-                    'title' => 'reporte',
-                    'icon' => 'fa fa-file-pdf-o',
-                    'id' => 'pdf-form',
-                    'url' => route('pdf.modelacion', compact('proyecto'))
-                ])
-                @endcomponent
-            @endsection
+        @component('components.portlet', [
+                'icon' => 'fa fa-book', 
+                'title' => 'Documentos', 
+                'pdf' => route('pdf.modelacion', compact('proyecto'))
+            ])
 
 
             <div id="app">

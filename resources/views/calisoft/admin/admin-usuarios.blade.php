@@ -1,7 +1,7 @@
 @extends('layouts.dash')
 @section('content')
 <div class="col-md-12">
-    @component('components.portlet', ['icon' => 'fa fa-users', 'title' => 'Usuarios'])
+    @component('components.portlet', ['icon' => 'fa fa-users', 'title' => 'Usuarios', 'pdf' => route('pdf.usuarios')])
 
 
         <div id="app">
