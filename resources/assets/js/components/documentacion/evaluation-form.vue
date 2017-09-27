@@ -1,9 +1,9 @@
 <template>
-    <form @submit.prevent="$emit('update', componente)">
-        <textarea-input name="observacion" label="Observación" v-model="componente.pivot.observacion"/>
+    <form @submit.prevent="$emit('update', eval)">
+        <textarea-input name="observacion" label="Observación" v-model="eval.observacion" />
         <div class="row">
             <div class="col-sm-6 text-center">
-                <bs-switch :id="componente.PK_id" label="VALIDO" v-model="componente.pivot.checked" :options="switchOptions" />
+                <bs-switch :id="eval.componente.PK_id" label="VALIDO" v-model="eval.checked" :options="switchOptions" />
             </div>
             <div class="col-sm-6 text-center">
                 <button type="submit" class="btn blue">Guardar</button>
@@ -18,21 +18,21 @@ import _ from 'lodash';
 
 export default {
     components: { BsSwitch, TextareaInput },
-    props: ['evaluation'],
+    props: ['evaluacion'],
     data() {
-        return { 
-            componente: _.cloneDeep(this.evaluation),
+        return {
+            eval: _.cloneDeep(this.evaluacion),
             switchOptions: {
                 onText: 'SI',
                 offText: 'NO',
                 onColor: 'success',
                 offColor: 'danger'
-            } 
+            }
         }
     },
     watch: {
         evaluation() {
-            this.componente = _.cloneDeep(this.evaluation);
+            this.eval = _.cloneDeep(this.evaluacion);
         }
     }
 }

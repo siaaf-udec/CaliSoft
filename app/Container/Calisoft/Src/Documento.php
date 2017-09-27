@@ -30,11 +30,6 @@ class Documento extends Model
 
     public function evaluaciones()
     {
-        return $this->belongsToMany(
-            Componente::class,
-            'TBL_EvaluacionDocumento',
-            'FK_DocumentoId',
-            'FK_ComponenteId'
-        )->withPivot('observacion', 'checked');
+        return $this->hasMany(DocEvaluation::class, 'FK_DocumentoId');
     }
 }

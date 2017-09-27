@@ -1,27 +1,27 @@
 <template>
     <div id="accordion" class="panel-group">
-        <div class="panel panel-default" v-for="(componente, index) in evaluations" :key="componente.PK_id">
+        <div class="panel panel-default" v-for="(evaluacion, index) in evaluaciones" :key="evaluacion.FK_ComponenteId">
             <div class="panel-heading">
                 <h4 class="panel-title">
                     <a data-toggle="collapse" data-parent="#accordion" :href="'#collapse' + index">
-                        {{ componente.nombre }}
+                        {{ evaluacion.componente.nombre }}
                     </a>
-                    <span class="pull-right fa" :class="indicator(componente)"></span>
+                    <span class="pull-right fa" :class="indicator(evaluacion)"></span>
                 </h4>
             </div>
             <div :id="'collapse' + index" class="panel-collapse collapse">
                 <div class="panel-body">
                     <div class="text-center">
-                        {{ componente.descripcion }}
+                        {{ evaluacion.componente.descripcion }}
                     </div>
-                    <div class="text-center text-info" v-if="(!editable && componente.pivot.observacion)">
+                    <div class="text-center text-info" v-if="(!editable && evaluacion.observacion)">
                         <hr>
                         <strong>Observacion:</strong>
-                        {{ componente.pivot.observacion }}
+                        {{ evaluacion.observacion }}
                     </div>
                     <div v-if="editable">
                         <hr>
-                        <evaluation-form :evaluation="componente" @update="update" />
+                        <evaluation-form :evaluacion="evaluacion" @update="update" />
                     </div>
                 </div>
             </div>
@@ -41,35 +41,35 @@ export default {
     },
     data() {
         return {
-            evaluations: [],
+            evaluaciones: [],
         }
     },
     created() {
         axios.get('/api/evaluaciones/' + this.documentoId)
-            .then(res => this.evaluations = res.data)
+            .then(res => this.evaluaciones = res.data)
     },
     methods: {
-        indicator(componente) {
+        indicator(evaluacion) {
             return {
-                'fa-times-circle text-danger': !componente.pivot.checked,
-                'fa-check-circle text-success': componente.pivot.checked
+                'fa-times-circle text-danger': !evaluacion.checked,
+                'fa-check-circle text-success': evaluacion.checked
             }
         },
-        update(componente) {
-            let payload = this.getPayload(componente);
+        update(evaluacion) {
+            let payload = this.getPayload(evaluacion);
             axios.put('/api/evaluaciones/' + this.documentoId, payload).then(() => {
-                toastr.info(`Componente: ${componente.nombre} ha sido calificado!`);
-                this.evaluations = this.evaluations.map(
-                    evaluation => evaluation.PK_id == componente.PK_id ? componente : evaluation
+                toastr.info(`Componente: ${evaluacion.componente.nombre} ha sido calificado!`);
+                this.evaluaciones = this.evaluaciones.map(
+                    val => evaluacion.FK_ComponenteId == val.FK_ComponenteId ? evaluacion : val
                 )
             });
         },
 
-        getPayload(componente) {
+        getPayload(evaluacion) {
             return {
-                componente_id: componente.PK_id,
-                checked: componente.pivot.checked,
-                observacion: componente.pivot.observacion
+                componente_id: evaluacion.FK_ComponenteId,
+                checked: evaluacion.checked,
+                observacion: evaluacion.observacion
             }
         }
     }
