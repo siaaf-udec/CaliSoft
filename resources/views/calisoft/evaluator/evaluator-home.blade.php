@@ -9,7 +9,7 @@
                             <a :href="`/proyectos/${proyecto.PK_id}/modelacion`" class="btn btn-xs btn-primary">modelación</a>
                             <a :href="`/proyectos/${proyecto.PK_id}/plataforma`" class="btn btn-xs btn-warning">Plataforma</a>
                             <a :href="`/proyectos/${proyecto.PK_id}/codificacion`" class="btn btn-xs btn-success">Codificación</a>
-                            <a href="#" class="btn btn-xs btn-danger">Base de datos</a>
+                            <a :href="`/proyectos/${proyecto.PK_id}/basedatos`" class="btn btn-xs btn-danger">Base de datos</a>
 
 
 

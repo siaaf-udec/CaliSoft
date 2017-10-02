@@ -40,4 +40,8 @@ class EvaluatorController extends Controller
     {
         return view('calisoft.evaluator.evaluator-scripts',compact('script'));
     }
+    public function basedatos(Proyecto $proyecto){
+        return view('calisoft.evaluator.evaluator-basedatos',compact('proyecto'));
+    }
+
 }

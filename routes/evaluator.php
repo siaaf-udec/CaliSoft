@@ -13,3 +13,6 @@ Route::get('/proyectos/{proyecto}/codificacion','EvaluatorController@codificacio
 
 Route::get('/evaluar-codificacion/{script}','EvaluatorController@evaluarScripts')
     ->name('evaluator-eval-script');
+
+Route::get('/proyectos/{proyecto}/basedatos','EvaluatorController@basedatos')
+    ->name('evaluator-basedatos');
