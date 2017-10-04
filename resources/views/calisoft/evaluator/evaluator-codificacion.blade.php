@@ -67,7 +67,7 @@
                     </div>
 
                 </div>
-                
+                @include('partials.modal-help-listar-codificacion')
             @endcomponent  
         </div>
 @endsection

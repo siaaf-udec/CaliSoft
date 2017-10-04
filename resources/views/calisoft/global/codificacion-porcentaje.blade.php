@@ -8,7 +8,7 @@
             </porcentaje-cod>
             
         </div>
-
+    @include('partials.modal-help-porcentaje-codificacion')
     @endcomponent
 </div>
 @endsection

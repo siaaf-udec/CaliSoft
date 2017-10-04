@@ -43,6 +43,7 @@
         </modal>
         </div>
       </div>
+      @include('partials.modal-help-admin-codificacion')
     @endcomponent
 </div>
 @endsection

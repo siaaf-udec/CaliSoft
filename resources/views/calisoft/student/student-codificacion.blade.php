@@ -101,6 +101,7 @@
                 <!-- Fin Modal Eliminar -->
 
             </div>
+            @include('partials.modal-help-subir-codificacion')
         @endcomponent
     </div>
 @endsection

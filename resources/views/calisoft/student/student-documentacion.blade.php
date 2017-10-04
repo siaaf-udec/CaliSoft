@@ -89,6 +89,7 @@
                     </form>
                 </modal>
             </div>
+            
         @endcomponent
     </div>
 @endsection
