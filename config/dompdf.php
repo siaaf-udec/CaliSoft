@@ -1,5 +1,4 @@
 <?php
-
 return array(
 
     /*
@@ -10,35 +9,36 @@ return array(
     | Set some default values. It is possible to add all defines that can be set
     | in dompdf_config.inc.php. You can also override the entire config file.
     |
-    */
+ */
     'show_warnings' => false,   // Throw an Exception on warnings from dompdf
     'orientation' => 'portrait',
     'defines' => array(
-        /**
-         * The location of the DOMPDF font directory
-         *
-         * The location of the directory where DOMPDF will store fonts and font metrics
-         * Note: This directory must exist and be writable by the webserver process.
-         * *Please note the trailing slash.*
-         *
-         * Notes regarding fonts:
-         * Additional .afm font metrics can be added by executing load_font.php from command line.
-         *
-         * Only the original "Base 14 fonts" are present on all pdf viewers. Additional fonts must
-         * be embedded in the pdf file or the PDF may not display correctly. This can significantly
-         * increase file size unless font subsetting is enabled. Before embedding a font please
-         * review your rights under the font license.
-         *
-         * Any font specification in the source HTML is translated to the closest font available
-         * in the font directory.
-         *
-         * The pdf standard "Base 14 fonts" are:
-         * Courier, Courier-Bold, Courier-BoldOblique, Courier-Oblique,
-         * Helvetica, Helvetica-Bold, Helvetica-BoldOblique, Helvetica-Oblique,
-         * Times-Roman, Times-Bold, Times-BoldItalic, Times-Italic,
-         * Symbol, ZapfDingbats.
-         */
+    /**
+     * The location of the DOMPDF font directory
+     *
+     * The location of the directory where DOMPDF will store fonts and font metrics
+     * Note: This directory must exist and be writable by the webserver process.
+     * *Please note the trailing slash.*
+     *
+     * Notes regarding fonts:
+     * Additional .afm font metrics can be added by executing load_font.php from command line.
+     *
+     * Only the original "Base 14 fonts" are present on all pdf viewers. Additional fonts must
+     * be embedded in the pdf file or the PDF may not display correctly. This can significantly
+     * increase file size unless font subsetting is enabled. Before embedding a font please
+     * review your rights under the font license.
+     *
+     * Any font specification in the source HTML is translated to the closest font available
+     * in the font directory.
+     *
+     * The pdf standard "Base 14 fonts" are:
+     * Courier, Courier-Bold, Courier-BoldOblique, Courier-Oblique,
+     * Helvetica, Helvetica-Bold, Helvetica-BoldOblique, Helvetica-Oblique,
+     * Times-Roman, Times-Bold, Times-BoldItalic, Times-Italic,
+     * Symbol, ZapfDingbats.
+     */
         "DOMPDF_FONT_DIR" => public_path('fonts'), // advised by dompdf (https://github.com/dompdf/dompdf/pull/782)
+
 
         /**
          * The location of the DOMPDF font cache directory
@@ -48,7 +48,7 @@ return array(
          *
          * Note: This directory must exist and be writable by the webserver process.
          */
-        "DOMPDF_FONT_CACHE" => storage_path('fonts/'),
+        "DOMPDF_FONT_CACHE" => public_path('fonts'),
 
         /**
          * The location of a temporary directory.
@@ -132,6 +132,7 @@ return array(
          * a real license code must exist!
          */
         //"DOMPDF_PDFLIB_LICENSE" => "your license key here",
+
 
         /**
          * html target media view which should be rendered into pdf.

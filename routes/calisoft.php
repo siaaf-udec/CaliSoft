@@ -1,7 +1,5 @@
 <?php
-
-
-Route::prefix('/perfil')->group(function (){
+Route::prefix('/perfil')->group(function () {
     Route::get('/', 'PerfilController@index')->name('perfil.index');
     Route::post('/', 'PerfilController@update')->name('perfil.update');
     Route::post('password', 'PerfilController@updatePassword')->name('perfil.password');
@@ -12,7 +10,7 @@ Route::prefix('/perfil')->group(function (){
 Route::get('porcentajes', 'UserController@porcentajes')->name('porcentajes');
 Route::get('porcentajesbd', 'UserController@porcentajesBD')->name('porcentajesbd');
 
-Route::get('porcentajesCodificacion','UserController@porcentajesCodificacion')->name('porcentajesCod');
+Route::get('porcentajesCodificacion', 'UserController@porcentajesCodificacion')->name('porcentajesCod');
 
 
 Route::get('/notificaciones', 'NotificationController@vista')->name('notificaciones');
@@ -20,8 +18,8 @@ Route::get('/notificaciones', 'NotificationController@vista')->name('notificacio
 
 
 Route::prefix('pdf')->group(function () {
-    
-    Route::post('proyecto/{proyecto}/modelacion', 'PdfController@modelacion')->name('pdf.modelacion');
-    Route::post('usuarios', 'PdfController@usuarios')->name('pdf.usuarios');
-    
+
+    Route::post('proyecto/{proyecto}/modelacion', 'PDFController@modelacion')->name('pdf.modelacion');
+    Route::post('usuarios', 'PDFController@usuarios')->name('pdf.usuarios');
+
 });

@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
@@ -16,9 +15,10 @@ class PDFController extends Controller
      * @param Proyecto $proyecto
      * @return Illuminate\Http\Response
      */
-    public function modelacion(Proyecto $proyecto) {
-        $data = $proyecto->load('documentos.evaluaciones', 'documentos.tipo');
-        $pdf = PDF::loadView('pdf.modelacion', [ 'proyecto' => $data ]);
+    public function modelacion(Proyecto $proyecto)
+    {
+        $documentos = $proyecto->documentos()->with('tipo', 'evaluaciones.componente', 'evaluaciones.evaluador')->get();
+        $pdf = PDF::loadView('pdf.modelacion', compact('proyecto', 'documentos'));
         return $pdf->stream('modelacion.pdf');
     }
 
@@ -27,8 +27,9 @@ class PDFController extends Controller
      *
      * @return Illuminate\Http\Response
      */
-    public function usuarios() {
-        $pdf = PDF::loadView('pdf.usuarios', [ 'usuarios' => User::limit(50)->get() ]);
+    public function usuarios()
+    {
+        $pdf = PDF::loadView('pdf.usuarios', ['usuarios' => User::limit(50)->get()]);
         return $pdf->stream('usuarios.pdf');
     }
 }
