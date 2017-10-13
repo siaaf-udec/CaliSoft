@@ -2,10 +2,11 @@ import './bootstrap';
 import Vue from 'vue';
 import axios from 'axios';
 import TextInput from "./components/inputs/text-input";
-import Modal from "./components/utils/modal";
+import { Modal } from "uiv";
 import BsSwitch from './components/bs/bs-switch';
 import SelectInput from "./components/inputs/select-input";
 import TextareaInput from "./components/inputs/textarea-input";
+import { Popover } from "uiv";
 
 new Vue({
     el: '#app',
@@ -14,67 +15,80 @@ new Vue({
         BsSwitch, 
         TextInput,
         TextareaInput, 
-        SelectInput 
+        SelectInput,
+        Popover 
     },
     data() {
         return {
             casoPrueba: [],
+            casoUpdate: {},
+            json: {},
+            tiposInputs: {},
             newCasoPrueba: {},
-            fillCasoPrueba: {},
+            fillCasoPrueba: this.schema(),
             formErrors: {},
             formErrorsUpdate: {},
             proyectoId: window.proyectoId,
-            modalState: false,
+            enviarModalState: false,
             selected: {}
         }
     },
     created() {
         axios.get(`/api/proyectos/${window.proyectoId}/plataforma`)
                 .then(res => this.casoPrueba = res.data);
-                
+        axios.get(`api/tiposInputs`)
+                .then(res => this.tiposInputs = res.data);
+                        
     },
     methods: {
-        openCreateModal(caso) {
-            this.fillCasoPrueba = caso;
-            $('#crear-categoria').modal("show");
+        schema(){
+            return {
+                formulario: "",
+                observacion: "",
+                PK_id: "",
+                testInput: []
+
+            }
         },
-        store() {
-            this.newCasoPrueba.FK_ProyectoId = this.proyectoId;
-            axios.post('/api/casoPrueba', this.newCasoPrueba)
-                .then(response => {
-                    this.casoPrueba.push(response.data);
-                    this.formErrors = {};
-                    this.newCasoPrueba = {};
-                    $("#crear-caso").modal("hide");
-                    toastr.success('Caso Prueba Creado Correctamente');
-                })
-                .catch(error => this.formErrors = error.response.data);
+        cerrarModalEnv(){
+            this.fillCasoPrueba = this.schema();
+            this.casoPrueba.formulario = "";
+
         },
         update(caso) {
-            axios.post('/api/enviarCasoPrueba/' + caso.PK_id, caso)
+            
+            axios.post('/api/enviarCasoPrueba/' + this.fillCasoPrueba.PK_id, this.fillCasoPrueba)
                 .then(response => {
+                    this.formUpdateErrors = {};
                     this.casoPrueba = this.casoPrueba.map(value => {
                         return value.PK_id == caso.PK_id ? caso : value;
-                    });                   
+                    });
+                    this.enviarModalState = false;                   
                     toastr.info('Caso prueba subido correctamente');
                 })
                 .catch(error => this.formErrorsUpdate = error.response.data);
+                
+        },
+        cadenaJson(json,caso) {
+            if(this.IsJsonString(json) == false){
+                this.formErrorsUpdate.formulario = 'El texto introducido no corresponde a un Json'
+                toastr.error('El texto introducido no corresponde a un Json');
+            }else{
+            caso.formulario = this.fillCasoPrueba.formulario;
+            this.fillCasoPrueba = caso;
+            this.json = JSON.parse(json);
+            this.enviarModalState = true;
+            this.fillCasoPrueba.testInput = new Array(this.json.length);
+            }
+        },
+        IsJsonString(str) {
+            try {
+                JSON.parse(str);
+            } catch (e) {
+                return false;
+            }
+            return true;
         }
     }
 });
 
-Dropzone.options.myAwesomeDropzone = {
-    
-    uploadMultiple: false,
-    maxFilezise: 1000,
-    acceptedFiles: '.pdf',
-    success: function (a, doc) {
-        vm.$data.documentos.push(doc);
-        toastr.info('Documento subido correctamente');
-        return a.previewElement ? a.previewElement.classList.add("dz-success") : void 0
-    },
-    error(file, message, xhr) {
-        this.removeFile(file);
-        toastr.error('El tipo de documento es obligatorio');
-    }
-};

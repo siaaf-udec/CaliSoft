@@ -24,7 +24,8 @@ class CasoPruebaEnviarRequest extends FormRequest
     public function rules()
     {
         return [
-            'formulario' => 'required|mimes:pdf',
+            'formulario' => 'required|json',
+            'observacion' => 'string|max:200',
         ];
     }
 }

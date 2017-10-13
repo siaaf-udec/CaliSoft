@@ -6,20 +6,14 @@
             'icon' => 'fa fa-files', 
             'title' => 'Plataforma: ' . $proyecto->nombre 
         ])
-        <button class="btn green-sharp btn-large" data-toggle="confirmation" data-original-title="¿Esta seguro? una vez, enviado no se podrá modificar"
-             title="">Subir Caso Prueba</button>
         <div id="app">
-        <button class="btn green-sharp btn-large" data-toggle="confirmation" data-original-title="¿Esta seguro? una vez, enviado no se podrá modificar"
-             title="">Subir Caso Prueba</button>
-                <br> 
-
+            <div class="portlet-body form">
                 <div class="panel panel-info" v-for="caso in casoPrueba">
-                <button class="btn green-sharp btn-large" data-toggle="confirmation" data-original-title="¿Esta seguro? una vez, enviado no se podrá modificar"
-             title="">Subir Caso Prueba</button>
                     <div class="panel-heading">
                         <h4 class="panel-header" style="display: inline">@{{ caso.nombre }}</h4>
                         <div class="btn-group pull-right">
-                            <a data-toggle="collapse" :data-target="'#'+caso.PK_id" class="btn btn-xs btn-success">Detalles</a>
+                            <a data-toggle="collapse" :data-target="'#'+caso.PK_id" 
+                                class="btn btn-xs btn-success">Detalles</a>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -54,66 +48,80 @@
                                                 <td style="vertical-align: middle">Plazo:</td>
                                                 <td style="vertical-align: middle">@{{ caso.limite }} </td>
                                             </tr>
-                                            <tr v-if="caso.formulario !== '-'">
-                                                <td style="vertical-align: middle">Archivo subido:</td>
+                                            <tr v-if="caso.formulario !== ''">
+                                                <td style="vertical-align: middle">Json Enviado:</td>
                                                 <td style="vertical-align: middle">@{{ caso.formulario }} </td>
                                             </tr>
                                             
                                         </tbody>
                             </table>
-                            <form method="POST"  :action="'/api/enviarCasoPrueba/'+caso.PK_id,caso" 
-                                class="formarchivo" enctype="multipart/form-data" v-if="caso.formulario == '-'">
-                                {{csrf_field()}}
-                                <div class="form-group">
+                                <div class="form-group" v-if="caso.formulario == ''">
+                                    <div class="row"> 
+                                        <div class="col-sm-6">
+                                            <textarea-input name="formulario" :error="formErrorsUpdate.formulario" 
+                                                            v-model="fillCasoPrueba.formulario" label="Formulario" 
+                                                            maxlength="500" :id="'paste'+caso.PK_id" >
+                                            </textarea-input>
+                                        </div>
+                                    </div>
                                     <div class="row">
                                         <div class="col-sm-6">
-                                            <label for="textarea">(Opcional) Observación: </label>
-                                            <textarea id="textarea" name="observacion" rows="3" style="width: calc(100% - 45px);  height: auto;"></textarea>
+                                            <button @click.prevent="cadenaJson(fillCasoPrueba.formulario,caso)"  class="btn green-jungle">
+                                                <i class="fa fa-message"></i>Siguiente
+                                            </button>
                                         </div>
-                                        <div class="col-sm-4">
-                                         @component('components.fileinput',[
-                                            'icon'=>'fa fa-file',
-                                            'atributo'=>'required',
-                                            'title1' => 'Caso Prueba',
-                                            'title2' => 'Seleccionar',
-                                            'nombre' => 'formulario',
-                                            ])
-                                        @endcomponent
+                                        <div class="col-sm-6">
+                                            <a href="javascript:;" class="btn green-steel mt-clipboard" data-clipboard-paste="true" :data-paste-target="'#paste'+caso.PK_id">
+                                                <i class="icon-note"></i> Pegar Json</a>
                                         </div>
-                                        
-                                    </div>                 
-                                    <button type="submit" class="btn green-jungle">
-                                        <i class="fa fa-message"></i>Subir Caso Prueba
-                                    </button>
+                                    </div>   
                                 </div>
                             </form>
                         </div>
                     </div>
                 </div>          
- 
             </div>
-        
             
-        @endcomponent
-    </div>
+            <!--Modal de enviar caso prueba-->
+            <modal v-model="enviarModalState" title="Enviar Caso Prueba" @hide="cerrarModalEnv()" :footer="false">
+                <form @submit.prevent="update(fillCasoPrueba.PK_id)" class="formarchivo" enctype="multipart/form-data">
+                    {{ csrf_field() }}
+                    <div class="col-sm-12">
+                        <textarea-input name="observacion" :error="formErrorsUpdate.descripcion" 
+                                        v-model="fillCasoPrueba.observacion" label="Observación (Opcional)" 
+                                        maxlength="200">
+                        </textarea-input>
+                    </div>
+                    <div class="row" v-for="(js, index) in json" v-if="json[0]">
+                        <div class="col-sm-6">
+                            <select id="tidoIn" :name="'t_' + js.name" class="form-control select2" v-model="fillCasoPrueba.testInput[index]" required>
+                                <option v-for="tipos in tiposInputs" v-bind:value="tipos.PK_id"> @{{ tipos.nombre }}
+                                </option>
+                            </select>
+                        </div>
+                    <div class="col-sm-6">
+                        <input type="button" class="btn red-mint btn-outline btn-block sbold uppercase" 
+                                :value="'Nombre: '+ js.name + ' ID:' + js.id">
+                    </div>             
+                </div>
+                <br>
+                <button type="submit" class="btn green-jungle">
+                    <i class="fa fa-message"></i>Subir Caso Prueba
+                </button>
+                </form>
+            </modal>
+            <!-- Fin Modal Enviar Casoprueba -->    
+        </div>
+    @endcomponent
+</div>
 @endsection
 
 @push('styles')
 
-    <link href="/assets/global/plugins/dropzone/dropzone.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/dropzone/basic.min.css" rel="stylesheet" type="text/css" />
-    <link href="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.css" rel="stylesheet" type="text/css" />
-        
-
 @endpush
 @push('functions')
-    <script src="/assets/global/plugins/dropzone/dropzone.min.js" type="text/javascript"></script>
-    <script src="/assets/pages/scripts/form-dropzone.min.js" type="text/javascript"></script>
-    <script src="/assets/global/plugins/bootstrap-confirmation/bootstrap-confirmation.min.js" type="text/javascript"></script>
-    <script src="/assets/global/plugins/bootstrap-fileinput/bootstrap-fileinput.js" type="text/javascript"></script>
+    
     <script>window.proyectoId = {{ $proyecto->PK_id }};</script>
     <script src="/js/plataforma-student.js"></script>
-            
-
-    
+  
 @endpush

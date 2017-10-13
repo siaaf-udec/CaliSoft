@@ -22,7 +22,7 @@
                         <div class="btn-group pull-right">
                             <a data-toggle="collapse" :data-target="'#'+caso.PK_id" class="btn btn-xs btn-success">Detalles</a>
                         
-                            <a v-if="caso.formulario !== '-'" href="#" class="btn btn-xs btn-primary">Calificar</a>
+                            <a v-if="caso.formulario !== ''" href="#" class="btn btn-xs btn-primary">Calificar</a>
                             <a v-else href="#" class="btn btn-xs btn-danger" disabled>Calificar</a>
                             <a @click.prevent="destroy(caso)" class="btn btn-xs btn-danger" >Eliminar</a>
                         </div>
@@ -60,14 +60,14 @@
                                                 <td style="vertical-align: middle">Plazo:</td>
                                                 <td style="vertical-align: middle">@{{ caso.limite }} </td>
                                             </tr>
-                                            <tr v-if="caso.formulario !== '-'">
+                                            <tr v-if="caso.formulario !== ''">
                                                 <td style="vertical-align: middle">Archivo subido:</td>
                                                 <td style="vertical-align: middle">@{{ caso.formulario }} </td>
                                             </tr>
                                         </tbody>
                             </table>
 
-                            <span v-if="caso.formulario == '-'" class="label label-sm label-danger"> El estudiante no a subido el Caso Prueba </span>
+                            <span v-if="caso.formulario == ''" class="label label-sm label-danger"> El estudiante no a subido el Caso Prueba </span>
                             
                         </div>
                     </div>
@@ -84,7 +84,8 @@
                                
                             </div>  
                             <div class="col-sm-6">
-                                <textarea-input name="resultado_esperado" v-model="newCasoPrueba.resultado_esperado" label="Resultado esperado" required></textarea-input>
+                                
+                                <textarea-input name="resultado_esperado" :error="formErrorsUpdate.descripcion" v-model="newCasoPrueba.resultado_esperado" label="Resultado esperado" maxlength="200" required></textarea-input>
                                 <textarea-input name="criterios" v-model="newCasoPrueba.criterios" label="Criterios" required></textarea-input>
                                 <select-input v-model="newCasoPrueba.prioridad" name="prioridad" label="Prioridad" required>    
                                     <option value="alta">Alta</option>
@@ -92,20 +93,13 @@
                                     <option value="baja">Baja</option>
                                 </select-input>
                                 
-                                <div class="form-group">
+                                
                                     <label >Límite</label>
                                     <div >
-                                        <div class="input-group input-medium date date-picker" data-date-format="dd-mm-yyyy" data-date-start-date="+0d">
-                                            <input type="text" name="limite" v-model="newCasoPrueba.limite" class="form-control" readonly>
-                                                <span class="input-group-btn"> 
-                                                    <button class="btn default" type="button">
-                                                        <i class="fa fa-calendar"></i>
-                                                    </button>
-                                                </span>
-                                        </div>
+                                        <input type="date" name="limite" v-model="newCasoPrueba.limite" class="form-control" required>    
                                         <!-- /input-group -->
                                     </div>
-                                </div>
+                                
                                 
                             </div>
                             
@@ -134,6 +128,7 @@
 
 @push('styles')  
     <link href="/assets/global/plugins/bootstrap-datepicker/css/bootstrap-datepicker3.min.css" rel="stylesheet" type="text/css" />
+    <link rel="stylesheet" href="/assets/global/plugins/bootstrap-select/css/bootstrap-select.min.css">
 @endpush
 
     

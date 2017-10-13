@@ -1,6 +1,6 @@
 <template>
     <div class="form-group form-md-line-input" :class="{'has-error':error}">
-        <textarea :name="name" class="form-control" v-model="local" :maxlength="maxlength" :required="required" style="resize: none" rows="3" />
+        <textarea :name="name" class="form-control" v-model="local" :maxlength="maxlength" :required="required" :id="id" style="resize: none" rows="3" />
         </textarea>
         <label :for="name">{{label}}</label>
         <span v-if="error" class=" help-block">
@@ -11,7 +11,7 @@
 <script>
 export default {
     name: 'textarea-input',
-    props: ['name', 'error', 'value', 'label', 'required','maxlength'],
+    props: ['name', 'error', 'value', 'label', 'required','maxlength', 'id'],
     data() {
         return { local: this.value }
     },
