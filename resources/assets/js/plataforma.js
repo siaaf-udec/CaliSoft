@@ -6,6 +6,7 @@ import Modal from "./components/utils/modal";
 import BsSwitch from './components/bs/bs-switch';
 import SelectInput from "./components/inputs/select-input";
 import TextareaInput from "./components/inputs/textarea-input";
+import { Popover } from "uiv";
 
 new Vue({
     el: '#app',
@@ -14,12 +15,13 @@ new Vue({
         BsSwitch, 
         TextInput,
         TextareaInput, 
-        SelectInput 
+        SelectInput,
+        Popover 
     },
     data() {
         return {
             casoPrueba: [],
-            newCasoPrueba: {},
+            newCasoPrueba: this.schema(),
             formErrors: {},
             formErrorsUpdate: {},
             proyectoId: window.proyectoId,
@@ -33,6 +35,18 @@ new Vue({
                 
     },
     methods: {
+        schema(){
+            return {
+                limite: "",
+                nombre: "",
+                prioridad: "",
+                proposito:"",
+                alcance:"",
+                criterios:"",
+                resultado_esperado: "",
+
+            }
+        },
         store() {
             this.newCasoPrueba.FK_ProyectoId = this.proyectoId;
             axios.post('/api/casoPrueba', this.newCasoPrueba)

@@ -121,3 +121,7 @@ Route::resource('casoPrueba', 'CasoPruebaController', [
 ]);
 
 Route::post('enviarCasoPrueba/{casoPrueba}', 'CasoPruebaController@enviarCasoPrueba');
+
+//Testing
+
+Route::get('tiposInputs', 'TestInputsController@index');

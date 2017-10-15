@@ -49,8 +49,9 @@ class CasoPruebaController extends Controller
             'criterios' => $request->criterios,
             'prioridad'=> $request->prioridad,
             'limite' => $request->limite,
-            'formulario' => '-',
-            'observacion' => '-',
+            'formulario' => '',
+            'observacion' => '',
+            'estado' => 'evaluar',
             'entrega' => 0,
             'FK_ProyectoId'=> $request->FK_ProyectoId,
             'FK_UsuarioId' => 6
@@ -94,17 +95,24 @@ class CasoPruebaController extends Controller
 
     public function enviarCasoPrueba(CasoPruebaEnviarRequest $request, CasoPrueba $casoPrueba)
     {
+        
+        $json = json_decode($request->formulario, true);
+        
+        for ($i = 0; $i < sizeof($json) ; $i++) {
+            $json[$i]['testInput'] = $request->testInput[$i];
+        }
+        
         $proyecto = $request->user()->proyectos()->first(); //obtiene el proyecto del usuario logeado
         $doc = new CasoPrueba(); //inicializa el caso prueba a guardar
-        $file = $request->file('formulario'); //obtiene el archivo
-        //$doc->nombre = $file->getClientOriginalName(); //nombre del archivo
-        $doc->formulario = $file->store('/', 'casoPruebas'); //guarda el archivo
-        //Verifica si hay alguna observación
+        
         if($request->observacion == NULL){
             $doc->observacion = "No hay observaciones";
         }else{
             $doc->observacion = $request->observacion;
         }
+
+        $doc->formulario = json_encode($json);
+        
         //Actualiza el caso prueba 
         $proyecto->casoPruebas()->where('PK_id','=',$casoPrueba->PK_id)->update([
         'observacion' => $doc->observacion,
