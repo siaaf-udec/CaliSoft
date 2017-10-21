@@ -30385,7 +30385,10 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 /* 76 */,
 /* 77 */,
 /* 78 */,
-/* 79 */
+/* 79 */,
+/* 80 */,
+/* 81 */,
+/* 82 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -30606,7 +30609,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -31401,7 +31404,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -31702,7 +31705,7 @@ CodeMirror.defineMIME("text/x-ruby", "ruby");
 
 
 /***/ }),
-/* 82 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -31831,8 +31834,7 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
 
 
 /***/ }),
-/* 83 */,
-/* 84 */
+/* 86 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -31876,8 +31878,6 @@ var Paginator = function () {
 /* harmony default export */ __webpack_exports__["a"] = (Paginator);
 
 /***/ }),
-/* 85 */,
-/* 86 */,
 /* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32251,7 +32251,7 @@ CodeMirror.defineMIME("text/coffeescript", "coffeescript");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(70), __webpack_require__(79));
+    mod(__webpack_require__(0), __webpack_require__(70), __webpack_require__(82));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../xml/xml", "../meta"], mod);
   else // Plain browser env
@@ -33116,7 +33116,7 @@ CodeMirror.defineMIME("text/x-markdown", "markdown");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(72), __webpack_require__(82));
+    mod(__webpack_require__(0), __webpack_require__(72), __webpack_require__(85));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../../addon/mode/simple", "../../addon/mode/multiplex"], mod);
   else // Plain browser env
@@ -36093,7 +36093,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 window.CodeMirror = __webpack_require__(0);
 __webpack_require__(111);
-__webpack_require__(79);
+__webpack_require__(82);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'codemirror',
   data: function data() {
@@ -36442,7 +36442,7 @@ var map = {
 	"./asn.1/asn.1.js": 117,
 	"./asterisk/asterisk.js": 118,
 	"./brainfuck/brainfuck.js": 119,
-	"./clike/clike.js": 80,
+	"./clike/clike.js": 83,
 	"./clojure/clojure.js": 120,
 	"./cmake/cmake.js": 121,
 	"./cobol/cobol.js": 122,
@@ -36490,7 +36490,7 @@ var map = {
 	"./markdown/markdown.js": 88,
 	"./mathematica/mathematica.js": 158,
 	"./mbox/mbox.js": 159,
-	"./meta.js": 79,
+	"./meta.js": 82,
 	"./mirc/mirc.js": 160,
 	"./mllike/mllike.js": 161,
 	"./modelica/modelica.js": 162,
@@ -36516,7 +36516,7 @@ var map = {
 	"./r/r.js": 180,
 	"./rpm/rpm.js": 181,
 	"./rst/rst.js": 182,
-	"./ruby/ruby.js": 81,
+	"./ruby/ruby.js": 84,
 	"./rust/rust.js": 183,
 	"./sas/sas.js": 184,
 	"./sass/sass.js": 94,
@@ -38972,7 +38972,7 @@ CodeMirror.defineMode("d", function(config, parserConfig) {
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(80));
+    mod(__webpack_require__(0), __webpack_require__(83));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../clike/clike"], mod);
   else // Plain browser env
@@ -43305,7 +43305,7 @@ CodeMirror.defineMIME("text/x-groovy", "groovy");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(81));
+    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(84));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../htmlmixed/htmlmixed", "../ruby/ruby"], mod);
   else // Plain browser env
@@ -44043,7 +44043,7 @@ CodeMirror.defineMIME("text/x-hxml", "hxml");
 (function(mod) {
   if (true) // CommonJS
     mod(__webpack_require__(0), __webpack_require__(64),
-        __webpack_require__(82));
+        __webpack_require__(85));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../htmlmixed/htmlmixed",
             "../../addon/mode/multiplex"], mod);
@@ -48951,7 +48951,7 @@ function eatSuffix(stream, c){
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(80));
+    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(83));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../htmlmixed/htmlmixed", "../clike/clike"], mod);
   else // Plain browser env
@@ -52166,7 +52166,7 @@ CodeMirror.defineMIME("application/sieve", "sieve");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(81));
+    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(84));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../htmlmixed/htmlmixed", "../ruby/ruby"], mod);
   else // Plain browser env
@@ -56795,7 +56795,7 @@ CodeMirror.defineMIME("text/turtle", "turtle");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0),  __webpack_require__(82));
+    mod(__webpack_require__(0),  __webpack_require__(85));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../../addon/mode/multiplex"], mod);
   else // Plain browser env
@@ -62132,7 +62132,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_codemirror___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_codemirror__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_uiv__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_uiv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_uiv__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_classes_paginator__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_classes_paginator__ = __webpack_require__(86);
 
 
 

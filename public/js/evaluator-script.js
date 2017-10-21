@@ -30382,6 +30382,137 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 /* 79 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var disposed = false
+var Component = __webpack_require__(2)(
+  /* script */
+  __webpack_require__(80),
+  /* template */
+  __webpack_require__(81),
+  /* styles */
+  null,
+  /* scopeId */
+  null,
+  /* moduleIdentifier (server only) */
+  null
+)
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\inputs\\textarea-input.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
+if (Component.options.functional) {console.error("[vue-loader] textarea-input.vue: functional components are not supported with templates, they should use render functions.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-7f67bbe6", Component.options)
+  } else {
+    hotAPI.reload("data-v-7f67bbe6", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 80 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    name: 'textarea-input',
+    props: ['name', 'error', 'value', 'label', 'required', 'maxlength', 'id'],
+    data: function data() {
+        return { local: this.value };
+    },
+    beforeUpdate: function beforeUpdate() {
+        this.local = this.value;
+    },
+
+
+    watch: {
+        local: function local(value) {
+            this.$emit('input', this.local);
+        },
+        value: function value(val) {
+            this.local = val;
+        }
+    }
+});
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
+  return _c('div', {
+    staticClass: "form-group form-md-line-input",
+    class: {
+      'has-error': _vm.error
+    }
+  }, [_c('textarea', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.local),
+      expression: "local"
+    }],
+    staticClass: "form-control",
+    staticStyle: {
+      "resize": "none"
+    },
+    attrs: {
+      "name": _vm.name,
+      "maxlength": _vm.maxlength,
+      "required": _vm.required,
+      "id": _vm.id,
+      "rows": "3"
+    },
+    domProps: {
+      "value": (_vm.local)
+    },
+    on: {
+      "input": function($event) {
+        if ($event.target.composing) { return; }
+        _vm.local = $event.target.value
+      }
+    }
+  }), _vm._v(" "), _c('label', {
+    attrs: {
+      "for": _vm.name
+    }
+  }, [_vm._v(_vm._s(_vm.label))]), _vm._v(" "), (_vm.error) ? _c('span', {
+    staticClass: " help-block"
+  }, [_c('strong', [_vm._v(_vm._s(_vm.error[0]))])]) : _vm._e()])
+},staticRenderFns: []}
+module.exports.render._withStripped = true
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+     require("vue-hot-reload-api").rerender("data-v-7f67bbe6", module.exports)
+  }
+}
+
+/***/ }),
+/* 82 */
+/***/ (function(module, exports, __webpack_require__) {
+
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
 // Distributed under an MIT license: http://codemirror.net/LICENSE
 
@@ -30600,7 +30731,7 @@ CodeMirror.overlayMode = function(base, overlay, combine) {
 
 
 /***/ }),
-/* 80 */
+/* 83 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -31395,7 +31526,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
 
 
 /***/ }),
-/* 81 */
+/* 84 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -31696,7 +31827,7 @@ CodeMirror.defineMIME("text/x-ruby", "ruby");
 
 
 /***/ }),
-/* 82 */
+/* 85 */
 /***/ (function(module, exports, __webpack_require__) {
 
 // CodeMirror, copyright (c) by Marijn Haverbeke and others
@@ -31825,138 +31956,7 @@ CodeMirror.multiplexingMode = function(outer /*, others */) {
 
 
 /***/ }),
-/* 83 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var disposed = false
-var Component = __webpack_require__(2)(
-  /* script */
-  __webpack_require__(85),
-  /* template */
-  __webpack_require__(86),
-  /* styles */
-  null,
-  /* scopeId */
-  null,
-  /* moduleIdentifier (server only) */
-  null
-)
-Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\inputs\\textarea-input.vue"
-if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] textarea-input.vue: functional components are not supported with templates, they should use render functions.")}
-
-/* hot reload */
-if (false) {(function () {
-  var hotAPI = require("vue-hot-reload-api")
-  hotAPI.install(require("vue"), false)
-  if (!hotAPI.compatible) return
-  module.hot.accept()
-  if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7f67bbe6", Component.options)
-  } else {
-    hotAPI.reload("data-v-7f67bbe6", Component.options)
-  }
-  module.hot.dispose(function (data) {
-    disposed = true
-  })
-})()}
-
-module.exports = Component.exports
-
-
-/***/ }),
-/* 84 */,
-/* 85 */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-    name: 'textarea-input',
-    props: ['name', 'error', 'value', 'label', 'required', 'maxlength', 'id'],
-    data: function data() {
-        return { local: this.value };
-    },
-    beforeUpdate: function beforeUpdate() {
-        this.local = this.value;
-    },
-
-
-    watch: {
-        local: function local(value) {
-            this.$emit('input', this.local);
-        },
-        value: function value(val) {
-            this.local = val;
-        }
-    }
-});
-
-/***/ }),
-/* 86 */
-/***/ (function(module, exports, __webpack_require__) {
-
-module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "form-group form-md-line-input",
-    class: {
-      'has-error': _vm.error
-    }
-  }, [_c('textarea', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.local),
-      expression: "local"
-    }],
-    staticClass: "form-control",
-    staticStyle: {
-      "resize": "none"
-    },
-    attrs: {
-      "name": _vm.name,
-      "maxlength": _vm.maxlength,
-      "required": _vm.required,
-      "id": _vm.id,
-      "rows": "3"
-    },
-    domProps: {
-      "value": (_vm.local)
-    },
-    on: {
-      "input": function($event) {
-        if ($event.target.composing) { return; }
-        _vm.local = $event.target.value
-      }
-    }
-  }), _vm._v(" "), _c('label', {
-    attrs: {
-      "for": _vm.name
-    }
-  }, [_vm._v(_vm._s(_vm.label))]), _vm._v(" "), (_vm.error) ? _c('span', {
-    staticClass: " help-block"
-  }, [_c('strong', [_vm._v(_vm._s(_vm.error[0]))])]) : _vm._e()])
-},staticRenderFns: []}
-module.exports.render._withStripped = true
-if (false) {
-  module.hot.accept()
-  if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7f67bbe6", module.exports)
-  }
-}
-
-/***/ }),
+/* 86 */,
 /* 87 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -32330,7 +32330,7 @@ CodeMirror.defineMIME("text/coffeescript", "coffeescript");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(70), __webpack_require__(79));
+    mod(__webpack_require__(0), __webpack_require__(70), __webpack_require__(82));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../xml/xml", "../meta"], mod);
   else // Plain browser env
@@ -33195,7 +33195,7 @@ CodeMirror.defineMIME("text/x-markdown", "markdown");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(72), __webpack_require__(82));
+    mod(__webpack_require__(0), __webpack_require__(72), __webpack_require__(85));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../../addon/mode/simple", "../../addon/mode/multiplex"], mod);
   else // Plain browser env
@@ -36172,7 +36172,7 @@ var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol
 
 window.CodeMirror = __webpack_require__(0);
 __webpack_require__(111);
-__webpack_require__(79);
+__webpack_require__(82);
 /* harmony default export */ __webpack_exports__["default"] = ({
   name: 'codemirror',
   data: function data() {
@@ -36521,7 +36521,7 @@ var map = {
 	"./asn.1/asn.1.js": 117,
 	"./asterisk/asterisk.js": 118,
 	"./brainfuck/brainfuck.js": 119,
-	"./clike/clike.js": 80,
+	"./clike/clike.js": 83,
 	"./clojure/clojure.js": 120,
 	"./cmake/cmake.js": 121,
 	"./cobol/cobol.js": 122,
@@ -36569,7 +36569,7 @@ var map = {
 	"./markdown/markdown.js": 88,
 	"./mathematica/mathematica.js": 158,
 	"./mbox/mbox.js": 159,
-	"./meta.js": 79,
+	"./meta.js": 82,
 	"./mirc/mirc.js": 160,
 	"./mllike/mllike.js": 161,
 	"./modelica/modelica.js": 162,
@@ -36595,7 +36595,7 @@ var map = {
 	"./r/r.js": 180,
 	"./rpm/rpm.js": 181,
 	"./rst/rst.js": 182,
-	"./ruby/ruby.js": 81,
+	"./ruby/ruby.js": 84,
 	"./rust/rust.js": 183,
 	"./sas/sas.js": 184,
 	"./sass/sass.js": 94,
@@ -39051,7 +39051,7 @@ CodeMirror.defineMode("d", function(config, parserConfig) {
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(80));
+    mod(__webpack_require__(0), __webpack_require__(83));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../clike/clike"], mod);
   else // Plain browser env
@@ -43384,7 +43384,7 @@ CodeMirror.defineMIME("text/x-groovy", "groovy");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(81));
+    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(84));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../htmlmixed/htmlmixed", "../ruby/ruby"], mod);
   else // Plain browser env
@@ -44122,7 +44122,7 @@ CodeMirror.defineMIME("text/x-hxml", "hxml");
 (function(mod) {
   if (true) // CommonJS
     mod(__webpack_require__(0), __webpack_require__(64),
-        __webpack_require__(82));
+        __webpack_require__(85));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../htmlmixed/htmlmixed",
             "../../addon/mode/multiplex"], mod);
@@ -49030,7 +49030,7 @@ function eatSuffix(stream, c){
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(80));
+    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(83));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../htmlmixed/htmlmixed", "../clike/clike"], mod);
   else // Plain browser env
@@ -52245,7 +52245,7 @@ CodeMirror.defineMIME("application/sieve", "sieve");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(81));
+    mod(__webpack_require__(0), __webpack_require__(64), __webpack_require__(84));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../htmlmixed/htmlmixed", "../ruby/ruby"], mod);
   else // Plain browser env
@@ -56874,7 +56874,7 @@ CodeMirror.defineMIME("text/turtle", "turtle");
 
 (function(mod) {
   if (true) // CommonJS
-    mod(__webpack_require__(0),  __webpack_require__(82));
+    mod(__webpack_require__(0),  __webpack_require__(85));
   else if (typeof define == "function" && define.amd) // AMD
     define(["../../lib/codemirror", "../../addon/mode/multiplex"], mod);
   else // Plain browser env
@@ -62248,7 +62248,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items__ = __webpack_require__(434);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input__);
 
 
@@ -62428,7 +62428,7 @@ module.exports = Component.exports
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__inputs_textarea_input__ = __webpack_require__(83);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__inputs_textarea_input__ = __webpack_require__(79);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__inputs_textarea_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__inputs_textarea_input__);
 //
 //

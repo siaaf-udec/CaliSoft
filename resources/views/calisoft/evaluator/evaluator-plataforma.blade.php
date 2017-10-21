@@ -21,9 +21,9 @@
                         <h4 class="panel-header" style="display: inline">@{{ caso.nombre }}</h4>
                         <div class="btn-group pull-right">
                             <a data-toggle="collapse" :data-target="'#'+caso.PK_id" class="btn btn-xs btn-success">Detalles</a>
-                        
-                            <a v-if="caso.formulario !== ''" href="#" class="btn btn-xs btn-primary">Calificar</a>
-                            <a v-else href="#" class="btn btn-xs btn-danger" disabled>Calificar</a>
+                          
+                            <a v-if="caso.formulario !== ''" :href="'/proyectos/'+caso.FK_ProyectoId+'/plataforma/'+caso.PK_id"  class="btn btn-xs btn-primary">Calificar</a>
+                            <a v-else class="btn btn-xs btn-danger" disabled>Calificar</a>
                             <a @click.prevent="destroy(caso)" class="btn btn-xs btn-danger" >Eliminar</a>
                         </div>
                     </div>
@@ -61,8 +61,8 @@
                                                 <td style="vertical-align: middle">@{{ caso.limite }} </td>
                                             </tr>
                                             <tr v-if="caso.formulario !== ''">
-                                                <td style="vertical-align: middle">Archivo subido:</td>
-                                                <td style="vertical-align: middle">@{{ caso.formulario }} </td>
+                                                <td style="vertical-align: middle">Json subido:</td>
+                                                <td style="vertical-align: middle">Total de Inputs: <span class="label label-sm label-danger circle">@{{ JSON.parse(caso.formulario).length }}</span> </td>
                                             </tr>
                                         </tbody>
                             </table>

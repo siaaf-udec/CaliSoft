@@ -117,11 +117,11 @@ Route::resource('evaluaciones', 'DocumentEvalController', [
 // crear Caso prueba
 
 Route::resource('casoPrueba', 'CasoPruebaController', [
-    'only' => ['index', 'store', 'update', 'destroy'],
+    'only' => ['index', 'store', 'update', 'destroy','show'],
 ]);
 
 Route::post('enviarCasoPrueba/{casoPrueba}', 'CasoPruebaController@enviarCasoPrueba');
-
+Route::post('testing', 'CasoPruebaController@testing');
 //Testing
 
 Route::get('tiposInputs', 'TestInputsController@index');

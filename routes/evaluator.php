@@ -16,3 +16,6 @@ Route::get('/evaluar-codificacion/{script}','EvaluatorController@evaluarScripts'
 
 Route::get('/proyectos/{proyecto}/basedatos','EvaluatorController@basedatos')
     ->name('evaluator-basedatos');
+
+Route::get('/proyectos/{proyecto}/plataforma/{casoPrueba}','EvaluatorController@escenario')
+    ->name('evaluator-escenario');    

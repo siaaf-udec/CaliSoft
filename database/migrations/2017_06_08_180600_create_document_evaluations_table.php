@@ -30,7 +30,7 @@ class CreateDocumentEvaluationsTable extends Migration
             $table->foreign('FK_EvaluatorId')->references('PK_id')->on('TBL_Usuarios')
                 ->onDelete('cascade');
 
-            $table->primary(['FK_DocumentoId', 'FK_ComponenteId', 'FK_EvaluatorId']);
+            $table->primary(['FK_DocumentoId', 'FK_ComponenteId', 'FK_EvaluatorId'], 'my_long_table_primary');
         });
     }
 

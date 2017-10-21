@@ -27,6 +27,7 @@
     "vue-pdf": "^1.2.4"
   },
   "dependencies": {
+    "vee-validate": "^2.0.0-rc.19",
     "vue-codemirror": "^3.1.4"
   }
 }

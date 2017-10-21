@@ -399,15 +399,15 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 104:
+/***/ 100:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(2)(
   /* script */
-  __webpack_require__(105),
+  __webpack_require__(101),
   /* template */
-  __webpack_require__(106),
+  __webpack_require__(102),
   /* styles */
   null,
   /* scopeId */
@@ -415,9 +415,9 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\inputs\\select-input.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\bs\\bs-select.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] select-input.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] bs-select.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -426,9 +426,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1b1bd8e8", Component.options)
+    hotAPI.createRecord("data-v-0e6f18c1", Component.options)
   } else {
-    hotAPI.reload("data-v-1b1bd8e8", Component.options)
+    hotAPI.reload("data-v-0e6f18c1", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -440,7 +440,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 105:
+/***/ 101:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -451,77 +451,56 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['value', 'name', 'required', 'icon', 'label'],
+    props: ['id', 'value', 'title', 'required'],
     data: function data() {
-        return { local: this.value };
+        return { initialized: false };
     },
 
-    watch: {
-        local: function local(value) {
-            this.$emit('input', this.local);
-        },
-        value: function value(val) {
-            this.local = val;
+
+    // Asigna el valor del v-model
+    updated: function updated() {
+        if (!this.initialized) {
+            $("#" + this.id).val(this.value);
+            this.initialized = true;
+        }
+    },
+
+
+    methods: {
+        change: function change(e) {
+            this.$emit('input', e.target.value);
         }
     }
 });
 
 /***/ }),
 
-/***/ 106:
+/***/ 102:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('div', {
-    staticClass: "form-group form-md-line-input"
-  }, [_c('div', {
-    staticClass: "input-icon"
-  }, [_c('select', {
-    directives: [{
-      name: "model",
-      rawName: "v-model",
-      value: (_vm.local),
-      expression: "local"
-    }],
-    staticClass: "form-control",
+  return _c('select', {
+    staticClass: "form-control selectpicker",
     attrs: {
-      "name": _vm.name,
-      "id": _vm.name,
+      "id": _vm.id,
+      "title": _vm.title,
       "required": _vm.required
     },
+    domProps: {
+      "value": _vm.value
+    },
     on: {
-      "change": function($event) {
-        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
-          return o.selected
-        }).map(function(o) {
-          var val = "_value" in o ? o._value : o.value;
-          return val
-        });
-        _vm.local = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
-      }
+      "change": _vm.change
     }
-  }, [_vm._t("default")], 2), _vm._v(" "), _c('label', {
-    staticClass: "control-label",
-    attrs: {
-      "for": _vm.name
-    }
-  }, [_vm._v(_vm._s(_vm.label))]), _vm._v(" "), _c('i', {
-    class: _vm.icon
-  })])])
+  }, [_vm._t("default")], 2)
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1b1bd8e8", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0e6f18c1", module.exports)
   }
 }
 
@@ -12638,11 +12617,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_inputs_email_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_inputs_email_input__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_password_input__ = __webpack_require__(340);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_password_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_inputs_password_input__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_inputs_select_input__ = __webpack_require__(104);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_inputs_select_input__ = __webpack_require__(97);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_inputs_select_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_inputs_select_input__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_bs_bs_select__ = __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_bs_bs_select__ = __webpack_require__(100);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__components_bs_bs_select___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_7__components_bs_bs_select__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_classes_paginator__ = __webpack_require__(84);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__components_classes_paginator__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_uiv__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9_uiv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_9_uiv__);
 
@@ -18675,7 +18654,7 @@ module.exports = function createError(message, config, code, response) {
 
 /***/ }),
 
-/***/ 84:
+/***/ 86:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -18749,9 +18728,9 @@ var Component = __webpack_require__(2)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\bs\\bs-select.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\inputs\\select-input.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
-if (Component.options.functional) {console.error("[vue-loader] bs-select.vue: functional components are not supported with templates, they should use render functions.")}
+if (Component.options.functional) {console.error("[vue-loader] select-input.vue: functional components are not supported with templates, they should use render functions.")}
 
 /* hot reload */
 if (false) {(function () {
@@ -18760,9 +18739,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0e6f18c1", Component.options)
+    hotAPI.createRecord("data-v-1b1bd8e8", Component.options)
   } else {
-    hotAPI.reload("data-v-0e6f18c1", Component.options)
+    hotAPI.reload("data-v-1b1bd8e8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18785,26 +18764,25 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
-    props: ['id', 'value', 'title', 'required'],
+    props: ['value', 'name', 'required', 'icon', 'label'],
     data: function data() {
-        return { initialized: false };
+        return { local: this.value };
     },
 
-
-    // Asigna el valor del v-model
-    updated: function updated() {
-        if (!this.initialized) {
-            $("#" + this.id).val(this.value);
-            this.initialized = true;
-        }
-    },
-
-
-    methods: {
-        change: function change(e) {
-            this.$emit('input', e.target.value);
+    watch: {
+        local: function local(value) {
+            this.$emit('input', this.local);
+        },
+        value: function value(val) {
+            this.local = val;
         }
     }
 });
@@ -18815,26 +18793,48 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
-  return _c('select', {
-    staticClass: "form-control selectpicker",
+  return _c('div', {
+    staticClass: "form-group form-md-line-input"
+  }, [_c('div', {
+    staticClass: "input-icon"
+  }, [_c('select', {
+    directives: [{
+      name: "model",
+      rawName: "v-model",
+      value: (_vm.local),
+      expression: "local"
+    }],
+    staticClass: "form-control",
     attrs: {
-      "id": _vm.id,
-      "title": _vm.title,
+      "name": _vm.name,
+      "id": _vm.name,
       "required": _vm.required
     },
-    domProps: {
-      "value": _vm.value
-    },
     on: {
-      "change": _vm.change
+      "change": function($event) {
+        var $$selectedVal = Array.prototype.filter.call($event.target.options, function(o) {
+          return o.selected
+        }).map(function(o) {
+          var val = "_value" in o ? o._value : o.value;
+          return val
+        });
+        _vm.local = $event.target.multiple ? $$selectedVal : $$selectedVal[0]
+      }
     }
-  }, [_vm._t("default")], 2)
+  }, [_vm._t("default")], 2), _vm._v(" "), _c('label', {
+    staticClass: "control-label",
+    attrs: {
+      "for": _vm.name
+    }
+  }, [_vm._v(_vm._s(_vm.label))]), _vm._v(" "), _c('i', {
+    class: _vm.icon
+  })])])
 },staticRenderFns: []}
 module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-0e6f18c1", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-1b1bd8e8", module.exports)
   }
 }
 

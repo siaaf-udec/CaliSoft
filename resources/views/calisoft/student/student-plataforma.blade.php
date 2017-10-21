@@ -48,9 +48,10 @@
                                                 <td style="vertical-align: middle">Plazo:</td>
                                                 <td style="vertical-align: middle">@{{ caso.limite }} </td>
                                             </tr>
+                                            
                                             <tr v-if="caso.formulario !== ''">
                                                 <td style="vertical-align: middle">Json Enviado:</td>
-                                                <td style="vertical-align: middle">@{{ caso.formulario }} </td>
+                                                <td style="vertical-align: middle">Total de Inputs: <span class="label label-sm label-danger circle">@{{ JSON.parse(caso.formulario).length }}</span> </td>
                                             </tr>
                                             
                                         </tbody>

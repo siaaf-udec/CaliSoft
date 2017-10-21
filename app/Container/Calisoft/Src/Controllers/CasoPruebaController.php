@@ -53,8 +53,7 @@ class CasoPruebaController extends Controller
             'observacion' => '',
             'estado' => 'evaluar',
             'entrega' => 0,
-            'FK_ProyectoId'=> $request->FK_ProyectoId,
-            'FK_UsuarioId' => 6
+            'FK_ProyectoId'=> $request->FK_ProyectoId
 
         ]);
     }
@@ -65,9 +64,9 @@ class CasoPruebaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(CasoPrueba $casoPrueba)
     {
-        //
+        return $casoPrueba->formulario;
     }
 
     /**
@@ -131,5 +130,9 @@ class CasoPruebaController extends Controller
     {
         Storage::disk('casoPruebas')->delete($casoPrueba->getOriginal('formulario'));
         $casoPrueba->delete();
+    }
+
+    public function testing(Request $request){
+        return($request->correo);
     }
 }

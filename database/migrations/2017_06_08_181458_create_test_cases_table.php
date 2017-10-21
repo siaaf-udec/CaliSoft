@@ -22,15 +22,15 @@ class CreateTestCasesTable extends Migration
             $table->text('criterios');
             $table->enum('prioridad', ['alta', 'media', 'baja']);
             $table->timestamp('limite');
-            $table->text('formulario');
-            $table->text('observacion');
+            $table->text('formulario')->nullable();
+            $table->text('observacion')->nullable();
             $table->enum('estado', ['evaluar', 'carga', 'terminado']);
             $table->integer('entrega');
             $table->integer('FK_ProyectoId')->unsigned();
-            $table->integer('FK_UsuarioId')->unsigned();
+            
             $table->timestamps();
 
-            $table->foreign('FK_UsuarioId')->references('PK_id')->on('TBL_Usuarios')->onDelete('cascade');
+            
             $table->foreign('FK_ProyectoId')->references('PK_id')->on('TBL_Proyectos')->onDelete('cascade');
         });
     }

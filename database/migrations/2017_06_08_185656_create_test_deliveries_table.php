@@ -19,8 +19,10 @@ class CreateTestDeliveriesTable extends Migration
             $table->boolean('approved')->nullable();
             $table->text('observacion')->nullable();
             $table->integer('FK_PruebasId')->unsigned();
+            $table->integer('FK_UsuarioId')->unsigned();
             $table->timestamps();
 
+            $table->foreign('FK_UsuarioId')->references('PK_id')->on('TBL_Usuarios')->onDelete('cascade');
             $table->foreign('FK_PruebasId')->references('PK_id')->on('TBL_Pruebas')
                 ->onDelete('cascade');
         });

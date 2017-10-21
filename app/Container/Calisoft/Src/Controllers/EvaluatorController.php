@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\Script;
 use App\Container\Calisoft\Src\Documento;
+use App\Container\Calisoft\Src\CasoPrueba;
 
 
 class EvaluatorController extends Controller
@@ -42,6 +43,11 @@ class EvaluatorController extends Controller
     }
     public function basedatos(Proyecto $proyecto){
         return view('calisoft.evaluator.evaluator-basedatos',compact('proyecto'));
+    }
+
+    public function escenario(Proyecto $proyecto, CasoPrueba $casoPrueba)
+    {
+        return view('calisoft.evaluator.evaluator-escenario', compact('proyecto','casoPrueba'));
     }
 
 }
