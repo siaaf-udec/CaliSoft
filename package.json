@@ -11,6 +11,7 @@
     "postinstall": "npm run prod"
   },
   "devDependencies": {
+    "@types/lodash": "^4.14.80",
     "axios": "^0.15.3",
     "bootstrap-sass": "^3.3.7",
     "cross-env": "^5.0.1",

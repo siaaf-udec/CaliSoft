@@ -14,9 +14,9 @@ class StudentController extends Controller
     {
         $this->middleware('can:upload,App\Proyecto')
             ->only([
-                'documentos', 'modelobd', 'documentosCodificacion', 'documentosBd', 
-                'evaluacionModelado'
-            ]);
+            'documentos', 'modelobd', 'documentosCodificacion', 'documentosBd',
+            'evaluacionModelado'
+        ]);
     }
 
     public function proyectos()
@@ -58,12 +58,14 @@ class StudentController extends Controller
     {
         $proyecto = auth()->user()->proyectos()->first();
         $casos = $proyecto->casoPruebas()->get();
-        return view('calisoft.student.student-plataforma', compact('proyecto','casos'));
+        return view('calisoft.student.student-plataforma', compact('proyecto', 'casos'));
     }
 
 
-    public function evaluacionModelado() {
-        return view('calisoft.student.student-eval-modelado');
+    public function evaluacionModelado()
+    {
+        $proyecto = auth()->user()->proyectos()->first();
+        return view('calisoft.student.student-eval-modelado', compact('proyecto'));
     }
 }
 

@@ -107,6 +107,7 @@ Route::resource('sql', 'ArchivoSqlController', [
 ]);
 
 
+//Evaluaciones de documentacion
 Route::resource('evaluaciones', 'DocumentEvalController', [
     'only' => ['show', 'update'],
     'parameters' => [
@@ -114,10 +115,17 @@ Route::resource('evaluaciones', 'DocumentEvalController', [
     ]
 ]);
 
+//Consulta de evaluaciones en estudiante
+Route::prefix('evaluacion')->group(function () {
+    Route::get('modelado', 'EvaluationApiController@modelado');
+});
+
+
+
 // crear Caso prueba
 
 Route::resource('casoPrueba', 'CasoPruebaController', [
-    'only' => ['index', 'store', 'update', 'destroy','show'],
+    'only' => ['index', 'store', 'update', 'destroy', 'show'],
 ]);
 
 Route::post('enviarCasoPrueba/{casoPrueba}', 'CasoPruebaController@enviarCasoPrueba');

@@ -4,8 +4,7 @@
     <div class="col-md-12">
         @component('components.portlet', [
                 'icon' => 'fa fa-book', 
-                'title' => 'Documentos', 
-                'pdf' => route('pdf.modelacion', compact('proyecto'))
+                'title' => 'Documentos'
             ])
 
 
