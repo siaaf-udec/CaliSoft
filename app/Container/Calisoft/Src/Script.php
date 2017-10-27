@@ -20,5 +20,9 @@ class Script extends Model
     {
         return $this->belongsTo(Proyecto::class, 'FK_ProyectoId', 'PK_id');
     }
+    public function notaCodificacion()
+    {
+        return $this->hasMany(NotaCodificacion::class,'FK_ScriptsId','PK_id');
+    }
     
 }
