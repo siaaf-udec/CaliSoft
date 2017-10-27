@@ -15,9 +15,9 @@ class CreateNotaCodificacionTable extends Migration
     {
         Schema::create('TBL_NotaCodificacion', function (Blueprint $table) {
             $table->increments('PK_id');
-            $table->float('nota');
-            $table->integer('total');
-            $table->integer('acertadas');
+            $table->float('nota')->default('0');
+            $table->integer('total')->default('0');
+            $table->integer('acertadas')->default('0');
             $table->integer('FK_ScriptsId')->unsigned();
             $table->integer('FK_ItemsId')->unsigned();
 
