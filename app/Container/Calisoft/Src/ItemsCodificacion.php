@@ -14,4 +14,5 @@ class ItemsCodificacion extends Model
     {
         return $this->hasMany(NotaCodificacion::class,'FK_ItemsId','PK_Id');
     }
+    
 }

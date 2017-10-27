@@ -21,7 +21,7 @@ new Vue({
     methods: {
         refresh() {
 
-            axios.get('/api/codificacion/').then(response => {
+            axios.get('/api/evaluacionesScript/' + window.ScriptId).then(response => {
                 this.items = response.data
             });
         }

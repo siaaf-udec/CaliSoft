@@ -1,6 +1,6 @@
 <?php
 
-namespace App;
+namespace App\Container\Calisoft\Src;
 
 use Illuminate\Database\Eloquent\Model;
 use Storage;

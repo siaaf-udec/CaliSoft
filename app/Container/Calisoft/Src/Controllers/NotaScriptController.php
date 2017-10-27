@@ -1,23 +1,27 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Container\Calisoft\Src\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\NotaCodificacion;
+use App\Container\Calisoft\Src\Repositories\Evaluations;
+use App\Container\Calisoft\Src\Script;
+
 
 class NotaScriptController extends Controller
 {
-    public function __construct()
+    public function __construct(Evaluations $evaluations)
     {
+        $this->evaluations=$evaluations;
         $this->middleware('auth');
         $this->middleware('role:evaluator', [
             'except' => ['index']
         ]);
     }
-    public function index()
+    public function show(Script $script)
     {
-        return NotaCodificacion::all();
+        return $this->evaluations->forScript($script);
     }
 
     
@@ -44,4 +48,5 @@ class NotaScriptController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
+
 }

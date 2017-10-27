@@ -2,6 +2,8 @@
 namespace App\Container\Calisoft\Src\Repositories;
 
 use App\Container\Calisoft\Src\Documento;
+use App\Container\Calisoft\Src\ItemsCodificacion;
+use App\Container\Calisoft\Src\Script;
 
 class Evaluations
 {
@@ -28,8 +30,29 @@ class Evaluations
             }
         )->load('componente'); //carga los componentes a las evaluaciones
 
+    
+    
 
-
+    }
+    /**
+     * Retorna las Evaluaciones del script
+     *
+     * @param Scripts script
+     * @return Collection Coleccion de scripts
+     */
+    public function forScript(Script $script)
+    {
+        
+        $items=ItemsCodificacion::all();
+        return $items->map(
+            function($item) use ($script)
+            {
+                return $script->notaCodificacion()->firstOrCreate([
+                    'FK_ItemsId'=>$item->PK_id,
+                    'FK_ScriptsId'=>$item->PK_id,
+                ]);
+            }
+        )->load('itemsCodificacion');
 
     }
 

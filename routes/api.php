@@ -114,6 +114,13 @@ Route::resource('evaluaciones', 'DocumentEvalController', [
         'evaluaciones' => 'documento'
     ]
 ]);
+//evaluaciones de scripts
+Route::resource('evaluacionesScript','NotaScriptController',[
+    'only' => ['show', 'update'],
+    'parameters' => [
+        'evaluacionesScript' => 'script'
+    ]
+]);
 
 //Consulta de evaluaciones en estudiante
 Route::prefix('evaluacion')->group(function () {

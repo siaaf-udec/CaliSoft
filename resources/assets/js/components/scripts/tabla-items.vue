@@ -8,7 +8,7 @@
                 </thead>
                 <tbody>
                     <tr v-for="item in items" class="text-center">
-                        <td v-text="item.item"></td>
+                        <td v-text="item.items_codificacion.item"></td>
                         <td>0</td>   
                     </tr>
                 </tbody>
