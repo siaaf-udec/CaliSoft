@@ -7,9 +7,9 @@
                     <th class="text-center">Calificación</th>
                 </thead>
                 <tbody>
-                    <tr v-for="item in items" class="text-center">
-                        <td v-text="item.items_codificacion.item"></td>
-                        <td>0</td>   
+                    <tr v-for="itemCod in items" class="text-center">
+                        <td v-text="itemCod.item"></td>
+                        <td v-text="itemCod.pivot.nota"></td>   
                     </tr>
                 </tbody>
             </table>

@@ -20,9 +20,11 @@ class Script extends Model
     {
         return $this->belongsTo(Proyecto::class, 'FK_ProyectoId', 'PK_id');
     }
-    public function notaCodificacion()
+    public function items()
     {
-        return $this->hasMany(NotaCodificacion::class,'FK_ScriptsId','PK_id');
+        return $this->belongsToMany(ItemsCodificacion::class,'TBL_NotaCodificacion','FK_ScriptsId','FK_ItemsId')
+            ->withTimestamps()
+            ->withPivot('nota','total','acertadas');
     }
     
 }

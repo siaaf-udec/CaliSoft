@@ -62465,14 +62465,18 @@ module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c
     staticClass: "table-responsive"
   }, [_c('table', {
     staticClass: "table table-hover table-bordered table-condensed"
-  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.items), function(item) {
+  }, [_vm._m(0), _vm._v(" "), _c('tbody', _vm._l((_vm.items), function(itemCod) {
     return _c('tr', {
       staticClass: "text-center"
     }, [_c('td', {
       domProps: {
-        "textContent": _vm._s(item.items_codificacion.item)
+        "textContent": _vm._s(itemCod.item)
       }
-    }), _vm._v(" "), _c('td', [_vm._v("0")])])
+    }), _vm._v(" "), _c('td', {
+      domProps: {
+        "textContent": _vm._s(itemCod.pivot.nota)
+      }
+    })])
   }))])])])
 },staticRenderFns: [function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
   return _c('thead', [_c('th', {

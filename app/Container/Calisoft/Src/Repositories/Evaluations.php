@@ -43,16 +43,9 @@ class Evaluations
     public function forScript(Script $script)
     {
         
-        $items=ItemsCodificacion::all();
-        return $items->map(
-            function($item) use ($script)
-            {
-                return $script->notaCodificacion()->firstOrCreate([
-                    'FK_ItemsId'=>$item->PK_id,
-                    'FK_ScriptsId'=>$item->PK_id,
-                ]);
-            }
-        )->load('itemsCodificacion');
+        $items=ItemsCodificacion::all()->pluck('PK_id');
+        $script->items()->sync($items);
+        return $script->items;
 
     }
 

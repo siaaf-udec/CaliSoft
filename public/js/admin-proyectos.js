@@ -206,7 +206,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/bs/bs-select.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\bs\\bs-select.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] bs-select.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -217,9 +217,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-76a62b8c", Component.options)
+    hotAPI.createRecord("data-v-0e6f18c1", Component.options)
   } else {
-    hotAPI.reload("data-v-76a62b8c", Component.options)
+    hotAPI.reload("data-v-0e6f18c1", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -291,7 +291,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-76a62b8c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0e6f18c1", module.exports)
   }
 }
 
@@ -12123,15 +12123,15 @@ module.exports = CancelToken;
 
 /***/ }),
 
-/***/ 317:
+/***/ 318:
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var Component = __webpack_require__(1)(
   /* script */
-  __webpack_require__(318),
-  /* template */
   __webpack_require__(319),
+  /* template */
+  __webpack_require__(320),
   /* styles */
   null,
   /* scopeId */
@@ -12139,7 +12139,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/utils/user-search.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\utils\\user-search.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] user-search.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -12150,9 +12150,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-397fe62a", Component.options)
+    hotAPI.createRecord("data-v-05b3f215", Component.options)
   } else {
-    hotAPI.reload("data-v-397fe62a", Component.options)
+    hotAPI.reload("data-v-05b3f215", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -12164,7 +12164,7 @@ module.exports = Component.exports
 
 /***/ }),
 
-/***/ 318:
+/***/ 319:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -12244,7 +12244,42 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 /***/ }),
 
-/***/ 319:
+/***/ 32:
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+/**
+ * Syntactic sugar for invoking a function and expanding an array for arguments.
+ *
+ * Common use case would be to use `Function.prototype.apply`.
+ *
+ *  ```js
+ *  function f(x, y, z) {}
+ *  var args = [1, 2, 3];
+ *  f.apply(null, args);
+ *  ```
+ *
+ * With `spread` this example can be re-written.
+ *
+ *  ```js
+ *  spread(function(x, y, z) {})([1, 2, 3]);
+ *  ```
+ *
+ * @param {Function} callback
+ * @returns {Function}
+ */
+module.exports = function spread(callback) {
+  return function wrap(arr) {
+    return callback.apply(null, arr);
+  };
+};
+
+
+/***/ }),
+
+/***/ 320:
 /***/ (function(module, exports, __webpack_require__) {
 
 module.exports={render:function (){var _vm=this;var _h=_vm.$createElement;var _c=_vm._self._c||_h;
@@ -12315,44 +12350,9 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-397fe62a", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-05b3f215", module.exports)
   }
 }
-
-/***/ }),
-
-/***/ 32:
-/***/ (function(module, exports, __webpack_require__) {
-
-"use strict";
-
-
-/**
- * Syntactic sugar for invoking a function and expanding an array for arguments.
- *
- * Common use case would be to use `Function.prototype.apply`.
- *
- *  ```js
- *  function f(x, y, z) {}
- *  var args = [1, 2, 3];
- *  f.apply(null, args);
- *  ```
- *
- * With `spread` this example can be re-written.
- *
- *  ```js
- *  spread(function(x, y, z) {})([1, 2, 3]);
- *  ```
- *
- * @param {Function} callback
- * @returns {Function}
- */
-module.exports = function spread(callback) {
-  return function wrap(arr) {
-    return callback.apply(null, arr);
-  };
-};
-
 
 /***/ }),
 
@@ -17306,7 +17306,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/notifications.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\notifications.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] notifications.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -17317,9 +17317,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-631572c2", Component.options)
+    hotAPI.createRecord("data-v-6b47a8ca", Component.options)
   } else {
-    hotAPI.reload("data-v-631572c2", Component.options)
+    hotAPI.reload("data-v-6b47a8ca", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -17548,7 +17548,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/proyecto-creado.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\proyecto-creado.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] proyecto-creado.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -17559,9 +17559,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-72be6856", Component.options)
+    hotAPI.createRecord("data-v-78634f40", Component.options)
   } else {
-    hotAPI.reload("data-v-72be6856", Component.options)
+    hotAPI.reload("data-v-78634f40", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -17589,11 +17589,11 @@ var Component = __webpack_require__(1)(
   /* styles */
   injectStyle,
   /* scopeId */
-  "data-v-1a86d36a",
+  "data-v-639f0315",
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/proyecto/proyecto-tabla.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\proyecto\\proyecto-tabla.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] proyecto-tabla.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -17604,9 +17604,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1a86d36a", Component.options)
+    hotAPI.createRecord("data-v-639f0315", Component.options)
   } else {
-    hotAPI.reload("data-v-1a86d36a", Component.options)
+    hotAPI.reload("data-v-639f0315", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -17628,13 +17628,13 @@ var content = __webpack_require__(382);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(103)("d506bd48", content, false);
+var update = __webpack_require__(103)("d05326da", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1a86d36a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./proyecto-tabla.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-1a86d36a\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./proyecto-tabla.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-639f0315\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./proyecto-tabla.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-639f0315\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./proyecto-tabla.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -17653,7 +17653,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.borderless td[data-v-1a86d36a],\n.borderless th[data-v-1a86d36a] {\n    border: none;\n}\n", ""]);
+exports.push([module.i, "\n.borderless td[data-v-639f0315],\r\n.borderless th[data-v-639f0315] {\r\n    border: none;\n}\r\n", ""]);
 
 // exports
 
@@ -17667,7 +17667,7 @@ exports.push([module.i, "\n.borderless td[data-v-1a86d36a],\n.borderless th[data
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_uiv__ = __webpack_require__(63);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_uiv___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_uiv__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_user_search_vue__ = __webpack_require__(317);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_user_search_vue__ = __webpack_require__(318);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_user_search_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__utils_user_search_vue__);
 //
 //
@@ -18042,7 +18042,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1a86d36a", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-639f0315", module.exports)
   }
 }
 
@@ -18064,11 +18064,11 @@ var Component = __webpack_require__(1)(
   /* styles */
   injectStyle,
   /* scopeId */
-  "data-v-442a796c",
+  "data-v-70472fe1",
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/utils/fade.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\utils\\fade.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] fade.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18079,9 +18079,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-442a796c", Component.options)
+    hotAPI.createRecord("data-v-70472fe1", Component.options)
   } else {
-    hotAPI.reload("data-v-442a796c", Component.options)
+    hotAPI.reload("data-v-70472fe1", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18103,13 +18103,13 @@ var content = __webpack_require__(387);
 if(typeof content === 'string') content = [[module.i, content, '']];
 if(content.locals) module.exports = content.locals;
 // add the styles to the DOM
-var update = __webpack_require__(103)("fa134f28", content, false);
+var update = __webpack_require__(103)("4022e124", content, false);
 // Hot Module Replacement
 if(false) {
  // When the styles change, update the <style> tags
  if(!content.locals) {
-   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-442a796c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./fade.vue", function() {
-     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-442a796c\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./fade.vue");
+   module.hot.accept("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-70472fe1\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./fade.vue", function() {
+     var newContent = require("!!../../../../../node_modules/css-loader/index.js!../../../../../node_modules/vue-loader/lib/style-compiler/index.js?{\"vue\":true,\"id\":\"data-v-70472fe1\",\"scoped\":true,\"hasInlineConfig\":true}!../../../../../node_modules/vue-loader/lib/selector.js?type=styles&index=0!./fade.vue");
      if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
      update(newContent);
    });
@@ -18128,7 +18128,7 @@ exports = module.exports = __webpack_require__(3)(undefined);
 
 
 // module
-exports.push([module.i, "\n.fade-enter[data-v-442a796c],\n.fade-leave-to[data-v-442a796c] {\n    opacity: 0;\n}\n.fade-enter-active[data-v-442a796c],\n.fade-leave-active[data-v-442a796c] {\n    transition: opacity .4s;\n}\n", ""]);
+exports.push([module.i, "\n.fade-enter[data-v-70472fe1],\n.fade-leave-to[data-v-70472fe1] {\n    opacity: 0;\n}\n.fade-enter-active[data-v-70472fe1],\n.fade-leave-active[data-v-70472fe1] {\n    transition: opacity .4s;\n}\n", ""]);
 
 // exports
 
@@ -18167,7 +18167,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-442a796c", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-70472fe1", module.exports)
   }
 }
 
@@ -18215,7 +18215,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-72be6856", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-78634f40", module.exports)
   }
 }
 
@@ -18237,7 +18237,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/invitacion-recibida.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\invitacion-recibida.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] invitacion-recibida.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18248,9 +18248,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-772593f7", Component.options)
+    hotAPI.createRecord("data-v-985b2c3c", Component.options)
   } else {
-    hotAPI.reload("data-v-772593f7", Component.options)
+    hotAPI.reload("data-v-985b2c3c", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18307,7 +18307,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-772593f7", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-985b2c3c", module.exports)
   }
 }
 
@@ -18329,7 +18329,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/invitacion-aceptada.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\invitacion-aceptada.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] invitacion-aceptada.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18340,9 +18340,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-67a56c11", Component.options)
+    hotAPI.createRecord("data-v-b75b7c08", Component.options)
   } else {
-    hotAPI.reload("data-v-67a56c11", Component.options)
+    hotAPI.reload("data-v-b75b7c08", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18399,7 +18399,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-67a56c11", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-b75b7c08", module.exports)
   }
 }
 
@@ -18421,7 +18421,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/invitacion-rechazada.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\invitacion-rechazada.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] invitacion-rechazada.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18432,9 +18432,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-340cd7c3", Component.options)
+    hotAPI.createRecord("data-v-e60a8190", Component.options)
   } else {
-    hotAPI.reload("data-v-340cd7c3", Component.options)
+    hotAPI.reload("data-v-e60a8190", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18491,7 +18491,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-340cd7c3", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-e60a8190", module.exports)
   }
 }
 
@@ -18615,7 +18615,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/proyecto-denegado.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\proyecto-denegado.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] proyecto-denegado.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18626,9 +18626,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-9ff05f48", Component.options)
+    hotAPI.createRecord("data-v-0991b5f2", Component.options)
   } else {
-    hotAPI.reload("data-v-9ff05f48", Component.options)
+    hotAPI.reload("data-v-0991b5f2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18682,7 +18682,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-9ff05f48", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-0991b5f2", module.exports)
   }
 }
 
@@ -18704,7 +18704,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/proyecto-asignado.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\proyecto-asignado.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] proyecto-asignado.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18715,9 +18715,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1092ed66", Component.options)
+    hotAPI.createRecord("data-v-42e5ddf8", Component.options)
   } else {
-    hotAPI.reload("data-v-1092ed66", Component.options)
+    hotAPI.reload("data-v-42e5ddf8", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18773,7 +18773,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-1092ed66", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-42e5ddf8", module.exports)
   }
 }
 
@@ -18795,7 +18795,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/evaluador-asignado.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\evaluador-asignado.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] evaluador-asignado.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18806,9 +18806,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-03a50d15", Component.options)
+    hotAPI.createRecord("data-v-1e604dca", Component.options)
   } else {
-    hotAPI.reload("data-v-03a50d15", Component.options)
+    hotAPI.reload("data-v-1e604dca", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18864,7 +18864,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-03a50d15", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-1e604dca", module.exports)
   }
 }
 
@@ -18886,7 +18886,7 @@ var Component = __webpack_require__(1)(
   /* moduleIdentifier (server only) */
   null
 )
-Component.options.__file = "/home/code/Documentos/project-calisoft/modulo-central/resources/assets/js/components/notifications/proyecto-aceptado.vue"
+Component.options.__file = "C:\\xampp\\htdocs\\ModuloCentral\\resources\\assets\\js\\components\\notifications\\proyecto-aceptado.vue"
 if (Component.esModule && Object.keys(Component.esModule).some(function (key) {return key !== "default" && key.substr(0, 2) !== "__"})) {console.error("named exports are not supported in *.vue files.")}
 if (Component.options.functional) {console.error("[vue-loader] proyecto-aceptado.vue: functional components are not supported with templates, they should use render functions.")}
 
@@ -18897,9 +18897,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7df48d04", Component.options)
+    hotAPI.createRecord("data-v-6db83ca2", Component.options)
   } else {
-    hotAPI.reload("data-v-7df48d04", Component.options)
+    hotAPI.reload("data-v-6db83ca2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -18972,7 +18972,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-7df48d04", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6db83ca2", module.exports)
   }
 }
 
@@ -19046,7 +19046,7 @@ module.exports.render._withStripped = true
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-     require("vue-hot-reload-api").rerender("data-v-631572c2", module.exports)
+     require("vue-hot-reload-api").rerender("data-v-6b47a8ca", module.exports)
   }
 }
 
