@@ -39,13 +39,13 @@
                         <table class="table table-striped table-bordered table-hover dt-responsive" width="100%">
                             <thead>
                                 <th class="text-center">Nombre Del Archivo</th>
-                                <th class="text-center">Estado</th>
+                                
                                 <th class="text-center">Operaciones</th>
                             </thead>
                             <tbody >
                                 <tr v-for="script in paginator.items" class="text-center">
                                     <td v-text="script.url"></td>
-                                    <td v-text="script.estado"></td>
+                                    
                                     <td class="text-center">
                                         <a :href="`/evaluar-codificacion/${script.PK_id}`" class="btn yellow-crusta" title="Calificar" >
                                             <span class="fa fa-asterisk"></span>

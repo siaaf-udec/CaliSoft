@@ -9,7 +9,12 @@
                 <tbody>
                     <tr v-for="itemCod in items" class="text-center">
                         <td v-text="itemCod.item"></td>
-                        <td v-text="itemCod.pivot.nota"></td>   
+                        <td >
+                        
+                        <input type="number"  class="form-control" :value="itemCod.pivot.nota"  min="0" max="5" required="required" 
+                        @change="update(itemCod,$event.target.value)" />
+                        
+                    </td>
                     </tr>
                 </tbody>
             </table>
@@ -19,9 +24,20 @@
 </template>
 <script>
 import TextareaInput from '../inputs/textarea-input';
+import numberInput from '../inputs/number-input';
 export default {
-    components:{TextareaInput},
-  props:['items']
+    components:{TextareaInput,numberInput},
+  props:['items'],
+  methods:{
+      update(item,nota){
+          axios.put('/api/evaluacionesScript/' + window.ScriptId,{
+              itemId:item.PK_id,
+              nota:nota,
+          }).then(response=>{
+                
+          })
+      }
+  }
 }
 </script>
 

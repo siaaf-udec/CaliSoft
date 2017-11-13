@@ -23,10 +23,6 @@
                         </div>
                      <div class ="row">   
                         <div class="col-md-6">
-                            <button type="button"  class="btn blue center-block">
-                            <i class="fa fa-edit"></i>
-                            Editar Calificación
-                            </button>
                             <br>
                             <button type="button"  class="btn green-jungle center-block">
                             <i class="fa fa-edit"></i>
@@ -38,6 +34,8 @@
                         <textarea-input name="observacion" label="Observación" v-model="observacion"/>
                             
                     </div>
+
+                    
                 </div>
             </div>
         @endcomponent

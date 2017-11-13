@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\NotaCodificacion;
 use App\Container\Calisoft\Src\Repositories\Evaluations;
 use App\Container\Calisoft\Src\Script;
+use App\Container\Calisoft\Src\Requests\NotaScriptUpdateRequest;
 
 
 class NotaScriptController extends Controller
@@ -25,11 +26,6 @@ class NotaScriptController extends Controller
     }
 
     
-    public function store(Request $request)
-    {
-        return NotaCodificacion::create($request->all());
-    }
-
     /**
      * Display the specified resource.
      *
@@ -37,9 +33,15 @@ class NotaScriptController extends Controller
      * @return \Illuminate\Http\Response
      */
     
-    public function update(Request $request, NotaCodificacion $script)
+    public function update(NotaScriptUpdateRequest $request, Script $script)
     {
-        $script->update($request->all());
+        $script->items()->updateExistingPivot($request->itemId,[
+            'nota'=>$request->nota,
+            
+
+
+        ]);
+        
     }
 
     /**
