@@ -21,5 +21,6 @@ Route::prefix('pdf')->group(function () {
 
     Route::post('proyecto/{proyecto}/modelacion', 'PDFController@modelacion')->name('pdf.modelacion');
     Route::post('usuarios', 'PDFController@usuarios')->name('pdf.usuarios');
+    Route::post('proyecto/{proyecto}/codificacion', 'PDFController@scripts')->name('pdf.scripts');
 
 });

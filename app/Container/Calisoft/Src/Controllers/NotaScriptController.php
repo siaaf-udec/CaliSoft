@@ -38,8 +38,6 @@ class NotaScriptController extends Controller
         $script->items()->updateExistingPivot($request->itemId,[
             'nota'=>$request->nota,
             
-
-
         ]);
         
     }

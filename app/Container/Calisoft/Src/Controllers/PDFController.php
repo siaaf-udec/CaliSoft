@@ -32,4 +32,10 @@ class PDFController extends Controller
         $pdf = PDF::loadView('pdf.usuarios', ['usuarios' => User::limit(50)->get()]);
         return $pdf->stream('usuarios.pdf');
     }
+    public function scripts(Proyecto $proyecto)
+    {
+        $scripts = $proyecto->scripts()->with('items')->get();
+        $pdf = PDF::loadView('pdf.codificacion', compact('proyecto', 'scripts'));
+        return $pdf->stream('codificacion.pdf');
+    }
 }

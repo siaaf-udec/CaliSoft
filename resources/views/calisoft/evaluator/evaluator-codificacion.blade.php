@@ -5,8 +5,10 @@
         <div class="col-md-12">
             @component('components.portlet', [
             'icon' => 'fa fa-files-o', 
-            'title' => 'Codificación: ' . $proyecto->nombre
+            'title' => 'Codificación: ' . $proyecto->nombre,
+            'pdf'=> route('pdf.scripts',compact('proyecto'))
             ])
+            
 
                 <div id="app">
 
