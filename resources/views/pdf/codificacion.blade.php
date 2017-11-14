@@ -7,7 +7,7 @@
     
     @foreach($scripts as $script)
         
-            <table>
+            <table class="table">
                 <thead>
                     <tr>
                         <th>Nombre</th>
