@@ -12,7 +12,7 @@ class ArchivoSql extends Model
     protected $hidden = ['created_at', 'updated_at'];
 
     public function proyecto(){
-        return $this->hasOne(Proyecto::class,'FK_ProyectoId','PK_id');
+        return $this->belongsTo(Proyecto::class,'FK_ProyectoId','PK_id');
     }
     
     public function tipobd(){

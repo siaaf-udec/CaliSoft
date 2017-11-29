@@ -8,7 +8,7 @@
             <div class="row">
                 <div id="app">
                     <div class="col-md-6">
-                        <code-preview url="{{$script->url}}"></code-preview>
+                        <code-preview url="{{$script->url}}" mode="application/x-httpd-php"></code-preview>
                     </div>
                     <div class="col-md-6">
                         <button type="button"  class="btn green-jungle center-block">

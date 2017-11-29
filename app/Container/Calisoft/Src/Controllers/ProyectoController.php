@@ -147,4 +147,8 @@ class ProyectoController extends Controller
         return $proyecto->scripts;
     }
 
+    public function basedatos(Proyecto $proyecto)
+    {
+        return $proyecto->sql()->with('tipobd')->get();
+    }
 }

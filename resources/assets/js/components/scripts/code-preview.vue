@@ -10,7 +10,7 @@ export default {
             code: "",
             codeOptions: {
                 lineNumbers: true,
-                mode: 'application/x-httpd-php',
+                mode: this.mode,
                 readOnly: true,
                 theme: 'eclipse'
             },
@@ -19,12 +19,19 @@ export default {
     },
 
     created(){
-        axios.post('/api/scripts/preview/' + this.url).then(res => {
+        axios.post(this.prefix + this.url).then(res => {
         this.code = res.data.code;
         });
     },
   props:{
-      
+      prefix:{
+          type: String,
+          default: '/api/scripts/preview/'
+      },
+      mode:{
+          type:String,
+          default: 'application/x-httpd-php'
+      },
       url:{
           type: String,
           required: true,

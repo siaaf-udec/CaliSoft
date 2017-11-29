@@ -18,7 +18,7 @@ class ArchivoSqlController extends Controller
     {
         $this->middleware('auth');
         $this->middleware('role:student', [
-            'except' => ['index'],
+            'except' => ['index','preview'],
         ]);
     }
 
@@ -37,13 +37,6 @@ class ArchivoSqlController extends Controller
     public function show($id)
     {
         //
-
-
-
-
-
-
-
     }
 
     /**

@@ -38,3 +38,4 @@ mix
     .js('resources/assets/js/plataforma-student.js', 'public/js')
     .js('resources/assets/js/escenario.js', 'public/js')
     .js('resources/assets/js/evaluacion-modelado.js', 'public/js')
+    .js('resources/assets/js/base-datos.js', 'public/js')
