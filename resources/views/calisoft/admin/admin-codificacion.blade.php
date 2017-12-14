@@ -25,9 +25,11 @@
             </table>
 
             <modal id="editar-item" :title="'Editar item: ' + fillItem.item">
+            
             <form @submit.prevent="update(fillItem.PK_id)">
-                    <number-input name="Valor" :error="formErrorsUpdate.valor" v-model="fillItem.valor" label="Valor" icon="fa fa-sort-numeric-asc" min="1" max="5" required>
-                    </number-input>
+                <text-input type="number" name="Valor" label="Valor" icon="fa fa-sort-numeric-asc"
+                    :error-messages="formErrorsUpdate.valor" v-model="fillItem.valor" 
+                    min="1" max="5" required/>
 
                 <div class="modal-footer">
                     <div class="form-group">

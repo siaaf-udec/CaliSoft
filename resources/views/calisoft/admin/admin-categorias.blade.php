@@ -69,17 +69,17 @@
                 <text-input name="nombre" :error="formErrors.nombre" v-model="newCategoria.nombre" label="Nombre de la Categoría" icon="fa fa-pie-chart" required></text-input>
                 <!-- Fila De Porcentajes -->
                 <div class="row">
-                    <number-input name="plataforma" :error="formErrors.plataforma" v-model="newCategoria.plataforma" label="Evaluación de plataforma" icon="fa fa-percent" min="0" max="100" required>
-                    </number-input>
-                    <number-input name="modelado" :error="formErrors.modelado" v-model="newCategoria.modelado" label="Evaluación de modelado" icon="fa fa-percent" min="0" max="100" required>
-                    </number-input>
+                    <text-input type="number" name="plataforma" :error="formErrors.plataforma" v-model="newCategoria.plataforma" label="Evaluación de plataforma" icon="fa fa-percent" min="0" max="100" required>
+                    </text-input>
+                    <text-input type="number" name="modelado" :error="formErrors.modelado" v-model="newCategoria.modelado" label="Evaluación de modelado" icon="fa fa-percent" min="0" max="100" required>
+                    </text-input>
                 </div>
 
                 <div class="row">
-                    <number-input name="base_datos" :error="formErrors.base_datos" v-model="newCategoria.base_datos" label="Evaluación de Base de datos" icon="fa fa-percent" min="0" max="100" required>
-                    </number-input>
-                    <number-input name="codificacion" :error="formErrors.codificacion" v-model="newCategoria.codificacion" label="Evaluación de Codificación" icon="fa fa-percent" min="0" max="100" required>
-                    </number-input>
+                    <text-input type="number" name="base_datos" :error="formErrors.base_datos" v-model="newCategoria.base_datos" label="Evaluación de Base de datos" icon="fa fa-percent" min="0" max="100" required>
+                    </text-input>
+                    <text-input type="number" name="codificacion" :error="formErrors.codificacion" v-model="newCategoria.codificacion" label="Evaluación de Codificación" icon="fa fa-percent" min="0" max="100" required>
+                    </text-input>
                 </div>
 
                 <textarea-input name="descripcion" :error="formErrors.descripcion" v-model="newCategoria.descripcion" label="Descripción" maxlength="200" required></textarea-input>
@@ -102,16 +102,16 @@
             <form @submit.prevent="update(fillCategoria.PK_id)">
                 <text-input name="nombre" :error="formErrorsUpdate.nombre" v-model="fillCategoria.nombre" label="Nombre de la Categoría" icon="fa fa-pie-chart" required></text-input>
                 <div class="row">
-                    <number-input name="plataforma" :error="formErrorsUpdate.plataforma" v-model="fillCategoria.plataforma" label="Evaluación de plataforma" icon="fa fa-percent" min="0" max="100" required>
-                    </number-input>
-                    <number-input name="modelado" :error="formErrorsUpdate.modelado" v-model="fillCategoria.modelado" label="Evaluación de modelado" icon="fa fa-percent" min="0" max="100" required>
-                    </number-input>
+                    <text-input type="number" name="plataforma" :error="formErrorsUpdate.plataforma" v-model="fillCategoria.plataforma" label="Evaluación de plataforma" icon="fa fa-percent" min="0" max="100" required>
+                    </text-input>
+                    <text-input type="number" name="modelado" :error="formErrorsUpdate.modelado" v-model="fillCategoria.modelado" label="Evaluación de modelado" icon="fa fa-percent" min="0" max="100" required>
+                    </text-input>
                 </div>
                 <div class="row">
-                    <number-input name="base_datos" :error="formErrorsUpdate.base_datos" v-model="fillCategoria.base_datos" label="Evaluación de Base de datos" icon="fa fa-percent" min="0" max="100" required>
-                    </number-input>
-                    <number-input name="codificacion" :error="formErrorsUpdate.codificacion" v-model="fillCategoria.codificacion" label="Evaluación de Codificación" icon="fa fa-percent" min="0" max="100" required>
-                    </number-input>
+                    <text-input type="number" name="base_datos" :error="formErrorsUpdate.base_datos" v-model="fillCategoria.base_datos" label="Evaluación de Base de datos" icon="fa fa-percent" min="0" max="100" required>
+                    </text-input>
+                    <text-input type="number" name="codificacion" :error="formErrorsUpdate.codificacion" v-model="fillCategoria.codificacion" label="Evaluación de Codificación" icon="fa fa-percent" min="0" max="100" required>
+                    </text-input>
                 </div>
 
                 <textarea-input name="descripcion" :error="formErrorsUpdate.descripcion" v-model="fillCategoria.descripcion" label="Descripción" maxlength="200" required></textarea-input>

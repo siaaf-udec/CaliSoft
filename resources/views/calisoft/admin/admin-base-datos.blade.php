@@ -27,23 +27,23 @@
             <!--inicio modal editar estandar y valor de la nomenclatura de base de datos-->
             <modal id="editar-componente" :title="'Editar Componente: ' + fillNomenclatura.nombre">
                 <form @submit.prevent="update(fillNomenclatura.PK_id)">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <text-input name="estandar" :error="errorsUpdate.estandar" v-model="fillNomenclatura.estandar" 
-                                label="Estandar" icon="fa fa-user" required maxlength="5"></text-input>                    
-                        </div>
-                        <number-input name="valor" :error="errorsUpdate.valor" v-model="fillNomenclatura.valor" label="Valor" icon="fa fa-sort-numeric-asc" min="1" max="5" required></number-input>
-                    </div>
-                    <div class="modal-footer">
-                        <div class="form-group">
-                            <button type="submit" class="btn green-jungle">
-                                <i class="fa fa-edit"></i>Editar Componente
-                            </button>
-                            <button type="button" class="btn red" data-dismiss="modal">
-                                <i class="fa fa-ban"></i>Cancelar
-                            </button>
-                        </div>
-                    </div>
+                    
+                    <text-input name="estandar" label="Estandar" icon="fa fa-user" 
+                        :error-messages="errorsUpdate.estandar" v-model="fillNomenclatura.estandar" 
+                        required maxlength="5">
+                    </text-input>              
+                        
+                    <text-input type="number" name="valor" label="Valor" icon="fa fa-sort-numeric-asc" 
+                        :error-messages="errorsUpdate.valor" v-model="fillNomenclatura.valor" 
+                        min="1" max="5" required>
+                    </text-input>
+                       
+                    
+                    
+                    <button type="submit" class="btn green-jungle center-block">
+                        <i class="fa fa-edit"></i>Editar Componente
+                    </button>
+                            
                 </form>
             </modal>
             <!--Fin Modal editar estandar y valor de la nomenclatura de base de datos-->

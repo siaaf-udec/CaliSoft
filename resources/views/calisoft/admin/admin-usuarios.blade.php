@@ -64,8 +64,8 @@
             <div class="row">
                 <!-- Boton de crear usuario -->
                 <div class="col-sm-6">
-                    <button data-toggle="modal" data-target="#crear-usuario" class="btn green-jungle center-block">
-                      <i class="fa fa-plus"></i>
+                    <button class="btn green-jungle center-block" @click="modal = true">
+                        <i class="fa fa-plus"></i>
                         Crear Usuario
                     </button>
                 </div>
@@ -76,27 +76,8 @@
                 <!-- End Pagination Buttons-->
             </div>
             <!--Inicio Modal crear usuarios-->
-            <modal id="crear-usuario" title="Crear Usuario">
-                <form @submit.prevent="store()" id="user-create">
-                  <text-input name="name" v-model="newUser.name" label="Nombre" icon="fa fa-user" required></text-input>
-                  <email-input name="email" :error="errors.email"  v-model="newUser.email" label="Correo" icon="fa fa-envelope-o" required></email-input>
-                  <password-input name="password" :error="errors.password"  v-model="newUser.password" label="Contraseña" icon="fa fa-key" required></password-input>
-                  <password-input name="password"  v-model="newUser.password_confirmation" label="Confirmar Contraseña" icon="fa fa-key" required></password-input>
-
-                  <select-input v-model="newUser.role" name="role" icon="fa fa-users" label="Role" required>
-                    <option value="admin">Administrador</option>
-                    <option value="evaluator">Evaluador</option>
-                  </select-input>
-
-                    <div class="form-group modal-footer">
-                      <button type="submit" class="btn green-jungle">
-                          <i class="fa fa-plus"></i>Registrar
-                      </button>
-                        <button type="button" class="btn btn-danger" data-dismiss="modal">
-                            <i class="fa fa-ban"></i>Cancelar
-                        </button>
-                    </div>
-                </form>
+            <modal  v-model="modal" title="Crear Usuario" :footer="false">
+                <user-form @created="add"/>
             </modal>
             <!-- End modal crear usuarios-->
 
