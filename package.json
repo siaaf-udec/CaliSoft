@@ -25,10 +25,7 @@
     "vue": "^2.1.10",
     "vue-codemirror": "^3.1.4",
     "vue-focus": "^2.1.0",
-    "vue-pdf": "^1.2.4"
-  },
-  "dependencies": {
-    "vee-validate": "^2.0.0-rc.27",
-    "vue-codemirror": "^3.1.4"
+    "vue-pdf": "^1.2.4",
+    "vee-validate": "^2.0.0-rc.27"
   }
 }

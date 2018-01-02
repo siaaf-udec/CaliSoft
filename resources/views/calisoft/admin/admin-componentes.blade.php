@@ -1,9 +1,12 @@
-@extends('layouts.dash') @section('content')
+@extends('layouts.dash') 
+
+@section('content')
 <div class="col-md-12">
     @component('components.portlet', ['icon' =>
         'fa fa-cubes',
         'title' => 'Componentes de ' . $tdocumento->nombre])
-    <div id="app">
+        
+        <div id="app">
 
             <!-- Table de categorias -->
             <div class="table-responsive">
@@ -43,72 +46,14 @@
 
             <!--Comienzo Modal de creación -->
             <modal id="crear-componente" title="Crear Componentes">
-                <form @submit.prevent='store()'>
-                    <div class="form-group">
-                        <label for="title">Nombre del Componente</label>
-                        <input type="text" name="nombre" class="form-control" v-model="newComponente.nombre" required="" />
-                        <span v-if="formErrors['nombre']" class="error text-danger">
-                            @{{formErrors.nombre[0]}}
-                        </span>
-                    </div>
-
-
-                    <div class="form-group form-md-radios">
-                        <label>OBLIGATORIO</label>
-                        <div class="form-group">
-                            <bs-switch id="required" label="requerido" v-model="newComponente.required">
-                            </bs-switch>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="title">Descripción</label>
-                        <textarea name="descripcion" cols="20" rows="4" class="form-control" v-model="newComponente.descripcion" required="">
-                        </textarea>
-                        <span v-if="formErrors['descripcion']" class="error text-danger">
-                            @{{formErrors.nombre[0]}}
-                        </span>
-                    </div>
-
-                    <button type="submit" class="btn green-jungle"><i class="fa fa-plus"></i>Crear Componente</button>
-                    <button type="button" class="btn red" data-dismiss="modal"><i class="fa fa-ban"></i>Cancelar</button>
-                </form>
+                <component-form ref="createForm" @submit="store"></component-form>
             </modal>
             <!-- Fin de Modal de creación -->
 
             <!--Comienzo Modal de edicion -->
             <modal id="editar-componentes" title="Editar Componente">
-                <form @submit.prevent="update(fillComponente.PK_id)">
-
-                    <div class="form-group">
-                        <label for="title">Nombre del Componente</label>
-                        <input type="text" name="nombre" class="form-control" v-model="fillComponente.nombre" required="" />
-                        <span v-if="formErrorsUpdate['nombre']" class="error text-danger">
-                            @{{formErrorsUpdate.nombre[0]}}
-                        </span>
-                    </div>
-
-                    <div class="form-group form-md-radios">
-                        <label>OBLIGATORIO</label>
-                        <div class="form-group">
-                            <bs-switch id="required-update" label="requerido" v-model="fillComponente.required">
-                            </bs-switch>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="title">Descripción</label>
-                        <textarea name="descripcion" cols="20" rows="4" class="form-control" v-model="fillComponente.descripcion" required="">
-                        </textarea>
-                        <span v-if="formErrorsUpdate['descripcion']" class="error text-danger">
-                            @{{formErrorsUpdate.nombre[0]}}
-                        </span>
-                    </div>
-
-                    <button type="submit" class="btn blue"><i  class="fa fa-save"></i>Guardar</button>
-                    <button type="button" class="btn red" data-dismiss="modal"><i class="fa fa-ban"></i>Cancelar</button>
-
-                </form>
+                <component-form v-if="fillComponente" ref="editForm" @submit="update" :editable="fillComponente">
+                </component-form>  
             </modal>
 
 
@@ -116,8 +61,8 @@
               @include('partials.modal-help-componentes')
           </div>
             @endcomponent
-    </div>
-</div>
+         </div>
+        </div>
 
 
 @endsection @push('styles')

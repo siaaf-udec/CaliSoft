@@ -3,8 +3,8 @@ import VeeValidate, { Validator } from 'vee-validate';
 
 export default {
 	install(Vue) {
-		Validator.localize('en', es);
 		Vue.use(VeeValidate);
+		Validator.localize('es', es);
 		Vue.prototype.setErrors = this.setErrors;
 		Vue.prototype.safeExec = this.safeExec;
 	},

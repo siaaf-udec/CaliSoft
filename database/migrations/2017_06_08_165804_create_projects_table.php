@@ -16,7 +16,11 @@ class CreateProjectsTable extends Migration
         Schema::create('TBL_Proyectos', function (Blueprint $table) {
             $table->increments('PK_id');
             $table->string('nombre')->unique();
-            $table->enum('state', ['creacion', 'propuesta', 'activo'])->default('creacion');
+
+            $table->enum('state', [
+                'creacion', 'propuesta', 'activo', 'evaluacion', 'completado'
+            ])->default('creacion');
+
             $table->integer('FK_GrupoDeInvestigacionId')->unsigned();
             $table->integer('FK_SemilleroId')->unsigned()->nullable();
             $table->integer('FK_CategoriaId')->unsigned()->nullable();

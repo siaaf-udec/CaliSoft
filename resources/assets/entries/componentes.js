@@ -1,11 +1,18 @@
 import "./bootstrap";
 import Vue from "vue";
+import Validate from "../plugins/Validate"
+
+import ComponentForm from "../components/admin/ComponentForm"
 import BsSwitch from "../components/bs/bs-switch";
 import Modal from "../components/utils/modal";
+import TextInput from "../components/inputs/text-input"
+import TextareaInput from "../components/inputs/textarea-input"
+
+Vue.use(Validate)
 
 new Vue({
     el: "#app",
-    components: { BsSwitch, Modal },
+    components: { BsSwitch, Modal, TextInput, TextareaInput, ComponentForm },
     data() {
         return {
             componentes: [],
@@ -32,30 +39,29 @@ new Vue({
         },
 
         //crea el componente del documento
-        store(){
-            this.newComponente.FK_TipoDocumentoId = this.documentoId;
-            axios.post('/api/componentes/', this.newComponente)
+        store(componente){
+            componente.FK_TipoDocumentoId = this.documentoId;
+            axios.post('/api/componentes/', componente)
                 .then(res => {
                     this.componentes.push(res.data);
                     this.newComponente = this.getSchema();
                     $("#crear-componente").modal("hide");
                     toastr.info('Componente subido correctamente');
                 })
-                .catch(err => this.formErrors = err.response.data);
+                .catch(err => this.$refs.createForm.setErrors(err.response.data));
         },
 
         //actualiza el componente
-        update() {
-            axios.put('/api/componentes/' + this.fillComponente.PK_id, this.fillComponente)
+        update(componente) {
+            axios.put('/api/componentes/' + componente.PK_id, componente)
                 .then(response => {
-                    this.componentes = this.componentes.map(value => {
-                        return value.PK_id == this.fillComponente.PK_id ? this.fillComponente : value;
-                    });
+                    let index = this.componentes.findIndex(c => c.PK_id == componente.PK_id)
+                    this.$set(this.componentes, index, componente)
                     this.fillComponente = {};
                     $("#editar-componentes").modal("hide");
                     toastr.info('Componente editado correctamente');
                 })
-                .catch(error => this.formErrorsUpdate = error.response.data);
+                .catch(err => this.$refs.editForm.setErrors(err.response.data));
         },
 
         //elimina el componente

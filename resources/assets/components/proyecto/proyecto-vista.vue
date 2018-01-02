@@ -5,36 +5,7 @@
             <div class="panel panel-info">
                 <div class="panel-heading text-center text-uppercase">PROYECTO</div>
                 <div class="panel-body bg-info">
-                    <table class="table">
-                        <tbody>
-                            <tr>
-                                <th>Nombre:</th>
-                                <td>{{ proyecto.nombre }}</td>
-                            </tr>
-                            <tr>
-                                <th>Estado:</th>
-                                <td class="text-uppercase">
-                                  <strong>{{ proyecto.state }}</strong>
-                                </td>
-                            </tr>
-                            <tr>
-                                <th>Categoria:</th>
-                                <td>{{ proyecto.categoria.nombre }}</td>
-                            </tr>
-                            <tr>
-                                <th>Semillero</th>
-                                <td>{{ proyecto.semillero.nombre }}</td>
-                            </tr>
-                            <tr>
-                                <th>Grupo de investigación:</th>
-                                <td>{{ proyecto.grupo_de_investigacion.nombre }}</td>
-                            </tr>
-                            <tr>
-                                <th>Creado el:</th>
-                                <td>{{ new Date(proyecto.created_at).toLocaleDateString() }}</td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <proyecto-preview :proyecto="proyecto"/>
 
                     <div class="btn-group btn-group-vertical center-block" v-if="proyecto.state == 'creacion'">
                       <button type="button" class="btn blue" data-toggle="modal" href="#propuesta">Enviar Propuesta</button>
@@ -48,20 +19,17 @@
         <div class="col-sm-6">
             <!-- Integrantes -->
             <div class="row">
-                <proyecto-integrantes :integrantes="integrantes" :project-id="proyecto.PK_id">
-                </proyecto-integrantes>
+                <proyecto-integrantes :integrantes="integrantes" :project-id="proyecto.PK_id"></proyecto-integrantes>
             </div>
 
             <!-- Evaluadores -->
             <div class="row" v-if="evaluadores.length">
-                <proyecto-evaluadores :evaluadores="evaluadores">
-                </proyecto-evaluadores>
+                <proyecto-evaluadores :evaluadores="evaluadores"></proyecto-evaluadores>
             </div>
 
             <!-- Invitados -->
-            <div class="row">
-              <proyecto-invitados :invitados="invitados" :proyecto-id="proyecto.PK_id" v-if="proyecto.state == 'creacion'">
-              </proyecto-invitados>
+            <div class="row" v-if="proyecto.state == 'creacion'">
+              <proyecto-invitados :invitados="invitados" :proyecto-id="proyecto.PK_id"></proyecto-invitados>
             </div>
         </div>
 
@@ -73,8 +41,7 @@
 
     <!-- comienzo modal de edicion-->
     <modal id="editar-proyecto" title="Editar Proyecto">
-         <proyecto-editar :proyecto="fillProyecto" @update="update">
-         </proyecto-editar>
+         <proyecto-editar :proyecto="fillProyecto" @update="update"></proyecto-editar>
     </modal>
 
     <!-- comienzo modal de envio de propuesta -->
@@ -107,20 +74,23 @@
 import ProyectoIntegrantes from "./proyecto-integrantes";
 import ProyectoEvaluadores from "./proyecto-evaluadores";
 import ProyectoInvitados from "./proyecto-invitados";
+import ProyectoPreview from "./proyecto-preview";
 import Modal from "../utils/modal";
-import proyectoEditar from "./proyecto-editar";
+import ProyectoEditar from "./proyecto-editar";
 
 export default {
     components: {
         ProyectoIntegrantes,
         ProyectoEvaluadores,
         ProyectoInvitados,
-        Modal,
-        proyectoEditar,
+        ProyectoPreview,
+        ProyectoEditar,
+        Modal
     },
     data(){
-        return { proyecto: {},
-                 fillProyecto:{},
+        return { 
+            proyecto: {},
+            fillProyecto:{},
         };
     },
     created(){
