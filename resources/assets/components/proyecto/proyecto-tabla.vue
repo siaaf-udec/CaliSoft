@@ -21,7 +21,7 @@
                     <tr v-if="evaluadores.length">
                         <th>Evaluadores:</th>
                         <td>
-                            <span class="badge badge-info" v-for="(evaluador, index) in evaluadores" :key="evaluador.PK_id" style="margin-right: 1%">
+                            <span class="badge badge-info" v-for="(evaluador) in evaluadores" :key="evaluador.PK_id" style="margin-right: 1%">
                                 {{ evaluador.name }}
                                 <a @click.prevent="desasignar(evaluador)" class="fa fa-close text-danger"></a>
                             </span>
@@ -79,7 +79,7 @@
 
                 <div class="form-group col-sm-12">
                     <label for="text">Razón</label>
-                    <textarea name="text" class="form-control" v-model="text" maxlength="200" required style="resize: none" rows="3" />
+                    <textarea name="text" class="form-control" v-model="text" maxlength="200" required style="resize: none" rows="3">
                     </textarea>
                     <span v-if="formErrors['text']" class="error text-danger">
                         @{{formErrors.text[0]}}
@@ -89,7 +89,7 @@
                 <div class="form-group">
                     <button class="btn red center-block" @click="eliminar()">Eliminar</button>
                 </div>
-            </p>
+            
         </modal>
 
         <modal v-model="asignedModal" title="Asignar Evaluador" :footer="false">

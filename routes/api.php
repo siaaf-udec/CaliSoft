@@ -14,6 +14,7 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
     Route::put('aceptar', 'ProyectoController@aceptar'); // Aceptar el proyecto (Admin)
     Route::put('asignar', 'ProyectoController@asignar'); // Asignar Evaluador (Admin)
     Route::put('desasignar', 'ProyectoController@desasignar'); // Desasignar Evaluador (Admin)
+    Route::put('evaluacion', 'ProyectoController@evaluacion'); // Enviar proyecto para evaluacion (Estudiante)
     Route::get('documentacion', 'ProyectoController@documentos'); // Consultar documentos(diagramas) del proyecto
     Route::get('plataforma', 'ProyectoController@plataforma'); // Consulta los Casos de prueba del proyecto
     Route::get('scripts', 'ProyectoController@scripts'); // Consulta el codigo fuente del proyecto

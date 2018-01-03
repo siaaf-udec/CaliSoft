@@ -81,7 +81,7 @@ class ProyectoController extends Controller
     {
         return $proyecto->casoPruebas()->get();
     }
-    
+
 
     /**
      * Cambia el estado del proyecto como propuesta
@@ -102,6 +102,19 @@ class ProyectoController extends Controller
         return $proyecto;
     }
 
+    public function evaluacion(Proyecto $proyecto)
+    {
+        $proyecto->state = 'evaluacion';
+        $proyecto->save();
+
+        // Notificacion a Evaluador
+        
+        return $proyecto;
+    }
+
+    /**
+     * Aceptar proyecto
+     */
     public function aceptar(Proyecto $proyecto)
     {
         $proyecto->state = 'activo';
@@ -113,6 +126,9 @@ class ProyectoController extends Controller
         return $proyecto;
     }
 
+    /**
+     * Asignacion de evaluador
+     */
     public function asignar(ProyectoAsignarRequest $request, Proyecto $proyecto)
     {
 
@@ -132,6 +148,9 @@ class ProyectoController extends Controller
         return $proyecto->usuarios;
     }
 
+    /**
+     * Desasignacion de evaluador
+     */
     public function desasignar(Request $request, Proyecto $proyecto)
     {
         $this->validate($request, [

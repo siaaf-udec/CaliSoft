@@ -19,10 +19,15 @@
         @endcomponent
     @endcomponent
 
-    @component('components.nav-dropdown', ['icon' => 'fa fa-check', 'title' => 'Evaluación'])
+    
 
-        @component('components.nav-link', ['icon' => 'fa fa-users', 'link' => '#', 'title' => 'Evaluadores'])
-        @endcomponent
+
+    @component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('modelobd'), 'title' => 'Modelación Base de Datos'])
+    @endcomponent
+@endcan
+
+@can('see_evaluations', 'App\Proyecto')
+    @component('components.nav-dropdown', ['icon' => 'fa fa-check', 'title' => 'Evaluación'])
 
         @component('components.nav-link', [
             'icon' => 'fa fa-bar-chart-o', 
@@ -31,13 +36,13 @@
         ])
         @endcomponent
 
-        @component('components.nav-link', ['icon' => 'fa fa-cubes', 'link' => route('plataformaStudent'), 'title' => 'Plataforma'])
+        @component('components.nav-link', [
+            'icon' => 'fa fa-cubes', 
+            'title' => 'Plataforma',
+            'link' => route('plataformaStudent')
+        ]), 
         @endcomponent
 
-    @endcomponent
-
-
-    @component('components.nav-link', ['icon' => 'fa fa-database', 'link' => route('modelobd'), 'title' => 'Modelación Base de Datos'])
     @endcomponent
 @endcan
 

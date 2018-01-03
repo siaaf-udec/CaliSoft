@@ -12,10 +12,12 @@ class StudentController extends Controller
 
     function __construct()
     {
-        $this->middleware('can:upload,App\Proyecto')
-            ->only([
+        $this->middleware('can:upload,App\Proyecto')->only([
             'documentos', 'modelobd', 'documentosCodificacion', 'documentosBd',
-            'evaluacionModelado'
+        ]);
+
+        $this->middleware('can:see_evaluations,App\Proyecto')->only([
+            'evaluacionModelado', 'plataforma'
         ]);
     }
 

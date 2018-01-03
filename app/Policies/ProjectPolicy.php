@@ -10,9 +10,8 @@ class ProjectPolicy
 {
     use HandlesAuthorization;
 
-
     /**
-     * Determine whether the user can create proyectos.
+     * Determina si el usuario puede crear proyecto
      *
      * @param  \App\User  $user
      * @return mixed
@@ -23,7 +22,7 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can update the proyecto.
+     * Determina si el usuario puede actualizar la informacion basica del proyecto.
      *
      * @param  \App\User  $user
      * @param  \App\Proyecto  $proyecto
@@ -39,14 +38,30 @@ class ProjectPolicy
     }
 
     /**
-     * Determine whether the user can delete the proyecto.
-     *
+     * Determina si el usuario puede subir documentos
      * @param  \App\User  $user
-     * @param  \App\Proyecto  $proyecto
-     * @return mixed
+     * @return boolean
      */
     public function upload(User $user)
     {
         return $user->proyectos()->where('state', 'activo')->count() > 0;
+    }
+
+    /**
+     * Determina si el evaluador puede evaluar el proyecto
+     * @param  \App\User  $user
+     * @return boolean
+     */
+    public function evaluate(User $user, Proyecto $proyecto) {
+        return $user->proyectos()->find($proyecto->PK_id) && $proyecto->state == 'evaluacion';
+    }
+
+    /**
+     * Determina si el estudiante puede acceder a los resultados de evaluacion
+     * @param User $user
+     * @return boolean
+     */
+    public function see_evaluations(User $user) {
+        return $user->proyectos()->first()->state == "evaluacion";
     }
 }
