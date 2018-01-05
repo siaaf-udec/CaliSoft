@@ -5,57 +5,80 @@
     <div class="col-md-12">
         @component('components.portlet', ['icon' => 'fa fa-bell', 'title' => 'Notificaciones'])
             <div id="app">
-                <br>
                 <div class="panel panel-primary">
-
                     <div class="portlet-body">
-                                    <div class="mt-element-list">
-                                        <div class="mt-list-container list-news ext-2">
-                                            <ul>
-                                                <li class="mt-list-item" v-for="notificacion in notificaciones">
+                        <div class="mt-element-list">
+                            <div class="mt-list-container list-news ext-2">
+                                <ul>
+                                    <li class="mt-list-item" v-for="notificacion in notificaciones">
 
-                                                    <!--Rutas de las diferentes notificaciones-->                                                    
-                                                    <div class="list-icon-container">
-                                                        <a :href="notificacion.data.url">
-                                                            <i class="fa fa-angle-right"></i>
-                                                        </a>
-                                                    </div>
-                                                    
-                                                    <!--Fin de rutas de las diferentes notificaciones-->
-                                                    <!--Imagenes de perfil-->        
-                                                    <div class="list-thumb">
-                                                        <a href="javascript:;">
-                                                            <img class="img-circle" alt="" :src="notificacion.data.img" />
-                                                        </a>
-                                                    </div>
-                                                    
-                                                    
-                                                    <!--Fin imagenes de perfil-->    
-                                                    <!--Texto según notificación-->    
-                                                    <div class="list-datetime bold uppercase font-yellow-casablanca" v-text="notificacion.created_at"></div>
-                                                    <div class="list-item-content">
-                                                        <h3 class="uppercase bold">
-                                                            <strong v-text="notificacion.data.type"></strong>
-                                                        </h3>
-                                                        <p v-if="notificacion.data.type === 'proyecto-creado'">Nueva propuesta de proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>
-                                                        <p v-if="notificacion.data.type === 'proyecto-denegado'">Se eliminó el proyecto: <strong>@{{notificacion.data.proyecto}}</strong>. Por la siguienre razón: <strong>@{{notificacion.data.text}}</strong> </p>
-                                                        <p v-if="notificacion.data.type === 'invitacion-recibida'"><strong>@{{notificacion.data.user}}</strong> Ha sido invitado a ser parte del proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>
-                                                        <p v-if="notificacion.data.type === 'invitacion-rechazada'"><strong>@{{notificacion.data.user}}</strong> Ha rechazado la invitación del proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>                                                    
-                                                        <p v-if="notificacion.data.type === 'invitacion-aceptada'"><strong>@{{notificacion.data.user}}</strong> Ha aceptado la invitación al proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>                                                    
-                                                        <p v-if="notificacion.data.type === 'proyecto-aceptado'">Se ha aceptado el proyecto: <strong>@{{notificacion.data.proyecto}} ¡Felicitaciones!</strong></p>
-                                                        <p v-if="notificacion.data.type === 'evaluador-asignado'">Se ha asignado el evaluador: <strong>@{{notificacion.data.from}}</strong></p>
-                                                        <p v-if="notificacion.data.type === 'proyecto-asignado'">Se ha asignado el proyecto: <strong>@{{notificacion.data.proyecto}}</strong></p>
-                                                    </div>
-                                                    <!--Fin texto según notificación-->    
-                                                </li>
-                                            </ul>
+                                        <!--Rutas de las diferentes notificaciones-->                                                    
+                                        <div class="list-icon-container">
+                                            <a :href="notificacion.data.url">
+                                                <i class="fa fa-angle-right"></i>
+                                            </a>
                                         </div>
-                                    </div>
-                                </div>
+                                        
+                                        <!--Fin de rutas de las diferentes notificaciones-->
+                                        <!--Imagenes de perfil-->        
+                                        <div class="list-thumb">
+                                            <a href="javascript:;">
+                                                <img class="img-circle" alt="" :src="notificacion.data.img" />
+                                            </a>
+                                        </div>
+                                        
+                                        
+                                        <!--Fin imagenes de perfil-->    
+                                        <!--Texto según notificación-->    
+                                        <div class="list-datetime bold uppercase font-yellow-casablanca" v-text="notificacion.created_at"></div>
+                                        <div class="list-item-content">
+                                            <h3 class="uppercase bold">
+                                                <strong v-text="notificacion.data.alert"></strong>
+                                            </h3>
+                                            <p v-if="notificacion.data.type === 'proyecto-creado'">
+                                                Nueva propuesta de proyecto: <strong>@{{notificacion.data.proyecto}}</strong>
+                                            </p>
+                                            
+                                            <p v-if="notificacion.data.type === 'proyecto-denegado'">
+                                                Se eliminó el proyecto: <strong>@{{notificacion.data.proyecto}}</strong>. 
+                                                Por la siguienre razón: <strong>@{{notificacion.data.text}}</strong> 
+                                            </p>
+                                            
+                                            <p v-if="notificacion.data.type === 'invitacion-recibida'">
+                                                <strong>@{{notificacion.data.user}}</strong> Ha sido invitado a ser parte del proyecto: 
+                                                <strong>@{{notificacion.data.proyecto}}</strong>
+                                            </p>
+                                            
+                                            <p v-if="notificacion.data.type === 'invitacion-rechazada'">
+                                                <strong>@{{notificacion.data.user}}</strong> Ha rechazado la invitación del proyecto: 
+                                                <strong>@{{notificacion.data.proyecto}}</strong>
+                                            </p>                                                    
+                                            <p v-if="notificacion.data.type === 'invitacion-aceptada'">
+                                                <strong>@{{notificacion.data.user}}</strong> Ha aceptado la invitación al proyecto:
+                                                <strong>@{{notificacion.data.proyecto}}</strong>
+                                            </p>                                                  
+                                            <p v-if="notificacion.data.type === 'proyecto-aceptado'">
+                                                Se ha aceptado el proyecto: <strong>@{{notificacion.data.proyecto}} ¡Felicitaciones!</strong>
+                                            </p>
+                                            <p v-if="notificacion.data.type === 'evaluador-asignado'">
+                                                Se ha asignado el evaluador: <strong>@{{notificacion.data.from}}</strong>
+                                            </p>
+                                            <p v-if="notificacion.data.type === 'proyecto-asignado'">
+                                                Se ha asignado el proyecto: <strong>@{{notificacion.data.proyecto}}</strong>
+                                            </p>
+                                            <p v-if="notificacion.data.type === 'proyecto-evaluacion'">
+                                                El proyecto <strong>@{{notificacion.data.proyecto}}</strong> 
+                                                esta listo para ser evaluado
+                                            </p>
+                                        </div>
+                                        <!--Fin texto según notificación-->    
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
            </div>
-
         @endcomponent
 
     </div>

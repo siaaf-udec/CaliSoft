@@ -6,6 +6,7 @@ use App\Container\Calisoft\Src\Notifications\ProyectoDenegado;
 use App\Container\Calisoft\Src\Notifications\ProyectoAsignado;
 use App\Container\Calisoft\Src\Notifications\EvaluadorAsignado;
 use App\Container\Calisoft\Src\Notifications\ProyectoAceptado;
+use App\Container\Calisoft\Src\Notifications\ProyectoEvaluacion;
 
 use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
 use App\Container\Calisoft\Src\Requests\ProyectoUpdateRequest;
@@ -106,8 +107,11 @@ class ProyectoController extends Controller
     {
         $proyecto->state = 'evaluacion';
         $proyecto->save();
-
-        // Notificacion a Evaluador
+        
+        // Notificacion a Evaluadores
+        $evaluadores = $proyecto->usuarios()->wherePivot('tipo', 'evaluador')->get();
+        Notification::send($evaluadores, new ProyectoEvaluacion($proyecto->nombre));
+        
         
         return $proyecto;
     }
@@ -120,9 +124,8 @@ class ProyectoController extends Controller
         $proyecto->state = 'activo';
         $proyecto->save();
         //Envío de notificación hacia los integrantes del proyecto
-        $usuarios = $proyecto->usuarios()->get();
-        Notification::send($usuarios, new ProyectoAceptado($proyecto));
-
+        $integrantes = $proyecto->usuarios()->wherePivot('tipo', 'integrante')->get();
+        Notification::send($integrantes, new ProyectoAceptado($proyecto));
         return $proyecto;
     }
 

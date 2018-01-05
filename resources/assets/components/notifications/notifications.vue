@@ -34,13 +34,15 @@ import ProyectoDenegado from './proyecto-denegado';
 import ProyectoAsignado from './proyecto-asignado';
 import EvaluadorAsignado from './evaluador-asignado';
 import ProyectoAceptado from './proyecto-aceptado';
+import ProyectoEvaluacion from './proyecto-evaluacion';
 
 const USER_ID = $("meta[name='user-id']").attr('content');
 
 export default {
     components: {
-        ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado, InvitacionRechazada,
-        InvitacionAceptada, ProyectoAceptado, EvaluadorAsignado
+        ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado, 
+        InvitacionRechazada, InvitacionAceptada, ProyectoAceptado, EvaluadorAsignado,
+        ProyectoEvaluacion
     },
     data() {
         return { count: 0, notificaciones: [] };
