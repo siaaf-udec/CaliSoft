@@ -21,7 +21,7 @@
                     <tr v-if="evaluadores.length">
                         <th>Evaluadores:</th>
                         <td>
-                            <span class="badge badge-info" v-for="(evaluador) in evaluadores" :key="evaluador.PK_id" style="margin-right: 1%">
+                            <span class="badge badge-info" v-for="evaluador in evaluadores" :key="evaluador.PK_id" style="margin-right: 1%">
                                 {{ evaluador.name }}
                                 <a @click.prevent="desasignar(evaluador)" class="fa fa-close text-danger"></a>
                             </span>

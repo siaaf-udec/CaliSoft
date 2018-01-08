@@ -62,6 +62,7 @@ class ProjectPolicy
      * @return boolean
      */
     public function see_evaluations(User $user) {
-        return $user->proyectos()->first()->state == "evaluacion";
+        $proyecto = $user->proyectos()->first();
+        return $proyecto && $proyecto->state == "evaluacion";
     }
 }
