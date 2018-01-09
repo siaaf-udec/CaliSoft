@@ -24,8 +24,10 @@ class NotaScriptUpdateRequest extends FormRequest
     public function rules()
     {
         return [
-            'itemId'=>'required|integer',
-            'nota'=>'integer|required|between:1,5',
+            'PK_id'=>'required|integer',
+            'nota'=>'numeric|required|',
+            'total'=>'integer|required',
+            'acertadas'=>'integer|required',
         ];
     }
 }

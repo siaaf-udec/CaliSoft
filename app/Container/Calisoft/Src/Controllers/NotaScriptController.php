@@ -35,8 +35,10 @@ class NotaScriptController extends Controller
     
     public function update(NotaScriptUpdateRequest $request, Script $script)
     {
-        $script->items()->updateExistingPivot($request->itemId,[
+        $script->items()->updateExistingPivot($request->PK_id,[
             'nota'=>$request->nota,
+            'acertadas'=>$request->acertadas,
+            'total'=>$request->total,
             
         ]);
         
