@@ -28,15 +28,7 @@
                     </div>
                     <div class="col-md-6">
                         <h5><center><strong>Información</strong></center></h5>
-                        <table class="table table-striped table-bordered table-hover dt-responsive">
-                            <thead>
-                                <th>Componente</th>
-                                <th>Cantidad</th>
-                                <th>Calificación</th>
-                            </thead>
-                            <tbody>
-                            </tbody>
-                        </table>
+                        <tabla-componente ></tabla-componente>  
                     </div>
                 </div>
             </div>                
