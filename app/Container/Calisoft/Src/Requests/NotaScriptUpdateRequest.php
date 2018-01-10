@@ -26,8 +26,8 @@ class NotaScriptUpdateRequest extends FormRequest
         return [
             'PK_id'=>'required|integer',
             'nota'=>'numeric|required|',
-            'total'=>'integer|required',
-            'acertadas'=>'integer|required',
+            'total'=>'integer|required|min:0',
+            'acertadas'=>'integer|required|min:0',
         ];
     }
 }
