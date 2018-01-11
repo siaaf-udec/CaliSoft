@@ -18,4 +18,11 @@ class ArchivoSql extends Model
     public function tipobd(){
         return $this->belongsTo(Tipobd::class,'FK_TipoBdId','PK_id');
     }
+
+    public function componentes()
+    {
+        return $this->belongsToMany(NomenclaturaBd::class, 'TBL_CalificacionBd','FK_ArchivoBdId','FK_TipoNomenclaturaId')
+        ->withTimestamps()
+        ->withPivot('total','acertadas','calificacion');
+    }
 }

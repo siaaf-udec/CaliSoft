@@ -1,7 +1,7 @@
 <template>
    
         <tr class="text-center">
-            <td v-text="item.item"></td>
+            <td v-text="item.nombre"></td>
             <td>  
               
                 <input type="text" name="total" class="form-control" 
@@ -16,7 +16,7 @@
                 
             </td>
             <td >
-                {{item.pivot.nota}}        
+                {{item.pivot.calificacion}}        
             </td>
         </tr>
     
@@ -32,9 +32,9 @@ export default {
         item:{type:Object,required:true},   
     },
     methods:{
-        update(item){
-            axios.put('/api/evaluacionesScript/' + window.ScriptId,{
-                PK_id: item.PK_id, nota:item.pivot.nota, acertadas:item.pivot.acertadas,
+       update(item){
+            axios.put('/api/evaluacionSql/' + window.ArchivoId,{
+                PK_id: item.PK_id, calificacion:item.pivot.calificacion, acertadas:item.pivot.acertadas,
                 total:item.pivot.total,
                 }).then(response=>{
 
@@ -45,14 +45,14 @@ export default {
         validacion(total,acertadas){
             
             if(total>0){
-                this.item.pivot.nota=(acertadas/total).toFixed(2)
+                this.item.pivot.calificacion=((acertadas/total)*this.item.valor).toFixed(2)
                 
             }
             else
             {
-                this.item.pivot.nota=0
+                this.item.pivot.calificacion=0
             }
-            this.safeExec(()=> this.update(this.item))
+           // this.safeExec(()=> this.update(this.item))
             
 
         },

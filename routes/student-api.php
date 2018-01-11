@@ -37,3 +37,8 @@ Route::post('sql/preview/{url}', 'ArchivoSqlController@preview');
 Route::prefix('evaluacion')->group(function () {
     Route::get('modelado', 'EvaluationApiController@modelado'); //Consulta la evaluacion de los diagrmas
 });
+
+// ruta de subir el archivo  sql 
+Route::resource('sql', 'ArchivoSqlController', [
+    'only' => ['index', 'store', 'destroy'],
+]);

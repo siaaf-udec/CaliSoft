@@ -27,10 +27,7 @@ class NotaScriptController extends Controller
 
     
     /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
+     * Actualiza la nota del script
      */
     
     public function update(NotaScriptUpdateRequest $request, Script $script)
@@ -43,12 +40,4 @@ class NotaScriptController extends Controller
         ]);
         
     }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-
 }

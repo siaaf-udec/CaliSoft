@@ -46,3 +46,8 @@ Route::get('/evaluator/search', 'UserController@searchEvaluators');
 Route::resource('codificacion', 'ItemsCodificacionController', [
     'only' => ['index', 'update'],
 ]);
+
+// Ruta de almacenar el tipo de nomenclatura
+Route::resource('basedatos', 'BaseDatosController', [
+    'only' => ['index', 'store', 'update', 'destroy'],
+]);

@@ -14,3 +14,11 @@ Route::resource('evaluacionesScript','NotaScriptController',[
         'evaluacionesScript' => 'script'
     ]
 ]);
+
+//evaluaciones de componentes sql
+Route::resource('evaluacionSql','NotaFileBDController',[
+    'only' => ['show', 'update'],
+    'parameters' => [
+        'evaluacionSql' => 'sql'
+    ]
+]);

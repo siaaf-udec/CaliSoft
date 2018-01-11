@@ -21,15 +21,9 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
     Route::get('basedatos','ProyectoController@basedatos'); // Consulta el codigo sql del proyecto
 });
 
-// Que hace este ?
-Route::resource('sql', 'ArchivoSqlController', [
-    'only' => ['index', 'store', 'destroy'],
-]);
 
-// Que hace este ?
-Route::resource('basedatos', 'BaseDatosController', [
-    'only' => ['index', 'store', 'update', 'destroy'],
-]);
+
+
 
 // CRUD Casos de prueba
 Route::resource('casoPrueba', 'CasoPruebaController');

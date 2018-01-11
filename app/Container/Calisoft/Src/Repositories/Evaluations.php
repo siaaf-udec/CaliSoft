@@ -4,6 +4,8 @@ namespace App\Container\Calisoft\Src\Repositories;
 use App\Container\Calisoft\Src\Documento;
 use App\Container\Calisoft\Src\ItemsCodificacion;
 use App\Container\Calisoft\Src\Script;
+use App\Container\Calisoft\Src\ArchivoSql;
+use App\Container\Calisoft\Src\NomenclaturaBd;
 
 class Evaluations
 {
@@ -47,6 +49,15 @@ class Evaluations
         $script->items()->sync($items);
         return $script->items;
 
+    }
+
+    //retorna para las evaluacion del archivo sql
+
+    public function forSql(ArchivoSql $sql)
+    {
+        $componenteIds = NomenclaturaBd::all()->pluck('PK_id');
+        $sql->componentes()->sync($componenteIds);
+        return $sql->componentes;
     }
 
 }

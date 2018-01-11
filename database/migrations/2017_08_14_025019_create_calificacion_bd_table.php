@@ -14,8 +14,9 @@ class CreateCalificacionBdTable extends Migration
     public function up()
     {
         Schema::create('TBL_CalificacionBd',function(Blueprint $table){
-          $table->increments('PK_id');
-          $table->integer('valor');
+          $table->integer('total')->default(0);
+          $table->integer('acertadas')->default(0);
+          $table->double('calificacion')->default(0);
           $table->integer('FK_TipoNomenclaturaId')->unsigned();
           $table->integer('FK_ArchivoBdId')->unsigned();
 

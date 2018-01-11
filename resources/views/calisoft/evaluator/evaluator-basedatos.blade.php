@@ -6,21 +6,7 @@
             'icon' => 'fa fa-files-o', 
             'title' => 'Nomenclatura: ' . $proyecto->nombre
             ])
-            <div id="app">               
-                <div class="table-responsive">
-                    <table class="table table-striped table-bordered table-hover dt-responsive" width="100%">
-                        <thead>
-                            <th class="text-center">Nombre Del Archivo</th>
-                            <th class="text-center">Base de Datos</th>
-                        </thead>
-                        <tbody >
-                            <tr v-if="basedato" class="text-center">
-                                <td>@{{basedato.url}}</td>
-                                <td>@{{basedato.tipobd.nombre}}</td>
-                            </tr>
-                        </tbody>
-                    </table>                    
-                </div>
+            <div id="app">
                 <div class=row>
                     <div class="col-md-6">
                         <h5><center><strong>Codigo SQL</strong></center></h5>
@@ -36,7 +22,7 @@
     </div>
 @endsection
 @push('functions')
-    <script>window.proyectoId = "{{ $proyecto->PK_id }}"</script>
+    <script>window.archivoId = "{{ $proyecto->sql->PK_id }}"</script>
     <script src="/assets/global/plugins/jquery.media.js"></script>
     <script src="/js/base-datos.js"></script>
 @endpush
