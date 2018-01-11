@@ -12,6 +12,8 @@ class ProyectoEvaluacion extends Notification implements ShouldQueue
 {
     use Queueable, DataBroadcast;
 
+    private $proyecto;
+
     /**
      * Create a new notification instance.
      *

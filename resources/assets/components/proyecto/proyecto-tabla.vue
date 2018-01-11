@@ -51,11 +51,11 @@
             </table>
 
             <div class="btn-group btn-group-justified">
-                <template v-if="propuesta">
+                <template v-if="proyecto.state == 'propuesta'">
                     <a class="btn blue btn-sm" @click.prevent="acceptModal = true">Aceptar Proyecto</a>
                     <a class="btn red btn-sm" @click.prevent="destroyModal = true">Eliminar</a>
                 </template>
-                <template v-if="activo">
+                <template v-if="proyecto.state == 'activo' || proyecto.state == 'evaluacion'">
                     <a class="btn blue btn-sm" @click.prevent="asignedModal = true">Asignar Evaluador</a>
                 </template>
             </div>
@@ -160,12 +160,6 @@ export default {
         },
         evaluadores() {
             return this.filtrar('evaluador')
-        },
-        propuesta() {
-            return this.proyecto.state == 'propuesta';
-        },
-        activo() {
-            return this.proyecto.state == 'activo';
         }
     }
 }

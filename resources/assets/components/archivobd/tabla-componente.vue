@@ -9,9 +9,7 @@
                     <th class="text-center">Calificación</th>
                 </thead>
                 <tbody>
-                    <tr is="fila-componente" v-for="componente in componentes" :item="componente" :key="componente.PK_id" >
-
-                    </tr>
+                    <tr is="fila-componente" v-for="componente in componentes" :item="componente" :key="componente.PK_id" />
                 </tbody>
             </table>
     </div>
@@ -37,14 +35,8 @@ import _ from 'lodash';
             notaFinal(){
                 return _(this.componentes) 
                     .filter(componente => componente.pivot.total > 0) //escoge los valores donde el total sea mayor a cero
-                    .meanBy(componente => {
-                            let nota = Number.parseFloat(componente.pivot.calificacion)
-                            console.log(nota)
-                            return nota
-                            })//calcula el promedio
-
-                    
-                    .value() //obtiene el promedio
+                    .meanBy(componente => Number.parseFloat(componente.pivot.calificacion))
+                    .toFixed(2)
             }
         }
     }
