@@ -13,7 +13,11 @@
                 </tbody>
             </table>
     </div>
-             
+          <div class="row">
+            <div class="col-md-6">
+                <h4><b>Calificación Total: </b><span class="label label-success">{{notaFinal}}</span></h4> 
+            </div>      
+        </div>   
     </div>
 </template>
 <script>

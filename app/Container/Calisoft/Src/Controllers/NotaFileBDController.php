@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Repositories\Evaluations;
 use App\Container\Calisoft\Src\ArchivoSql;
+use App\Container\Calisoft\Src\Requests\NotaFileBdUpdateRequest;
 
 class NotaFileBDController extends Controller
 {
@@ -27,9 +28,13 @@ class NotaFileBDController extends Controller
      * Actualiza la nota del sql
      */
     
-    public function update()
+    public function update(NotaFileBdUpdateRequest $request, ArchivoSql $sql)
     {
-       
+        $sql->componentes()->updateExistingPivot($request->PK_id,[            
+            'acertadas'=>$request->acertadas,
+            'total'=>$request->total,       
+            'calificacion'=>$request->calificacion,     
+        ]);
         
     }
 }
