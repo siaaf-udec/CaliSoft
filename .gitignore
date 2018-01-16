@@ -14,3 +14,5 @@ npm-debug.log
 .env
 /.vscode
 /public/js
+*.lock
+package-lock.json
