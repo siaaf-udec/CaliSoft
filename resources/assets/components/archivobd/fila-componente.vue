@@ -34,7 +34,7 @@ export default {
   methods: {
     update(item) {
       axios
-        .put("/api/evaluacionSql/" + window.ArchivoId, {
+        .put("/api/evaluacionSql/" + window.archivoId, {
           PK_id: item.PK_id,
           calificacion: item.pivot.calificacion,
           acertadas: item.pivot.acertadas,
@@ -48,7 +48,7 @@ export default {
       this.item.pivot.calificacion =
         total > 0 ? (acertadas / total * this.item.valor).toFixed(2) : 0;
 
-      // this.safeExec(()=> this.update(this.item))
+       this.safeExec(()=> this.update(this.item))
     }
   },
 
