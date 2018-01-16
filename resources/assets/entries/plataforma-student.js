@@ -72,7 +72,7 @@ new Vue({
             if(this.IsJsonString(json) == false){
                 this.formErrorsUpdate.formulario = 'El texto introducido no corresponde a un Json'
                 toastr.error('El texto introducido no corresponde a un Json');
-            }else{
+            } else {
             caso.formulario = this.fillCasoPrueba.formulario;
             this.fillCasoPrueba = caso;
             this.json = JSON.parse(json);

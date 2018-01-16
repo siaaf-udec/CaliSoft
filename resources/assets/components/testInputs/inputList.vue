@@ -1,16 +1,24 @@
 <template>
-    <form>
-       
+    <form @submit.prevent="iniciarPrueba">
         <table class="table table-striped table-bordered table-hover" id="sample">
+            <thead>
+                <tr>
+                    <th class="text-center">Tipo</th>
+                    <th class="text-center">Nombre</th>
+                    <th class="text-center">Reglas</th>
+                    <th class="text-center">Input</th>
+                </tr>
+            </thead>
             <tbody>
-                <tr v-for="(input,index) in formulario" :key="index">
-                    <td class="text-center"  >
-                        
-                         {{ getTipo(input).nombre }} 
-                        
-                    </td>
-                    <td class="text-center"> 
-                        <component :is="'t-'+input.type" :input="input" v-model="input.value" > </component>
+                <tr v-for="(input,index) in formulario" :key="index" class="text-center">
+                    <td>{{ input.type }}</td>
+                    <td>{{ input.name || input.id || index }}</td>
+                    <td>{{ input.testInput }}</td>
+                    <td>
+                        <input class="form-control" v-bind="input" v-validate="input.testInput">
+                        <span class="text-danger" v-if="errors.has(input.name)">
+                            {{ errors.first(input.name) }}
+                        </span>
                     </td>
                 </tr>
             </tbody>
@@ -24,30 +32,15 @@
 </template>
 
 <script>
-import tText from "./t-text";
-import tEmail from "./t-email";
-import tPassword from "./t-password";
-import tNumber from "./t-number";
-import tUrl from "./t-url";
-import tDate from "./t-date";
-import tRange from "./t-range";
-import tSearch from "./t-search";
-import tTel from "./t-tel";
-import tTime from "./t-time";
-import tDatetimeLocal from "./t-datetime-local";
-import tMonth from "./t-month";
-import tWeek from "./t-week";
-
-
 export default {
-    props:['formulario','tipos'],
-    components:{tText, tEmail, tPassword, tNumber, tUrl, tDate, tRange, tSearch, tTel, tTime, tDatetimeLocal, tMonth, tWeek},
+    props:['formulario'],
     methods:{
         getTipo(input){
             return this.tipos.find(tipos => input.testInput == tipos.PK_id)
+        },
+        iniciarPrueba() {
+            this.$validator.validateAll()
         }
     }    
 }
-
-
 </script>

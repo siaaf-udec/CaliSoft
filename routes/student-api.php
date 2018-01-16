@@ -42,3 +42,6 @@ Route::prefix('evaluacion')->group(function () {
 Route::resource('sql', 'ArchivoSqlController', [
     'only' => ['index', 'store', 'destroy'],
 ]);
+
+// El estudiante evian el coso prueba con el formato del formulario
+Route::post('enviarCasoPrueba/{casoPrueba}', 'CasoPruebaController@enviarCasoPrueba');

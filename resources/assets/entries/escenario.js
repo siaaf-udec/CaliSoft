@@ -26,7 +26,6 @@ new Vue({
         return {
             
             json: [],
-            tiposInputs: [],
             test: {},
             prueba: {},
             formErrors: {},
@@ -36,14 +35,8 @@ new Vue({
     },
 
     created() {        
-        let promesaFormulario = axios.get(`/api/casoPrueba/${window.casoPruebaId}`);
-        let promesaTipoInputs = axios.get(`/api/tiposInputs`);
-        axios.all([promesaFormulario, promesaTipoInputs])
-        .then(axios.spread((json,tiposInputs) => {
-            this.json = json.data;
-            this.tiposInputs = tiposInputs.data;
-        } )) ;
-
+        axios.get(`/api/casoPrueba/${window.casoPruebaId}`)
+            .then(res => this.json = res.data);
     },
     methods: {
         store(){

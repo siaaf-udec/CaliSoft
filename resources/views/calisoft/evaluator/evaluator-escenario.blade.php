@@ -7,38 +7,9 @@
             'title' => 'Escenario prueba: ' . $casoPrueba->nombre 
         ])
 
-            <div id="app">
-                {{-- Boton crear escenario prueba --}}
-                <button type="button" data-toggle="modal" data-target="#crear-escenario" class="btn green-jungle center-block">
-                    <i class="fa fa-plus"></i>
-                    Crear Escenario Prueba
-                </button>
-                <br>
-                
-                <table class="table table-striped table-bordered table-hover" id="sample">
-                    <tbody>
-                        <tr >
-                            <td  style="vertical-align: middle">Proposito:</td>
-                            <td style="vertical-align: middle">{{ $casoPrueba->formulario }} </td>
-                        </tr>
-                    </tbody>
-                </table>
-                <br>
-                <div id="pulsate-regular" style="padding:5px;"> Error </div>
-                <br>
-                <br>
-                <br>
-    
-                
-                <div id="pulsate-regular2" style="padding:5px;"> Good Boy </div>
-                
-                <br>
-                <br>
-                <br>
-
-                <input-list :formulario="json" :tipos="tiposInputs" ></input-list>
-                
-            </div>
+        <div id="app">
+            <input-list :formulario="json"></input-list>
+        </div>
         
             
         @endcomponent

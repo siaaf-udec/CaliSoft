@@ -28,11 +28,6 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
 // CRUD Casos de prueba
 Route::resource('casoPrueba', 'CasoPruebaController');
 
-// ?
-Route::post('enviarCasoPrueba/{casoPrueba}', 'CasoPruebaController@enviarCasoPrueba');
 
-// ?
-Route::post('testing', 'CasoPruebaController@testing');
-
-// Consulta los tipos de input
+// Consulta los tipos de input (Estudiante, Evaluador)
 Route::get('tiposInputs', 'TestInputsController@index');

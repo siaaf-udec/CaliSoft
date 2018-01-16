@@ -11,7 +11,7 @@ class TipoInputsTestingSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('TBL_Inputs_types')->insert([
+        DB::table('TBL_Inputs_Types')->insert([
             [
                 'nombre' => 'Email',
                 'reglas' => 'required|email'
