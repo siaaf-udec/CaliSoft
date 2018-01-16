@@ -13,10 +13,12 @@ new Vue({
     el: '#app',
     components: { CodePreview, TablaItems, TextareaInput, Modal },
     data: {
-        observacion: "",
+
         fillItem: {},
         formErrorsUpdate: {},
-        items: []
+        items: [],
+        fillComentario: {},
+
     },
     created() {
         this.refresh();
@@ -30,5 +32,7 @@ new Vue({
             });
         },
 
-    }
+
+    },
+
 })

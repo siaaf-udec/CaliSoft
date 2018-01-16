@@ -32,10 +32,13 @@ export default {
         item:{type:Object,required:true},   
     },
     methods:{
+        
+        
         update(item){
             axios.put('/api/evaluacionesScript/' + window.ScriptId,{
                 PK_id: item.PK_id, nota:item.pivot.nota, acertadas:item.pivot.acertadas,
                 total:item.pivot.total,
+
                 }).then(response=>{
 
             }).catch(reason => this.setErrors(reason.response.data.errors));
@@ -68,6 +71,7 @@ export default {
          "item.pivot.acertadas":function(acertadas){
             this.validacion(this.item.pivot.total,acertadas)
          },
+         
     },
 }
 

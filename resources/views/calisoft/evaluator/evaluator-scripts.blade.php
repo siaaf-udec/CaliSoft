@@ -18,20 +18,19 @@
                         
                         <br>
                         <tabla-items :items="items"></tabla-items>
-                        
-                     <div class ="row">   
-                        <div class="col-md-12">
-                            <br>
-                            <textarea-input name="observacion" label="Observación" v-model="observacion"/>
-                            
-                        </div>
-                        </div>
-                        <br>
-                        <button type="button"  class="btn green-jungle center-block">
-                            <i class="fa fa-edit"></i>
-                            Aceptar Calificación
-                            </button>
-                        
+                    <form method="POST" action="{{route('actualizar-comentario',compact('script'))}}">
+                        {{method_field('PUT')}}
+                        {{csrf_field()}}               
+                                @component('components.textarea',[
+                                    'name'=>'comentario',
+                                    'attributes'=>'',
+                                    'label'=>'Comentario',
+                                    'value'=>$script->comentario,
+                                ])
+                                @endcomponent
+                        <button type="submit"  class="btn green-jungle center-block">
+                        <i class="fa fa-edit"></i> Aceptar Calificación</button>
+                        </form>
                             
                     </div>
 

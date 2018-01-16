@@ -38,6 +38,15 @@ class NotaScriptController extends Controller
             'total'=>$request->total,
             
         ]);
-        
+    }
+    /**
+     * crea el comentario del script
+     */
+    public function comentario(Request $request,Script $script){
+        $script->comentario=$request->comentario;
+        $script->save();
+        return redirect()->route('evaluator-codificacion', [
+        'proyecto'=> $script->proyecto->PK_id
+        ]);
     }
 }
