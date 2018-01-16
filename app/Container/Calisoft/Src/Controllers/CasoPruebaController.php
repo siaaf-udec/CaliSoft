@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use App\Container\Calisoft\Src\Requests\CasoPruebaStoreRequest;
 use App\Container\Calisoft\Src\Requests\CasoPruebaEnviarRequest;
 use App\Container\Calisoft\Src\CasoPrueba;
+use App\Container\Calisoft\Src\InputTypes;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
 
@@ -97,8 +98,9 @@ class CasoPruebaController extends Controller
         
         $json = json_decode($request->formulario, true);
         
+        //Ciclo for que identifica los tipos de inputs seleccionados por el usuario y concatena con el Json
         for ($i = 0; $i < sizeof($json) ; $i++) {
-            $json[$i]['testInput'] = $request->testInput[$i];
+            $json[$i]['testInput'] = $test = InputTypes::find($request->testInput[$i])->reglas;
         }
         
         $proyecto = $request->user()->proyectos()->first(); //obtiene el proyecto del usuario logeado

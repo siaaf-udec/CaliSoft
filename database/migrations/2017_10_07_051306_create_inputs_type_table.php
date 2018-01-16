@@ -16,6 +16,7 @@ class CreateInputsTypeTable extends Migration
          Schema::create('TBL_Inputs_Types', function (Blueprint $table) {
              $table->increments('PK_id');
              $table->string('nombre');
+             $table->string('reglas');
              $table->timestamps();
          });
      }

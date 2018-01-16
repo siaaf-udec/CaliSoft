@@ -8,5 +8,5 @@ class InputTypes extends Model
 {
     protected $primaryKey = "PK_id";
     protected $table="TBL_Inputs_Types";
-    protected $fillable = ['nombre'];
+    protected $fillable = ['nombre','reglas'];
 }
