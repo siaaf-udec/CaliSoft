@@ -11,7 +11,7 @@ class Script extends Model
 {
     protected $table = "TBL_Scripts";
     protected $primaryKey = "PK_id";
-    protected $fillable = ['url','estado','FK_ProyectoId'];
+    protected $fillable = ['url','estado','comentario','FK_ProyectoId'];
     protected $hidden = [
         'created_at', 'updated_at'
     ];

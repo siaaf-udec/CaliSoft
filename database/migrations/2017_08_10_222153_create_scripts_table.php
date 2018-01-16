@@ -16,8 +16,10 @@ class CreateScriptsTable extends Migration
         Schema::create('TBL_Scripts', function (Blueprint $table) {
             $table->increments('PK_id');
             $table->string('url');
+            $table->text('comentario')->nullable();
             $table->enum('estado', ['sin calificar','calificado'])->default('sin calificar');
             $table->integer('FK_ProyectoId')->unsigned();
+            
 
             $table->foreign('FK_ProyectoId')->references('PK_id')
             ->on('TBL_Proyectos')->onUpdate('cascade');
