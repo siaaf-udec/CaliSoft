@@ -20,5 +20,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoNomenclaturaTableSeeder::class);
         $this->call(TipoBdTableSeeder::class);
         $this->call(ComponenteTableSeeder::class);
+        $this->call(TipoInputsTestingSeeder::class);
     }
 }
