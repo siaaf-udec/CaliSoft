@@ -37,4 +37,12 @@ class NotaFileBDController extends Controller
         ]);
         
     }
+    
+    public function observacion(Request $request, ArchivoSql $sql){
+        $sql->observacion=$request->observacion;
+        $sql->save();
+        return redirect()->route('evaluator-basedatos', [
+        'proyecto'=> $sql->PK_id
+        ]);
+    }
 }

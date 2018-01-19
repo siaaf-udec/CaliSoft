@@ -15,6 +15,19 @@
                     <div class="col-md-6">
                         <h5><center><strong>Información</strong></center></h5>
                         <tabla-componente ></tabla-componente>  
+                        <form method="POST" >
+                            {{method_field('PUT')}}
+                            {{csrf_field()}}               
+                                    @component('components.textarea',[
+                                        'name'=>'comentario',
+                                        'attributes'=>'',
+                                        'label'=>'Comentario',
+                                        'value'=>'',
+                                    ])
+                                    @endcomponent
+                            <button type="submit"  class="btn green-jungle center-block">
+                            <i class="fa fa-edit"></i> Aceptar Calificación</button>
+                        </form>
                     </div>
                 </div>
             </div>                

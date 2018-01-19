@@ -22,3 +22,8 @@ Route::get('/proyectos/{proyecto}/plataforma/{casoPrueba}','EvaluatorController@
 
 Route::put('/evaluar-codificacion/{script}','NotaScriptController@comentario')
     ->name('actualizar-comentario');
+
+Route::put('/proyectos/{proyecto}/basedatos','NotaFileBDController@observacion')
+    ->name('actualizar-observacion');
+
+
