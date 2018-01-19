@@ -16,6 +16,7 @@ class CreateArchivoBdTable extends Migration
         Schema::create('TBL_ArchivoBd',function(Blueprint $table){
           $table->increments('PK_id');
           $table->string('url');
+          $table->text('observacion')->nullable();
           $table->integer('FK_ProyectoId')->unsigned();
           $table->integer('FK_TipoBdId')->unsigned();          
 
