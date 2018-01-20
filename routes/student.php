@@ -31,4 +31,8 @@ Route::prefix('evaluacion')->group(function () {
 
     Route::get('modelacion', 'StudentController@evaluacionModelado')
         ->name('evalucion.modelacion');
+
+    Route::get('/basedatos','StudentController@basedatos')
+        ->name('evaluacion.basedatos');
 });
+

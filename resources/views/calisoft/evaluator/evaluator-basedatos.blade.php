@@ -7,7 +7,7 @@
             'title' => 'Nomenclatura: ' . $proyecto->nombre
             ])
             <div id="app">
-                <div class=row>
+                <div class="row">
                     <div class="col-md-6">
                         <h5><center><strong>Codigo SQL</strong></center></h5>
                         <code-preview url="{{$proyecto->sql->url}}" prefix="/api/sql/preview/" mode="text/x-sql"></code-preview>                  
@@ -15,19 +15,18 @@
                     <div class="col-md-6">
                         <h5><center><strong>Información</strong></center></h5>
                         <tabla-componente ></tabla-componente>  
-                        <form method="POST" >
-                            {{method_field('PUT')}}
+                        <form method="POST" action="{{route('observacion-bd',['sql'=>$proyecto->sql->PK_id])}}">
                             {{csrf_field()}}               
                                     @component('components.textarea',[
-                                        'name'=>'comentario',
-                                        'attributes'=>'',
+                                        'name'=>'observacion',
+                                        'attributes'=>'required',
                                         'label'=>'Comentario',
-                                        'value'=>'',
+                                        'value'=>$proyecto->sql->observacion,
                                     ])
                                     @endcomponent
                             <button type="submit"  class="btn green-jungle center-block">
                             <i class="fa fa-edit"></i> Aceptar Calificación</button>
-                        </form>
+                        </form>                        
                     </div>
                 </div>
             </div>                

@@ -7,6 +7,7 @@ use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Repositories\Evaluations;
 use App\Container\Calisoft\Src\ArchivoSql;
 use App\Container\Calisoft\Src\Requests\NotaFileBdUpdateRequest;
+use App\Container\Calisoft\Src\Proyecto;
 
 class NotaFileBDController extends Controller
 {
@@ -39,10 +40,9 @@ class NotaFileBDController extends Controller
     }
     
     public function observacion(Request $request, ArchivoSql $sql){
+        
         $sql->observacion=$request->observacion;
         $sql->save();
-        return redirect()->route('evaluator-basedatos', [
-        'proyecto'=> $sql->PK_id
-        ]);
+        return redirect()->route('home'); 
     }
 }

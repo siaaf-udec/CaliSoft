@@ -43,6 +43,13 @@
         ]), 
         @endcomponent
 
+        @component('components.nav-link', [
+            'icon' => 'fa fa-database', 
+            'title' => 'Base Datos',
+            'link' => route('evaluacion.basedatos')
+        ]), 
+        @endcomponent
+
     @endcomponent
 @endcan
 
