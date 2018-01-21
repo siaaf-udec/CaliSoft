@@ -29,6 +29,7 @@
                         </form>                        
                     </div>
                 </div>
+                @include('partials.modal-help-calificar-bd')
             </div>                
         @endcomponent  
     </div>
