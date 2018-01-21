@@ -10,12 +10,12 @@ use App\Container\Calisoft\Src\Traits\DataBroadcast;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\User;
 
-class ProyectoDenegado extends Notification implements ShouldQueue
+class CasoPruebaCreado extends Notification implements ShouldQueue
 {
     use Queueable, DataBroadcast;
 
     public $proyecto;
-    public $text;
+    public $caso;
     public $img;
 
     /**
@@ -23,11 +23,11 @@ class ProyectoDenegado extends Notification implements ShouldQueue
      *
      * @return void
      */
-    public function __construct($proyecto, $text)
+    public function __construct($proyecto,$caso)
     {
         $this->proyecto = $proyecto;
-        $this->text = $text;
-        $this->img = '/img/proyecto-denegado.png';
+        $this->caso = $caso;
+        $this->img = '/img/caso-prueba-creado.png';
     }
 
     /**
@@ -50,11 +50,11 @@ class ProyectoDenegado extends Notification implements ShouldQueue
     public function toMail($notifiable)
     {
         return (new MailMessage)
-          ->subject('Su proyecto fue denegado')
-          ->markdown('mail.denegado', [
+          ->subject('Se ha creado un caso prueba para su proyecto')
+          ->markdown('mail.caso-prueba-creado', [
             'user' => $notifiable,
-            'proyecto' => $this->proyecto,
-            'text' => $this->text
+            'caso' => $this->caso,
+            'proyecto' => $this->proyecto
           ]);
     }
 
@@ -67,11 +67,11 @@ class ProyectoDenegado extends Notification implements ShouldQueue
     public function toArray($notifiable)
     {
         return [
-            'type' => 'proyecto-denegado',
-            'url' => '/proyectoDene',
-            'alert' => '¡Su proyecto fue denegado!',
+            'type' => 'caso-prueba-creado',
+            'url' => '/plataformaStudent',
+            'alert' => '¡Se te ha asignado un Caso Prueba!',
             'proyecto' => $this->proyecto,
-            'text' => $this->text,
+            'caso' => $this->caso,
             'img' => $this->img
         ];
     }

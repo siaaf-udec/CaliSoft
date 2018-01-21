@@ -8,8 +8,13 @@ use App\Container\Calisoft\Src\Requests\CasoPruebaStoreRequest;
 use App\Container\Calisoft\Src\Requests\CasoPruebaEnviarRequest;
 use App\Container\Calisoft\Src\CasoPrueba;
 use App\Container\Calisoft\Src\InputTypes;
+use App\Container\Calisoft\Src\Proyecto;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Storage;
+
+use App\Container\Calisoft\Src\Notifications\CasoPruebaCreado;
+use App\Container\Calisoft\Src\Notifications\CasoPruebaEnviado;
+use Illuminate\Support\Facades\Notification;
 
 
 class CasoPruebaController extends Controller
@@ -42,7 +47,7 @@ class CasoPruebaController extends Controller
      */
     public function store(CasoPruebaStoreRequest $request)
     {
-        return CasoPrueba::create([
+        CasoPrueba::create([
             'nombre' => $request->nombre,
             'proposito'=> $request->proposito,
             'alcance'=> $request->alcance,
@@ -57,6 +62,12 @@ class CasoPruebaController extends Controller
             'FK_ProyectoId'=> $request->FK_ProyectoId
 
         ]);
+
+        //Notificación a los integrantes del proyecto
+        $proyecto = Proyecto::find($request->FK_ProyectoId);
+        $usuarios = $proyecto->usuarios()->where('tipo','integrante')->get();
+        return Notification::send($usuarios, new CasoPruebaCreado($proyecto->nombre,$request->nombre));
+        
     }
 
     /**
@@ -119,8 +130,14 @@ class CasoPruebaController extends Controller
         'observacion' => $doc->observacion,
         'formulario' => $doc->formulario,
         ]);
-        
-        return back();
+
+        // Notificación a los evaluadores     
+        $proyecto = Proyecto::find($casoPrueba->FK_ProyectoId);
+        $usuarios = $proyecto->usuarios()->where('tipo','evaluador')->get();
+        return Notification::send($usuarios, 
+                new CasoPruebaEnviado($proyecto->nombre,$casoPrueba->nombre, 
+                $estudiante = auth()->user()->first(),$proyecto->PK_id));
+        //return back();
     }
     /**
      * Remove the specified resource from storage.

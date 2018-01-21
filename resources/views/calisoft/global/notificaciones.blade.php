@@ -70,6 +70,17 @@
                                                 El proyecto <strong>@{{notificacion.data.proyecto}}</strong> 
                                                 esta listo para ser evaluado
                                             </p>
+                                            <p v-if="notificacion.data.type === 'caso-prueba-creado'">
+                                                Se le ha añadido el caso prueba: <strong>@{{notificacion.data.caso}}</strong>, 
+                                                al proyecto: <strong>@{{notificacion.data.proyecto}}</strong>. Por favor 
+                                                continue a realizar la prueba correspondiente.
+                                            </p>
+                                            <p v-if="notificacion.data.type === 'caso-prueba-enviado'">
+                                                <strong>@{{notificacion.data.estudiante}}</strong> ha enviado el caso prueba 
+                                                <strong>@{{notificacion.data.caso}}</strong>, 
+                                                del proyecto: <strong>@{{notificacion.data.proyecto}}</strong>. Por favor 
+                                                proceda a realizar la evaluación.
+                                            </p>
                                         </div>
                                         <!--Fin texto según notificación-->    
                                     </li>

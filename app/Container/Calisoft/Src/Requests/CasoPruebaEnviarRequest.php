@@ -25,7 +25,7 @@ class CasoPruebaEnviarRequest extends FormRequest
     {
         return [
             'formulario' => 'required|json',
-            'observacion' => 'string|max:200',
+            'observacion' => 'max:200',
         ];
     }
 }
