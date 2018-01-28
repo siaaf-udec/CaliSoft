@@ -151,7 +151,5 @@ class CasoPruebaController extends Controller
         $casoPrueba->delete();
     }
 
-    public function testing(Request $request){
-        return($request->correo);
-    }
+    
 }

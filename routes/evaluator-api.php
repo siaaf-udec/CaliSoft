@@ -24,4 +24,4 @@ Route::resource('evaluacionSql','NotaFileBDController',[
 ]);
 
 // Obtiene la informacion de inicio de prueba
-Route::post('testing', 'CasoPruebaController@testing');
+Route::post('testing', 'TestingController@testing');
