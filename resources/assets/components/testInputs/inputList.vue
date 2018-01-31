@@ -16,7 +16,8 @@
                         <td>{{ input.name || input.id || index }}</td>
                         <td>{{ input.testInput }}</td>
                         <td>
-                            <input class="form-control" v-bind="input" v-validate="input.testInput">
+                            <input class="form-control" v-bind="input" :value="values[index]"  v-validate="input.testInput"
+                                @input="values[index] = $event.target.value">
                             <span class="text-danger" v-if="errors.has(input.name)">
                                 {{ errors.first(input.name) }}
                             </span>
@@ -25,8 +26,8 @@
                 </tbody>
             </table>
         </form>
-        <button class="btn green-jungle center-block" @click="iniciarPrueba()">
-            <i class="fa fa-plus"></i> Iniciar prueba   
+        <button class="btn green-jungle center-block" @click="cargar()">
+            <i class="fa fa-plus"></i> Cargar prueba   
         </button>
     </section>
 
@@ -37,23 +38,30 @@ export default {
     props:['formulario'],
     data() {
         return {
-            values: []
+            values: [],
+            tipos: ['normal', 'sql', 'xss'],
+            selected: -1
         }
     },
     methods:{
-        getTipo(input){
-            return this.tipos.find(tipos => input.testInput == tipos.PK_id)
-        },
-        iniciarPrueba() {
+        cargar() {
+            this.select()
             axios.post('/api/testing', {
-                inputs: this.formulario.map(input => input.type)
+                inputs: this.formulario.map(input => input.type),
+                tipo: this.tipos[this.selected]
             }).then(response => {
                 this.values = response.data.values
-                this.formulario = this.formulario.map((input, index) => {
-                    input.value = this.values[index]
-                    return input
-                });
+                setTimeout(() => this.validar())
             })
+        },
+        validar() {
+            this.$validator.validateAll();
+        },
+        select() {
+            this.selected += 1;
+            if (this.selected >= this.tipos.length) {
+                this.selected = 0
+            }  
         }
     }    
 }

@@ -18,6 +18,7 @@ class FakerRepository
     function __construct()
     {
         $this->faker = Faker\Factory::create('es_ES');
+        $this->faker->addProvider(new TestFakeProvider($this->faker));
     }
 
     /**
@@ -45,6 +46,22 @@ class FakerRepository
                 return null;
                 break;
         }
+    }
+
+    /**
+     * Retorna valor de prueba de sql
+     * @return string
+     */
+    public function getSqlValue() {
+        return $this->faker->sql();
+    }
+
+    /**
+     * Retorna valor de prueba de xss
+     * @return string
+     */
+    public function getXssValue() {
+        return $this->faker->xss();
     }
 
 }

@@ -21,5 +21,6 @@ class DatabaseSeeder extends Seeder
         $this->call(TipoBdTableSeeder::class);
         $this->call(ComponenteTableSeeder::class);
         $this->call(TipoInputsTestingSeeder::class);
+        $this->call(TestValueSeeder::class);
     }
 }

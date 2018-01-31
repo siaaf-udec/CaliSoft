@@ -18,14 +18,28 @@ class TestingController extends Controller
         $this->fakerRepo = $fakerRepo;
     }
 
-
+    /**
+     * Retorna los valores para realizar las pruebas
+     */
     public function testing(Request $request){
         $data = $request->validate([
-            'inputs.*' => 'required|string' 
+            'inputs.*' => 'required|string',
+            'tipo' => 'in:normal,sql,xss'
         ]);
         $values = collect();
         foreach ($data['inputs'] as $inputType) {
-            $value = $this->fakerRepo->getValidValue($inputType);
+            $value = '';
+            switch ($data['tipo']) {
+                case 'sql':
+                    $value = $this->fakerRepo->getSqlValue();
+                    break;
+                case 'xss':
+                    $value = $this->fakerRepo->getXssValue();
+                    break;
+                default:
+                    $value = $this->fakerRepo->getValidValue($inputType);
+                    break;
+            }
             $values->push($value);
         }
         return response()->json(compact('values'));
