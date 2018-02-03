@@ -38,4 +38,16 @@ class PDFController extends Controller
         $pdf = PDF::loadView('pdf.codificacion', compact('proyecto', 'scripts'));
         return $pdf->stream('codificacion.pdf');
     }
+
+    public function basedatos(Proyecto $proyecto)
+    {
+        $sql = $proyecto->sql->load('componentes');
+        $promedio = $sql->componentes->filter(function($componente, $index){
+            return $componente->pivot->total > 0;
+        })->avg("pivot.calificacion");
+
+        $pdf = PDF::loadView('pdf.basedatos', compact('proyecto', 'sql','promedio'));
+        //return view('pdf.basedatos', compact('proyecto', 'sql'));
+        return $pdf->stream('basedatos.pdf');
+    }
 }
