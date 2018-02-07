@@ -15,18 +15,36 @@
                         
                     </tr>
                     <tr>
-                        <th colspan="2">
-                            items
+                        <th>
+                            Items
                         </th>
+                        <th >
+                            Total
+                        </th>
+                        <th >
+                            Acertadas
+                        </th>
+                        <th >
+                            Nota
+                        </th>
+
+                        
                         
                     </tr>
+                       
                 </thead>
                 <tbody>
                 @foreach($script->items as $item)
                     <tr>
                         <td>
-                        {{$item->item}}
+                            {{$item->item}}
                         </td>
+                        <td>
+                            {{$item->pivot->total}}
+                        </td>
+                        <td>
+                            {{$item->pivot->acertadas}}
+                        </td>    
                         <td>
                         {{$item->pivot->nota}}
                         </td>
