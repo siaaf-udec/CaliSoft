@@ -5,7 +5,8 @@ import CodePreview from '../components/scripts/code-preview'
 import TablaItems from '../components/scripts/tabla-items'
 import TextareaInput from '../components/inputs/textarea-input';
 import Modal from '../components/utils/modal';
-import Validate from "../plugins/Validate"
+import Validate from "../plugins/Validate";
+import ReglasEstandar from "../classes/codificacion/reglas-estandar";
 
 Vue.use(VueCodeMirror);
 Vue.use(Validate);
@@ -18,7 +19,8 @@ new Vue({
         formErrorsUpdate: {},
         items: [],
         fillComentario: {},
-
+        ReglasEst : new ReglasEstandar(),
+        itemsEvaluacion: null,
     },
     created() {
         this.refresh();
@@ -31,8 +33,13 @@ new Vue({
                 this.items = response.data
             });
         },
-
-
+        eval(url){
+            if(this.itemsEvaluacion == null){
+                axios.post('/api/scripts/preview/'+ url).then( res =>{ 
+                    this.itemsEvaluacion = this.ReglasEst.evaluarEstandar(res.data.code,window.ScriptId,this.items);  
+                });
+            }
+        },
     },
 
 })

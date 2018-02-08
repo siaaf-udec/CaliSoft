@@ -11,7 +11,7 @@
                         <code-preview url="{{$script->url}}" mode="application/x-httpd-php"></code-preview>
                     </div>
                     <div class="col-md-6">
-                        <button type="button"  class="btn green-jungle center-block">
+                        <button type="button"  class="btn green-jungle center-block" v-on:click="eval('{{$script->url}}')">
                             <i class="fa fa-arrow-circle-right"></i>
                             Calificación Automatica
                         </button>
