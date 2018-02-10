@@ -129,7 +129,7 @@ export default class AnalizadorLexico {
               }
            }while( buffer !== delimitador && index <= code.length);
           
-           this.tokens.agregarToken(new Token("T_STRING","T_STRING",col,fil));          
+           this.tokens.agregarToken(new Token("T_STRING",lexema.substring(1,lexema.length),col,fil));          
  
            return index;
        }

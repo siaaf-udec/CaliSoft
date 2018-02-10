@@ -17,6 +17,7 @@ export default class TablaIdentificadores {
                { key: 'continue', value: 'T_CONTINUE'},
                { key: 'declare', value: 'T_DECLARE'},
                { key: 'default', value: 'T_DEFAULT'},
+               { key: 'define', value: 'T_DEFINE'},
                { key: 'die', value: 'T_DIE'},
                { key: 'do', value: 'T_DO'},
                { key: 'echo', value: 'T_ECHO'},

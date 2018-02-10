@@ -11,6 +11,7 @@ export default class FiltroItems{
     filtrarItems(tokens){
         this.tokens = tokens;
         this.getVariables();
+        this.getConstantes();
         this.getIdentificadores('T_RESERVADA','T_FUNCTION');
         this.getIdentificadores('T_RESERVADA','T_CLASS');
         this.getIdentificadores('T_RESERVADA','T_CONST');
@@ -65,6 +66,26 @@ export default class FiltroItems{
                }
                token =  this.tokens.siguienteToken();    
          }
+    }
+
+    getConstantes(){
+        let token = this.tokens.siguienteToken();
+
+        while(token != null){
+            if(token.atributo == 'T_DEFINE'){
+                do{
+                    token = this.tokens.siguienteToken();
+                }while(token.identificador != 'T_STRING');      
+                this.items.push({
+                    item : 'T_CONST',
+                    atributo : token.atributo,
+                    fila : token.fila,
+                    columna : token.columna,
+                    calificacion : true
+                });
+            }
+            token = this.tokens.siguienteToken();
+        }
     }
     
     getComentarios(){
