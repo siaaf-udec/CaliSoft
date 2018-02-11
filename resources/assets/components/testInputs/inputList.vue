@@ -8,6 +8,7 @@
                         <th class="text-center">Nombre</th>
                         <th class="text-center">Reglas</th>
                         <th class="text-center">Input</th>
+                        <th class="text-center">Estado</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -21,6 +22,10 @@
                             <span class="text-danger" v-if="errors.has(input.name)">
                                 {{ errors.first(input.name) }}
                             </span>
+                        </td>
+                        <td>
+                            <span class="fa fa-close text-danger" v-if="errors.has(input.name) == valido"></span>
+                            <span class="fa fa-check text-success" v-else></span> 
                         </td>
                     </tr>
                 </tbody>
@@ -40,7 +45,8 @@ export default {
         return {
             values: [],
             tipos: ['normal', 'sql', 'xss'],
-            selected: -1
+            selected: -1,
+            valido: 0
         }
     },
     methods:{
@@ -51,6 +57,7 @@ export default {
                 tipo: this.tipos[this.selected]
             }).then(response => {
                 this.values = response.data.values
+                this.valido = response.data.valido
                 setTimeout(() => this.validar())
             })
         },
