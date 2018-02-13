@@ -28,7 +28,7 @@ class FakerRepository
     public function getValidValue($type) {
         switch ($type) {
             case 'text':
-                return $this->faker->text(200);
+                return $this->faker->word();
                 break;
             case 'email':
                 return $this->faker->email();

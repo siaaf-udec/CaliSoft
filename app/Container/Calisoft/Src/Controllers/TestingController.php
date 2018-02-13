@@ -27,21 +27,25 @@ class TestingController extends Controller
             'tipo' => 'in:normal,sql,xss'
         ]);
         $values = collect();
+        $valido = 0;
         foreach ($data['inputs'] as $inputType) {
             $value = '';
             switch ($data['tipo']) {
                 case 'sql':
                     $value = $this->fakerRepo->getSqlValue();
+                    $valido = 0;
                     break;
                 case 'xss':
                     $value = $this->fakerRepo->getXssValue();
+                    $valido = 0;
                     break;
                 default:
-                    $value = $this->fakerRepo->getValidValue($inputType);
+                    $value = $this->fakerRepo->getValidValue($inputType); // Valor Correcto
+                    $valido = 1;
                     break;
             }
             $values->push($value);
         }
-        return response()->json(compact('values'));
+        return response()->json(compact('values', 'valido'));
     }
 }

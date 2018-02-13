@@ -16,7 +16,9 @@ class CreateTestValuesTable extends Migration
         Schema::create('TBL_TestValues', function (Blueprint $table) {
             $table->increments('PK_id');
             $table->string('valor');
-            $table->enum('tipo', ['xss', 'sql']);
+            $table->boolean('valido')->default(false);
+            $table->unsignedInteger('FK_InputType')->nullable();
+            $table->enum('tipo', ['xss', 'sql'])->nullable();
         });
     }
 
