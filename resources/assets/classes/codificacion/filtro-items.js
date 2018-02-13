@@ -39,7 +39,7 @@ export default class FiltroItems{
                 varFil.push(e.atributo);
                 this.items.push({
                      item : 'T_VARIABLE',
-                     atributo : e.atributo,
+                     atributo : e.atributo.substring(1,e.atributo.length),
                      fila : e.fila,
                      columna : e.columna,
                      calificacion : true

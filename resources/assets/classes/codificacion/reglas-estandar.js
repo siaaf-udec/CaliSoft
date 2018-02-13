@@ -21,7 +21,7 @@ export default class ReglasEstandar{
         this.evaluarItems('T_CONST');
         this.evaluarItems('T_INDENTACION');
         this.evaluarComentarios();
-        this.guardarCalificacion(scriptId);
+        this.guardarCalificacion(this.construirPeticion(scriptId));
         return this.calificacionItems;  
     }
 
@@ -121,17 +121,17 @@ export default class ReglasEstandar{
         return id.PK_id;
     }
 
-    guardarCalificacion(scriptId){
-        axios.all([
-            axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[0].PK_id,nota: this.calificacionItems[0].nota,total: this.calificacionItems[0].total,acertadas: this.calificacionItems[0].acertadas,}),
-            axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[1].PK_id,nota: this.calificacionItems[1].nota,total: this.calificacionItems[1].total,acertadas: this.calificacionItems[1].acertadas,}),
-            axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[2].PK_id,nota: this.calificacionItems[2].nota,total: this.calificacionItems[2].total,acertadas: this.calificacionItems[2].acertadas,}),
-            axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[3].PK_id,nota: this.calificacionItems[3].nota,total: this.calificacionItems[3].total,acertadas: this.calificacionItems[3].acertadas,}),
-            axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[4].PK_id,nota: this.calificacionItems[4].nota,total: this.calificacionItems[4].total,acertadas: this.calificacionItems[4].acertadas,}),
-            axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[5].PK_id,nota: this.calificacionItems[5].nota,total: this.calificacionItems[5].total,acertadas: this.calificacionItems[5].acertadas,}),
-            axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[6].PK_id,nota: this.calificacionItems[6].nota,total: this.calificacionItems[6].total,acertadas: this.calificacionItems[6].acertadas,}),
-        ]).then(axios.spread((a)=>{
-                      
-        })).catch(reason => console.log(reason.response.data.errors));
+    guardarCalificacion(peticion){
+        axios.all(peticion)
+        .then(axios.spread((a)=>{}))
+        .catch(reason => console.log(reason.response.data.errors));
     }
+
+    construirPeticion(scriptId){
+        let peticion = [];
+        for(let i = 0; i < 7;i++){
+            peticion.push(axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[i].PK_id,nota: this.calificacionItems[i].nota,total: this.calificacionItems[i].total,acertadas: this.calificacionItems[i].acertadas,}));
+        }
+        return peticion;
+    } 
 }

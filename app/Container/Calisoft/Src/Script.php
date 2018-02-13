@@ -23,8 +23,12 @@ class Script extends Model
     public function items()
     {
         return $this->belongsToMany(ItemsCodificacion::class,'TBL_NotaCodificacion','FK_ScriptsId','FK_ItemsId')
-            ->withTimestamps()
-            ->withPivot('nota','total','acertadas');
+        ->withTimestamps()
+        ->withPivot('nota','total','acertadas');
+    }
+
+    public function itemsEvaluados(){
+        return $this->hasMany(ItemsEvaluados::class,'FK_scriptId','PK_id');
     }
     
 }

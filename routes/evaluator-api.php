@@ -15,6 +15,13 @@ Route::resource('evaluacionesScript','NotaScriptController',[
     ]
 ]);
 
+Route::resource('itemsEvaluados','itemsEvaluadosController',[
+     'only' => ['show','store'],
+     'parameters' => [
+         'itemsEvaluados' => 'item'
+     ] 
+]);
+
 //evaluaciones de componentes sql
 Route::resource('evaluacionSql','NotaFileBDController',[
     'only' => ['show', 'update'],

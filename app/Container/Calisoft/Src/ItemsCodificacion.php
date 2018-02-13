@@ -18,4 +18,7 @@ class ItemsCodificacion extends Model
             ->withPivot('nota','total','acertadas');
     }
     
+    public function itemsEvaluados(){
+        return $this->hasMany(ItemsEvaluados::class,'FK_itemId','PK_id');
+    }
 }
