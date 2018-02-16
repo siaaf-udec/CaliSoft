@@ -1,7 +1,7 @@
 import './bootstrap'
 import Vue from 'vue'
-import DocList from '../components/evaluaciones/modelacion/doc-list'
-import EvaluationPanel from '../components/evaluaciones/modelacion/evaluation-panel'
+import DocList from '../components/modelacion/doc-list'
+import EvaluationPanel from '../components/modelacion/evaluation-panel'
 
 new Vue({
     el: '#app',
