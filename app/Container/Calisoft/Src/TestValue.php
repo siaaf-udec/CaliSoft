@@ -7,10 +7,10 @@ use Illuminate\Database\Eloquent\Model;
 class TestValue extends Model
 {   
     protected $table = "TBL_TestValues";
-    protected $primaryKey = "PK_Id";
+    protected $primaryKey = "PK_id";
     public $timestamps = false;
     protected $fillable = [
-        'value', 'type'
+        'valor', 'tipo', 'FK_InputType','valido'
     ];
 
 }

@@ -13,29 +13,29 @@ class TipoInputsTestingSeeder extends Seeder
     {
         DB::table('TBL_Inputs_Types')->insert([
             [
-                'nombre' => 'Email',
-                'reglas' => 'required|email'
-            ],
-            [
                 'nombre' => 'Nombre persona',
                 'reglas' => 'required|min:6|alpha_spaces'
             ],
             [
-                'nombre' => 'Nombre objeto',
-                'reglas' => 'required|min:6'
-
+                'nombre' => 'Email',
+                'reglas' => 'required|email'
             ],
             [
-                'nombre' => 'Contraseña',
+                'nombre' => 'Password',
                 'reglas' => 'required|min:6'
             ],
             [
-                'nombre' => 'Descripcion',
+                'nombre' => 'Tel',
                 'reglas' => 'required|min:6'
             ],
             [
                 'nombre' => 'Url',
                 'reglas' => 'required|url'
+            ],
+            [
+                'nombre' => 'Text',
+                'reglas' => 'required|min:6'
+
             ]
         ]);
     }
