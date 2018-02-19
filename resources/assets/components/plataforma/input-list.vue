@@ -15,9 +15,9 @@
                     <tr v-for="(input,index) in formulario" :key="index" class="text-center">
                         <td>{{ input.type }}</td>
                         <td>{{ input.name || input.id || index }}</td>
-                        <td>{{ input.testInput }}</td>
+                        <td>{{ reglas[index] }}</td>
                         <td>
-                            <input class="form-control" v-bind="input" :value="values[index]"  v-validate="input.testInput"
+                            <input class="form-control" v-bind="input" :value="values[index]"  v-validate="reglas[index]"
                                 @input="values[index] = $event.target.value">
                             <span class="text-danger" v-if="errors.has(input.name)">
                                 {{ errors.first(input.name) }}
@@ -39,6 +39,7 @@
 </template>
 
 <script>
+import { parseRule, parseInputs } from '../../classes/plataforma/input-attributes'
 export default {
     props:['formulario'],
     data() {
@@ -70,6 +71,11 @@ export default {
                 this.selected = 0
             }  
         }
-    }    
+    },
+    computed: {
+        reglas() {
+            return parseInputs(this.formulario)
+        }
+    }  
 }
 </script>

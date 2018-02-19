@@ -8,7 +8,7 @@ import BsSwitch from '../components/bs/bs-switch';
 import SelectInput from "../components/inputs/select-input";
 import TextareaInput from "../components/inputs/textarea-input";
 import Validate from "../plugins/Validate"
-import inputList from '../components/testInputs/inputList'; 
+import inputList from '../components/plataforma/input-list'; 
 
 Vue.use(Validate);
 new Vue({
