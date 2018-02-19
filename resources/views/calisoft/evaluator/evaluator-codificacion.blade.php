@@ -49,9 +49,12 @@
                                     <td v-text="script.url"></td>
                                     
                                     <td class="text-center">
-                                        <a :href="`/evaluar-codificacion/${script.PK_id}`" class="btn yellow-crusta" title="Calificar" >
+                                        <a :href="`/evaluar-codificacion/${script.PK_id}`" class="btn btn-warning btn-xs" title="Calificar" >
                                             <span class="fa fa-asterisk"></span>
                                         </a>
+                                        <button v-if="script.estado == 'calificado'" class="editar-item btn blue btn-xs" title="Ver Calificacion" @click="modal(script.PK_id)">
+                                            <span class="glyphicon glyphicon-check"></span>
+                                        </button>
                                     </td>
 
                                 </tr>
@@ -67,7 +70,11 @@
                         </div>
                         <!-- End Pagination Buttons-->
                     </div>
-
+                     
+                    {{--  Modal de vista de calificaciones--}}  
+                   <modal v-model="modalState" :title="nombreScript" :footer="false" >
+                       <tabla-calificaciones v-bind:items="items"></tabla-calificaciones>   
+                   </modal>                    
                 </div>
                 @include('partials.modal-help-listar-codificacion')
             @endcomponent  

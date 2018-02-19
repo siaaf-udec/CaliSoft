@@ -12,7 +12,7 @@
                             <div class="form-group">
                                 <label for="" class="control-label col-xs-4">Mostrar</label>
                                 <div class="col-xs-4 col-sm-5">
-                                    <select  class="form-control" v-model="paginator.show">
+                                    <select  class="form-control" v-model="paginator.show">     
                                         <option value="5">5</option>
                                         <option value="10" selected>10</option>
                                         <option value="15">15</option>

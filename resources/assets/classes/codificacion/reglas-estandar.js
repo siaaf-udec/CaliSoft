@@ -7,11 +7,13 @@ export default class ReglasEstandar{
         this.calificacionItems = [];
         this.items = null;
         this.idItems = [];
+        this.itemsEvaluados = [];
         this.anLex = new AnalizadorLexico();
         this.filItems = new FiltroItems(); 
     }
 
     evaluarEstandar(code,scriptId,idItems){
+        let peticion;
         this.idItems = idItems;
         this.items = this.filItems.filtrarItems(this.anLex.scanner(code));
         this.evaluarItems('T_VARIABLE');
@@ -21,7 +23,9 @@ export default class ReglasEstandar{
         this.evaluarItems('T_CONST');
         this.evaluarItems('T_INDENTACION');
         this.evaluarComentarios();
-        this.guardarCalificacion(this.construirPeticion(scriptId));
+        peticion = this.construirPeticion(scriptId);
+        peticion = peticion.concat(this.construirPeticionItems(scriptId));
+        this.guardarCalificacion(peticion); 
         return this.calificacionItems;  
     }
 
@@ -48,20 +52,27 @@ export default class ReglasEstandar{
             acertadas : itemsCorrectos,
             total : totalItems 
         });
+
     }
     
     tipoDeEvaluacion(elemento){
         switch(elemento.item){
             case 'T_VARIABLE':
             case 'T_FUNCTION':
-            case 'T_CLASS'   : return this.esCamelCase();
-            case 'T_CONST'   : return this.esCamelCase();
+            case 'T_CLASS'   : return this.esCamelCase(elemento);
+            case 'T_CONST'   : return this.esCamelCase(elemento);
             case 'T_INDENTACION' : return this.evaluarIndentacion(elemento);
-            case 'T_NAMESPACE'   : return this.esCamelCase(); 
+            case 'T_NAMESPACE'   : return this.esCamelCase(elemento); 
          }
     }
 
     evaluarIndentacion(elemento){
+        this.itemsEvaluados.push({
+            atributo : elemento.atributo.substring(2,elemento.atributo.length).toLowerCase(),
+            fila: elemento.fila,
+            calificacion : true,
+            FK_itemId : this.buscarIdItem(elemento.item),     
+        });
         return elemento.calificacion;
     }
 
@@ -69,6 +80,7 @@ export default class ReglasEstandar{
         let nodoAnt = this.items[0];
         let totalItems = 0;
         let itemsCorrectos = 0;
+        let calificacion = false;
         let nota;
         let idItem;
         this.items.forEach( e =>{
@@ -76,7 +88,15 @@ export default class ReglasEstandar{
                 totalItems++;
                 if(nodoAnt.atributo === 'T_COMENTARIO' || nodoAnt.atributo === 'T_COMENTARIO_L'){
                     itemsCorrectos++;
-                }    
+                    calificacion = true; 
+                }
+                this.itemsEvaluados.push({
+                    atributo : e.atributo.substring(2,e.atributo.length).toLowerCase(),
+                    fila: e.fila,
+                    calificacion : calificacion,
+                    FK_itemId : this.buscarIdItem('T_COMENTARIO'),     
+                });
+                calificacion = false;    
             }
             nodoAnt = e;
         });
@@ -92,7 +112,13 @@ export default class ReglasEstandar{
         });
     }
 
-    esCamelCase(){
+    esCamelCase(elemento){
+        this.itemsEvaluados.push({
+            atributo : elemento.atributo,
+            fila: elemento.fila,
+            calificacion : true,
+            FK_itemId : this.buscarIdItem(elemento.item),     
+        });
         return true;
     }
 
@@ -116,7 +142,7 @@ export default class ReglasEstandar{
         }
         
         let id = this.idItems.find( e =>{
-                    return e.item.toLowerCase() == nombreItem;                    
+                    return e.item.toLowerCase() === nombreItem;                    
                  });
         return id.PK_id;
     }
@@ -130,8 +156,28 @@ export default class ReglasEstandar{
     construirPeticion(scriptId){
         let peticion = [];
         for(let i = 0; i < 7;i++){
-            peticion.push(axios.put('/api/evaluacionesScript/'+ scriptId,{PK_id: this.calificacionItems[i].PK_id,nota: this.calificacionItems[i].nota,total: this.calificacionItems[i].total,acertadas: this.calificacionItems[i].acertadas,}));
+            peticion.push(axios.put('/api/evaluacionesScript/'+ scriptId,{
+                PK_id: this.calificacionItems[i].PK_id,
+                nota: this.calificacionItems[i].nota,
+                total: this.calificacionItems[i].total,
+                acertadas: this.calificacionItems[i].acertadas,
+            }));
         }
         return peticion;
-    } 
+    }
+    
+    construirPeticionItems(scriptId){
+        let peticion = [];
+        let longitud = this.itemsEvaluados.length;
+        for(let i=0; i < longitud;i++){
+            peticion.push(axios.post('/api/itemsEvaluados/',{ 
+                atributo : this.itemsEvaluados[i].atributo,
+                fila : this.itemsEvaluados[i].fila,
+                calificacion : this.itemsEvaluados[i].calificacion,
+                FK_scriptId : scriptId,
+                FK_itemId : this.itemsEvaluados[i].FK_itemId
+            })); 
+        }
+        return peticion;
+    }
 }

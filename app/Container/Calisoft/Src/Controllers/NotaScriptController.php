@@ -44,6 +44,7 @@ class NotaScriptController extends Controller
      */
     public function comentario(Request $request,Script $script){
         $script->comentario=$request->comentario;
+        $script->estado = 'calificado';
         $script->save();
         return redirect()->route('evaluator-codificacion', [
         'proyecto'=> $script->proyecto->PK_id
