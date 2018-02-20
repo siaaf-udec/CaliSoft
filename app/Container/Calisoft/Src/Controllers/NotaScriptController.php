@@ -50,4 +50,6 @@ class NotaScriptController extends Controller
         'proyecto'=> $script->proyecto->PK_id
         ]);
     }
+
+    
 }

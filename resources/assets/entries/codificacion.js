@@ -1,7 +1,8 @@
 import "./bootstrap";
 import Vue from "vue";
 import Paginator from '../classes/paginator';
-import { Pagination, Modal } from "uiv";
+import { Pagination } from "uiv";
+import Modal from "../components/utils/modal";
 import TablaCalificaciones from '../components/scripts/tabla-calificaciones';
 
 
@@ -15,9 +16,9 @@ new Vue({
         formErrorsUpdate: {},
         paginator: new Paginator(),
         search: "",
-        items : [],
-        modalState : false,
-        nombreScript : "",
+        items: [],
+        modalState: false,
+        nombreScript: "",
     },
     created() {
         this.refresh();
@@ -27,11 +28,11 @@ new Vue({
             axios.get(`/api/proyectos/${window.proyectoId}/scripts`)
                 .then(response => this.script = this.paginator.data = response.data);
         },
-        modal(script){
-            this.modalState = true;
-            axios.get('/api/itemsEvaluados/'+ script).then( res =>{
+        modal(script) {
+            $("#ventana").modal("show");
+            axios.get('/api/itemsEvaluados/' + script).then(res => {
                 this.items = res.data;
-                this.nombreScript = res.data[0].url.substring(5,res.data[0].url.length);
+                this.nombreScript = res.data[0].url.substring(5, res.data[0].url.length);
             });
         }
     },

@@ -74,7 +74,7 @@
                     </div>
                      
                     {{--  Modal de vista de calificaciones--}}  
-                   <modal v-model="modalState" :title="nombreScript" :footer="false" >
+                   <modal id="ventana" :title="nombreScript">
                        <tabla-calificaciones v-bind:items="items"></tabla-calificaciones>   
                    </modal>                    
                 </div>
