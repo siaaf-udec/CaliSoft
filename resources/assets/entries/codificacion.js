@@ -2,7 +2,7 @@ import "./bootstrap";
 import Vue from "vue";
 import Paginator from '../classes/paginator';
 import { Pagination } from "uiv";
-import Modal from "../components/utils/modal";
+import Modal from "../components/utils/modal-scroll";
 import TablaCalificaciones from '../components/scripts/tabla-calificaciones';
 
 
