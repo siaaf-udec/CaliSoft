@@ -19,7 +19,7 @@ new Vue({
         formErrorsUpdate: {},
         items: [],
         fillComentario: {},
-        ReglasEst : new ReglasEstandar(),
+        ReglasEst: new ReglasEstandar(),
         itemsEvaluacion: null,
     },
     created() {
@@ -33,12 +33,14 @@ new Vue({
                 this.items = response.data
             });
         },
-        eval(url){
-            if(this.itemsEvaluacion == null){
-                axios.post('/api/scripts/preview/'+ url).then( res =>{ 
-                    this.itemsEvaluacion = this.ReglasEst.evaluarEstandar(res.data.code,window.ScriptId,this.items);  
+        eval(url) {
+            if (this.itemsEvaluacion == null) {
+                axios.post('/api/scripts/preview/' + url).then(res => {
+                    this.itemsEvaluacion = this.ReglasEst.evaluarEstandar(res.data.code, window.ScriptId, this.items);
                 });
+                toastr.success("Script calificado correctamente");
             }
+
         },
     },
 

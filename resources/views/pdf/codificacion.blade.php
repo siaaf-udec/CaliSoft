@@ -49,7 +49,11 @@
                         {{$item->pivot->nota}}
                         </td>
                     </tr>
-                 @endforeach   
+                 @endforeach
+                 <tr>
+                    <td><b>Observación</b></td>  
+                    <td colspan="3">{{$script->comentario}}</td>   
+                </tr>   
                 </tbody>
                 
             </table>
