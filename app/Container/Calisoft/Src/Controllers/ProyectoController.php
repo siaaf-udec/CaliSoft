@@ -80,7 +80,7 @@ class ProyectoController extends Controller
 
     public function plataforma(Proyecto $proyecto)
     {
-        return $proyecto->casoPruebas()->get();
+        return $proyecto->casoPruebas()->with('pruebas')->get();
     }
 
 

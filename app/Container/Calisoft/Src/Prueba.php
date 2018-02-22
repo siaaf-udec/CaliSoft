@@ -11,7 +11,7 @@ class Prueba extends Model
     protected $fillable = [
         'contexto', 'calificacion', 'FK_CasoPruebaId'
     ];
-    protected $cast = [
+    protected $casts = [
         'contexto' => 'array'
     ];
 }

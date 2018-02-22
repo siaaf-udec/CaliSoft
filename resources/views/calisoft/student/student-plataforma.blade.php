@@ -12,8 +12,13 @@
                     <div class="panel-heading">
                         <h4 class="panel-header" style="display: inline">@{{ caso.nombre }}</h4>
                         <div class="btn-group pull-right">
-                            <a data-toggle="collapse" :data-target="'#'+caso.PK_id" 
-                                class="btn btn-xs btn-success">Detalles</a>
+                            <button 
+                                class="btn btn-xs btn-info" 
+                                v-if="caso.pruebas && caso.pruebas.length" 
+                                @click="selected = caso; showPruebas = true;">
+                                Pruebas
+                            </button>
+                            <a data-toggle="collapse" :data-target="'#'+caso.PK_id" class="btn btn-xs btn-success">Detalles</a>
                         </div>
                     </div>
                     <div class="panel-body">
@@ -111,7 +116,12 @@
                 </button>
                 </form>
             </modal>
-            <!-- Fin Modal Enviar Casoprueba -->    
+            <!-- Fin Modal Enviar Casoprueba -->
+
+            <!-- -->
+            <modal :footer="false" :title="'Pruebas: ' + selected.nombre" v-model="showPruebas">
+                <test-list :pruebas="selected.pruebas" v-if="selected && selected.pruebas"></test-list>
+            </modal>
         </div>
     @endcomponent
 </div>

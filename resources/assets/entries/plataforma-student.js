@@ -6,6 +6,7 @@ import TextInput from "../components/inputs/text-input";
 import BsSwitch from '../components/bs/bs-switch';
 import SelectInput from "../components/inputs/select-input";
 import TextareaInput from "../components/inputs/textarea-input";
+import TestList from "../components/plataforma/test-list"
 
 new Vue({
     el: '#app',
@@ -15,7 +16,8 @@ new Vue({
         TextInput,
         TextareaInput, 
         SelectInput,
-        Popover 
+        Popover,
+        TestList
     },
     data() {
         return {
@@ -29,7 +31,8 @@ new Vue({
             formErrorsUpdate: {},
             proyectoId: window.proyectoId,
             enviarModalState: false,
-            selected: {}
+            showPruebas: false,
+            selected: {},
         }
     },
     created() {
