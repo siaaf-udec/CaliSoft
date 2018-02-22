@@ -32,3 +32,4 @@ Route::resource('evaluacionSql','NotaFileBDController',[
 
 // Obtiene la informacion de inicio de prueba
 Route::post('testing', 'TestingController@testing');
+Route::post('testing/save/{caso}', 'TestingController@guardar');

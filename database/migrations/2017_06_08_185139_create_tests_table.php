@@ -15,7 +15,8 @@ class CreateTestsTable extends Migration
     {
         Schema::create('TBL_Pruebas', function (Blueprint $table) {
             $table->increments('PK_id');
-            $table->string('nombre');
+            $table->text('contexto');
+            $table->double('calificacion');
             $table->integer('FK_CasoPruebaId')->unsigned();
             $table->timestamps();
 

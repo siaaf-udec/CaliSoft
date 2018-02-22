@@ -5,6 +5,8 @@ namespace App\Container\Calisoft\Src\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Repositories\FakerRepository;
+use App\Container\Calisoft\Src\CasoPrueba;
+use DB;
 
 
 class TestingController extends Controller
@@ -48,4 +50,26 @@ class TestingController extends Controller
         }
         return response()->json(compact('values', 'valido'));
     }
+
+
+    /**
+     * Guarda la prueba y actualiza el promedio del caso prueba
+     */
+    public function guardar(Request $request, CasoPrueba $caso) {
+        $data = $request->validate([
+            'contexto.*.nombre' => 'string|required',
+            'contexto.*.entrada' => 'string|required',
+            'contexto.*.estado' => 'boolean|required',
+            'calificacion' => 'numeric|required' 
+        ]);
+        $data['contexto'] = json_encode($data['contexto']);
+        $prueba = $caso->pruebas()->create($data);
+        $caso->update(['calificacion' => DB::raw("(
+            SELECT round(avg(calificacion), 2) 
+            FROM TBL_Pruebas 
+            WHERE FK_CasoPruebaId = {$caso->PK_id}
+        )")]);
+        return $prueba;
+    }
+
 }

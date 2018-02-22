@@ -24,58 +24,106 @@
                             </span>
                         </td>
                         <td>
-                            <span class="fa fa-close text-danger" v-if="errors.has(input.name) == valido"></span>
-                            <span class="fa fa-check text-success" v-else></span> 
+                            <span class="fa fa-check text-success" v-if="resultados[index]"></span>
+                            <span class="fa fa-close text-danger" v-else></span> 
                         </td>
                     </tr>
                 </tbody>
+                <tfoot>
+                    <tr v-if="values.length" class="active">
+                        <th colspan="4">CALIFICACIÓN</th>
+                        <th class="text-center">
+                            {{ calificacion }}%
+                        </th>
+                    </tr>
+                </tfoot>
             </table>
         </form>
-        <button class="btn green-jungle center-block" @click="cargar()">
-            <i class="fa fa-plus"></i> Cargar prueba   
-        </button>
+        <div class="row">
+            <div class="col-md-4">
+                <button class="btn green-jungle btn-block" @click="cargar()">
+                    <i class="fa fa-plus"></i> Cargar prueba   
+                </button>
+            </div>
+            <div class="col-md-4 col-md-offset-4" v-if="values.length">
+                <button class="btn btn-block btn-primary" @click="guardar()">
+                    <i class="fa fa-save"></i>GUARDAR PRUEBA
+                </button>
+            </div>
+        </div>
     </section>
 
 </template>
 
 <script>
-import { parseRule, parseInputs } from '../../classes/plataforma/input-attributes'
+import {
+  parseRule,
+  parseInputs
+} from "../../classes/plataforma/input-attributes";
+import { mean } from "lodash";
 export default {
-    props:['formulario'],
-    data() {
-        return {
-            values: [],
-            tipos: ['normal', 'sql', 'xss'],
-            selected: -1,
-            valido: 0
-        }
+  props: ["formulario", "casoPruebaId"],
+  data() {
+    return {
+      values: [],
+      tipos: ["normal", "sql", "xss"],
+      selected: -1,
+      valido: 0
+    };
+  },
+  methods: {
+    cargar() {
+      this.select();
+      axios
+        .post("/api/testing", {
+          inputs: this.formulario.map(input => input.type),
+          tipo: this.tipos[this.selected]
+        })
+        .then(response => {
+          this.values = response.data.values;
+          this.valido = response.data.valido;
+          setTimeout(() => this.validar());
+        });
     },
-    methods:{
-        cargar() {
-            this.select()
-            axios.post('/api/testing', {
-                inputs: this.formulario.map(input => input.type),
-                tipo: this.tipos[this.selected]
-            }).then(response => {
-                this.values = response.data.values
-                this.valido = response.data.valido
-                setTimeout(() => this.validar())
-            })
-        },
-        validar() {
-            this.$validator.validateAll();
-        },
-        select() {
-            this.selected += 1;
-            if (this.selected >= this.tipos.length) {
-                this.selected = 0
-            }  
-        }
+    validar() {
+      this.$validator.validateAll();
     },
-    computed: {
-        reglas() {
-            return parseInputs(this.formulario)
-        }
-    }  
-}
+    select() {
+      this.selected += 1;
+      if (this.selected >= this.tipos.length) {
+        this.selected = 0;
+      }
+    },
+    guardar() {
+      let contexto = this.formulario.map((input, index) => ({
+        nombre: input.name,
+        entrada: this.values[index],
+        estado: this.resultados[index]
+      }));
+      axios
+        .post("/api/testing/save/" + this.casoPruebaId, {
+          contexto: contexto,
+          calificacion: this.calificacion
+        })
+        .then(() => {
+            toastr.success('Prueba Guardada')
+            this.values = [];
+            this.errors.clear()
+        });
+    }
+  },
+  computed: {
+    reglas() {
+      return parseInputs(this.formulario);
+    },
+    resultados() {
+      return this.formulario.map(
+        input => this.errors.has(input.name) != this.valido
+      );
+    },
+    calificacion() {
+      return mean(this.resultados) * 100;
+    }
+  }
+};
 </script>
