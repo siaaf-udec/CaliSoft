@@ -7,6 +7,7 @@ import BsSwitch from '../components/bs/bs-switch';
 import SelectInput from "../components/inputs/select-input";
 import TextareaInput from "../components/inputs/textarea-input";
 import TestList from "../components/plataforma/test-list"
+import TblCaso from "../components/plataforma/tbl-caso"
 
 new Vue({
     el: '#app',
@@ -17,7 +18,8 @@ new Vue({
         TextareaInput, 
         SelectInput,
         Popover,
-        TestList
+        TestList,
+        TblCaso
     },
     data() {
         return {
