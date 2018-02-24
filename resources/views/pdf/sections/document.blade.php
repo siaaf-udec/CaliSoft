@@ -19,7 +19,11 @@
             <tr>
                 <td>{{ $evaluacion->componente->nombre }}</td>
                 <td>
-                    {{ $evaluacion->checked ? 'Sí' : 'No' }}
+                    @if ($evaluacion->checked)
+                        <i class="text-success">Correcto</i>    
+                    @else
+                        <i class="text-danger">Incorrecto</i>
+                    @endif
                 </td>
                 <td>{{ $evaluacion->observacion }}</td>
             </tr>

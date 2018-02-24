@@ -2,7 +2,8 @@
 
 @section('body')
     <div class="text-center">
-        <h1>Usuarios</h1>
+        <h3>Usuarios</h3>
+        <hr>
     </div>
     <table class="table">
         <thead>

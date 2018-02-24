@@ -51,4 +51,11 @@ class PDFController extends Controller
         //return view('pdf.basedatos', compact('proyecto', 'sql'));
         return $pdf->stream('basedatos.pdf');
     }
+
+    public function plataforma(Proyecto $proyecto) {
+        $casos = $proyecto->casoPruebas()->with('pruebas')->get();
+        $total = $casos->avg('calificacion');
+        $pdf = PDF::loadView('pdf.plataforma', compact('casos', 'total', 'proyecto'));
+        return $pdf->stream('plataforma.pdf');
+    }
 }

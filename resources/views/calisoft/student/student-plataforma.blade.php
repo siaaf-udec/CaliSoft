@@ -4,7 +4,8 @@
     <div class="col-md-12">
         @component('components.portlet', [
             'icon' => 'fa fa-files', 
-            'title' => 'Plataforma: ' . $proyecto->nombre 
+            'title' => 'Plataforma: ' . $proyecto->nombre,
+            'pdf' => route('pdf.plataforma', compact('proyecto'))
         ])
         <div id="app">
             <div class="portlet-body form">
@@ -21,31 +22,34 @@
                             <a data-toggle="collapse" :data-target="'#'+caso.PK_id" class="btn btn-xs btn-success">Detalles</a>
                         </div>
                     </div>
-                    <div class="panel-body panel-collapse collapse" :id="caso.PK_id" >
+                    <div class="panel-collapse collapse" :id="caso.PK_id" >
                         
                         <tbl-caso :caso="caso"></tbl-caso>
                         
-                        <div class="form-group" v-if="caso.formulario == ''">
-                            <div class="row"> 
-                                <div class="col-sm-6">
-                                    <textarea-input name="formulario" :error="formErrorsUpdate.formulario" 
-                                                    v-model="fillCasoPrueba.formulario" label="Formulario" 
-                                                    maxlength="500" :id="'paste'+caso.PK_id" >
-                                    </textarea-input>
+                        <div class="panel-body" v-if="caso.formulario == ''">
+                            <div class="form-group">
+                                <div class="row"> 
+                                    <div class="col-sm-6">
+                                        <textarea-input name="formulario" :error="formErrorsUpdate.formulario" 
+                                                        v-model="fillCasoPrueba.formulario" label="Formulario" 
+                                                        maxlength="500" :id="'paste'+caso.PK_id" >
+                                        </textarea-input>
+                                    </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <button @click.prevent="cadenaJson(fillCasoPrueba.formulario,caso)"  class="btn green-jungle">
+                                            <i class="fa fa-message"></i>Siguiente
+                                        </button>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <a href="javascript:;" class="btn green-steel mt-clipboard" data-clipboard-paste="true" :data-paste-target="'#paste'+caso.PK_id">
+                                            <i class="icon-note"></i> Pegar Json</a>
+                                    </div>
+                                </div>   
                             </div>
-                            <div class="row">
-                                <div class="col-sm-6">
-                                    <button @click.prevent="cadenaJson(fillCasoPrueba.formulario,caso)"  class="btn green-jungle">
-                                        <i class="fa fa-message"></i>Siguiente
-                                    </button>
-                                </div>
-                                <div class="col-sm-6">
-                                    <a href="javascript:;" class="btn green-steel mt-clipboard" data-clipboard-paste="true" :data-paste-target="'#paste'+caso.PK_id">
-                                        <i class="icon-note"></i> Pegar Json</a>
-                                </div>
-                            </div>   
                         </div>
+                        
                         
                     </div>
                 </div>          

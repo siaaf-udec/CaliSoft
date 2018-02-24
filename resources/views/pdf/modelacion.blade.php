@@ -2,7 +2,8 @@
 
 @section('body')
     <div class="text-center">
-        <h1>{{ $proyecto->nombre }} - Evaluación de modelado</h1>
+        <h3>{{ $proyecto->nombre }} - Evaluación de modelado</h3>
+        <hr>
     </div>
     
     @foreach($documentos as $documento)

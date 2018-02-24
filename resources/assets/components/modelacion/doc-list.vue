@@ -1,6 +1,6 @@
 <template>
     <ul class="list-group">
-        <li class="list-group-item list-group-item-success text-center">
+        <li class="list-group-item list-group-item-success text-center" v-if="total">
           <h4 class="list-group-item-heading"> Total: {{ total }} %</h4>
         </li>
         <li class="list-group-item" v-for="documento in documentos" 
@@ -21,26 +21,16 @@ export default {
   props: ["documentos", "active"],
   methods: {
     prEvaluador(evaluaciones) {
-      return (
-        evaluaciones.reduce((sum, ev) => sum + ev.checked, 0) /
-        evaluaciones.length
-      );
+      return _.meanBy(evaluaciones, "checked");
     },
     prDocumento(doc) {
       let evaluadores = _.values(_.groupBy(doc.evaluaciones, "FK_EvaluatorId"));
-      let sum = evaluadores.reduce(
-        (sum, evs) => sum + this.prEvaluador(evs),
-        0
-      );
-      return Math.round(sum / evaluadores.length * 100);
+      return _.meanBy(evaluadores, ev => this.prEvaluador(ev)) * 100;
     }
   },
   computed: {
     total() {
-      return (
-        this.documentos.reduce((sum, doc) => sum + this.prDocumento(doc), 0) /
-        this.documentos.length
-      );
+      return _.meanBy(this.documentos, doc => this.prDocumento(doc));
     }
   }
 };

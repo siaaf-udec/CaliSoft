@@ -1,5 +1,5 @@
 <template>
-    <table class="table table-striped table-bordered table-hover" id="sample">
+    <table class="table table-striped table-bordered table-hover">
         <tbody>
             <tr>
                 <td>Proposito:</td>
@@ -19,7 +19,7 @@
             </tr>
             <tr>
                 <td>Prioridad:</td>
-                <td>@{{ caso.prioridad }} </td>
+                <td>{{ caso.prioridad }} </td>
             </tr>
             <tr>
                 <td>Estado:</td>

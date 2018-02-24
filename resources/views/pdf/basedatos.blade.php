@@ -2,7 +2,8 @@
 
 @section('body')
     <div class="text-center">
-        <h1>{{ $proyecto->nombre }} - Evaluación de Base de Datos</h1>
+        <h3>{{ $proyecto->nombre }} - Evaluación de Base de Datos</h3>
+        <hr>
     </div>        
         <table class="table">
             <thead>

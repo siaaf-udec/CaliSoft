@@ -48,7 +48,7 @@ return array(
          *
          * Note: This directory must exist and be writable by the webserver process.
          */
-        "DOMPDF_FONT_CACHE" => public_path('fonts'),
+        "DOMPDF_FONT_CACHE" => storage_path('fonts'),
 
         /**
          * The location of a temporary directory.
@@ -117,7 +117,7 @@ return array(
          * @link http://www.ros.co.nz/pdf
          * @link http://www.php.net/image
          */
-        "DOMPDF_PDF_BACKEND" => "CPDF",
+        "DOMPDF_PDF_BACKEND" => "PDFLib",
 
         /**
          * PDFlib license key
@@ -153,7 +153,7 @@ return array(
          *
          * @see CPDF_Adapter::PAPER_SIZES for valid sizes ('letter', 'legal', 'A4', etc.)
          */
-        "DOMPDF_DEFAULT_PAPER_SIZE" => "a4",
+        "DOMPDF_DEFAULT_PAPER_SIZE" => "A4",
 
         /**
          * The default font family
@@ -161,7 +161,7 @@ return array(
          * Used if no suitable fonts can be found. This must exist in the font folder.
          * @var string
          */
-        "DOMPDF_DEFAULT_FONT" => "serif",
+        "DOMPDF_DEFAULT_FONT" => "Helvetica",
 
         /**
          * Image DPI setting
@@ -220,7 +220,7 @@ return array(
          *
          * @var bool
          */
-        "DOMPDF_ENABLE_JAVASCRIPT" => true,
+        "DOMPDF_ENABLE_JAVASCRIPT" => false,
 
         /**
          * Enable remote file access
@@ -239,12 +239,12 @@ return array(
          *
          * @var bool
          */
-        "DOMPDF_ENABLE_REMOTE" => true,
+        "DOMPDF_ENABLE_REMOTE" => false,
 
         /**
          * A ratio applied to the fonts height to be more like browsers' line height
          */
-        "DOMPDF_FONT_HEIGHT_RATIO" => 1.1,
+        "DOMPDF_FONT_HEIGHT_RATIO" => 1.0,
 
         /**
          * Enable CSS float
