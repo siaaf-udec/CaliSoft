@@ -62,7 +62,6 @@ class TestingController extends Controller
             'contexto.*.estado' => 'boolean|required',
             'calificacion' => 'numeric|required' 
         ]);
-        $data['contexto'] = json_encode($data['contexto']);
         $prueba = $caso->pruebas()->create($data);
         $caso->update(['calificacion' => DB::raw("(
             SELECT round(avg(calificacion), 2) 
