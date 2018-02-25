@@ -1,60 +1,100 @@
 <template>
     <div class="panel panel-info">
         <div class="panel-heading">
-            <h4 class="panel-header" style="display: inline">{{ proyecto.nombre }}</h4>
-            <div class="pull-right">
-                <dropdown v-if="proyecto.state == 'evaluacion'" v-model="dropdown">
-                    <button class="btn btn-xs" @click="dropdown=true">
-                        EVALUACIÓN
-                        <span class="caret"></span>
-                    </button>
-                    <template slot="dropdown">
-                        <li><a :href="modelacion" class="text-primary">MODELACIÓN</a></li>
-                        <li><a :href="plataforma" class="text-warning">PLATAFORMA</a></li>
-                        <li><a :href="codificacion" class="text-success">CODIFICACIÓN</a></li>
-                        <li><a :href="basedatos" class="text-danger">BASES DE DATOS</a></li>
-                    </template>
-                </dropdown>
-                <div v-else>
-                    <em>El proyecto todavia no se encuentra listo para evaluación</em>
+            <div class="row">
+                <div class="col-xs-6">
+                    <h4 class="panel-header">{{ proyecto.nombre }}</h4>
+                </div>
+                <div class="col-xs-6">
+                    <dropdown v-if="evaluacion" v-model="dropdown">
+                        <button class="btn btn-xs" @click="dropdown=true">
+                            EVALUACIÓN
+                            <span class="caret"></span>
+                        </button>
+                        <template slot="dropdown">
+                            <li><a :href="modelacion" class="text-primary">MODELACIÓN</a></li>
+                            <li><a :href="plataforma" class="text-warning">PLATAFORMA</a></li>
+                            <li><a :href="codificacion" class="text-success">CODIFICACIÓN</a></li>
+                            <li><a :href="basedatos" class="text-danger">BASES DE DATOS</a></li>
+                        </template>
+                    </dropdown>
+                    <div v-if="activo" class="text-center">
+                        <em>El proyecto todavia no se encuentra listo para evaluación</em>
+                    </div>
                 </div>
             </div>
         </div>
         <proyecto-eval :proyecto="proyecto"></proyecto-eval>
-        <div class="panel-footer">
-            <div class="row" v-if="evaluacion">
+        <div class="panel-footer" v-if="evaluacion">
+            <div class="row">
                 <div class="col-sm-6">
-                    <button class="btn btn-block btn-xs btn-danger">Volver a activar proyecto</button>
+                    <button class="btn btn-block btn-xs btn-danger" @click="activeModal=true">Volver a activar proyecto</button>
                 </div>
                 <div class="col-sm-6">
-                    <button class="btn btn-block btn-xs btn-success">Terminar Evaluación</button>
-                </div>
-            </div>
-            <div class="row" v-if="completado">
-                <div class="col-sm-6">
-                    <button class="btn btn-block btn-xs btn-danger">Volver a evaluar proyecto</button>
+                    <button class="btn btn-block btn-xs btn-success" @click="completeModal=true">Terminar Evaluación</button>
                 </div>
             </div>
         </div>
+        <modal v-model="activeModal" title="Activar Proyecto" :footer="false">
+            <section>
+                <p>
+                    La siguiente acción habilatara al estudiante de editar documentos del proyecto.<br>
+                    <b>Esta seguro de continuar?</b>
+                </p>
+                <button class="btn btn-warning center-block" @click="activar()">Continuar</button>
+            </section>
+        </modal>
+        <modal v-model="completeModal" title="Terminar Evaluacion" :footer="false">
+            <section>
+                <p>
+                    La siguiente acción concluira la evaluacion de proyecto.<br>
+                    Asegurese de que todas las evaluaciones han sido completados
+                    antes de cambiar el estado del proyecto a <b>COMPLETADO</b>.
+                </p>
+                <button class="btn btn-success center-block" @click="completar()">Aceptar</button>
+            </section>
+        </modal>
     </div>
 </template>
 <script>
-import { Dropdown } from 'uiv'
-import ProyectoEval from './proyecto-eval'
-import UrlsMixin from '../mixins/proyecto-urls'
-import EstadoMixin from '../mixins/proyecto-estados'
+import { Dropdown, Modal } from "uiv";
+import ProyectoEval from "./proyecto-eval";
+import UrlsMixin from "../mixins/proyecto-urls";
+import EstadoMixin from "../mixins/proyecto-estados";
 
 export default {
-    mixins: [UrlsMixin, EstadoMixin],
-    props: {
-        proyecto: {type: Object, required: true}
+  mixins: [UrlsMixin, EstadoMixin],
+  props: {
+    proyecto: { type: Object, required: true }
+  },
+  components: {
+    Dropdown,
+    ProyectoEval,
+    Modal
+  },
+  methods: {
+    update(accion) {
+      return axios
+        .put(`api/proyectos/${this.proyecto.PK_id}/${accion}`)
+        .then(res => {
+          this.$set(this.proyecto, "state", res.data.state);
+        });
     },
-    components: {
-        Dropdown,
-        ProyectoEval
+    activar() {
+      this.update("activar").then(() => {
+        this.activeModal = false;
+        toastr.info(`El proyecto ${this.proyecto.nombre} ha sido activado`);
+      });
     },
-    data() {
-        return { dropdown: false }
+    completar() {
+      this.update("completar").then(() => {
+        this.completeModal = false;
+        toastr.success(`El proyecto ${this.proyecto.nombre} ha sido marcado como completado`)
+      });
     }
+  },
+  data() {
+    return { dropdown: false, activeModal: false, completeModal: false };
+  }
 };
 </script>

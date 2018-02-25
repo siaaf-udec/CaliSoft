@@ -13,7 +13,7 @@ class Proyecto extends Model
     protected $primaryKey = "PK_id";
 
     protected $fillable = [
-        'nombre', 'FK_GrupoDeInvestigacionId', 'FK_SemilleroId', 'FK_CategoriaId',
+        'nombre', 'FK_GrupoDeInvestigacionId', 'FK_SemilleroId', 'FK_CategoriaId', 'state'
     ];
 
     public function documentos()

@@ -15,10 +15,13 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
     Route::put('asignar', 'ProyectoController@asignar'); // Asignar Evaluador (Admin)
     Route::put('desasignar', 'ProyectoController@desasignar'); // Desasignar Evaluador (Admin)
     Route::put('evaluacion', 'ProyectoController@evaluacion'); // Enviar proyecto para evaluacion (Estudiante)
+    Route::put('activar', 'ProyectoController@activar'); // Activar Proyecto (Evaluador)
+    Route::put('completar', 'ProyectoController@completar'); // Completar Pryoecto (Evaluador)
     Route::get('documentacion', 'ProyectoController@documentos'); // Consultar documentos(diagramas) del proyecto
     Route::get('plataforma', 'ProyectoController@plataforma'); // Consulta los Casos de prueba del proyecto
     Route::get('scripts', 'ProyectoController@scripts'); // Consulta el codigo fuente del proyecto
     Route::get('basedatos','ProyectoController@basedatos'); // Consulta el codigo sql del proyecto
+
 });
 
 
