@@ -27,6 +27,7 @@ class CreateTestCasesTable extends Migration
             $table->enum('estado', ['evaluar', 'carga', 'terminado']);
             $table->integer('entrega');
             $table->integer('FK_ProyectoId')->unsigned();
+            $table->double('calificacion')->default(0);
             
             $table->timestamps();
 

@@ -107,18 +107,18 @@
 
 <script>
 import { Modal } from 'uiv';
-import UserSearch from '../utils/user-search.vue'
-
+import UserSearch from '../utils/user-search'
+import UsersMixin from '../mixins/proyecto-users'
+import EstadosMixin from '../mixins/proyecto-estados'
 export default {
     components: { Modal, UserSearch },
+    mixins: [UsersMixin, EstadosMixin],
     props: ['proyecto'],
     data() {
         return { asignedModal: false, destroyModal: false, acceptModal: false, formErrors: {}, text: "" }
     },
     methods: {
-        filtrar(tipo) {
-            return this.proyecto.usuarios.filter(usuario => usuario.pivot.tipo == tipo);
-        },
+        
         aceptar() {
             axios.put(`/api/proyectos/${this.proyecto.PK_id}/aceptar`).then(res => {
                 this.acceptModal = false
@@ -152,23 +152,6 @@ export default {
                 toastr.info('Ha eliminado del proyecto ' + this.proyecto.nombre);
                 this.$emit('removed', this.proyecto)
             }).catch(err => this.formErrors = err.response.data);
-        }
-    },
-    computed: {
-        integrantes() {
-            return this.filtrar('integrante')
-        },
-        evaluadores() {
-            return this.filtrar('evaluador')
-        },
-        activo() {
-            return this.proyecto.state == "activo"
-        },
-        propuesta() {
-            return this.proyecto.state == "propuesta"
-        },
-        evaluacion() {
-            return this.proyecto.state == "evaluacion"
         }
     }
 }

@@ -27,8 +27,9 @@ class ProyectoController extends Controller
         $this->middleware('auth');
         $this->middleware('role:student')->only('update', 'propuesta');
         $this->middleware('role:admin')->only('index', 'aceptar', 'asignar');
-        $this->middleware('role:evaluator')->only('show');
+        $this->middleware('role:evaluator')->only('show', 'activar', 'completar');
         $this->middleware('role:admin,student')->only('destroy');
+
     }
 
     public function index()
@@ -172,5 +173,23 @@ class ProyectoController extends Controller
     public function basedatos(Proyecto $proyecto)
     {
         return $proyecto->sql()->with('tipobd')->get();
+    }
+
+    /**
+     * Activa el proyecto para que el estudiante pueda actualizar documentos
+     */
+    public function activar(Proyecto $proyecto) {
+        $update = ['state' => 'activo'];
+        $proyecto->update($update);
+        return $update;
+    }
+
+    /**
+     * Concluye la evaluacion del proyecto
+     */
+    public function completar(Proyecto $proyecto) {    
+        $update = ['state' => 'completado'];
+        $proyecto->update($update);
+        return $update;
     }
 }
