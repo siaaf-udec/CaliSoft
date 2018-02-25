@@ -50,6 +50,13 @@
         ]), 
         @endcomponent
 
+        @component('components.nav-link',[
+            'icon'=> 'fa fa-code',
+            'title' => 'Codificacion',
+            'link' => route('evaluacion.codificacion')
+        ]),
+        @endcomponent
+
     @endcomponent
 @endcan
 

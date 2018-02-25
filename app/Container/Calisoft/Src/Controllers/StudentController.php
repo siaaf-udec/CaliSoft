@@ -75,6 +75,12 @@ class StudentController extends Controller
         $proyecto = auth()->user()->proyectos()->first();
         return view('calisoft.student.student-eval-basedatos', compact('proyecto'));
     }
+    
+    public function evaluacionCodificacion()
+    {
+        $proyecto=auth()->user()->proyectos()->first();
+        return view('calisoft.student.student-eval-codificacion',compact('proyecto'));
+    }
 }
 
     
