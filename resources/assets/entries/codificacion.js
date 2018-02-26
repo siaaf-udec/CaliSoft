@@ -32,8 +32,9 @@ new Vue({
             $("#ventana").modal("show");
             axios.get('/api/itemsEvaluados/' + script).then(res => {
                 this.items = res.data;
+
                 this.nombreScript = res.data[0].url.substring(5, res.data[0].url.length);
-            });
+            }).catch(res => { console.log(res); });
         }
     },
     watch: {
