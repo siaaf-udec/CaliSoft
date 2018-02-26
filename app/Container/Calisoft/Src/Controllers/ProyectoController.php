@@ -7,6 +7,8 @@ use App\Container\Calisoft\Src\Notifications\ProyectoAsignado;
 use App\Container\Calisoft\Src\Notifications\EvaluadorAsignado;
 use App\Container\Calisoft\Src\Notifications\ProyectoAceptado;
 use App\Container\Calisoft\Src\Notifications\ProyectoEvaluacion;
+use App\Container\Calisoft\Src\Notifications\ProyectoCompletado;
+use App\Container\Calisoft\Src\Notifications\ProyectoActivado;
 
 use App\Container\Calisoft\Src\Requests\ProyectoStoreRequest;
 use App\Container\Calisoft\Src\Requests\ProyectoUpdateRequest;
@@ -181,6 +183,9 @@ class ProyectoController extends Controller
     public function activar(Proyecto $proyecto) {
         $update = ['state' => 'activo'];
         $proyecto->update($update);
+        //Notificacion a integrantes
+        $usuarios = $proyecto->usuarios()->where('role', '=', 'student')->get();
+        Notification::send($usuarios, new ProyectoActivado($proyecto));
         return $update;
     }
 
@@ -190,6 +195,10 @@ class ProyectoController extends Controller
     public function completar(Proyecto $proyecto) {    
         $update = ['state' => 'completado'];
         $proyecto->update($update);
+
+        //Notificacion a integrantes
+        $usuarios = $proyecto->usuarios()->where('role', '=', 'student')->get();
+        Notification::send($usuarios, new ProyectoCompletado($proyecto));
         return $update;
     }
 }

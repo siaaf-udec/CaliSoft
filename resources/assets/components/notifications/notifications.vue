@@ -37,6 +37,8 @@ import ProyectoAceptado from './proyecto-aceptado';
 import ProyectoEvaluacion from './proyecto-evaluacion';
 import CasoPruebaCreado from './caso-prueba-creado';
 import CasoPruebaEnviado from './caso-prueba-enviado';
+import ProyectoCompletado from './proyecto-completado';
+import ProyectoActivado from './proyecto-activado';
 
 const USER_ID = $("meta[name='user-id']").attr('content');
 
@@ -44,7 +46,8 @@ export default {
     components: {
         ProyectoCreado, InvitacionRecibida, ProyectoDenegado, ProyectoAsignado, 
         InvitacionRechazada, InvitacionAceptada, ProyectoAceptado, EvaluadorAsignado,
-        ProyectoEvaluacion, CasoPruebaCreado, CasoPruebaEnviado
+        ProyectoEvaluacion, CasoPruebaCreado, CasoPruebaEnviado, ProyectoCompletado,
+        ProyectoActivado
     },
     data() {
         return { count: 0, notificaciones: [] };

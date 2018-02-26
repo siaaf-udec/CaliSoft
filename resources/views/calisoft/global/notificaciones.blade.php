@@ -81,6 +81,15 @@
                                                 del proyecto: <strong>@{{notificacion.data.proyecto}}</strong>. Por favor 
                                                 proceda a realizar la evaluación.
                                             </p>
+                                            <p v-if="notificacion.data.type === 'proyecto-completado'">
+                                                La evaluación de su <strong>@{{notificacion.data.proyecto}}</strong> 
+                                                a concluido. Por favor revise sus resultados y proceda a almacenar los informes.
+                                            </p>
+                                            <p v-if="notificacion.data.type === 'proyecto-activado'">
+                                                Su proyecto <strong>@{{notificacion.data.proyecto}}</strong> 
+                                                Cambió su estado a activado, por favor proceda a realizar las correciones necesarias 
+                                                para su posterior envío.
+                                            </p>
                                         </div>
                                         <!--Fin texto según notificación-->    
                                     </li>
