@@ -15,9 +15,10 @@ class ItemsEvaluadosController extends Controller
     //
     public function __construct(){
         $this->middleware('auth');
-        $this->middleware('role:evaluator,student', [
-            'except' => ['index']
+        $this->middleware('role:evaluator', [
+            'except' => ['index','show']
         ]);
+        $this->middleware('role:student')->only('show');
     }
 
     public function show($id){
