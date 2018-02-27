@@ -10,14 +10,14 @@
                   :class="{'list-group-item-info': evaluador.PK_id == evaluadorID}">
 
                   <a @click="evaluadorID = evaluador.PK_id">{{ evaluador.name }}</a>
-                  <span class="badge">{{  evaluador.promedio }}%</span>
+                  <span class="badge">{{ evaluador.promedio }}%</span>
                 </li>
             </ul>
             <ul class="list-group">
               <li class="list-group-item" v-for="evaluacion in evaluacionesEscogidas" 
                 :key="`${evaluacion.FK_ComponenteId}-${evaluacion.EvaluatorId}`">
                 <h5 class="list-group-item-heading">
-                  {{ evaluacion.componente.nombre}}
+                  {{ evaluacion.componente.nombre }}
                   <span class="pull-right fa" :class="{
                     'fa-check text-success': evaluacion.checked,
                     'fa-times text-danger': !evaluacion.checked 
@@ -47,11 +47,7 @@ export default {
         let evaluaciones = this.evaluaciones.filter(
           ev => ev.evaluador.PK_id === evaluador.PK_id
         );
-        let promedio =
-          evaluaciones.reduce((sum, ev) => sum + ev.checked, 0) /
-          evaluaciones.length *
-          100;
-
+        let promedio = _.meanBy(evaluaciones, "checked") * 100;
         evaluador.promedio = Math.round(promedio);
         return evaluador;
       });

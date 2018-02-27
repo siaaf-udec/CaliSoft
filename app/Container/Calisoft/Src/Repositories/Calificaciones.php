@@ -22,18 +22,18 @@ class Calificaciones
     }
 
     public function modelacion()
-    {
-        $documentos = $proyecto->documentos()
+    {   
+        $documentos = $this->$proyecto->documentos()
             ->with('tipo', 'evaluaciones.componente', 'evaluaciones.evaluador')->get();
-        $promediosDeDocumentos = $documentos->map(function ($documento) {
-            $evaluacionesPorEvaluador = $documento->evaluaciones->groupBy('evaluador.name');
-            $promediosPorEvaluador = $evaluacionesPorEvaluador->map(function ($evaluaciones) {
-                return $evaluaciones->avg('checked') * 100;
-            });
-            return $promediosPorEvaluador->avg();
-        });
-        $promedioTotal = round($promediosDeDocumentos->avg());
-        return $promedioTotal;
+        $total = $documentos
+            ->filter(function ($doc) {
+                return $doc->evaluaciones->count() && $doc->tipo->required;
+            })
+            ->map(function ($doc) {
+                return $doc->evaluaciones->avg('checked');
+            })
+            ->avg() * 100;
+        return round($total);
     }
 
     public function plataforma()

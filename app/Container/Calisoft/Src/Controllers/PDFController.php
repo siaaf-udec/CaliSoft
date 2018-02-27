@@ -17,8 +17,18 @@ class PDFController extends Controller
      */
     public function modelacion(Proyecto $proyecto)
     {
-        $documentos = $proyecto->documentos()->with('tipo', 'evaluaciones.componente', 'evaluaciones.evaluador')->get();
-        $pdf = PDF::loadView('pdf.modelacion', compact('proyecto', 'documentos'));
+        $documentos = $proyecto->documentos()
+            ->with('tipo', 'evaluaciones.componente', 'evaluaciones.evaluador')->get();
+        $total = $documentos
+            ->filter(function ($doc) {
+                return $doc->evaluaciones->count() && $doc->tipo->required;
+            })
+            ->map(function ($doc) {
+                return $doc->evaluaciones->avg('checked');
+            })
+            ->avg() * 100;
+        $total = round($total);
+        $pdf = PDF::loadView('pdf.modelacion', compact('proyecto', 'documentos', 'total'));
         return $pdf->stream('modelacion.pdf');
     }
 

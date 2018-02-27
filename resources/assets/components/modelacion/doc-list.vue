@@ -9,7 +9,9 @@
             <a @click.prevent="$emit('selected', documento)">
                 {{ documento.nombre }} ({{ documento.tipo.nombre }})
             </a>
-            <span class="badge">{{ prDocumento(documento) }}%</span>
+            <span class="badge" v-if="documento.evaluaciones.length && documento.tipo.required">
+              {{ prDocumento(documento) }}%
+            </span>
 
         </li>
     </ul>
@@ -20,17 +22,17 @@ import _ from "lodash";
 export default {
   props: ["documentos", "active"],
   methods: {
-    prEvaluador(evaluaciones) {
-      return _.meanBy(evaluaciones, "checked");
-    },
     prDocumento(doc) {
-      let evaluadores = _.values(_.groupBy(doc.evaluaciones, "FK_EvaluatorId"));
-      return _.meanBy(evaluadores, ev => this.prEvaluador(ev)) * 100;
+      let promedio = _.meanBy(doc.evaluaciones, 'checked') * 100;
+      return Math.round(promedio);
     }
   },
   computed: {
     total() {
-      return _.meanBy(this.documentos, doc => this.prDocumento(doc));
+      return Math.round(_.meanBy(this.validDocs, doc => this.prDocumento(doc)));
+    },
+    validDocs() {
+      return this.documentos.filter(doc => doc.evaluaciones.length && doc.tipo.required)
     }
   }
 };
