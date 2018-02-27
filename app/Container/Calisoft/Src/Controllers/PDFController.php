@@ -5,6 +5,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\User;
+use App\Container\Calisoft\Src\Repositories\Calificaciones;
 use PDF;
 
 class PDFController extends Controller
@@ -19,15 +20,7 @@ class PDFController extends Controller
     {
         $documentos = $proyecto->documentos()
             ->with('tipo', 'evaluaciones.componente', 'evaluaciones.evaluador')->get();
-        $total = $documentos
-            ->filter(function ($doc) {
-                return $doc->evaluaciones->count() && $doc->tipo->required;
-            })
-            ->map(function ($doc) {
-                return $doc->evaluaciones->avg('checked');
-            })
-            ->avg() * 100;
-        $total = round($total);
+        $total = (new Calificaciones())->modelacion($documentos);
         $pdf = PDF::loadView('pdf.modelacion', compact('proyecto', 'documentos', 'total'));
         return $pdf->stream('modelacion.pdf');
     }

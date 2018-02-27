@@ -16,14 +16,14 @@ class Calificaciones
 
     private $proyecto;
 
-    function __construct(Proyecto $proyecto)
+    function __construct(Proyecto $proyecto = null)
     {
         $this->proyecto = $proyecto;
     }
 
-    public function modelacion()
+    public function modelacion($documentos)
     {   
-        $documentos = $this->$proyecto->documentos()
+        $documentos = $documentos ?: $this->$proyecto->documentos()
             ->with('tipo', 'evaluaciones.componente', 'evaluaciones.evaluador')->get();
         $total = $documentos
             ->filter(function ($doc) {
