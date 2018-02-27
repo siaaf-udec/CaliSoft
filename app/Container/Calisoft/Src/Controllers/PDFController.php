@@ -46,7 +46,7 @@ class PDFController extends Controller
             return $componente->pivot->total > 0;
         })->avg("pivot.calificacion");
 
-        $promedio = round($promedio,2);
+        $promedio = round($promedio);
         $pdf = PDF::loadView('pdf.basedatos', compact('proyecto', 'sql','promedio'));
         //return view('pdf.basedatos', compact('proyecto', 'sql'));
         return $pdf->stream('basedatos.pdf');
@@ -54,7 +54,7 @@ class PDFController extends Controller
 
     public function plataforma(Proyecto $proyecto) {
         $casos = $proyecto->casoPruebas()->with('pruebas')->get();
-        $total = $casos->avg('calificacion');
+        $total = round($casos->avg('calificacion'));
         $pdf = PDF::loadView('pdf.plataforma', compact('casos', 'total', 'proyecto'));
         return $pdf->stream('plataforma.pdf');
     }
