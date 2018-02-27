@@ -3,11 +3,11 @@
         <div class="panel-heading">
             <div class="row">
                 <div class="col-xs-6">
-                    <h4 class="panel-header">{{ proyecto.nombre }}</h4>
+                    <h4 class="panel-header m-0">{{ proyecto.nombre }}</h4>
                 </div>
                 <div class="col-xs-6">
                     <dropdown v-if="evaluacion" v-model="dropdown">
-                        <button class="btn btn-xs" @click="dropdown=true">
+                        <button class="btn btn-xs pull-right" @click="dropdown=true">
                             EVALUACIÓN
                             <span class="caret"></span>
                         </button>
@@ -98,3 +98,8 @@ export default {
   }
 };
 </script>
+<style>
+    .m-0 {
+        margin: 0;
+    }
+</style>
