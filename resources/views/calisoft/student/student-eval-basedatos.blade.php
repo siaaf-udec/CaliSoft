@@ -9,10 +9,19 @@
         ])
 
         <div id="app" class="row">
-           
+        <button type="button"  class="btn green-jungle center-block">
+                                    <i class="fa fa-arrow-circle-right"></i>
+                                    Ver Resultados Calificados
+                                </button><br>
+           <tabla-componente :read="true"></tabla-componente>  
         </div>
 
 
         @endcomponent
     </div>
 @endsection
+@push('functions')
+    <script>window.archivoId = "{{ $proyecto->sql->PK_id }}"</script>
+    <script src="/assets/global/plugins/jquery.media.js"></script>
+    <script src="/js/base-datos.js"></script>
+@endpush

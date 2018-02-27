@@ -9,7 +9,7 @@
                     <th class="text-center">Calificación</th>
                 </thead>
                 <tbody>
-                    <tr is="fila-componente" v-for="componente in componentes" :item="componente" :key="componente.PK_id" />
+                    <tr is="fila-componente" v-for="componente in componentes" :item="componente" :key="componente.PK_id" :read="read" />
                 </tbody>
             </table>
     </div>
@@ -26,6 +26,9 @@ import filaComponente from './fila-componente';
 import _ from 'lodash';
     export default{
         components:{ TextareaInput,filaComponente},
+        props:{
+            read:{type:Boolean, default:true},
+        },
         data(){
             return {
                 componentes:[]

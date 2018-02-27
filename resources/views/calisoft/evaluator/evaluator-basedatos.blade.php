@@ -18,7 +18,7 @@
                                     Calificación Automatica
                                 </button>
                         <h5><center><strong>Información</strong></center></h5>
-                        <tabla-componente ></tabla-componente>  
+                        <tabla-componente :read="false"></tabla-componente>  
                         <form method="POST" action="{{route('observacion-bd',['sql'=>$proyecto->sql->PK_id])}}">
                             {{csrf_field()}}               
                                     @component('components.textarea',[

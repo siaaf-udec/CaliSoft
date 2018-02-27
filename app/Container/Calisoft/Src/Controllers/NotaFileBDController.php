@@ -15,7 +15,7 @@ class NotaFileBDController extends Controller
     {
         $this->evaluations=$evaluations;
         $this->middleware('auth');
-        $this->middleware('role:evaluator', [
+        $this->middleware('role:evaluator,student', [
             'except' => ['index']
         ]);
     }

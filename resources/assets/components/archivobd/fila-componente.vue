@@ -4,13 +4,13 @@
             <td v-text="item.nombre"></td>
             <td>  
                 <input type="text" name="total" class="form-control" v-validate="'required|min_value:0|numeric'" 
-                    v-model="item.pivot.total" required="required" />
+                    v-model="item.pivot.total" required="required" v-bind:readonly="read" />
                 <span v-if='errors.has("total")' class="text-danger"  >{{errors.collect("total")[0]}}</span>
             </td>
             <td> 
                 <input type="text" name="acertadas" class="form-control" 
                     v-validate="{ required: true, min_value: 0, max_value: item.pivot.total, numeric: true }" 
-                    v-model="item.pivot.acertadas" required="required"/>
+                    v-model="item.pivot.acertadas" required="required" v-bind:readonly="read"/>
                 <span v-if='errors.has("acertadas")' class="text-danger"  >
                     {{ errors.collect("acertadas")[0] }}
                 </span>       
@@ -29,7 +29,8 @@ import TextInput from "../inputs/text-input";
 export default {
   components: { TextInput },
   props: {
-    item: { type: Object, required: true }
+    item: { type: Object, required: true },
+    read: {type: Boolean, default: true}
   },
   methods: {
     update(item) {
