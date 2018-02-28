@@ -16,7 +16,8 @@
                 <div id="collapse2" class="panel-collapse collapse">
                     <div class="panel-body">
                       <ul>
-                        <li>Subir archivo de bases de datos con extension (".SQL"), solo permite cargar un archivo para la calificación del codigo.</li>                        
+                        <li>Subir archivo de bases de datos con extensión  (".SQL"), solo permite cargar un archivo para la calificación del codigo.</li>                        
+                        <li>Visualizar el codigo SQL que se a cargado previamente.</li>
                         <li>Eliminar el archivo de bases de datos cargado para la calificación.</li>
                       </ul>
                   </div>

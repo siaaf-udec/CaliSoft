@@ -45,7 +45,7 @@
                     <div class="form-group">
                         <label>Tipo de documento</label>
                             <select id="tidocu" name="FK_TipoBdId" class="form-control select2" required>
-                                <option value=""></option>
+                                <option value="">Escoja Base de Datos</option>
                                 <option value="1">MySql</option>
                                 <option value="2">PostgreSql</option>
                             <select>

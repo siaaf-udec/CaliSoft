@@ -10,7 +10,7 @@
                 <proyecto-vista></proyecto-vista>
             </div>
         @endcan
-
+        @include('partials.modal-help-proyecto-grado')
     @endcomponent
 </div>
 
