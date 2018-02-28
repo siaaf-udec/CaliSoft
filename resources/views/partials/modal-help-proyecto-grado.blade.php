@@ -21,7 +21,7 @@
                   <li>Podra enviar la propuesta del proyecto si esta seguro de los datos que a registrado.</li>
                   <li>Podra editar los datos del proyecto si hay algun dato incorrecto.</li>
                   <li>Podra eliminar la propuesta del proyecto si no esta seguro de realizarlo.</li>
-                  <li>Una vez el proyecto sea aceptado podran vizualizar los evaluadores asignados.</li>
+                  <li>Una vez el proyecto sea aceptado podran vizualizar los evaluadores asignados y se habilitara en el menu la opción para subir la documentación respectiva.</li>
                   <li>Cuando esten todos los documentos cargados podran realizar la evaluación del proyecto</li>
                 </ul>
               </div>

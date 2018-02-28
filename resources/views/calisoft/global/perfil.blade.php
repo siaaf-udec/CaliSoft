@@ -180,6 +180,7 @@
                 </div>
             </div>
         </div>
+        @include('partials.modal-help-perfil')
     @endcomponent
     </div>
 @endsection

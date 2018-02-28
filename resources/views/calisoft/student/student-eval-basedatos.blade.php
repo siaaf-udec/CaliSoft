@@ -13,9 +13,12 @@
                                     <i class="fa fa-arrow-circle-right"></i>
                                     Ver Resultados Calificados
                                 </button><br>
-           <tabla-componente :read="true"></tabla-componente>  
+            <div class="col-md-1"></div>
+            <div class="col-md-10">
+                <tabla-componente :read="true"></tabla-componente>  
+            </div>
+            <div class="col-md-1"></div>                           
         </div>
-
 
         @endcomponent
     </div>
