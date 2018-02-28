@@ -5,6 +5,7 @@ namespace App\Container\Calisoft\Src\Repositories;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Container\Calisoft\Src\ItemsCodificacion;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 
 /**
@@ -51,14 +52,24 @@ class Calificaciones
     public function codificacion()
     {
         $promedios=Collect();
-        $items=ItemsCodificacion::all()->pluck('item','valor','PK_Id');
+        $items=ItemsCodificacion::all();
         foreach($items as $item){
             $query=$this->query($item);
             $promedios->push(['promedio'=>$query->avg('nota') * $item->valor,
             'prioridad'=>$item->valor
             ]);
+           
         }
+        $numerador=$promedios->sum('promedio');
+        //denominador
+        $denominador=$promedios->groupBy('prioridad');
+        $denominador=$denominador->map(function($item,$key){
+            return collect($item)->count()*$key;
 
+        });
+        $denominador=$denominador->sum();
+        //ecuacion final
+        return $numerador/$denominador;
     }
 
     public function total()
@@ -73,7 +84,7 @@ class Calificaciones
         ->join('TBL_ItemsCodificacion','TBL_NotaCodificacion.FK_ItemsId','=','TBL_ItemsCodificacion.PK_Id')
         ->select('TBL_Proyectos.PK_Id','TBL_NotaCodificacion.nota','TBL_ItemsCodificacion.item','TBL_ItemsCodificacion.valor','TBL_NotaCodificacion.total')
         ->where('TBL_NotaCodificacion.total','<>','0')
-        ->where('TBL_Proyectos.PK_id','=', $proyecto->PK_id)
+        ->where('TBL_Proyectos.PK_id','=', $this->proyecto->PK_id)
         ->where('TBL_NotaCodificacion.FK_ItemsId','=',$item->PK_id)
         ->get();
 

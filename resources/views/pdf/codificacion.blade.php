@@ -60,4 +60,12 @@
             </table>
           
     @endforeach
+    <table class="table table-borderless">
+        <tbody>
+            <tr class="info">
+                <th>Promedio General (Codificación)</th>
+                <th>{{ $nota*100 }}%</th>
+            </tr>
+        </tbody>
+    </table>
 @endsection

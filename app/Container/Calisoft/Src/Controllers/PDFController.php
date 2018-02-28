@@ -8,6 +8,7 @@ use App\Container\Calisoft\Src\User;
 use App\Container\Calisoft\Src\Repositories\Calificaciones;
 use PDF;
 
+
 class PDFController extends Controller
 {
     /**
@@ -35,11 +36,14 @@ class PDFController extends Controller
         $pdf = PDF::loadView('pdf.usuarios', ['usuarios' => User::limit(50)->get()]);
         return $pdf->stream('usuarios.pdf');
     }
-    public function scripts(Proyecto $proyecto)
+    public function scripts(Proyecto $proyecto )
     {
         $scripts = $proyecto->scripts()->with('items')->get();
-        $pdf = PDF::loadView('pdf.codificacion', compact('proyecto', 'scripts'));
+        $calificacion=new Calificaciones($proyecto);
+        $nota=$calificacion->codificacion();
+        $pdf = PDF::loadView('pdf.codificacion', compact('proyecto', 'scripts','nota'));
         return $pdf->stream('codificacion.pdf');
+        
     }
 
     public function basedatos(Proyecto $proyecto)
