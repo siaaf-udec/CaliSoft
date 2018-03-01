@@ -250,6 +250,7 @@
     </tbody>
   </table>
 </div>
+@include('partials.modal-help-diseño-basedatos')
 @endcomponent
 </div>
 @endsection

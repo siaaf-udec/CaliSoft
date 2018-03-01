@@ -17,7 +17,7 @@
             </div>
         </div>
 
-
+        @include('partials.modal-help-calificacion-modelado')
         @endcomponent
     </div>
 @endsection

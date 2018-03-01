@@ -88,7 +88,7 @@
                     </form>
                 </modal>
             </div>
-            
+            @include('partials.modal-help-subir-modelado')
         @endcomponent
     </div>
 @endsection
