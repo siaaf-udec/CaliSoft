@@ -18,6 +18,18 @@
                       <ul>
                         <li>Visualizar la lista de archivos con la extensión (“.PHP”)  correspondiente al proyecto.</li>
                         <li>Calificar archivo de codificación correspondiente al proyecto </li>
+                        <li>
+                          <strong> Tener en cuenta!!!</strong> Luego de calificar el archivo de codificación 
+                          correspondiente al proyecto, el botón de calificar desaparecerá y se habilitara 
+                          un nuevo botón el cual tiene como objetivo verificar una tabla de atributos, 
+                          ítems y su aprobación o rechazo, en caso de haber realizado la evaluación automática
+                        </li>
+                        <li>
+                          <strong>Tener en cuenta!!!</strong> Si se realiza una calificación manual del archivo de 
+                          codificación correspondiente al proyecto, el botón de modal para abrir la tabla de ítems 
+                          aparecerá vacío tanto para el evaluador como el estudiante, ya que no se realizó una
+                           evaluación autónoma de los filtros correspondientes de los ítems   
+                          </li>
                       </ul>
                   </div>
                 </div>

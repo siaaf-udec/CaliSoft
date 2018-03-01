@@ -72,9 +72,10 @@
             </modal> 
              
           
-                               
+                           
         </div>
-        
+       
+        @include('partials.modal-help-student-evaluacion-codificacion')
         @endcomponent
     </div>
 @endsection

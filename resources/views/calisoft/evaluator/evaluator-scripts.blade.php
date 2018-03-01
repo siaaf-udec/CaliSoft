@@ -37,6 +37,7 @@
                     
                 </div>
             </div>
+            @include('partials.modal-help-evaluator-evaluacion-codificacion')
         @endcomponent
             
         </div>

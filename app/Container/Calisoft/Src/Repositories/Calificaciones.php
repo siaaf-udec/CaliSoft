@@ -83,7 +83,7 @@ class Calificaciones
         ->join('TBL_NotaCodificacion','TBL_NotaCodificacion.FK_ScriptsId','=','TBL_Scripts.PK_Id')
         ->join('TBL_ItemsCodificacion','TBL_NotaCodificacion.FK_ItemsId','=','TBL_ItemsCodificacion.PK_Id')
         ->select('TBL_Proyectos.PK_Id','TBL_NotaCodificacion.nota','TBL_ItemsCodificacion.item','TBL_ItemsCodificacion.valor','TBL_NotaCodificacion.total')
-        ->where('TBL_NotaCodificacion.total','<>','0')
+        ->where('TBL_NotaCodificacion.total','<>',0)
         ->where('TBL_Proyectos.PK_id','=', $this->proyecto->PK_id)
         ->where('TBL_NotaCodificacion.FK_ItemsId','=',$item->PK_id)
         ->get();
