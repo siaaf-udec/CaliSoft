@@ -1,5 +1,6 @@
 import AnalizadorLexico from './analizador-lexico';
 import FiltroItems from './filtro-items';
+import FiltroNotaciones from './filtro-notaciones';
 
 export default class ReglasEstandar{
 
@@ -23,9 +24,9 @@ export default class ReglasEstandar{
         this.evaluarItems('T_CONST');
         this.evaluarItems('T_INDENTACION');
         this.evaluarComentarios();
-        peticion = this.construirPeticion(scriptId);
-        peticion = peticion.concat(this.construirPeticionItems(scriptId));
-        this.guardarCalificacion(peticion); 
+        //peticion = this.construirPeticion(scriptId);
+        //peticion = peticion.concat(this.construirPeticionItems(scriptId));
+        //this.guardarCalificacion(peticion); 
         return this.calificacionItems;  
     }
 
@@ -59,11 +60,11 @@ export default class ReglasEstandar{
         switch(elemento.item){
             case 'T_VARIABLE':
             case 'T_FUNCTION':
-            case 'T_CLASS'   : return this.esCamelCase(elemento);
-            case 'T_CONST'   : return this.esCamelCase(elemento);
+            case 'T_CLASS'   : return this.esLowerCamelCase(elemento);
+            case 'T_CONST'   : return this.esLowerCamelCase(elemento);
             case 'T_INDENTACION' : return this.evaluarIndentacion(elemento);
-            case 'T_NAMESPACE'   : return this.esCamelCase(elemento); 
-         }
+            case 'T_NAMESPACE'   : return this.esLowerCamelCase(elemento); 
+        }
     }
 
     evaluarIndentacion(elemento){
@@ -112,11 +113,17 @@ export default class ReglasEstandar{
         });
     }
 
-    esCamelCase(elemento){
+    esLowerCamelCase(elemento){
+        let validacion = FiltroNotaciones.validarLowerCamelCase(elemento.atributo);
+        if(elemento.atributo.length < 5){
+           if(FiltroNotaciones.tieneMasyuscula(elemento.atributo)){
+              validacion = false; 
+           }   
+        }
         this.itemsEvaluados.push({
             atributo : elemento.atributo,
             fila: elemento.fila,
-            calificacion : true,
+            calificacion : validacion,
             FK_itemId : this.buscarIdItem(elemento.item),     
         });
         return true;
