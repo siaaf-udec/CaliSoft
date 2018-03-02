@@ -26,4 +26,7 @@ Route::put('/evaluar-codificacion/{script}','NotaScriptController@comentario')
 Route::post('/evaluar-basedatos/{sql}','NotaFileBDController@observacion')
     ->name('observacion-bd');
 
+// Consulta el número de pruebas hechas sobre un caso prueba
+Route::get('pruebasCasoPrueba/{casoPrueba}', 'CasoPruebaController@pruebas');
+
 

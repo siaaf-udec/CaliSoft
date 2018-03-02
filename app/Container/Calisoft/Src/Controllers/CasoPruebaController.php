@@ -7,6 +7,7 @@ use Illuminate\Http\UploadedFile;
 use App\Container\Calisoft\Src\Requests\CasoPruebaStoreRequest;
 use App\Container\Calisoft\Src\Requests\CasoPruebaEnviarRequest;
 use App\Container\Calisoft\Src\CasoPrueba;
+use App\Container\Calisoft\Src\Prueba;
 use App\Container\Calisoft\Src\InputTypes;
 use App\Container\Calisoft\Src\Proyecto;
 use App\Http\Controllers\Controller;
@@ -149,6 +150,12 @@ class CasoPruebaController extends Controller
     {
         Storage::disk('casoPruebas')->delete($casoPrueba->getOriginal('formulario'));
         $casoPrueba->delete();
+    }
+
+    public function pruebas(CasoPrueba $casoPrueba)
+    {
+        $numero = Prueba::where('FK_CasoPruebaId',$casoPrueba->PK_id)->count();
+        return $numero;
     }
 
     

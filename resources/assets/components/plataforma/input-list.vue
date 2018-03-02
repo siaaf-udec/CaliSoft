@@ -1,5 +1,35 @@
 <template>
     <section>
+        <div class="dashboard-stat2 ">
+            <div class="display">
+                <div class="number">
+                    <h3 v-if="totales == 30" class="font-green-sharp">
+                        <span data-counter="counterup" :data-value="totales" v-text="totales"></span>
+                    </h3>
+                    <h3 v-if="totales != 30" class="font-red-haze">
+                        <span data-counter="counterup" :data-value="totales" v-text="totales"></span>
+                    </h3>
+                        <small>Barra de proceso</small>
+                </div>
+                <div class="icon">
+                    <i class="icon-like"></i>
+                </div>
+            </div>
+            <div class="progress-info">
+                <div class="progress">
+                    <span v-if="totales == 30" :style="{ width: porcentaje.toString() + '%' }" class="progress-bar progress-bar-danger green-sharp">
+                        <span class="sr-only">85% change</span>
+                    </span>
+                    <span v-if="totales != 30" :style="{ width: porcentaje.toString() + '%' }" class="progress-bar progress-bar-danger red-haze">
+                        <span class="sr-only">85% change</span>
+                    </span>
+                </div>
+                <div class="status">
+                    <div class="status-title"> Porcentaje </div>
+                    <div class="status-number" > {{porcentaje.toString()}}% </div>
+                </div>
+            </div>
+        </div>
         <form>
             <table class="table table-striped table-bordered table-hover" id="sample">
                 <thead>
@@ -39,7 +69,7 @@
                 </tfoot>
             </table>
         </form>
-        <div class="row">
+        <div class="row" v-if="totales<30">
             <div class="col-md-4">
                 <button class="btn green-jungle btn-block" @click="cargar()">
                     <i class="fa fa-plus"></i> Cargar prueba   
@@ -68,12 +98,26 @@ export default {
       values: [],
       tipos: ["normal", "sql", "xss"],
       selected: -1,
-      valido: 0
+      valido: 0,
+      totales: 0,
+      porcentaje: 0
     };
   },
+  created() { 
+        this.refresh();       
+        
+    },
   methods: {
+    refresh() {
+        axios.get(`/pruebasCasoPrueba/${window.casoPruebaId}`)
+        .then(res => {this.totales = res.data,
+                this.porcentaje = Math.round(((res.data * 100) / 30));
+        });
+        //this.porcentaje= (this.totales + 100);
+    },
     cargar() {
       this.select();
+
       axios
         .post("/api/testing", {
           inputs: this.formulario.map(input => input.type),
@@ -107,6 +151,7 @@ export default {
         })
         .then(() => {
             toastr.success('Prueba Guardada')
+            this.refresh();
             this.values = [];
             this.errors.clear()
         });

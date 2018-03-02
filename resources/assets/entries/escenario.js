@@ -28,17 +28,26 @@ new Vue({
             json: [],
             test: {},
             prueba: {},
+            
             formErrors: {},
             formErrorsUpdate: {},
             casoPruebaId: window.casoPruebaId,
         }
     },
-
-    created() {        
-        axios.get(`/api/casoPrueba/${window.casoPruebaId}`)
-            .then(res => this.json = res.data);
+    
+    created() { 
+        this.refresh();       
+        
+        
     },
     methods: {
+        refresh() {
+
+            axios.get(`/api/casoPrueba/${window.casoPruebaId}`)
+            .then(res => this.json = res.data);
+            axios.get(`/pruebasCasoPrueba/${window.casoPruebaId}`)
+            .then(res => this.totales = res.data);
+        },
         store(){
             //prueba[text] = test[1];
             console.log(this.test[3]);
@@ -50,14 +59,19 @@ new Vue({
                 
             }
             console.log(this.prueba);
+            this.refresh();
             axios.post('/api/testing', this.test)
                 .then(response => {
                     this.test.push(response.data);
                     this.formErrors = {};
                     this.test = {};
+                    this.totales = this.totales + 1;
+                    this.refresh();
                     toastr.success('primera prueba');
+                    
                 })
                 .catch(error => this.formErrors = error.response.data);
+            
         }
         
     }
