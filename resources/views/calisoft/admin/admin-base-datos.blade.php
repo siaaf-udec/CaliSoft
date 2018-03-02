@@ -8,6 +8,7 @@
                 <thead>
                     <th class="text-center">Componente</th>
                     <th class="text-center">Estandar</th>
+                    <th class="text-center">Nomenclatura</th>
                     <th class="text-center">Valor</th>
                     <th class="text-center">Operación</th>
                 </thead>
@@ -15,6 +16,7 @@
                     <tr v-for="componente in componentes" class="text-center">
                         <td v-text="componente.nombre"></td>
                         <td v-text="componente.estandar"></td>
+                        <td v-text="componente.nomenclatura"></td>
                         <td v-text="componente.valor"></td>
                         <td>
                             <button class="editar-componente btn blue" title="Editar Componentes" @click.prevent="openEditModal(componente)">

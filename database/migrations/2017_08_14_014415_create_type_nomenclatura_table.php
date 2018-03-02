@@ -17,6 +17,7 @@ class CreateTypeNomenclaturaTable extends Migration
           $table->increments('PK_id');
           $table->string('nombre');
           $table->string('estandar');
+          $table->string('nomenclatura');
           $table->integer('valor');
           $table->timestamps();
         });
