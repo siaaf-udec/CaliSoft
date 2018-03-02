@@ -50,4 +50,10 @@ class EvaluatorController extends Controller
         return view('calisoft.evaluator.evaluator-escenario', compact('proyecto','casoPrueba'));
     }
 
+    public function analizesql()
+    {
+        return view('calisoft.evaluator.evaluator-analizesql');
+        
+    }
+
 }

@@ -13,10 +13,10 @@
                         <code-preview url="{{$proyecto->sql->url}}" prefix="/api/sql/preview/" mode="text/x-sql"></code-preview>                  
                     </div>
                     <div class="col-md-6">
-                            <button type="button"  class="btn green-jungle center-block">
+                           <a href="/analizesql"><button type="button"  class="btn green-jungle center-block">
                                     <i class="fa fa-arrow-circle-right"></i>
                                     Calificación Automatica
-                                </button>
+                                </button></a> 
                         <h5><center><strong>Información</strong></center></h5>
                         <tabla-componente :read="false"></tabla-componente>  
                         <form method="POST" action="{{route('observacion-bd',['sql'=>$proyecto->sql->PK_id])}}">
@@ -30,7 +30,9 @@
                                     @endcomponent
                             <button type="submit"  class="btn green-jungle center-block">
                             <i class="fa fa-edit"></i> Aceptar Calificación</button>
-                        </form>                        
+                        </form>   
+                        
+                                             
                     </div>
                 </div>
                 @include('partials.modal-help-calificar-bd')
