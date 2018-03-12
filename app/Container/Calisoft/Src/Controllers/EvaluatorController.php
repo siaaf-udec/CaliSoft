@@ -5,6 +5,7 @@ namespace App\Container\Calisoft\Src\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Container\Calisoft\Src\Proyecto;
+use App\Container\Calisoft\Src\NomenclaturaBd;
 use App\Container\Calisoft\Src\Script;
 use App\Container\Calisoft\Src\Documento;
 use App\Container\Calisoft\Src\CasoPrueba;
@@ -50,10 +51,19 @@ class EvaluatorController extends Controller
         return view('calisoft.evaluator.evaluator-escenario', compact('proyecto','casoPrueba'));
     }
 
-    public function analizesql()
+    public function analizesql(Proyecto $proyecto)
     {
-        return view('calisoft.evaluator.evaluator-analizesql');
-        
+        $nomenclaturabd = NomenclaturaBd::
+                    select('tbl_tiponomenclatura.nomenclatura')
+                          ->get();
+        $h = "Hola controlador evaluador";   
+          return view('calisoft.evaluator.evaluator-analizesql',compact('proyecto', $h),[
+            'nomenbd' => $nomenclaturabd,
+          ]);
+
+         
+
+
     }
 
 }
