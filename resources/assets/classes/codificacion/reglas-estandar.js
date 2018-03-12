@@ -24,10 +24,9 @@ export default class ReglasEstandar{
         this.evaluarItems('T_CONST');
         this.evaluarItems('T_INDENTACION');
         this.evaluarComentarios();
-        //peticion = this.construirPeticion(scriptId);
-        //peticion = peticion.concat(this.construirPeticionItems(scriptId));
-        //this.guardarCalificacion(peticion); 
-        return this.calificacionItems;  
+        peticion = this.construirPeticion(scriptId);
+        peticion = peticion.concat(this.construirPeticionItems(scriptId));
+        this.guardarCalificacion(peticion);   
     }
 
     evaluarItems(item){
@@ -58,12 +57,12 @@ export default class ReglasEstandar{
     
     tipoDeEvaluacion(elemento){
         switch(elemento.item){
-            case 'T_VARIABLE':
-            case 'T_FUNCTION':
-            case 'T_CLASS'   : return this.esLowerCamelCase(elemento);
-            case 'T_CONST'   : return this.esLowerCamelCase(elemento);
+            case 'T_VARIABLE'    :
+            case 'T_FUNCTION'    : return this.esLowerCamelCase(elemento); 
+            case 'T_CONST'       : return this.esSnakeCase(elemento);
             case 'T_INDENTACION' : return this.evaluarIndentacion(elemento);
-            case 'T_NAMESPACE'   : return this.esLowerCamelCase(elemento); 
+            case 'T_CLASS'       :
+            case 'T_NAMESPACE'   : return this.esUpperCamelCase(elemento); 
         }
     }
 
@@ -71,7 +70,7 @@ export default class ReglasEstandar{
         this.itemsEvaluados.push({
             atributo : elemento.atributo.substring(2,elemento.atributo.length).toLowerCase(),
             fila: elemento.fila,
-            calificacion : true,
+            calificacion : elemento.calificacion,
             FK_itemId : this.buscarIdItem(elemento.item),     
         });
         return elemento.calificacion;
@@ -126,7 +125,34 @@ export default class ReglasEstandar{
             calificacion : validacion,
             FK_itemId : this.buscarIdItem(elemento.item),     
         });
-        return true;
+        return validacion;
+    }
+
+    esUpperCamelCase(elemento){
+        let validacion = FiltroNotaciones.validarUpperCamelCase(elemento.atributo);
+        if(elemento.atributo.length < 5){
+            if(FiltroNotaciones.tieneMasyuscula(elemento.atributo)){
+                validacion = false; 
+             }
+        }
+        this.itemsEvaluados.push({
+            atributo : elemento.atributo,
+            fila: elemento.fila,
+            calificacion : validacion,
+            FK_itemId : this.buscarIdItem(elemento.item),     
+        });
+        return validacion;
+    }
+
+    esSnakeCase(elemento){
+        let validacion = FiltroNotaciones.validarSnakeCase(elemento.atributo);
+        this.itemsEvaluados.push({
+            atributo : elemento.atributo,
+            fila: elemento.fila,
+            calificacion : validacion,
+            FK_itemId : this.buscarIdItem(elemento.item),     
+        });
+        return validacion;
     }
 
     buscarIdItem(item){
@@ -156,7 +182,9 @@ export default class ReglasEstandar{
 
     guardarCalificacion(peticion){
         axios.all(peticion)
-        .then(axios.spread((a)=>{}))
+        .then(axios.spread((a)=>{
+            toastr.success("Script calificado correctamente");
+        }))
         .catch(reason => console.log(reason.response.data.errors));
     }
 

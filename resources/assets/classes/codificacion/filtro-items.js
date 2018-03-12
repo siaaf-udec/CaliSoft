@@ -25,6 +25,7 @@ export default class FiltroItems{
         let variables = [];
         let token = this.tokens.siguienteToken();
         let varFil = [];
+        let variablesGlobales = ['$GLOBALS','$_SERVER','$_GET','$_POST','$_FILES','$_COOKIE','$_SESSION','$_REQUEST','$_ENV'];
         while(token != null){
             if(token.identificador === 'T_IDENTIFICADOR'){
                 if(/[$]/.test(token.atributo)){
@@ -35,7 +36,7 @@ export default class FiltroItems{
         }
 
         variables.forEach(e => {
-             if(!varFil.includes(e.atributo)){
+             if(!varFil.includes(e.atributo) && !variablesGlobales.includes(e.atributo)){
                 varFil.push(e.atributo);
                 this.items.push({
                      item : 'T_VARIABLE',
@@ -56,13 +57,16 @@ export default class FiltroItems{
                    do{
                       token =  this.tokens.siguienteToken();   
                    }while(token.identificador != 'T_IDENTIFICADOR');
-                   this.items.push({
-                       item : atributo,
-                       atributo : token.atributo,
-                       fila : token.fila,
-                       columna : token.columna,
-                       calificacion : true
-                   });
+                   if(token.atributo != '__construct'){
+                       this.items.push({
+                           item : atributo,
+                           atributo : token.atributo,
+                           fila : token.fila,
+                           columna : token.columna,
+                           calificacion : true
+                       });
+                   }
+                   
                }
                token =  this.tokens.siguienteToken();    
          }
@@ -92,9 +96,9 @@ export default class FiltroItems{
         let token = this.tokens.siguienteToken();
         while(token != null){
             switch(token.atributo){
-                case 'T_COMENTARIO'   :   
-                case 'T_COMENTARIO_L' :                         
-                case 'T_CLASS'        : this.items.push({
+                case "T_COMENTARIO"   :   
+                case "T_COMENTARIO_L" :                         
+                case "T_CLASS"        : this.items.push({
                                             item : 'T_COMENTARIO',
                                             atributo : token.atributo,
                                             fila : token.fila,
@@ -102,7 +106,7 @@ export default class FiltroItems{
                                             calificacion : true    
                                         });
                                         break;
-                case 'T_FUNCTION'     : this.items.push({
+                case "T_FUNCTION"     : this.items.push({
                                             item : 'T_COMENTARIO',
                                             atributo : token.atributo,
                                             fila : token.fila,
@@ -237,7 +241,7 @@ export default class FiltroItems{
     validarIndentacion(){
         let token = this.tokens.siguienteToken();
         let funcion = (tokenAnt,tokenAct,tokenIni,idCierre) =>{
-            
+
             if(tokenIni != undefined && idCierre != undefined){
                 if(tokenAct.atributo != 'T_LLAVE_C' && tokenAct.atributo != idCierre){
                     if(!((tokenAct.columna > (tokenIni.columna+3)) && (tokenAct.fila > tokenIni.fila))){

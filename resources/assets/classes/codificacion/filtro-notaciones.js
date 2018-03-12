@@ -109,8 +109,19 @@ export default class FiltroNotaciones {
             if(this.esMayuscula(palabra[i])){
                 validacion = true;
             }
+         }
+         return validacion;
+     }
+
+     static tieneMinuscula(palabra){
+        let validacion = false;
+        let longitud = palabra.length;
+        for(let i = 0; i < longitud; i++){
+           if(this.esMinuscula(palabra[i])){
+               validacion = true;
+           }
         }
-        return validacion;
+        return validacion;       
      }
 
      static validarLowerCamelCase(atributo){
@@ -121,7 +132,7 @@ export default class FiltroNotaciones {
                  if(!this.mayusculasSeguidas(atributo)){
                      if(!this.validarCaracteres(atributo)){
                          if(totalMayusculas > numPalabras-1){
-                             return (totalMayusculas-(numPalabras-1) < 2)? true : false;
+                             return ((totalMayusculas - (numPalabras - 1)) < 2)? true : false;
                          }else if(totalMayusculas == numPalabras-1){
                               return true    
                          }
@@ -130,6 +141,41 @@ export default class FiltroNotaciones {
              }
          }else if(atributo.length == 1){
               return this.variablesDeUnCaracter(atributo);
+         }
+         return false;
+     }
+
+    static validarUpperCamelCase(atributo){
+        let numPalabras = this.numeroDePalabras(atributo);
+        let totalMayusculas = this.contarMayusculas(atributo);
+        if(atributo.length  >= 3){ 
+            if(this.esMayuscula(atributo[0])){
+                    if(!this.validarCaracteres(atributo)){
+                        if(totalMayusculas > numPalabras){
+                            return ((totalMayusculas - (numPalabras)) < 2)? true : false;
+                        }else if(totalMayusculas == numPalabras){
+                             return true    
+                        }
+                    }
+            }
+        }else if(atributo.length == 1){
+             return this.variablesDeUnCaracter(atributo);
+        }
+        return false;    
+     }
+
+     static validarSnakeCase(atributo){
+         let numCaracteres = this.contarCaracteres(atributo,'_');
+         atributo = this.eliminarCaracter(atributo,'_');
+         let numPalabras = this.numeroDePalabras(atributo);
+         if(atributo.length >= 3){
+             if(!this.tieneMinuscula(atributo)){
+                    if(numCaracteres > numPalabras-1){
+                        return ((numCaracteres - (numPalabras - 1)) < 2)? true : false;
+                    }else if(numCaracteres == numPalabras-1){
+                         return true    
+                    }   
+             }
          }
          return false;
      }
