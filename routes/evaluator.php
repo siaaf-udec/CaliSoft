@@ -31,3 +31,6 @@ Route::get('pruebasCasoPrueba/{casoPrueba}', 'CasoPruebaController@pruebas');
 
 Route::get('/proyectos/{proyecto}/analizesql', 'EvaluatorController@analizesql')
     ->name('analizesql');
+
+Route::get('/estandar-codificacion','EvaluatorController@estandaresCodificacion')
+->name('estandar-codificacion');

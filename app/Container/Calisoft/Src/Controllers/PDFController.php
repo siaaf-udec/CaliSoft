@@ -65,4 +65,6 @@ class PDFController extends Controller
         $pdf = PDF::loadView('pdf.plataforma', compact('casos', 'total', 'proyecto'));
         return $pdf->stream('plataforma.pdf');
     }
+
+    
 }
