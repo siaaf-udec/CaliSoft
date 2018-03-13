@@ -10,6 +10,9 @@ Route::prefix('/perfil')->group(function () {
 Route::get('porcentajes', 'UserController@porcentajes')->name('porcentajes');
 Route::get('porcentajesbd', 'UserController@porcentajesBD')->name('porcentajesbd');
 
+Route::get('/estandar-codificacion','UserController@estandaresCodificacion')
+->name('estandar-codificacion');
+
 Route::get('porcentajesCodificacion', 'UserController@porcentajesCodificacion')->name('porcentajesCod');
 
 

@@ -66,8 +66,6 @@ class EvaluatorController extends Controller
 
     }
     
-    public function estandaresCodificacion(){
-        return view('calisoft.global.estandar-codificacion');
-    }
+    
 
 }

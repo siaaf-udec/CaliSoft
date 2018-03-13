@@ -109,4 +109,8 @@ class UserController extends Controller
         return view('calisoft.global.codificacion-porcentaje');
     }
 
+    public function estandaresCodificacion(){
+        return view('calisoft.global.estandar-codificacion');
+    }
+
 }
