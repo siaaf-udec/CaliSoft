@@ -23,8 +23,23 @@
                         <li>
                             <a href="#tab4" data-toggle="tab">Constantes</a>
                         </li>
-                        <li>
-                            <a href="#tab5" data-toggle="tab">Indentación</a>
+                        <li class="dropdown">
+                                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown"> Indentación
+                                        <i class="fa fa-angle-down"></i>
+                                </a>
+                                
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                             <a href="#tab5-1" data-toggle="tab" tabindex="-1">Forma Correcta</a>
+                                        </li>
+                                        <li>
+                                                <a href="#tab5-2" data-toggle="tab" tabindex="-1">Forma Incorrecta 1</a>
+                                        </li>
+                                        <li>
+                                                <a href="#tab5-3" data-toggle="tab" tabindex="-1">Forma Incorrecta 2</a>
+                                        </li>   
+                                    </ul> 
+                                       
                         </li>
                         <li>
                             <a href="#tab6" data-toggle="tab">Comentarios</a>
@@ -75,10 +90,20 @@
                                     constante es de 3 caracteres.
                             </p>
                         </div>
-                        <div class="tab-pane" id="tab5">
+                        <div class="tab-pane" id="tab5-1">
                             <p>La indentación se puede expresar como la sangría que debe tener cada estructura de código.
                                     Entiéndase por estructura de control “if”, “else”, “while”, “for”, etc. para este estándar se definió una indentación mínima de 4 espacios, lo que corresponde a una tabulación, aunque el espacio puede ser mayor, cabe resaltar que cada elemento que este dentro de la estructura debe respetar el mismo espaciado que los demás, toda estructura declarada debe siempre llevar las llaves de apertura y cierre aun cuando esté compuesta por una sola sentencia y la sentencia debe ir después de la estructura (no pueden ir en la misma línea)
                             </p>
+                        </div>
+                        <div class="tab-pane" id="tab5-2">
+                                <p>
+                                    forma incorrecta 1
+                                </p>
+                        </div>
+                        <div class="tab-pane" id="tab5-3">
+                                <p>
+                                        forma incorrecta 2
+                                </p>
                         </div>
                         <div class="tab-pane" id="tab6">
                             <p>
