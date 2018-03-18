@@ -103,4 +103,12 @@ class Calificaciones
 
         return $query;
     }
+
+    public function global() {
+        $modelacion = $this->modelacion();
+        $plataforma = $this->plataforma();
+        $codificacion = round($this->codificacion() * 100);
+        $total = $this->total($modelacion, $plataforma, $codificacion);
+        return compact('modelacion', 'plataforma', 'codificacion', 'total');
+    }
 }

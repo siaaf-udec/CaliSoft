@@ -66,7 +66,7 @@ class ProjectPolicy
         return $proyecto && $proyecto->state == "evaluacion" || $proyecto->state == "completado";
     }
 
-    public function see_global_evaluation(User $user, Proyecto $proyecto) {
+    public function see_global(User $user, Proyecto $proyecto) {
         return $proyecto->state == "completado";
     }
 }

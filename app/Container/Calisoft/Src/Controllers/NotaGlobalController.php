@@ -17,10 +17,6 @@ class NotaGlobalController extends Controller
 
     public function total(Proyecto $proyecto) {
         $calificaciones = new Calificaciones($proyecto);
-        $modelacion = $calificaciones->modelacion();
-        $plataforma = $calificaciones->plataforma();
-        $codificacion = round($calificaciones->codificacion() * 100);
-        $total = $calificaciones->total($modelacion, $plataforma, $codificacion);
-        return compact('modelacion', 'plataforma', 'codificacion', 'total');
+        return $calificaciones->global();
     }
 }

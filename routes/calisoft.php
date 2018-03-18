@@ -27,5 +27,5 @@ Route::prefix('pdf')->group(function () {
     Route::post('proyecto/{proyecto}/codificacion', 'PDFController@scripts')->name('pdf.scripts');
     Route::post('proyecto/{proyecto}/basedatos','PDFController@basedatos')->name('pdf.basedatos');
     Route::post('proyecto/{proyecto}/plataforma', 'PDFController@plataforma')->name('pdf.plataforma');
-    
+    Route::post('proyecto/{proyecto}/total', 'PDFController@total')->name('pdf.total');
 });

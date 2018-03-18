@@ -26,7 +26,10 @@
                     </tr>
                 </tbody>
             </table>
-            <button class="btn btn-success btn-block">Obtener Reporte</button>
+            <form :action="`/pdf/proyecto/${proyectoId}/total`" target="_blank" method="post">
+                <input type="hidden" name="_token" :value="token()">
+                <button class="btn btn-success btn-block" type="submit">Obtener Reporte</button>
+            </form>
         </modal>
     </section>
 </template>
@@ -44,6 +47,12 @@ export default {
             this.calificaciones = res.data;
             this.loading = false;
         })
+    },
+    methods: {
+        token() {
+            let token = document.querySelector('meta[name="csrf-token"]');
+            return token.getAttribute('content')
+        }
     }
 }
 </script>

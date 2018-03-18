@@ -11,6 +11,12 @@ use PDF;
 
 class PDFController extends Controller
 {
+
+    function __construct()
+    {
+        $this->middleware('can:see_evaluations,App\Proyecto')->except('total');
+        //$this->middleware('can:see_global,proyecto')->only('total');
+    }
     /**
      * Reporte de evluacion de diagramas
      *
@@ -66,5 +72,11 @@ class PDFController extends Controller
         return $pdf->stream('plataforma.pdf');
     }
 
-    
+    public function total(Proyecto $proyecto) {
+        $calificaciones = new Calificaciones($proyecto);
+        $payload = $calificaciones->global();
+        $payload['proyecto'] = $proyecto;
+        $pdf = PDF::loadView('pdf.global', $payload);
+        return $pdf->stream('resultados.pdf');
+    }    
 }
