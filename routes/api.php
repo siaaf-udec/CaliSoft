@@ -21,7 +21,7 @@ Route::prefix('proyectos/{proyecto}')->group(function () {
     Route::get('plataforma', 'ProyectoController@plataforma'); // Consulta los Casos de prueba del proyecto
     Route::get('scripts', 'ProyectoController@scripts'); // Consulta el codigo fuente del proyecto
     Route::get('basedatos','ProyectoController@basedatos'); // Consulta el codigo sql del proyecto
-
+    Route::get('total', 'NotaGlobalController@total'); // Consulta la califacion final del proyecto
 });
 
 

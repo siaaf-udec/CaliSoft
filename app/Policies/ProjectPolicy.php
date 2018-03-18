@@ -63,6 +63,10 @@ class ProjectPolicy
      */
     public function see_evaluations(User $user) {
         $proyecto = $user->proyectos()->first();
-        return $proyecto && $proyecto->state == "evaluacion";
+        return $proyecto && $proyecto->state == "evaluacion" || $proyecto->state == "completado";
+    }
+
+    public function see_global_evaluation(User $user, Proyecto $proyecto) {
+        return $proyecto->state == "completado";
     }
 }

@@ -16,12 +16,18 @@
                 Realizar Evaluacion
             </button>
         </template>
+        <proyecto-resultados v-if="proyecto.state = 'completado'" :proyecto-id="proyecto.PK_id"/>
+
     </div>
 </template>
 <script>
+import ProyectoResultados from './proyecto-resultados'
 export default {
   props: {
     proyecto: { type: Object, required: true }
+  },
+  components: {
+      ProyectoResultados
   }
 };
 </script>

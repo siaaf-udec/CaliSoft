@@ -17,15 +17,18 @@ class Calificaciones
 
     private $proyecto;
 
-    function __construct(Proyecto $proyecto = null)
+    function __construct(Proyecto $proyecto)
     {
         $this->proyecto = $proyecto;
     }
 
-    public function modelacion($documentos)
+    public function modelacion()
     {   
-        $documentos = $documentos ?: $this->$proyecto->documentos()
-            ->with('tipo', 'evaluaciones.componente', 'evaluaciones.evaluador')->get();
+        $documentos = $this->proyecto
+            ->documentos()
+            ->with('tipo', 'evaluaciones')
+            ->get();
+
         $total = $documentos
             ->filter(function ($doc) {
                 return $doc->evaluaciones->count() && $doc->tipo->required;
@@ -34,19 +37,20 @@ class Calificaciones
                 return $doc->evaluaciones->avg('checked');
             })
             ->avg() * 100;
+
         return round($total);
     }
 
     public function plataforma()
     {
-        $casos = $this->$proyecto->casoPruebas()->with('pruebas')->get();
+        $casos = $this->proyecto->casoPruebas()->with('pruebas')->get();
         $total = round($casos->avg('calificacion'));
         return $total;
     }
 
     public function basedatos()
     {
-
+        
     }
 
     public function codificacion()
@@ -72,9 +76,18 @@ class Calificaciones
         return $numerador/$denominador;
     }
 
-    public function total()
+    public function total($modelacion, $plataforma, $codificacion)
     {
-
+        $categoria = $this->proyecto
+            ->categoria()
+            ->select('modelado', 'plataforma', 'codificacion', 'base_datos')
+            ->first();
+        $total = (
+            $modelacion * $categoria->modelado +
+            $plataforma * $categoria->plataforma +
+            $codificacion * $categoria->codificacion
+            ) / 100;
+        return round($total);
     }
     
     public function query($item){
