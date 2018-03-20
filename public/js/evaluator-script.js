@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 476);
+/******/ 	return __webpack_require__(__webpack_require__.s = 483);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -5294,7 +5294,8 @@ function makeChangeInner(doc, change) {
 
 // Revert a change stored in a document's history.
 function makeChangeFromHistory(doc, type, allowSelectionOnly) {
-  if (doc.cm && doc.cm.state.suppressEdits && !allowSelectionOnly) { return }
+  var suppress = doc.cm && doc.cm.state.suppressEdits;
+  if (suppress && !allowSelectionOnly) { return }
 
   var hist = doc.history, event, selAfter = doc.sel;
   var source = type == "undo" ? hist.done : hist.undone, dest = type == "undo" ? hist.undone : hist.done;
@@ -5319,8 +5320,10 @@ function makeChangeFromHistory(doc, type, allowSelectionOnly) {
         return
       }
       selAfter = event;
-    }
-    else { break }
+    } else if (suppress) {
+      source.push(event);
+      return
+    } else { break }
   }
 
   // Build up a reverse change object to add to the opposite history
@@ -5796,7 +5799,7 @@ function addLineWidget(doc, handle, node, options) {
     }
     return true
   });
-  signalLater(cm, "lineWidgetAdded", cm, widget, typeof handle == "number" ? handle : lineNo(handle));
+  if (cm) { signalLater(cm, "lineWidgetAdded", cm, widget, typeof handle == "number" ? handle : lineNo(handle)); }
   return widget
 }
 
@@ -6654,11 +6657,11 @@ function onResize(cm) {
 }
 
 var keyNames = {
-  3: "Enter", 8: "Backspace", 9: "Tab", 13: "Enter", 16: "Shift", 17: "Ctrl", 18: "Alt",
+  3: "Pause", 8: "Backspace", 9: "Tab", 13: "Enter", 16: "Shift", 17: "Ctrl", 18: "Alt",
   19: "Pause", 20: "CapsLock", 27: "Esc", 32: "Space", 33: "PageUp", 34: "PageDown", 35: "End",
   36: "Home", 37: "Left", 38: "Up", 39: "Right", 40: "Down", 44: "PrintScrn", 45: "Insert",
   46: "Delete", 59: ";", 61: "=", 91: "Mod", 92: "Mod", 93: "Mod",
-  106: "*", 107: "=", 109: "-", 110: ".", 111: "/", 127: "Delete",
+  106: "*", 107: "=", 109: "-", 110: ".", 111: "/", 127: "Delete", 145: "ScrollLock",
   173: "-", 186: ";", 187: "=", 188: ",", 189: "-", 190: ".", 191: "/", 192: "`", 219: "[", 220: "\\",
   221: "]", 222: "'", 63232: "Up", 63233: "Down", 63234: "Left", 63235: "Right", 63272: "Delete",
   63273: "Home", 63275: "End", 63276: "PageUp", 63277: "PageDown", 63302: "Insert"
@@ -6805,6 +6808,9 @@ function keyName(event, noShift) {
   if (presto && event.keyCode == 34 && event["char"]) { return false }
   var name = keyNames[event.keyCode];
   if (name == null || event.altGraphKey) { return false }
+  // Ctrl-ScrollLock has keyCode 3, same as Ctrl-Pause,
+  // so we'll use event.code when available (Chrome 48+, FF 38+, Safari 10.1+)
+  if (event.keyCode == 3 && event.code) { name = event.code; }
   return addModifierNames(name, event, noShift)
 }
 
@@ -8094,7 +8100,7 @@ function applyTextInput(cm, inserted, deleted, sel, origin) {
 
   var paste = cm.state.pasteIncoming || origin == "paste";
   var textLines = splitLinesAuto(inserted), multiPaste = null;
-  // When pasing N lines into N selections, insert one line per selection
+  // When pasting N lines into N selections, insert one line per selection
   if (paste && sel.ranges.length > 1) {
     if (lastCopied && lastCopied.text.join("\n") == inserted) {
       if (sel.ranges.length % lastCopied.text.length == 0) {
@@ -9728,7 +9734,7 @@ CodeMirror$1.fromTextArea = fromTextArea;
 
 addLegacyProps(CodeMirror$1);
 
-CodeMirror$1.version = "5.33.0";
+CodeMirror$1.version = "5.35.0";
 
 return CodeMirror$1;
 
@@ -10593,6 +10599,33 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 /* 5 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
+
+/***/ }),
+/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10691,33 +10724,6 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
-
-/***/ }),
-/* 6 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
 
 /***/ }),
 /* 7 */
@@ -21988,7 +21994,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(36).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(36).setImmediate))
 
 /***/ }),
 /* 14 */
@@ -22046,7 +22052,7 @@ __webpack_require__(35);
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(7);
 var Axios = __webpack_require__(17);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(6);
 
 /**
  * Create an instance of Axios
@@ -22102,7 +22108,7 @@ module.exports.default = axios;
 "use strict";
 
 
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(6);
 var utils = __webpack_require__(2);
 var InterceptorManager = __webpack_require__(26);
 var dispatchRequest = __webpack_require__(27);
@@ -22630,7 +22636,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(2);
 var transformData = __webpack_require__(28);
 var isCancel = __webpack_require__(11);
-var defaults = __webpack_require__(5);
+var defaults = __webpack_require__(6);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -27856,7 +27862,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-var apply = Function.prototype.apply;
+/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
@@ -27907,9 +27913,17 @@ exports._unrefActive = exports.active = function(item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(37);
-exports.setImmediate = setImmediate;
-exports.clearImmediate = clearImmediate;
+// On some exotic environments, it's not clear which object `setimmeidate` was
+// able to install onto.  Search each possibility in the same order as the
+// `setimmediate` library.
+exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
+                       (typeof global !== "undefined" && global.setImmediate) ||
+                       (this && this.setImmediate);
+exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
+                         (typeof global !== "undefined" && global.clearImmediate) ||
+                         (this && this.clearImmediate);
 
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 37 */
@@ -28102,7 +28116,7 @@ exports.clearImmediate = clearImmediate;
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(8)))
 
 /***/ }),
 /* 38 */
@@ -28130,7 +28144,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/notifications.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\notifications.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28139,9 +28153,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cb5abbe8", Component.options)
+    hotAPI.createRecord("data-v-407571dc", Component.options)
   } else {
-    hotAPI.reload("data-v-cb5abbe8", Component.options)
+    hotAPI.reload("data-v-407571dc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28298,7 +28312,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-creado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-creado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28307,9 +28321,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-10950002", Component.options)
+    hotAPI.createRecord("data-v-781b08f0", Component.options)
   } else {
-    hotAPI.reload("data-v-10950002", Component.options)
+    hotAPI.reload("data-v-781b08f0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28376,7 +28390,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-10950002", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-781b08f0", module.exports)
   }
 }
 
@@ -28406,7 +28420,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/invitacion-recibida.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\invitacion-recibida.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28415,9 +28429,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f34c2cb8", Component.options)
+    hotAPI.createRecord("data-v-0fe2322a", Component.options)
   } else {
-    hotAPI.reload("data-v-f34c2cb8", Component.options)
+    hotAPI.reload("data-v-0fe2322a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28490,7 +28504,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-f34c2cb8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-0fe2322a", module.exports)
   }
 }
 
@@ -28520,7 +28534,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/invitacion-aceptada.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\invitacion-aceptada.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28529,9 +28543,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-76d9c1be", Component.options)
+    hotAPI.createRecord("data-v-00620a44", Component.options)
   } else {
-    hotAPI.reload("data-v-76d9c1be", Component.options)
+    hotAPI.reload("data-v-00620a44", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28602,7 +28616,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-76d9c1be", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-00620a44", module.exports)
   }
 }
 
@@ -28632,7 +28646,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/invitacion-rechazada.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\invitacion-rechazada.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28641,9 +28655,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0b6337b6", Component.options)
+    hotAPI.createRecord("data-v-9a380020", Component.options)
   } else {
-    hotAPI.reload("data-v-0b6337b6", Component.options)
+    hotAPI.reload("data-v-9a380020", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28714,7 +28728,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0b6337b6", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-9a380020", module.exports)
   }
 }
 
@@ -28744,7 +28758,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-denegado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-denegado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28753,9 +28767,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4dbfad49", Component.options)
+    hotAPI.createRecord("data-v-c0a74162", Component.options)
   } else {
-    hotAPI.reload("data-v-4dbfad49", Component.options)
+    hotAPI.reload("data-v-c0a74162", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28825,7 +28839,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4dbfad49", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-c0a74162", module.exports)
   }
 }
 
@@ -28855,7 +28869,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-asignado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-asignado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28864,9 +28878,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d523338c", Component.options)
+    hotAPI.createRecord("data-v-3149cf80", Component.options)
   } else {
-    hotAPI.reload("data-v-d523338c", Component.options)
+    hotAPI.reload("data-v-3149cf80", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28935,7 +28949,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-d523338c", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-3149cf80", module.exports)
   }
 }
 
@@ -28965,7 +28979,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/evaluador-asignado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\evaluador-asignado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28974,9 +28988,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1ce8cdc8", Component.options)
+    hotAPI.createRecord("data-v-08925c82", Component.options)
   } else {
-    hotAPI.reload("data-v-1ce8cdc8", Component.options)
+    hotAPI.reload("data-v-08925c82", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29045,7 +29059,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1ce8cdc8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-08925c82", module.exports)
   }
 }
 
@@ -29075,7 +29089,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-aceptado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-aceptado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29084,9 +29098,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1bac69f1", Component.options)
+    hotAPI.createRecord("data-v-6d991bf7", Component.options)
   } else {
-    hotAPI.reload("data-v-1bac69f1", Component.options)
+    hotAPI.reload("data-v-6d991bf7", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29154,7 +29168,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1bac69f1", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6d991bf7", module.exports)
   }
 }
 
@@ -29184,7 +29198,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-evaluacion.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-evaluacion.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29193,9 +29207,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-686e2059", Component.options)
+    hotAPI.createRecord("data-v-1c132e42", Component.options)
   } else {
-    hotAPI.reload("data-v-686e2059", Component.options)
+    hotAPI.reload("data-v-1c132e42", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29264,7 +29278,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-686e2059", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1c132e42", module.exports)
   }
 }
 
@@ -29294,7 +29308,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/caso-prueba-creado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\caso-prueba-creado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29303,9 +29317,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6743896a", Component.options)
+    hotAPI.createRecord("data-v-8ff06bf6", Component.options)
   } else {
-    hotAPI.reload("data-v-6743896a", Component.options)
+    hotAPI.reload("data-v-8ff06bf6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29376,7 +29390,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6743896a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-8ff06bf6", module.exports)
   }
 }
 
@@ -29406,7 +29420,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/caso-prueba-enviado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\caso-prueba-enviado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29415,9 +29429,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-fcc650aa", Component.options)
+    hotAPI.createRecord("data-v-0b252031", Component.options)
   } else {
-    hotAPI.reload("data-v-fcc650aa", Component.options)
+    hotAPI.reload("data-v-0b252031", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29488,7 +29502,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-fcc650aa", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-0b252031", module.exports)
   }
 }
 
@@ -29518,7 +29532,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-completado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-completado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29527,9 +29541,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-94e8d328", Component.options)
+    hotAPI.createRecord("data-v-3f13def2", Component.options)
   } else {
-    hotAPI.reload("data-v-94e8d328", Component.options)
+    hotAPI.reload("data-v-3f13def2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29597,7 +29611,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-94e8d328", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-3f13def2", module.exports)
   }
 }
 
@@ -29627,7 +29641,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-activado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-activado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29636,9 +29650,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2ddd5b79", Component.options)
+    hotAPI.createRecord("data-v-7fca0d7f", Component.options)
   } else {
-    hotAPI.reload("data-v-2ddd5b79", Component.options)
+    hotAPI.reload("data-v-7fca0d7f", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29706,7 +29720,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2ddd5b79", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-7fca0d7f", module.exports)
   }
 }
 
@@ -29820,7 +29834,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-cb5abbe8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-407571dc", module.exports)
   }
 }
 
@@ -30370,15 +30384,14 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "for") return cont(pushlex("form"), forspec, statement, poplex);
     if (type == "class" || (isTS && value == "interface")) { cx.marked = "keyword"; return cont(pushlex("form"), className, poplex); }
     if (type == "variable") {
-      if (isTS && value == "type") {
-        cx.marked = "keyword"
-        return cont(typeexpr, expect("operator"), typeexpr, expect(";"));
-      } else if (isTS && value == "declare") {
+      if (isTS && value == "declare") {
         cx.marked = "keyword"
         return cont(statement)
-      } else if (isTS && (value == "module" || value == "enum") && cx.stream.match(/^\s*\w/, false)) {
+      } else if (isTS && (value == "module" || value == "enum" || value == "type") && cx.stream.match(/^\s*\w/, false)) {
         cx.marked = "keyword"
-        return cont(pushlex("form"), pattern, expect("{"), pushlex("}"), block, poplex, poplex)
+        if (value == "enum") return cont(enumdef);
+        else if (value == "type") return cont(typeexpr, expect("operator"), typeexpr, expect(";"));
+        else return cont(pushlex("form"), pattern, expect("{"), pushlex("}"), block, poplex, poplex)
       } else if (isTS && value == "namespace") {
         cx.marked = "keyword"
         return cont(pushlex("form"), expression, block, poplex)
@@ -30426,6 +30439,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "{") return contCommasep(objprop, "}", null, maybeop);
     if (type == "quasi") return pass(quasi, maybeop);
     if (type == "new") return cont(maybeTarget(noComma));
+    if (type == "import") return cont(expression);
     return cont();
   }
   function maybeexpression(type) {
@@ -30620,7 +30634,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function afterType(type, value) {
     if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, afterType)
-    if (value == "|" || type == ".") return cont(typeexpr)
+    if (value == "|" || type == "." || value == "&") return cont(typeexpr)
     if (type == "[") return cont(expect("]"), afterType)
     if (value == "extends" || value == "implements") { cx.marked = "keyword"; return cont(typeexpr) }
   }
@@ -30633,7 +30647,8 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function maybeTypeDefault(_, value) {
     if (value == "=") return cont(typeexpr)
   }
-  function vardef() {
+  function vardef(_, value) {
+    if (value == "enum") {cx.marked = "keyword"; return cont(enumdef)}
     return pass(pattern, maybetype, maybeAssign, vardefCont);
   }
   function pattern(type, value) {
@@ -30662,7 +30677,8 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function maybeelse(type, value) {
     if (type == "keyword b" && value == "else") return cont(pushlex("form", "else"), statement, poplex);
   }
-  function forspec(type) {
+  function forspec(type, value) {
+    if (value == "await") return cont(forspec);
     if (type == "(") return cont(pushlex(")"), forspec1, expect(")"), poplex);
   }
   function forspec1(type) {
@@ -30705,8 +30721,10 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function classNameAfter(type, value) {
     if (value == "<") return cont(pushlex(">"), commasep(typeparam, ">"), poplex, classNameAfter)
-    if (value == "extends" || value == "implements" || (isTS && type == ","))
+    if (value == "extends" || value == "implements" || (isTS && type == ",")) {
+      if (value == "implements") cx.marked = "keyword";
       return cont(isTS ? typeexpr : expression, classNameAfter);
+    }
     if (type == "{") return cont(pushlex("}"), classBody, poplex);
   }
   function classBody(type, value) {
@@ -30749,6 +30767,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function afterImport(type) {
     if (type == "string") return cont();
+    if (type == "(") return pass(expression);
     return pass(importSpec, maybeMoreImports, maybeFrom);
   }
   function importSpec(type, value) {
@@ -30769,6 +30788,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function arrayLiteral(type) {
     if (type == "]") return cont();
     return pass(commasep(expressionNoComma, "]"));
+  }
+  function enumdef() {
+    return pass(pushlex("form"), pattern, expect("{"), pushlex("}"), commasep(enummember, "}"), poplex, poplex)
+  }
+  function enummember() {
+    return pass(pattern, maybeAssign);
   }
 
   function isContinuedStatement(state, textAfter) {
@@ -32471,7 +32496,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/inputs/text-input.vue"
+Component.options.__file = "resources\\assets\\components\\inputs\\text-input.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -32480,9 +32505,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-12193d5b", Component.options)
+    hotAPI.createRecord("data-v-1b47c7ca", Component.options)
   } else {
-    hotAPI.reload("data-v-12193d5b", Component.options)
+    hotAPI.reload("data-v-1b47c7ca", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -32573,7 +32598,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-12193d5b", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1b47c7ca", module.exports)
   }
 }
 
@@ -32603,7 +32628,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/utils/modal.vue"
+Component.options.__file = "resources\\assets\\components\\utils\\modal.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -32612,9 +32637,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1d9da0da", Component.options)
+    hotAPI.createRecord("data-v-f2002240", Component.options)
   } else {
-    hotAPI.reload("data-v-1d9da0da", Component.options)
+    hotAPI.reload("data-v-f2002240", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -32701,7 +32726,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1d9da0da", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-f2002240", module.exports)
   }
 }
 
@@ -32731,7 +32756,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/inputs/textarea-input.vue"
+Component.options.__file = "resources\\assets\\components\\inputs\\textarea-input.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -32740,9 +32765,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a92162b0", Component.options)
+    hotAPI.createRecord("data-v-44b66530", Component.options)
   } else {
-    hotAPI.reload("data-v-a92162b0", Component.options)
+    hotAPI.reload("data-v-44b66530", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -32823,7 +32848,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a92162b0", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-44b66530", module.exports)
   }
 }
 
@@ -32850,7 +32875,7 @@ if (false) {
     {name: "ASN.1", mime: "text/x-ttcn-asn", mode: "asn.1", ext: ["asn", "asn1"]},
     {name: "Asterisk", mime: "text/x-asterisk", mode: "asterisk", file: /^extensions\.conf$/i},
     {name: "Brainfuck", mime: "text/x-brainfuck", mode: "brainfuck", ext: ["b", "bf"]},
-    {name: "C", mime: "text/x-csrc", mode: "clike", ext: ["c", "h"]},
+    {name: "C", mime: "text/x-csrc", mode: "clike", ext: ["c", "h", "ino"]},
     {name: "C++", mime: "text/x-c++src", mode: "clike", ext: ["cpp", "c++", "cc", "cxx", "hpp", "h++", "hh", "hxx"], alias: ["cpp"]},
     {name: "Cobol", mime: "text/x-cobol", mode: "cobol", ext: ["cob", "cpy"]},
     {name: "C#", mime: "text/x-csharp", mode: "clike", ext: ["cs"], alias: ["csharp"]},
@@ -32897,7 +32922,7 @@ if (false) {
     {name: "Haxe", mime: "text/x-haxe", mode: "haxe", ext: ["hx"]},
     {name: "HXML", mime: "text/x-hxml", mode: "haxe", ext: ["hxml"]},
     {name: "ASP.NET", mime: "application/x-aspx", mode: "htmlembedded", ext: ["aspx"], alias: ["asp", "aspx"]},
-    {name: "HTML", mime: "text/html", mode: "htmlmixed", ext: ["html", "htm"], alias: ["xhtml"]},
+    {name: "HTML", mime: "text/html", mode: "htmlmixed", ext: ["html", "htm", "handlebars", "hbs"], alias: ["xhtml"]},
     {name: "HTTP", mime: "message/http", mode: "http"},
     {name: "IDL", mime: "text/x-idl", mode: "idl", ext: ["pro"]},
     {name: "Pug", mime: "text/x-pug", mode: "pug", ext: ["jade", "pug"], alias: ["jade"]},
@@ -32934,7 +32959,7 @@ if (false) {
     {name: "Pascal", mime: "text/x-pascal", mode: "pascal", ext: ["p", "pas"]},
     {name: "PEG.js", mime: "null", mode: "pegjs", ext: ["jsonld"]},
     {name: "Perl", mime: "text/x-perl", mode: "perl", ext: ["pl", "pm"]},
-    {name: "PHP", mime: ["application/x-httpd-php", "text/x-php"], mode: "php", ext: ["php", "php3", "php4", "php5", "php7", "phtml"]},
+    {name: "PHP", mimes: ["text/x-php", "application/x-httpd-php", "application/x-httpd-php-open"], mode: "php", ext: ["php", "php3", "php4", "php5", "php7", "phtml"]},
     {name: "Pig", mime: "text/x-pig", mode: "pig", ext: ["pig"]},
     {name: "Plain Text", mime: "text/plain", mode: "null", ext: ["txt", "text", "conf", "def", "list", "log"]},
     {name: "PLSQL", mime: "text/x-plsql", mode: "sql", ext: ["pls"]},
@@ -32961,6 +32986,7 @@ if (false) {
     {name: "Smalltalk", mime: "text/x-stsrc", mode: "smalltalk", ext: ["st"]},
     {name: "Smarty", mime: "text/x-smarty", mode: "smarty", ext: ["tpl"]},
     {name: "Solr", mime: "text/x-solr", mode: "solr"},
+    {name: "SML", mime: "text/x-sml", mode: "mllike", ext: ["sml", "sig", "fun", "smackspec"]},
     {name: "Soy", mime: "text/x-soy", mode: "soy", ext: ["soy"], alias: ["closure template"]},
     {name: "SPARQL", mime: "application/sparql-query", mode: "sparql", ext: ["rq", "sparql"], alias: ["sparul"]},
     {name: "Spreadsheet", mime: "text/x-spreadsheet", mode: "spreadsheet", alias: ["excel", "formula"]},
@@ -32970,7 +32996,7 @@ if (false) {
     {name: "Stylus", mime: "text/x-styl", mode: "stylus", ext: ["styl"]},
     {name: "Swift", mime: "text/x-swift", mode: "swift", ext: ["swift"]},
     {name: "sTeX", mime: "text/x-stex", mode: "stex"},
-    {name: "LaTeX", mime: "text/x-latex", mode: "stex", ext: ["text", "ltx"], alias: ["tex"]},
+    {name: "LaTeX", mime: "text/x-latex", mode: "stex", ext: ["text", "ltx", "tex"], alias: ["tex"]},
     {name: "SystemVerilog", mime: "text/x-systemverilog", mode: "verilog", ext: ["v", "sv", "svh"]},
     {name: "Tcl", mime: "text/x-tcl", mode: "tcl", ext: ["tcl"]},
     {name: "Textile", mime: "text/x-textile", mode: "textile", ext: ["textile"]},
@@ -33429,7 +33455,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     blockKeywords: words("case do else for if switch while struct"),
     defKeywords: words("struct"),
     typeFirstDefinitions: true,
-    atoms: words("null true false"),
+    atoms: words("NULL true false"),
     hooks: {"#": cppHook, "*": pointerHook},
     modeProps: {fold: ["brace", "include"]}
   });
@@ -33445,7 +33471,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     blockKeywords: words("catch class do else finally for if struct switch try while"),
     defKeywords: words("class namespace struct enum union"),
     typeFirstDefinitions: true,
-    atoms: words("true false null"),
+    atoms: words("true false NULL"),
     dontIndentStatements: /^template$/,
     isIdentifierChar: /[\w\$_~\xa1-\uffff]/,
     hooks: {
@@ -33652,27 +33678,29 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     name: "clike",
     keywords: words(
       /*keywords*/
-      "package as typealias class interface this super val " +
-      "var fun for is in This throw return " +
+      "package as typealias class interface this super val operator " +
+      "var fun for is in This throw return annotation " +
       "break continue object if else while do try when !in !is as? " +
 
       /*soft keywords*/
       "file import where by get set abstract enum open inner override private public internal " +
       "protected catch finally out final vararg reified dynamic companion constructor init " +
       "sealed field property receiver param sparam lateinit data inline noinline tailrec " +
-      "external annotation crossinline const operator infix suspend actual expect"
+      "external annotation crossinline const operator infix suspend actual expect setparam"
     ),
     types: words(
       /* package java.lang */
       "Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable " +
       "Compiler Double Exception Float Integer Long Math Number Object Package Pair Process " +
       "Runtime Runnable SecurityManager Short StackTraceElement StrictMath String " +
-      "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void"
+      "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void Annotation Any BooleanArray " +
+      "ByteArray Char CharArray DeprecationLevel DoubleArray Enum FloatArray Function Int IntArray Lazy " +
+      "LazyThreadSafetyMode LongArray Nothing ShortArray Unit"
     ),
     intendSwitch: false,
     indentStatements: false,
     multiLineStrings: true,
-    number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+\.?\d*|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
+    number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+(\.\d+)?|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
     blockKeywords: words("catch class do else finally for if where try while enum"),
     defKeywords: words("class val var object interface fun"),
     atoms: words("true false null this"),
@@ -34792,6 +34820,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   function blankLine(state) {
     // Reset linkTitle state
     state.linkTitle = false;
+    state.linkHref = false;
+    state.linkText = false;
     // Reset EM state
     state.em = false;
     // Reset STRONG state
@@ -34830,6 +34860,12 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     if (state.indentationDiff === null) {
       state.indentationDiff = state.indentation;
       if (prevLineIsList) {
+        // Reset inline styles which shouldn't propagate aross list items
+        state.em = false;
+        state.strong = false;
+        state.code = false;
+        state.strikethrough = false;
+
         state.list = null;
         // While this list item's marker's indentation is less than the deepest
         //  list item's content's indentation,pop the deepest list item
@@ -35456,6 +35492,7 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         formatting: false,
         linkText: s.linkText,
         linkTitle: s.linkTitle,
+        linkHref: s.linkHref,
         code: s.code,
         em: s.em,
         strong: s.strong,
@@ -35534,6 +35571,8 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   };
   return mode;
 }, "xml");
+
+CodeMirror.defineMIME("text/markdown", "markdown");
 
 CodeMirror.defineMIME("text/x-markdown", "markdown");
 
@@ -35811,13 +35850,14 @@ CodeMirror.defineMode("haskell", function(_config, modeConfig) {
       "\.\.", ":", "::", "=", "\\", "<-", "->", "@", "~", "=>");
 
     setType("builtin")(
-      "!!", "$!", "$", "&&", "+", "++", "-", ".", "/", "/=", "<", "<=", "=<<",
-      "==", ">", ">=", ">>", ">>=", "^", "^^", "||", "*", "**");
+      "!!", "$!", "$", "&&", "+", "++", "-", ".", "/", "/=", "<", "<*", "<=",
+      "<$>", "<*>", "=<<", "==", ">", ">=", ">>", ">>=", "^", "^^", "||", "*",
+      "*>", "**");
 
     setType("builtin")(
-      "Bool", "Bounded", "Char", "Double", "EQ", "Either", "Enum", "Eq",
-      "False", "FilePath", "Float", "Floating", "Fractional", "Functor", "GT",
-      "IO", "IOError", "Int", "Integer", "Integral", "Just", "LT", "Left",
+      "Applicative", "Bool", "Bounded", "Char", "Double", "EQ", "Either", "Enum",
+      "Eq", "False", "FilePath", "Float", "Floating", "Fractional", "Functor",
+      "GT", "IO", "IOError", "Int", "Integer", "Integral", "Just", "LT", "Left",
       "Maybe", "Monad", "Nothing", "Num", "Ord", "Ordering", "Rational", "Read",
       "ReadS", "Real", "RealFloat", "RealFrac", "Right", "Show", "ShowS",
       "String", "True");
@@ -35837,7 +35877,7 @@ CodeMirror.defineMode("haskell", function(_config, modeConfig) {
       "lcm", "length", "lex", "lines", "log", "logBase", "lookup", "map",
       "mapM", "mapM_", "max", "maxBound", "maximum", "maybe", "min", "minBound",
       "minimum", "mod", "negate", "not", "notElem", "null", "odd", "or",
-      "otherwise", "pi", "pred", "print", "product", "properFraction",
+      "otherwise", "pi", "pred", "print", "product", "properFraction", "pure",
       "putChar", "putStr", "putStrLn", "quot", "quotRem", "read", "readFile",
       "readIO", "readList", "readLn", "readParen", "reads", "readsPrec",
       "realToFrac", "recip", "rem", "repeat", "replicate", "return", "reverse",
@@ -36525,7 +36565,7 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
   CodeMirror.defineMode("python", function(conf, parserConf) {
     var ERRORCLASS = "error";
 
-    var delimiters = parserConf.delimiters || parserConf.singleDelimiters || /^[\(\)\[\]\{\}@,:`=;\.]/;
+    var delimiters = parserConf.delimiters || parserConf.singleDelimiters || /^[\(\)\[\]\{\}@,:`=;\.\\]/;
     //               (Backwards-compatiblity with old, cumbersome config system)
     var operators = [parserConf.singleOperators, parserConf.doubleOperators, parserConf.doubleDelimiters, parserConf.tripleDelimiters,
                      parserConf.operators || /^([-+*/%\/&|^]=?|[<>=]+|\/\/=?|\*\*=?|!=|[~!@])/]
@@ -36560,9 +36600,10 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
 
     // tokenizers
     function tokenBase(stream, state) {
-      if (stream.sol()) state.indent = stream.indentation()
+      var sol = stream.sol() && state.lastToken != "\\"
+      if (sol) state.indent = stream.indentation()
       // Handle scope changes
-      if (stream.sol() && top(state).type == "py") {
+      if (sol && top(state).type == "py") {
         var scopeOffset = top(state).offset;
         if (stream.eatSpace()) {
           var lineOffset = stream.indentation();
@@ -36584,13 +36625,8 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
     function tokenBaseInner(stream, state) {
       if (stream.eatSpace()) return null;
 
-      var ch = stream.peek();
-
       // Handle Comments
-      if (ch == "#") {
-        stream.skipToEnd();
-        return "comment";
-      }
+      if (stream.match(/^#.*/)) return "comment";
 
       // Handle Number Literals
       if (stream.match(/^[0-9\.]/, false)) {
@@ -36902,6 +36938,14 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
     plugins["begin"] = addPluginPattern("begin", "tag", ["atom"]);
     plugins["end"] = addPluginPattern("end", "tag", ["atom"]);
 
+    plugins["label"    ] = addPluginPattern("label"    , "tag", ["atom"]);
+    plugins["ref"      ] = addPluginPattern("ref"      , "tag", ["atom"]);
+    plugins["eqref"    ] = addPluginPattern("eqref"    , "tag", ["atom"]);
+    plugins["cite"     ] = addPluginPattern("cite"     , "tag", ["atom"]);
+    plugins["bibitem"  ] = addPluginPattern("bibitem"  , "tag", ["atom"]);
+    plugins["Bibitem"  ] = addPluginPattern("Bibitem"  , "tag", ["atom"]);
+    plugins["RBibitem" ] = addPluginPattern("RBibitem" , "tag", ["atom"]);
+
     plugins["DEFAULT"] = function () {
       this.name = "DEFAULT";
       this.style = "tag";
@@ -36939,6 +36983,10 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
       // find if we're starting various math modes
       if (source.match("\\[")) {
         setState(state, function(source, state){ return inMathMode(source, state, "\\]"); });
+        return "keyword";
+      }
+      if (source.match("\\(")) {
+        setState(state, function(source, state){ return inMathMode(source, state, "\\)"); });
         return "keyword";
       }
       if (source.match("$$")) {
@@ -37617,7 +37665,7 @@ CodeMirror.defineMIME("text/x-sass", "sass");
       if (ch == "#") {
         stream.next();
         // Hex color
-        if (stream.match(/^[0-9a-f]{6}|[0-9a-f]{3}/i)) {
+        if (stream.match(/^[0-9a-f]{3}([0-9a-f]([0-9a-f]{2}){0,2})?\b/i)) {
           return ["atom", "atom"];
         }
         // ID selector
@@ -38426,7 +38474,8 @@ CodeMirror.defineMode("yaml", function() {
         literal: false,
         escaped: false
       };
-    }
+    },
+    lineComment: "#"
   };
 });
 
@@ -38451,7 +38500,7 @@ CodeMirror.defineMIME("text/yaml", "yaml");
 /* unused harmony export Rules */
 /* unused harmony export version */
 /**
-  * vee-validate v2.0.2
+  * vee-validate v2.0.4
   * (c) 2018 Abdelrahman Awad
   * @license MIT
   */
@@ -38473,18 +38522,6 @@ var isNullOrUndefined = function (value) {
  * Sets the data attribute.
  */
 var setDataAttribute = function (el, name, value) { return el.setAttribute(("data-vv-" + name), value); };
-
-/**
- * Creates a proxy object if available in the environment.
- */
-var createProxy = function (target, handler) {
-  /* istanbul ignore next */
-  if (typeof Proxy === 'undefined') {
-    return target;
-  }
-
-  return new Proxy(target, handler);
-};
 
 /**
  * Creates the default flags object.
@@ -38743,6 +38780,11 @@ var removeClass = function (el, className) {
  */
 var toggleClass = function (el, className, status) {
   if (!el || !className) { return; }
+
+  if (Array.isArray(className)) {
+    className.forEach(function (item) { return toggleClass(el, item, status); });
+    return;
+  }
 
   if (status) {
     return addClass(el, className);
@@ -39059,7 +39101,11 @@ ErrorBag.prototype.first = function first (field, scope) {
     var this$1 = this;
     if ( scope === void 0 ) scope = null;
 
-  field = !isNullOrUndefined(field) ? String(field) : field;
+  if (isNullOrUndefined(field)) {
+    return null;
+  }
+
+  field = String(field);
   var selector = this._selector(field);
   var scoped = this._scope(field);
 
@@ -40060,7 +40106,8 @@ Field.prototype.updateDependencies = function updateDependencies () {
     var el = null;
     // vue ref selector.
     if (selector[0] === '$') {
-      el = this$1.vm.$refs[selector.slice(1)];
+      var ref$1 = this$1.vm.$refs[selector.slice(1)];
+      el = Array.isArray(ref$1) ? ref$1[0] : ref$1;
     } else {
       try {
         // try query selector
@@ -40446,7 +40493,11 @@ var Validator = function Validator (validations, options) {
 
   this.strict = STRICT_MODE;
   this.errors = new ErrorBag();
-  ERRORS.push(this.errors);
+
+  // We are running in SSR Mode. Do not keep a reference. It prevent garbage collection.
+  if (typeof window !== 'undefined') {
+    ERRORS.push(this.errors);
+  }
   this.fields = new FieldBag();
   this.flags = {};
   this._createFields(validations);
@@ -41172,18 +41223,6 @@ Object.defineProperties( Validator, staticAccessors );
 
 // 
 
-/* istanbul ignore next */
-var fakeFlags = createProxy({}, {
-  get: function get (target, key) {
-    // is a scope
-    if (String(key).indexOf('$') === 0) {
-      return fakeFlags;
-    }
-
-    return createFlags();
-  }
-});
-
 /**
  * Checks if a parent validator instance was requested.
  */
@@ -41261,10 +41300,6 @@ var mixin = {
       return this.$validator.errors;
     };
     this.$options.computed[options.fieldsBagName || 'fields'] = function fieldBagGetter () {
-      if (!Object.keys(this.$validator.flags).length) {
-        return fakeFlags;
-      }
-
       return this.$validator.flags;
     };
   },
@@ -44489,9 +44524,9 @@ var date_between = function (value, params) {
     (assign$1 = params, min = assign$1[0], max = assign$1[1], format = assign$1[2]);
   }
 
-  var minDate = parseDate$1(min, format);
-  var maxDate = parseDate$1(max, format);
-  var dateVal = parseDate$1(value, format);
+  var minDate = parseDate$1(String(min), format);
+  var maxDate = parseDate$1(String(max), format);
+  var dateVal = parseDate$1(String(value), format);
 
   if (!minDate || !maxDate || !dateVal) {
     return false;
@@ -45397,7 +45432,7 @@ var mapFields = function (fields) {
   }, {});
 };
 
-var version = '2.0.2';
+var version = '2.0.4';
 
 var rulesPlugin = function (ref) {
   var Validator$$1 = ref.Validator;
@@ -45527,7 +45562,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(127)
 /* template */
-var __vue_template__ = __webpack_require__(333)
+var __vue_template__ = __webpack_require__(337)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -45544,7 +45579,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "node_modules/vue-codemirror/src/codemirror.vue"
+Component.options.__file = "node_modules\\vue-codemirror\\src\\codemirror.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -45553,9 +45588,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7f0ea808", Component.options)
+    hotAPI.createRecord("data-v-719301c9", Component.options)
   } else {
-    hotAPI.reload("data-v-7f0ea808", Component.options)
+    hotAPI.reload("data-v-719301c9", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -45820,7 +45855,7 @@ if(false) {
 /* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -49051,30 +49086,64 @@ CodeMirror.defineMIME("text/x-diff", "diff");
 })(function(CodeMirror) {
   "use strict";
 
+  var from = "from";
+  var fromRegex = new RegExp("^(\\s*)\\b(" + from + ")\\b", "i");
+
+  var shells = ["run", "cmd", "entrypoint", "shell"];
+  var shellsAsArrayRegex = new RegExp("^(\\s*)(" + shells.join('|') + ")(\\s+\\[)", "i");
+
+  var expose = "expose";
+  var exposeRegex = new RegExp("^(\\s*)(" + expose + ")(\\s+)", "i");
+
+  var others = [
+    "arg", "from", "maintainer", "label", "env",
+    "add", "copy", "volume", "user",
+    "workdir", "onbuild", "stopsignal", "healthcheck", "shell"
+  ];
+
   // Collect all Dockerfile directives
-  var instructions = ["from", "maintainer", "run", "cmd", "expose", "env",
-                      "add", "copy", "entrypoint", "volume", "user",
-                      "workdir", "onbuild"],
+  var instructions = [from, expose].concat(shells).concat(others),
       instructionRegex = "(" + instructions.join('|') + ")",
-      instructionOnlyLine = new RegExp(instructionRegex + "\\s*$", "i"),
-      instructionWithArguments = new RegExp(instructionRegex + "(\\s+)", "i");
+      instructionOnlyLine = new RegExp("^(\\s*)" + instructionRegex + "(\\s*)(#.*)?$", "i"),
+      instructionWithArguments = new RegExp("^(\\s*)" + instructionRegex + "(\\s+)", "i");
 
   CodeMirror.defineSimpleMode("dockerfile", {
     start: [
       // Block comment: This is a line starting with a comment
       {
-        regex: /#.*$/,
+        regex: /^\s*#.*$/,
+        sol: true,
         token: "comment"
+      },
+      {
+        regex: fromRegex,
+        token: [null, "keyword"],
+        sol: true,
+        next: "from"
       },
       // Highlight an instruction without any arguments (for convenience)
       {
         regex: instructionOnlyLine,
-        token: "variable-2"
+        token: [null, "keyword", null, "error"],
+        sol: true
+      },
+      {
+        regex: shellsAsArrayRegex,
+        token: [null, "keyword", null],
+        sol: true,
+        next: "array"
+      },
+      {
+        regex: exposeRegex,
+        token: [null, "keyword", null],
+        sol: true,
+        next: "expose"
       },
       // Highlight an instruction followed by arguments
       {
         regex: instructionWithArguments,
-        token: ["variable-2", null],
+        token: [null, "keyword", null],
+        sol: true,
         next: "arguments"
       },
       {
@@ -49082,26 +49151,21 @@ CodeMirror.defineMIME("text/x-diff", "diff");
         token: null
       }
     ],
-    arguments: [
+    from: [
+      {
+        regex: /\s*$/,
+        token: null,
+        next: "start"
+      },
       {
         // Line comment without instruction arguments is an error
-        regex: /#.*$/,
-        token: "error",
+        regex: /(\s*)(#.*)$/,
+        token: [null, "error"],
         next: "start"
       },
       {
-        regex: /[^#]+\\$/,
-        token: null
-      },
-      {
-        // Match everything except for the inline comment
-        regex: /[^#]+/,
-        token: null,
-        next: "start"
-      },
-      {
-        regex: /$/,
-        token: null,
+        regex: /(\s*\S+\s+)(as)/i,
+        token: [null, "keyword"],
         next: "start"
       },
       // Fail safe return to start
@@ -49110,9 +49174,112 @@ CodeMirror.defineMIME("text/x-diff", "diff");
         next: "start"
       }
     ],
-      meta: {
-          lineComment: "#"
+    single: [
+      {
+        regex: /(?:[^\\']|\\.)/,
+        token: "string"
+      },
+      {
+        regex: /'/,
+        token: "string",
+        pop: true
       }
+    ],
+    double: [
+      {
+        regex: /(?:[^\\"]|\\.)/,
+        token: "string"
+      },
+      {
+        regex: /"/,
+        token: "string",
+        pop: true
+      }
+    ],
+    array: [
+      {
+        regex: /\]/,
+        token: null,
+        next: "start"
+      },
+      {
+        regex: /"(?:[^\\"]|\\.)*"?/,
+        token: "string"
+      }
+    ],
+    expose: [
+      {
+        regex: /\d+$/,
+        token: "number",
+        next: "start"
+      },
+      {
+        regex: /[^\d]+$/,
+        token: null,
+        next: "start"
+      },
+      {
+        regex: /\d+/,
+        token: "number"
+      },
+      {
+        regex: /[^\d]+/,
+        token: null
+      },
+      // Fail safe return to start
+      {
+        token: null,
+        next: "start"
+      }
+    ],
+    arguments: [
+      {
+        regex: /^\s*#.*$/,
+        sol: true,
+        token: "comment"
+      },
+      {
+        regex: /"(?:[^\\"]|\\.)*"?$/,
+        token: "string",
+        next: "start"
+      },
+      {
+        regex: /"/,
+        token: "string",
+        push: "double"
+      },
+      {
+        regex: /'(?:[^\\']|\\.)*'?$/,
+        token: "string",
+        next: "start"
+      },
+      {
+        regex: /'/,
+        token: "string",
+        push: "single"
+      },
+      {
+        regex: /[^#"']+[\\`]$/,
+        token: null
+      },
+      {
+        regex: /[^#"']+$/,
+        token: null,
+        next: "start"
+      },
+      {
+        regex: /[^#"']+/,
+        token: null
+      },
+      // Fail safe return to start
+      {
+        token: null,
+        next: "start"
+      }
+    ],
+    meta: {
+      lineComment: "#"
+    }
   });
 
   CodeMirror.defineMIME("text/x-dockerfile", "dockerfile");
@@ -55238,12 +55405,12 @@ CodeMirror.defineMode('mathematica', function(_config, _parserConfig) {
     }
 
     // usage
-    if (stream.match(/([a-zA-Z\$]+(?:`?[a-zA-Z0-9\$])*::usage)/, true, false)) {
+    if (stream.match(/([a-zA-Z\$][a-zA-Z0-9\$]*(?:`[a-zA-Z0-9\$]+)*::usage)/, true, false)) {
       return 'meta';
     }
 
     // message
-    if (stream.match(/([a-zA-Z\$]+(?:`?[a-zA-Z0-9\$])*::[a-zA-Z\$][a-zA-Z0-9\$]*):?/, true, false)) {
+    if (stream.match(/([a-zA-Z\$][a-zA-Z0-9\$]*(?:`[a-zA-Z0-9\$]+)*::[a-zA-Z\$][a-zA-Z0-9\$]*):?/, true, false)) {
       return 'string-2';
     }
 
@@ -55696,31 +55863,26 @@ CodeMirror.defineMode("mirc", function() {
 
 CodeMirror.defineMode('mllike', function(_config, parserConfig) {
   var words = {
-    'let': 'keyword',
-    'rec': 'keyword',
-    'in': 'keyword',
-    'of': 'keyword',
-    'and': 'keyword',
-    'if': 'keyword',
-    'then': 'keyword',
-    'else': 'keyword',
-    'for': 'keyword',
-    'to': 'keyword',
-    'while': 'keyword',
+    'as': 'keyword',
     'do': 'keyword',
-    'done': 'keyword',
+    'else': 'keyword',
+    'end': 'keyword',
+    'exception': 'keyword',
     'fun': 'keyword',
-    'function': 'keyword',
-    'val': 'keyword',
+    'functor': 'keyword',
+    'if': 'keyword',
+    'in': 'keyword',
+    'include': 'keyword',
+    'let': 'keyword',
+    'of': 'keyword',
+    'open': 'keyword',
+    'rec': 'keyword',
+    'struct': 'keyword',
+    'then': 'keyword',
     'type': 'keyword',
-    'mutable': 'keyword',
-    'match': 'keyword',
-    'with': 'keyword',
-    'try': 'keyword',
-    'open': 'builtin',
-    'ignore': 'builtin',
-    'begin': 'keyword',
-    'end': 'keyword'
+    'val': 'keyword',
+    'while': 'keyword',
+    'with': 'keyword'
   };
 
   var extraWords = parserConfig.extraWords || {};
@@ -55751,7 +55913,7 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
         return state.tokenize(stream, state);
       }
     }
-    if (ch === '~') {
+    if (ch === '~' || ch === '?') {
       stream.eatWhile(/\w/);
       return 'variable-2';
     }
@@ -55781,7 +55943,7 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
       }
       return 'number';
     }
-    if ( /[+\-*&%=<>!?|@]/.test(ch)) {
+    if ( /[+\-*&%=<>!?|@\.~:]/.test(ch)) {
       return 'operator';
     }
     if (/[\w\xa1-\uffff]/.test(ch)) {
@@ -55848,16 +56010,64 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
 CodeMirror.defineMIME('text/x-ocaml', {
   name: 'mllike',
   extraWords: {
-    'succ': 'keyword',
+    'and': 'keyword',
+    'assert': 'keyword',
+    'begin': 'keyword',
+    'class': 'keyword',
+    'constraint': 'keyword',
+    'done': 'keyword',
+    'downto': 'keyword',
+    'external': 'keyword',
+    'function': 'keyword',
+    'initializer': 'keyword',
+    'lazy': 'keyword',
+    'match': 'keyword',
+    'method': 'keyword',
+    'module': 'keyword',
+    'mutable': 'keyword',
+    'new': 'keyword',
+    'nonrec': 'keyword',
+    'object': 'keyword',
+    'private': 'keyword',
+    'sig': 'keyword',
+    'to': 'keyword',
+    'try': 'keyword',
+    'value': 'keyword',
+    'virtual': 'keyword',
+    'when': 'keyword',
+
+    // builtins
+    'raise': 'builtin',
+    'failwith': 'builtin',
+    'true': 'builtin',
+    'false': 'builtin',
+
+    // Pervasives builtins
+    'asr': 'builtin',
+    'land': 'builtin',
+    'lor': 'builtin',
+    'lsl': 'builtin',
+    'lsr': 'builtin',
+    'lxor': 'builtin',
+    'mod': 'builtin',
+    'or': 'builtin',
+
+    // More Pervasives
+    'raise_notrace': 'builtin',
     'trace': 'builtin',
     'exit': 'builtin',
     'print_string': 'builtin',
     'print_endline': 'builtin',
-    'true': 'atom',
-    'false': 'atom',
-    'raise': 'keyword',
-    'module': 'keyword',
-    'sig': 'keyword'
+
+     'int': 'type',
+     'float': 'type',
+     'bool': 'type',
+     'char': 'type',
+     'string': 'type',
+     'unit': 'type',
+
+     // Modules
+     'List': 'builtin'
   }
 });
 
@@ -55865,18 +56075,21 @@ CodeMirror.defineMIME('text/x-fsharp', {
   name: 'mllike',
   extraWords: {
     'abstract': 'keyword',
-    'as': 'keyword',
     'assert': 'keyword',
     'base': 'keyword',
+    'begin': 'keyword',
     'class': 'keyword',
     'default': 'keyword',
     'delegate': 'keyword',
+    'do!': 'keyword',
+    'done': 'keyword',
     'downcast': 'keyword',
     'downto': 'keyword',
     'elif': 'keyword',
-    'exception': 'keyword',
     'extern': 'keyword',
     'finally': 'keyword',
+    'for': 'keyword',
+    'function': 'keyword',
     'global': 'keyword',
     'inherit': 'keyword',
     'inline': 'keyword',
@@ -55884,38 +56097,108 @@ CodeMirror.defineMIME('text/x-fsharp', {
     'internal': 'keyword',
     'lazy': 'keyword',
     'let!': 'keyword',
-    'member' : 'keyword',
+    'match': 'keyword',
+    'member': 'keyword',
     'module': 'keyword',
+    'mutable': 'keyword',
     'namespace': 'keyword',
     'new': 'keyword',
     'null': 'keyword',
     'override': 'keyword',
     'private': 'keyword',
     'public': 'keyword',
-    'return': 'keyword',
     'return!': 'keyword',
+    'return': 'keyword',
     'select': 'keyword',
     'static': 'keyword',
-    'struct': 'keyword',
+    'to': 'keyword',
+    'try': 'keyword',
     'upcast': 'keyword',
-    'use': 'keyword',
     'use!': 'keyword',
-    'val': 'keyword',
+    'use': 'keyword',
+    'void': 'keyword',
     'when': 'keyword',
-    'yield': 'keyword',
     'yield!': 'keyword',
+    'yield': 'keyword',
 
+    // Reserved words
+    'atomic': 'keyword',
+    'break': 'keyword',
+    'checked': 'keyword',
+    'component': 'keyword',
+    'const': 'keyword',
+    'constraint': 'keyword',
+    'constructor': 'keyword',
+    'continue': 'keyword',
+    'eager': 'keyword',
+    'event': 'keyword',
+    'external': 'keyword',
+    'fixed': 'keyword',
+    'method': 'keyword',
+    'mixin': 'keyword',
+    'object': 'keyword',
+    'parallel': 'keyword',
+    'process': 'keyword',
+    'protected': 'keyword',
+    'pure': 'keyword',
+    'sealed': 'keyword',
+    'tailcall': 'keyword',
+    'trait': 'keyword',
+    'virtual': 'keyword',
+    'volatile': 'keyword',
+
+    // builtins
     'List': 'builtin',
     'Seq': 'builtin',
     'Map': 'builtin',
     'Set': 'builtin',
+    'Option': 'builtin',
     'int': 'builtin',
     'string': 'builtin',
-    'raise': 'builtin',
-    'failwith': 'builtin',
     'not': 'builtin',
     'true': 'builtin',
-    'false': 'builtin'
+    'false': 'builtin',
+
+    'raise': 'builtin',
+    'failwith': 'builtin'
+  },
+  slashComments: true
+});
+
+
+CodeMirror.defineMIME('text/x-sml', {
+  name: 'mllike',
+  extraWords: {
+    'abstype': 'keyword',
+    'and': 'keyword',
+    'andalso': 'keyword',
+    'case': 'keyword',
+    'datatype': 'keyword',
+    'fn': 'keyword',
+    'handle': 'keyword',
+    'infix': 'keyword',
+    'infixr': 'keyword',
+    'local': 'keyword',
+    'nonfix': 'keyword',
+    'op': 'keyword',
+    'orelse': 'keyword',
+    'raise': 'keyword',
+    'withtype': 'keyword',
+    'eqtype': 'keyword',
+    'sharing': 'keyword',
+    'sig': 'keyword',
+    'signature': 'keyword',
+    'structure': 'keyword',
+    'where': 'keyword',
+    'true': 'keyword',
+    'false': 'keyword',
+
+    // types
+    'int': 'builtin',
+    'real': 'builtin',
+    'string': 'builtin',
+    'char': 'builtin',
+    'bool': 'builtin'
   },
   slashComments: true
 });
@@ -56723,14 +57006,14 @@ CodeMirror.defineSimpleMode("nsis",{
     { regex: /`(?:[^\\`]|\\.)*`?/, token: "string" },
 
     // Compile Time Commands
-    {regex: /^\s*(?:\!(include|addincludedir|addplugindir|appendfile|cd|delfile|echo|error|execute|packhdr|pragma|finalize|getdllversion|system|tempfile|warning|verbose|define|undef|insertmacro|makensis|searchparse|searchreplace))\b/, token: "keyword"},
+    {regex: /^\s*(?:\!(include|addincludedir|addplugindir|appendfile|cd|delfile|echo|error|execute|packhdr|pragma|finalize|getdllversion|gettlbversion|system|tempfile|warning|verbose|define|undef|insertmacro|macro|macroend|makensis|searchparse|searchreplace))\b/, token: "keyword"},
 
     // Conditional Compilation
     {regex: /^\s*(?:\!(if(?:n?def)?|ifmacron?def|macro))\b/, token: "keyword", indent: true},
     {regex: /^\s*(?:\!(else|endif|macroend))\b/, token: "keyword", dedent: true},
 
     // Runtime Commands
-    {regex: /^\s*(?:Abort|AddBrandingImage|AddSize|AllowRootDirInstall|AllowSkipFiles|AutoCloseWindow|BGFont|BGGradient|BrandingText|BringToFront|Call|CallInstDLL|Caption|ChangeUI|CheckBitmap|ClearErrors|CompletedText|ComponentText|CopyFiles|CRCCheck|CreateDirectory|CreateFont|CreateShortCut|Delete|DeleteINISec|DeleteINIStr|DeleteRegKey|DeleteRegValue|DetailPrint|DetailsButtonText|DirText|DirVar|DirVerify|EnableWindow|EnumRegKey|EnumRegValue|Exch|Exec|ExecShell|ExecShellWait|ExecWait|ExpandEnvStrings|File|FileBufSize|FileClose|FileErrorText|FileOpen|FileRead|FileReadByte|FileReadUTF16LE|FileReadWord|FileWriteUTF16LE|FileSeek|FileWrite|FileWriteByte|FileWriteWord|FindClose|FindFirst|FindNext|FindWindow|FlushINI|GetCurInstType|GetCurrentAddress|GetDlgItem|GetDLLVersion|GetDLLVersionLocal|GetErrorLevel|GetFileTime|GetFileTimeLocal|GetFullPathName|GetFunctionAddress|GetInstDirError|GetLabelAddress|GetTempFileName|Goto|HideWindow|Icon|IfAbort|IfErrors|IfFileExists|IfRebootFlag|IfSilent|InitPluginsDir|InstallButtonText|InstallColors|InstallDir|InstallDirRegKey|InstProgressFlags|InstType|InstTypeGetText|InstTypeSetText|IntCmp|IntCmpU|IntFmt|IntOp|IsWindow|LangString|LicenseBkColor|LicenseData|LicenseForceSelection|LicenseLangString|LicenseText|LoadLanguageFile|LockWindow|LogSet|LogText|ManifestDPIAware|ManifestSupportedOS|MessageBox|MiscButtonText|Name|Nop|OutFile|Page|PageCallbacks|Pop|Push|Quit|ReadEnvStr|ReadINIStr|ReadRegDWORD|ReadRegStr|Reboot|RegDLL|Rename|RequestExecutionLevel|ReserveFile|Return|RMDir|SearchPath|SectionGetFlags|SectionGetInstTypes|SectionGetSize|SectionGetText|SectionIn|SectionSetFlags|SectionSetInstTypes|SectionSetSize|SectionSetText|SendMessage|SetAutoClose|SetBrandingImage|SetCompress|SetCompressor|SetCompressorDictSize|SetCtlColors|SetCurInstType|SetDatablockOptimize|SetDateSave|SetDetailsPrint|SetDetailsView|SetErrorLevel|SetErrors|SetFileAttributes|SetFont|SetOutPath|SetOverwrite|SetRebootFlag|SetRegView|SetShellVarContext|SetSilent|ShowInstDetails|ShowUninstDetails|ShowWindow|SilentInstall|SilentUnInstall|Sleep|SpaceTexts|StrCmp|StrCmpS|StrCpy|StrLen|SubCaption|Unicode|UninstallButtonText|UninstallCaption|UninstallIcon|UninstallSubCaption|UninstallText|UninstPage|UnRegDLL|Var|VIAddVersionKey|VIFileVersion|VIProductVersion|WindowIcon|WriteINIStr|WriteRegBin|WriteRegDWORD|WriteRegExpandStr|WriteRegMultiStr|WriteRegNone|WriteRegStr|WriteUninstaller|XPStyle)\b/, token: "keyword"},
+    {regex: /^\s*(?:Abort|AddBrandingImage|AddSize|AllowRootDirInstall|AllowSkipFiles|AutoCloseWindow|BGFont|BGGradient|BrandingText|BringToFront|Call|CallInstDLL|Caption|ChangeUI|CheckBitmap|ClearErrors|CompletedText|ComponentText|CopyFiles|CRCCheck|CreateDirectory|CreateFont|CreateShortCut|Delete|DeleteINISec|DeleteINIStr|DeleteRegKey|DeleteRegValue|DetailPrint|DetailsButtonText|DirText|DirVar|DirVerify|EnableWindow|EnumRegKey|EnumRegValue|Exch|Exec|ExecShell|ExecShellWait|ExecWait|ExpandEnvStrings|File|FileBufSize|FileClose|FileErrorText|FileOpen|FileRead|FileReadByte|FileReadUTF16LE|FileReadWord|FileWriteUTF16LE|FileSeek|FileWrite|FileWriteByte|FileWriteWord|FindClose|FindFirst|FindNext|FindWindow|FlushINI|GetCurInstType|GetCurrentAddress|GetDlgItem|GetDLLVersion|GetDLLVersionLocal|GetErrorLevel|GetFileTime|GetFileTimeLocal|GetFullPathName|GetFunctionAddress|GetInstDirError|GetLabelAddress|GetTempFileName|Goto|HideWindow|Icon|IfAbort|IfErrors|IfFileExists|IfRebootFlag|IfSilent|InitPluginsDir|InstallButtonText|InstallColors|InstallDir|InstallDirRegKey|InstProgressFlags|InstType|InstTypeGetText|InstTypeSetText|Int64Cmp|Int64CmpU|Int64Fmt|IntCmp|IntCmpU|IntFmt|IntOp|IntPtrCmp|IntPtrCmpU|IntPtrOp|IsWindow|LangString|LicenseBkColor|LicenseData|LicenseForceSelection|LicenseLangString|LicenseText|LoadLanguageFile|LockWindow|LogSet|LogText|ManifestDPIAware|ManifestSupportedOS|MessageBox|MiscButtonText|Name|Nop|OutFile|Page|PageCallbacks|PEDllCharacteristics|PESubsysVer|Pop|Push|Quit|ReadEnvStr|ReadINIStr|ReadRegDWORD|ReadRegStr|Reboot|RegDLL|Rename|RequestExecutionLevel|ReserveFile|Return|RMDir|SearchPath|SectionGetFlags|SectionGetInstTypes|SectionGetSize|SectionGetText|SectionIn|SectionSetFlags|SectionSetInstTypes|SectionSetSize|SectionSetText|SendMessage|SetAutoClose|SetBrandingImage|SetCompress|SetCompressor|SetCompressorDictSize|SetCtlColors|SetCurInstType|SetDatablockOptimize|SetDateSave|SetDetailsPrint|SetDetailsView|SetErrorLevel|SetErrors|SetFileAttributes|SetFont|SetOutPath|SetOverwrite|SetRebootFlag|SetRegView|SetShellVarContext|SetSilent|ShowInstDetails|ShowUninstDetails|ShowWindow|SilentInstall|SilentUnInstall|Sleep|SpaceTexts|StrCmp|StrCmpS|StrCpy|StrLen|SubCaption|Unicode|UninstallButtonText|UninstallCaption|UninstallIcon|UninstallSubCaption|UninstallText|UninstPage|UnRegDLL|Var|VIAddVersionKey|VIFileVersion|VIProductVersion|WindowIcon|WriteINIStr|WriteRegBin|WriteRegDWORD|WriteRegExpandStr|WriteRegMultiStr|WriteRegNone|WriteRegStr|WriteUninstaller|XPStyle)\b/, token: "keyword"},
     {regex: /^\s*(?:Function|PageEx|Section(?:Group)?)\b/, token: "keyword", indent: true},
     {regex: /^\s*(?:(Function|PageEx|Section(?:Group)?)End)\b/, token: "keyword", dedent: true},
 
@@ -61433,28 +61716,37 @@ CodeMirror.defineMode('shell', function() {
   function tokenString(quote, style) {
     var close = quote == "(" ? ")" : quote == "{" ? "}" : quote
     return function(stream, state) {
-      var next, end = false, escaped = false;
+      var next, escaped = false;
       while ((next = stream.next()) != null) {
         if (next === close && !escaped) {
-          end = true;
+          state.tokens.shift();
           break;
-        }
-        if (next === '$' && !escaped && quote !== "'") {
+        } else if (next === '$' && !escaped && quote !== "'" && stream.peek() != close) {
           escaped = true;
           stream.backUp(1);
           state.tokens.unshift(tokenDollar);
           break;
-        }
-        if (!escaped && next === quote && quote !== close) {
+        } else if (!escaped && quote !== close && next === quote) {
           state.tokens.unshift(tokenString(quote, style))
           return tokenize(stream, state)
+        } else if (!escaped && /['"]/.test(next) && !/['"]/.test(quote)) {
+          state.tokens.unshift(tokenStringStart(next, "string"));
+          stream.backUp(1);
+          break;
         }
         escaped = !escaped && next === '\\';
       }
-      if (end) state.tokens.shift();
       return style;
     };
   };
+
+  function tokenStringStart(quote, style) {
+    return function(stream, state) {
+      state.tokens[0] = tokenString(quote, style)
+      stream.next()
+      return tokenize(stream, state)
+    }
+  }
 
   var tokenDollar = function(stream, state) {
     if (state.tokens.length > 1) stream.eat('$');
@@ -63477,7 +63769,8 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
       operatorChars  = parserConfig.operatorChars || /^[*+\-%<>!=&|~^]/,
       support        = parserConfig.support || {},
       hooks          = parserConfig.hooks || {},
-      dateSQL        = parserConfig.dateSQL || {"date" : true, "time" : true, "timestamp" : true};
+      dateSQL        = parserConfig.dateSQL || {"date" : true, "time" : true, "timestamp" : true},
+      backslashStringEscapes = parserConfig.backslashStringEscapes !== false
 
   function tokenBase(stream, state) {
     var ch = stream.next();
@@ -63581,7 +63874,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
           state.tokenize = tokenBase;
           break;
         }
-        escaped = !escaped && ch == "\\";
+        escaped = backslashStringEscapes && !escaped && ch == "\\";
       }
       return "string";
     };
@@ -63748,6 +64041,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     builtin: set("bigint numeric bit smallint decimal smallmoney int tinyint money float real char varchar text nchar nvarchar ntext binary varbinary image cursor timestamp hierarchyid uniqueidentifier sql_variant xml table "),
     atoms: set("false true null unknown"),
     operatorChars: /^[*+\-%<>!=]/,
+    backslashStringEscapes: false,
     dateSQL: set("date datetimeoffset datetime2 smalldatetime datetime time"),
     hooks: {
       "@":   hookVar
@@ -63856,7 +64150,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     name: "sql",
     client: set("source"),
     // https://www.postgresql.org/docs/10/static/sql-keywords-appendix.html
-    keywords: set(sqlKeywords + "a abort abs absent absolute access according action ada add admin after aggregate all allocate also always analyse analyze any are array array_agg array_max_cardinality asensitive assertion assignment asymmetric at atomic attribute attributes authorization avg backward base64 before begin begin_frame begin_partition bernoulli binary bit_length blob blocked bom both breadth c cache call called cardinality cascade cascaded case cast catalog catalog_name ceil ceiling chain characteristics characters character_length character_set_catalog character_set_name character_set_schema char_length check checkpoint class class_origin clob close cluster coalesce cobol collate collation collation_catalog collation_name collation_schema collect column columns column_name command_function command_function_code comment comments commit committed concurrently condition condition_number configuration conflict connect connection connection_name constraint constraints constraint_catalog constraint_name constraint_schema constructor contains content continue control conversion convert copy corr corresponding cost covar_pop covar_samp cross csv cube cume_dist current current_catalog current_date current_default_transform_group current_path current_role current_row current_schema current_time current_timestamp current_transform_group_for_type current_user cursor cursor_name cycle data database datalink datetime_interval_code datetime_interval_precision day db deallocate dec declare default defaults deferrable deferred defined definer degree delimiter delimiters dense_rank depth deref derived describe descriptor deterministic diagnostics dictionary disable discard disconnect dispatch dlnewcopy dlpreviouscopy dlurlcomplete dlurlcompleteonly dlurlcompletewrite dlurlpath dlurlpathonly dlurlpathwrite dlurlscheme dlurlserver dlvalue do document domain dynamic dynamic_function dynamic_function_code each element else empty enable encoding encrypted end end-exec end_frame end_partition enforced enum equals escape event every except exception exclude excluding exclusive exec execute exists exp explain expression extension external extract false family fetch file filter final first first_value flag float floor following for force foreign fortran forward found frame_row free freeze fs full function functions fusion g general generated get global go goto grant granted greatest grouping groups handler header hex hierarchy hold hour id identity if ignore ilike immediate immediately immutable implementation implicit import including increment indent index indexes indicator inherit inherits initially inline inner inout input insensitive instance instantiable instead integrity intersect intersection invoker isnull isolation k key key_member key_type label lag language large last last_value lateral lead leading leakproof least left length level library like_regex link listen ln load local localtime localtimestamp location locator lock locked logged lower m map mapping match matched materialized max maxvalue max_cardinality member merge message_length message_octet_length message_text method min minute minvalue mod mode modifies module month more move multiset mumps name names namespace national natural nchar nclob nesting new next nfc nfd nfkc nfkd nil no none normalize normalized nothing notify notnull nowait nth_value ntile null nullable nullif nulls number object occurrences_regex octets octet_length of off offset oids old only open operator option options ordering ordinality others out outer output over overlaps overlay overriding owned owner p pad parallel parameter parameter_mode parameter_name parameter_ordinal_position parameter_specific_catalog parameter_specific_name parameter_specific_schema parser partial partition pascal passing passthrough password percent percentile_cont percentile_disc percent_rank period permission placing plans pli policy portion position position_regex power precedes preceding prepare prepared preserve primary prior privileges procedural procedure program public quote range rank read reads reassign recheck recovery recursive ref references referencing refresh regr_avgx regr_avgy regr_count regr_intercept regr_r2 regr_slope regr_sxx regr_sxy regr_syy reindex relative release rename repeatable replace replica requiring reset respect restart restore restrict restricted result return returned_cardinality returned_length returned_octet_length returned_sqlstate returning returns revoke right role rollback rollup routine routine_catalog routine_name routine_schema row rows row_count row_number rule savepoint scale schema schema_name scope scope_catalog scope_name scope_schema scroll search second section security selective self sensitive sequence sequences serializable server server_name session session_user setof sets share show similar simple size skip snapshot some source space specific specifictype specific_name sql sqlcode sqlerror sqlexception sqlstate sqlwarning sqrt stable standalone start state statement static statistics stddev_pop stddev_samp stdin stdout storage strict strip structure style subclass_origin submultiset substring substring_regex succeeds sum symmetric sysid system system_time system_user t tables tablesample tablespace table_name temp template temporary then ties timezone_hour timezone_minute to token top_level_count trailing transaction transactions_committed transactions_rolled_back transaction_active transform transforms translate translate_regex translation treat trigger trigger_catalog trigger_name trigger_schema trim trim_array true truncate trusted type types uescape unbounded uncommitted under unencrypted unique unknown unlink unlisten unlogged unnamed unnest until untyped upper uri usage user user_defined_type_catalog user_defined_type_code user_defined_type_name user_defined_type_schema using vacuum valid validate validator value value_of varbinary variadic var_pop var_samp verbose version versioning view views volatile when whenever whitespace width_bucket window within work wrapper write xmlagg xmlattributes xmlbinary xmlcast xmlcomment xmlconcat xmldeclaration xmldocument xmlelement xmlexists xmlforest xmliterate xmlnamespaces xmlparse xmlpi xmlquery xmlroot xmlschema xmlserialize xmltable xmltext xmlvalidate year yes loop repeat attach path depends detach zone"),
+    keywords: set(sqlKeywords + "a abort abs absent absolute access according action ada add admin after aggregate all allocate also always analyse analyze any are array array_agg array_max_cardinality asensitive assertion assignment asymmetric at atomic attribute attributes authorization avg backward base64 before begin begin_frame begin_partition bernoulli binary bit_length blob blocked bom both breadth c cache call called cardinality cascade cascaded case cast catalog catalog_name ceil ceiling chain characteristics characters character_length character_set_catalog character_set_name character_set_schema char_length check checkpoint class class_origin clob close cluster coalesce cobol collate collation collation_catalog collation_name collation_schema collect column columns column_name command_function command_function_code comment comments commit committed concurrently condition condition_number configuration conflict connect connection connection_name constraint constraints constraint_catalog constraint_name constraint_schema constructor contains content continue control conversion convert copy corr corresponding cost covar_pop covar_samp cross csv cube cume_dist current current_catalog current_date current_default_transform_group current_path current_role current_row current_schema current_time current_timestamp current_transform_group_for_type current_user cursor cursor_name cycle data database datalink datetime_interval_code datetime_interval_precision day db deallocate dec declare default defaults deferrable deferred defined definer degree delimiter delimiters dense_rank depth deref derived describe descriptor deterministic diagnostics dictionary disable discard disconnect dispatch dlnewcopy dlpreviouscopy dlurlcomplete dlurlcompleteonly dlurlcompletewrite dlurlpath dlurlpathonly dlurlpathwrite dlurlscheme dlurlserver dlvalue do document domain dynamic dynamic_function dynamic_function_code each element else empty enable encoding encrypted end end-exec end_frame end_partition enforced enum equals escape event every except exception exclude excluding exclusive exec execute exists exp explain expression extension external extract false family fetch file filter final first first_value flag float floor following for force foreign fortran forward found frame_row free freeze fs full function functions fusion g general generated get global go goto grant granted greatest grouping groups handler header hex hierarchy hold hour id identity if ignore ilike immediate immediately immutable implementation implicit import including increment indent index indexes indicator inherit inherits initially inline inner inout input insensitive instance instantiable instead integrity intersect intersection invoker isnull isolation k key key_member key_type label lag language large last last_value lateral lc_collate lc_ctype lead leading leakproof least left length level library like_regex link listen ln load local localtime localtimestamp location locator lock locked logged lower m map mapping match matched materialized max maxvalue max_cardinality member merge message_length message_octet_length message_text method min minute minvalue mod mode modifies module month more move multiset mumps name names namespace national natural nchar nclob nesting new next nfc nfd nfkc nfkd nil no none normalize normalized nothing notify notnull nowait nth_value ntile null nullable nullif nulls number object occurrences_regex octets octet_length of off offset oids old only open operator option options ordering ordinality others out outer output over overlaps overlay overriding owned owner p pad parallel parameter parameter_mode parameter_name parameter_ordinal_position parameter_specific_catalog parameter_specific_name parameter_specific_schema parser partial partition pascal passing passthrough password percent percentile_cont percentile_disc percent_rank period permission placing plans pli policy portion position position_regex power precedes preceding prepare prepared preserve primary prior privileges procedural procedure program public quote range rank read reads reassign recheck recovery recursive ref references referencing refresh regr_avgx regr_avgy regr_count regr_intercept regr_r2 regr_slope regr_sxx regr_sxy regr_syy reindex relative release rename repeatable replace replica requiring reset respect restart restore restrict restricted result return returned_cardinality returned_length returned_octet_length returned_sqlstate returning returns revoke right role rollback rollup routine routine_catalog routine_name routine_schema row rows row_count row_number rule savepoint scale schema schema_name scope scope_catalog scope_name scope_schema scroll search second section security selective self sensitive sequence sequences serializable server server_name session session_user setof sets share show similar simple size skip snapshot some source space specific specifictype specific_name sql sqlcode sqlerror sqlexception sqlstate sqlwarning sqrt stable standalone start state statement static statistics stddev_pop stddev_samp stdin stdout storage strict strip structure style subclass_origin submultiset substring substring_regex succeeds sum symmetric sysid system system_time system_user t tables tablesample tablespace table_name temp template temporary then ties timezone_hour timezone_minute to token top_level_count trailing transaction transactions_committed transactions_rolled_back transaction_active transform transforms translate translate_regex translation treat trigger trigger_catalog trigger_name trigger_schema trim trim_array true truncate trusted type types uescape unbounded uncommitted under unencrypted unique unknown unlink unlisten unlogged unnamed unnest until untyped upper uri usage user user_defined_type_catalog user_defined_type_code user_defined_type_name user_defined_type_schema using vacuum valid validate validator value value_of varbinary variadic var_pop var_samp verbose version versioning view views volatile when whenever whitespace width_bucket window within work wrapper write xmlagg xmlattributes xmlbinary xmlcast xmlcomment xmlconcat xmldeclaration xmldocument xmlelement xmlexists xmlforest xmliterate xmlnamespaces xmlparse xmlpi xmlquery xmlroot xmlschema xmlserialize xmltable xmltext xmlvalidate year yes loop repeat attach path depends detach zone"),
     // https://www.postgresql.org/docs/10/static/datatype.html
     builtin: set("bigint int8 bigserial serial8 bit varying varbit boolean bool box bytea character char varchar cidr circle date double precision float8 inet integer int int4 interval json jsonb line lseg macaddr macaddr8 money numeric decimal path pg_lsn point polygon real float4 smallint int2 smallserial serial2 serial serial4 text time without zone with timetz timestamp timestamptz tsquery tsvector txid_snapshot uuid xml"),
     atoms: set("false true null unknown"),
@@ -69401,24 +69695,26 @@ var map = {
 	"./neat.css": 291,
 	"./neo.css": 293,
 	"./night.css": 295,
-	"./panda-syntax.css": 297,
-	"./paraiso-dark.css": 299,
-	"./paraiso-light.css": 301,
-	"./pastel-on-dark.css": 303,
-	"./railscasts.css": 305,
-	"./rubyblue.css": 307,
-	"./seti.css": 309,
-	"./solarized.css": 311,
-	"./the-matrix.css": 313,
-	"./tomorrow-night-bright.css": 315,
-	"./tomorrow-night-eighties.css": 317,
-	"./ttcn.css": 319,
-	"./twilight.css": 321,
-	"./vibrant-ink.css": 323,
-	"./xq-dark.css": 325,
-	"./xq-light.css": 327,
-	"./yeti.css": 329,
-	"./zenburn.css": 331
+	"./oceanic-next.css": 297,
+	"./panda-syntax.css": 299,
+	"./paraiso-dark.css": 301,
+	"./paraiso-light.css": 303,
+	"./pastel-on-dark.css": 305,
+	"./railscasts.css": 307,
+	"./rubyblue.css": 309,
+	"./seti.css": 311,
+	"./shadowfox.css": 313,
+	"./solarized.css": 315,
+	"./the-matrix.css": 317,
+	"./tomorrow-night-bright.css": 319,
+	"./tomorrow-night-eighties.css": 321,
+	"./ttcn.css": 323,
+	"./twilight.css": 325,
+	"./vibrant-ink.css": 327,
+	"./xq-dark.css": 329,
+	"./xq-light.css": 331,
+	"./yeti.css": 333,
+	"./zenburn.css": 335
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -69471,7 +69767,7 @@ if(false) {
 /* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69516,7 +69812,7 @@ if(false) {
 /* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69561,7 +69857,7 @@ if(false) {
 /* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69606,7 +69902,7 @@ if(false) {
 /* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69651,7 +69947,7 @@ if(false) {
 /* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69696,7 +69992,7 @@ if(false) {
 /* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69741,7 +70037,7 @@ if(false) {
 /* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69786,7 +70082,7 @@ if(false) {
 /* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69831,7 +70127,7 @@ if(false) {
 /* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69876,7 +70172,7 @@ if(false) {
 /* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69921,7 +70217,7 @@ if(false) {
 /* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69966,7 +70262,7 @@ if(false) {
 /* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70011,7 +70307,7 @@ if(false) {
 /* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70056,7 +70352,7 @@ if(false) {
 /* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70101,7 +70397,7 @@ if(false) {
 /* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70146,7 +70442,7 @@ if(false) {
 /* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70191,7 +70487,7 @@ if(false) {
 /* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70236,7 +70532,7 @@ if(false) {
 /* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70281,7 +70577,7 @@ if(false) {
 /* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70326,7 +70622,7 @@ if(false) {
 /* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70371,7 +70667,7 @@ if(false) {
 /* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70416,7 +70712,7 @@ if(false) {
 /* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70461,7 +70757,7 @@ if(false) {
 /* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70506,7 +70802,7 @@ if(false) {
 /* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70551,7 +70847,7 @@ if(false) {
 /* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70596,7 +70892,7 @@ if(false) {
 /* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70641,7 +70937,7 @@ if(false) {
 /* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70686,7 +70982,7 @@ if(false) {
 /* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70731,7 +71027,7 @@ if(false) {
 /* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70776,7 +71072,7 @@ if(false) {
 /* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70807,8 +71103,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./panda-syntax.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./panda-syntax.css");
+		module.hot.accept("!!../../css-loader/index.js!./oceanic-next.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./oceanic-next.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -70821,12 +71117,12 @@ if(false) {
 /* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\n\tName:       Panda Syntax\n\tAuthor:     Siamak Mokhtari (http://github.com/siamak/)\n\tCodeMirror template by Siamak Mokhtari (https://github.com/siamak/atom-panda-syntax)\n*/\n.cm-s-panda-syntax {\n\tbackground: #292A2B;\n\tcolor: #E6E6E6;\n\tline-height: 1.5;\n\tfont-family: 'Operator Mono', 'Source Sans Pro', Menlo, Monaco, Consolas, Courier New, monospace;\n}\n.cm-s-panda-syntax .CodeMirror-cursor { border-color: #ff2c6d; }\n.cm-s-panda-syntax .CodeMirror-activeline-background {\n\tbackground: rgba(99, 123, 156, 0.1);\n}\n.cm-s-panda-syntax .CodeMirror-selected {\n\tbackground: #FFF;\n}\n.cm-s-panda-syntax .cm-comment {\n\tfont-style: italic;\n\tcolor: #676B79;\n}\n.cm-s-panda-syntax .cm-operator {\n\tcolor: #f3f3f3;\n}\n.cm-s-panda-syntax .cm-string {\n\tcolor: #19F9D8;\n}\n.cm-s-panda-syntax .cm-string-2 {\n    color: #FFB86C;\n}\n\n.cm-s-panda-syntax .cm-tag {\n\tcolor: #ff2c6d;\n}\n.cm-s-panda-syntax .cm-meta {\n\tcolor: #b084eb;\n}\n\n.cm-s-panda-syntax .cm-number {\n\tcolor: #FFB86C;\n}\n.cm-s-panda-syntax .cm-atom {\n\tcolor: #ff2c6d;\n}\n.cm-s-panda-syntax .cm-keyword {\n\tcolor: #FF75B5;\n}\n.cm-s-panda-syntax .cm-variable {\n\tcolor: #ffb86c;\n}\n.cm-s-panda-syntax .cm-variable-2 {\n\tcolor: #ff9ac1;\n}\n.cm-s-panda-syntax .cm-variable-3, .cm-s-panda-syntax .cm-type {\n\tcolor: #ff9ac1;\n}\n\n.cm-s-panda-syntax .cm-def {\n\tcolor: #e6e6e6;\n}\n.cm-s-panda-syntax .cm-property {\n\tcolor: #f3f3f3;\n}\n.cm-s-panda-syntax .cm-unit {\n    color: #ffb86c;\n}\n\n.cm-s-panda-syntax .cm-attribute {\n    color: #ffb86c;\n}\n\n.cm-s-panda-syntax .CodeMirror-matchingbracket {\n    border-bottom: 1px dotted #19F9D8;\n    padding-bottom: 2px;\n    color: #e6e6e6;\n}\n.cm-s-panda-syntax .CodeMirror-gutters {\n    background: #292a2b;\n    border-right-color: rgba(255, 255, 255, 0.1);\n}\n.cm-s-panda-syntax .CodeMirror-linenumber {\n    color: #e6e6e6;\n    opacity: 0.6;\n}\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       oceanic-next\n    Author:     Filype Pereira (https://github.com/fpereira1)\n\n    Original oceanic-next color scheme by Dmitri Voronianski (https://github.com/voronianski/oceanic-next-color-scheme)\n\n*/\n\n.cm-s-oceanic-next.CodeMirror { background: #304148; color: #f8f8f2; }\n.cm-s-oceanic-next div.CodeMirror-selected { background: rgba(101, 115, 126, 0.33); }\n.cm-s-oceanic-next .CodeMirror-line::selection, .cm-s-oceanic-next .CodeMirror-line > span::selection, .cm-s-oceanic-next .CodeMirror-line > span > span::selection { background: rgba(101, 115, 126, 0.33); }\n.cm-s-oceanic-next .CodeMirror-line::-moz-selection, .cm-s-oceanic-next .CodeMirror-line > span::-moz-selection, .cm-s-oceanic-next .CodeMirror-line > span > span::-moz-selection { background: rgba(101, 115, 126, 0.33); }\n.cm-s-oceanic-next .CodeMirror-gutters { background: #304148; border-right: 10px; }\n.cm-s-oceanic-next .CodeMirror-guttermarker { color: white; }\n.cm-s-oceanic-next .CodeMirror-guttermarker-subtle { color: #d0d0d0; }\n.cm-s-oceanic-next .CodeMirror-linenumber { color: #d0d0d0; }\n.cm-s-oceanic-next .CodeMirror-cursor { border-left: 1px solid #f8f8f0; }\n\n.cm-s-oceanic-next span.cm-comment { color: #65737E; }\n.cm-s-oceanic-next span.cm-atom { color: #C594C5; }\n.cm-s-oceanic-next span.cm-number { color: #F99157; }\n\n.cm-s-oceanic-next span.cm-property { color: #99C794; }\n.cm-s-oceanic-next span.cm-attribute,\n.cm-s-oceanic-next span.cm-keyword { color: #C594C5; }\n.cm-s-oceanic-next span.cm-builtin { color: #66d9ef; }\n.cm-s-oceanic-next span.cm-string { color: #99C794; }\n\n.cm-s-oceanic-next span.cm-variable,\n.cm-s-oceanic-next span.cm-variable-2,\n.cm-s-oceanic-next span.cm-variable-3 { color: #f8f8f2; }\n.cm-s-oceanic-next span.cm-def { color: #6699CC; }\n.cm-s-oceanic-next span.cm-bracket { color: #5FB3B3; }\n.cm-s-oceanic-next span.cm-tag { color: #C594C5; }\n.cm-s-oceanic-next span.cm-header { color: #C594C5; }\n.cm-s-oceanic-next span.cm-link { color: #C594C5; }\n.cm-s-oceanic-next span.cm-error { background: #C594C5; color: #f8f8f0; }\n\n.cm-s-oceanic-next .CodeMirror-activeline-background { background: rgba(101, 115, 126, 0.33); }\n.cm-s-oceanic-next .CodeMirror-matchingbracket {\n  text-decoration: underline;\n  color: white !important;\n}\n", ""]);
 
 // exports
 
@@ -70852,8 +71148,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./paraiso-dark.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./paraiso-dark.css");
+		module.hot.accept("!!../../css-loader/index.js!./panda-syntax.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./panda-syntax.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -70866,12 +71162,12 @@ if(false) {
 /* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Paraíso (Dark)\n    Author:     Jan T. Sott\n\n    Color scheme by Jan T. Sott (https://github.com/idleberg/Paraiso-CodeMirror)\n    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)\n\n*/\n\n.cm-s-paraiso-dark.CodeMirror { background: #2f1e2e; color: #b9b6b0; }\n.cm-s-paraiso-dark div.CodeMirror-selected { background: #41323f; }\n.cm-s-paraiso-dark .CodeMirror-line::selection, .cm-s-paraiso-dark .CodeMirror-line > span::selection, .cm-s-paraiso-dark .CodeMirror-line > span > span::selection { background: rgba(65, 50, 63, .99); }\n.cm-s-paraiso-dark .CodeMirror-line::-moz-selection, .cm-s-paraiso-dark .CodeMirror-line > span::-moz-selection, .cm-s-paraiso-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(65, 50, 63, .99); }\n.cm-s-paraiso-dark .CodeMirror-gutters { background: #2f1e2e; border-right: 0px; }\n.cm-s-paraiso-dark .CodeMirror-guttermarker { color: #ef6155; }\n.cm-s-paraiso-dark .CodeMirror-guttermarker-subtle { color: #776e71; }\n.cm-s-paraiso-dark .CodeMirror-linenumber { color: #776e71; }\n.cm-s-paraiso-dark .CodeMirror-cursor { border-left: 1px solid #8d8687; }\n\n.cm-s-paraiso-dark span.cm-comment { color: #e96ba8; }\n.cm-s-paraiso-dark span.cm-atom { color: #815ba4; }\n.cm-s-paraiso-dark span.cm-number { color: #815ba4; }\n\n.cm-s-paraiso-dark span.cm-property, .cm-s-paraiso-dark span.cm-attribute { color: #48b685; }\n.cm-s-paraiso-dark span.cm-keyword { color: #ef6155; }\n.cm-s-paraiso-dark span.cm-string { color: #fec418; }\n\n.cm-s-paraiso-dark span.cm-variable { color: #48b685; }\n.cm-s-paraiso-dark span.cm-variable-2 { color: #06b6ef; }\n.cm-s-paraiso-dark span.cm-def { color: #f99b15; }\n.cm-s-paraiso-dark span.cm-bracket { color: #b9b6b0; }\n.cm-s-paraiso-dark span.cm-tag { color: #ef6155; }\n.cm-s-paraiso-dark span.cm-link { color: #815ba4; }\n.cm-s-paraiso-dark span.cm-error { background: #ef6155; color: #8d8687; }\n\n.cm-s-paraiso-dark .CodeMirror-activeline-background { background: #4D344A; }\n.cm-s-paraiso-dark .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, "/*\n\tName:       Panda Syntax\n\tAuthor:     Siamak Mokhtari (http://github.com/siamak/)\n\tCodeMirror template by Siamak Mokhtari (https://github.com/siamak/atom-panda-syntax)\n*/\n.cm-s-panda-syntax {\n\tbackground: #292A2B;\n\tcolor: #E6E6E6;\n\tline-height: 1.5;\n\tfont-family: 'Operator Mono', 'Source Sans Pro', Menlo, Monaco, Consolas, Courier New, monospace;\n}\n.cm-s-panda-syntax .CodeMirror-cursor { border-color: #ff2c6d; }\n.cm-s-panda-syntax .CodeMirror-activeline-background {\n\tbackground: rgba(99, 123, 156, 0.1);\n}\n.cm-s-panda-syntax .CodeMirror-selected {\n\tbackground: #FFF;\n}\n.cm-s-panda-syntax .cm-comment {\n\tfont-style: italic;\n\tcolor: #676B79;\n}\n.cm-s-panda-syntax .cm-operator {\n\tcolor: #f3f3f3;\n}\n.cm-s-panda-syntax .cm-string {\n\tcolor: #19F9D8;\n}\n.cm-s-panda-syntax .cm-string-2 {\n    color: #FFB86C;\n}\n\n.cm-s-panda-syntax .cm-tag {\n\tcolor: #ff2c6d;\n}\n.cm-s-panda-syntax .cm-meta {\n\tcolor: #b084eb;\n}\n\n.cm-s-panda-syntax .cm-number {\n\tcolor: #FFB86C;\n}\n.cm-s-panda-syntax .cm-atom {\n\tcolor: #ff2c6d;\n}\n.cm-s-panda-syntax .cm-keyword {\n\tcolor: #FF75B5;\n}\n.cm-s-panda-syntax .cm-variable {\n\tcolor: #ffb86c;\n}\n.cm-s-panda-syntax .cm-variable-2 {\n\tcolor: #ff9ac1;\n}\n.cm-s-panda-syntax .cm-variable-3, .cm-s-panda-syntax .cm-type {\n\tcolor: #ff9ac1;\n}\n\n.cm-s-panda-syntax .cm-def {\n\tcolor: #e6e6e6;\n}\n.cm-s-panda-syntax .cm-property {\n\tcolor: #f3f3f3;\n}\n.cm-s-panda-syntax .cm-unit {\n    color: #ffb86c;\n}\n\n.cm-s-panda-syntax .cm-attribute {\n    color: #ffb86c;\n}\n\n.cm-s-panda-syntax .CodeMirror-matchingbracket {\n    border-bottom: 1px dotted #19F9D8;\n    padding-bottom: 2px;\n    color: #e6e6e6;\n}\n.cm-s-panda-syntax .CodeMirror-gutters {\n    background: #292a2b;\n    border-right-color: rgba(255, 255, 255, 0.1);\n}\n.cm-s-panda-syntax .CodeMirror-linenumber {\n    color: #e6e6e6;\n    opacity: 0.6;\n}\n", ""]);
 
 // exports
 
@@ -70897,8 +71193,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./paraiso-light.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./paraiso-light.css");
+		module.hot.accept("!!../../css-loader/index.js!./paraiso-dark.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./paraiso-dark.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -70911,12 +71207,12 @@ if(false) {
 /* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Paraíso (Light)\n    Author:     Jan T. Sott\n\n    Color scheme by Jan T. Sott (https://github.com/idleberg/Paraiso-CodeMirror)\n    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)\n\n*/\n\n.cm-s-paraiso-light.CodeMirror { background: #e7e9db; color: #41323f; }\n.cm-s-paraiso-light div.CodeMirror-selected { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-line::selection, .cm-s-paraiso-light .CodeMirror-line > span::selection, .cm-s-paraiso-light .CodeMirror-line > span > span::selection { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-line::-moz-selection, .cm-s-paraiso-light .CodeMirror-line > span::-moz-selection, .cm-s-paraiso-light .CodeMirror-line > span > span::-moz-selection { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-gutters { background: #e7e9db; border-right: 0px; }\n.cm-s-paraiso-light .CodeMirror-guttermarker { color: black; }\n.cm-s-paraiso-light .CodeMirror-guttermarker-subtle { color: #8d8687; }\n.cm-s-paraiso-light .CodeMirror-linenumber { color: #8d8687; }\n.cm-s-paraiso-light .CodeMirror-cursor { border-left: 1px solid #776e71; }\n\n.cm-s-paraiso-light span.cm-comment { color: #e96ba8; }\n.cm-s-paraiso-light span.cm-atom { color: #815ba4; }\n.cm-s-paraiso-light span.cm-number { color: #815ba4; }\n\n.cm-s-paraiso-light span.cm-property, .cm-s-paraiso-light span.cm-attribute { color: #48b685; }\n.cm-s-paraiso-light span.cm-keyword { color: #ef6155; }\n.cm-s-paraiso-light span.cm-string { color: #fec418; }\n\n.cm-s-paraiso-light span.cm-variable { color: #48b685; }\n.cm-s-paraiso-light span.cm-variable-2 { color: #06b6ef; }\n.cm-s-paraiso-light span.cm-def { color: #f99b15; }\n.cm-s-paraiso-light span.cm-bracket { color: #41323f; }\n.cm-s-paraiso-light span.cm-tag { color: #ef6155; }\n.cm-s-paraiso-light span.cm-link { color: #815ba4; }\n.cm-s-paraiso-light span.cm-error { background: #ef6155; color: #776e71; }\n\n.cm-s-paraiso-light .CodeMirror-activeline-background { background: #CFD1C4; }\n.cm-s-paraiso-light .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Paraíso (Dark)\n    Author:     Jan T. Sott\n\n    Color scheme by Jan T. Sott (https://github.com/idleberg/Paraiso-CodeMirror)\n    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)\n\n*/\n\n.cm-s-paraiso-dark.CodeMirror { background: #2f1e2e; color: #b9b6b0; }\n.cm-s-paraiso-dark div.CodeMirror-selected { background: #41323f; }\n.cm-s-paraiso-dark .CodeMirror-line::selection, .cm-s-paraiso-dark .CodeMirror-line > span::selection, .cm-s-paraiso-dark .CodeMirror-line > span > span::selection { background: rgba(65, 50, 63, .99); }\n.cm-s-paraiso-dark .CodeMirror-line::-moz-selection, .cm-s-paraiso-dark .CodeMirror-line > span::-moz-selection, .cm-s-paraiso-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(65, 50, 63, .99); }\n.cm-s-paraiso-dark .CodeMirror-gutters { background: #2f1e2e; border-right: 0px; }\n.cm-s-paraiso-dark .CodeMirror-guttermarker { color: #ef6155; }\n.cm-s-paraiso-dark .CodeMirror-guttermarker-subtle { color: #776e71; }\n.cm-s-paraiso-dark .CodeMirror-linenumber { color: #776e71; }\n.cm-s-paraiso-dark .CodeMirror-cursor { border-left: 1px solid #8d8687; }\n\n.cm-s-paraiso-dark span.cm-comment { color: #e96ba8; }\n.cm-s-paraiso-dark span.cm-atom { color: #815ba4; }\n.cm-s-paraiso-dark span.cm-number { color: #815ba4; }\n\n.cm-s-paraiso-dark span.cm-property, .cm-s-paraiso-dark span.cm-attribute { color: #48b685; }\n.cm-s-paraiso-dark span.cm-keyword { color: #ef6155; }\n.cm-s-paraiso-dark span.cm-string { color: #fec418; }\n\n.cm-s-paraiso-dark span.cm-variable { color: #48b685; }\n.cm-s-paraiso-dark span.cm-variable-2 { color: #06b6ef; }\n.cm-s-paraiso-dark span.cm-def { color: #f99b15; }\n.cm-s-paraiso-dark span.cm-bracket { color: #b9b6b0; }\n.cm-s-paraiso-dark span.cm-tag { color: #ef6155; }\n.cm-s-paraiso-dark span.cm-link { color: #815ba4; }\n.cm-s-paraiso-dark span.cm-error { background: #ef6155; color: #8d8687; }\n\n.cm-s-paraiso-dark .CodeMirror-activeline-background { background: #4D344A; }\n.cm-s-paraiso-dark .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -70942,8 +71238,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./pastel-on-dark.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./pastel-on-dark.css");
+		module.hot.accept("!!../../css-loader/index.js!./paraiso-light.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./paraiso-light.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -70956,12 +71252,12 @@ if(false) {
 /* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/**\n * Pastel On Dark theme ported from ACE editor\n * @license MIT\n * @copyright AtomicPages LLC 2014\n * @author Dennis Thompson, AtomicPages LLC\n * @version 1.1\n * @source https://github.com/atomicpages/codemirror-pastel-on-dark-theme\n */\n\n.cm-s-pastel-on-dark.CodeMirror {\n\tbackground: #2c2827;\n\tcolor: #8F938F;\n\tline-height: 1.5;\n}\n.cm-s-pastel-on-dark div.CodeMirror-selected { background: rgba(221,240,255,0.2); }\n.cm-s-pastel-on-dark .CodeMirror-line::selection, .cm-s-pastel-on-dark .CodeMirror-line > span::selection, .cm-s-pastel-on-dark .CodeMirror-line > span > span::selection { background: rgba(221,240,255,0.2); }\n.cm-s-pastel-on-dark .CodeMirror-line::-moz-selection, .cm-s-pastel-on-dark .CodeMirror-line > span::-moz-selection, .cm-s-pastel-on-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(221,240,255,0.2); }\n\n.cm-s-pastel-on-dark .CodeMirror-gutters {\n\tbackground: #34302f;\n\tborder-right: 0px;\n\tpadding: 0 3px;\n}\n.cm-s-pastel-on-dark .CodeMirror-guttermarker { color: white; }\n.cm-s-pastel-on-dark .CodeMirror-guttermarker-subtle { color: #8F938F; }\n.cm-s-pastel-on-dark .CodeMirror-linenumber { color: #8F938F; }\n.cm-s-pastel-on-dark .CodeMirror-cursor { border-left: 1px solid #A7A7A7; }\n.cm-s-pastel-on-dark span.cm-comment { color: #A6C6FF; }\n.cm-s-pastel-on-dark span.cm-atom { color: #DE8E30; }\n.cm-s-pastel-on-dark span.cm-number { color: #CCCCCC; }\n.cm-s-pastel-on-dark span.cm-property { color: #8F938F; }\n.cm-s-pastel-on-dark span.cm-attribute { color: #a6e22e; }\n.cm-s-pastel-on-dark span.cm-keyword { color: #AEB2F8; }\n.cm-s-pastel-on-dark span.cm-string { color: #66A968; }\n.cm-s-pastel-on-dark span.cm-variable { color: #AEB2F8; }\n.cm-s-pastel-on-dark span.cm-variable-2 { color: #BEBF55; }\n.cm-s-pastel-on-dark span.cm-variable-3, .cm-s-pastel-on-dark span.cm-type { color: #DE8E30; }\n.cm-s-pastel-on-dark span.cm-def { color: #757aD8; }\n.cm-s-pastel-on-dark span.cm-bracket { color: #f8f8f2; }\n.cm-s-pastel-on-dark span.cm-tag { color: #C1C144; }\n.cm-s-pastel-on-dark span.cm-link { color: #ae81ff; }\n.cm-s-pastel-on-dark span.cm-qualifier,.cm-s-pastel-on-dark span.cm-builtin { color: #C1C144; }\n.cm-s-pastel-on-dark span.cm-error {\n\tbackground: #757aD8;\n\tcolor: #f8f8f0;\n}\n.cm-s-pastel-on-dark .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.031); }\n.cm-s-pastel-on-dark .CodeMirror-matchingbracket {\n\tborder: 1px solid rgba(255,255,255,0.25);\n\tcolor: #8F938F !important;\n\tmargin: -1px -1px 0 -1px;\n}\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Paraíso (Light)\n    Author:     Jan T. Sott\n\n    Color scheme by Jan T. Sott (https://github.com/idleberg/Paraiso-CodeMirror)\n    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)\n\n*/\n\n.cm-s-paraiso-light.CodeMirror { background: #e7e9db; color: #41323f; }\n.cm-s-paraiso-light div.CodeMirror-selected { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-line::selection, .cm-s-paraiso-light .CodeMirror-line > span::selection, .cm-s-paraiso-light .CodeMirror-line > span > span::selection { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-line::-moz-selection, .cm-s-paraiso-light .CodeMirror-line > span::-moz-selection, .cm-s-paraiso-light .CodeMirror-line > span > span::-moz-selection { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-gutters { background: #e7e9db; border-right: 0px; }\n.cm-s-paraiso-light .CodeMirror-guttermarker { color: black; }\n.cm-s-paraiso-light .CodeMirror-guttermarker-subtle { color: #8d8687; }\n.cm-s-paraiso-light .CodeMirror-linenumber { color: #8d8687; }\n.cm-s-paraiso-light .CodeMirror-cursor { border-left: 1px solid #776e71; }\n\n.cm-s-paraiso-light span.cm-comment { color: #e96ba8; }\n.cm-s-paraiso-light span.cm-atom { color: #815ba4; }\n.cm-s-paraiso-light span.cm-number { color: #815ba4; }\n\n.cm-s-paraiso-light span.cm-property, .cm-s-paraiso-light span.cm-attribute { color: #48b685; }\n.cm-s-paraiso-light span.cm-keyword { color: #ef6155; }\n.cm-s-paraiso-light span.cm-string { color: #fec418; }\n\n.cm-s-paraiso-light span.cm-variable { color: #48b685; }\n.cm-s-paraiso-light span.cm-variable-2 { color: #06b6ef; }\n.cm-s-paraiso-light span.cm-def { color: #f99b15; }\n.cm-s-paraiso-light span.cm-bracket { color: #41323f; }\n.cm-s-paraiso-light span.cm-tag { color: #ef6155; }\n.cm-s-paraiso-light span.cm-link { color: #815ba4; }\n.cm-s-paraiso-light span.cm-error { background: #ef6155; color: #776e71; }\n\n.cm-s-paraiso-light .CodeMirror-activeline-background { background: #CFD1C4; }\n.cm-s-paraiso-light .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -70987,8 +71283,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./railscasts.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./railscasts.css");
+		module.hot.accept("!!../../css-loader/index.js!./pastel-on-dark.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./pastel-on-dark.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71001,12 +71297,12 @@ if(false) {
 /* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Railscasts\n    Author:     Ryan Bates (http://railscasts.com)\n\n    CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-codemirror)\n    Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)\n\n*/\n\n.cm-s-railscasts.CodeMirror {background: #2b2b2b; color: #f4f1ed;}\n.cm-s-railscasts div.CodeMirror-selected {background: #272935 !important;}\n.cm-s-railscasts .CodeMirror-gutters {background: #2b2b2b; border-right: 0px;}\n.cm-s-railscasts .CodeMirror-linenumber {color: #5a647e;}\n.cm-s-railscasts .CodeMirror-cursor {border-left: 1px solid #d4cfc9 !important;}\n\n.cm-s-railscasts span.cm-comment {color: #bc9458;}\n.cm-s-railscasts span.cm-atom {color: #b6b3eb;}\n.cm-s-railscasts span.cm-number {color: #b6b3eb;}\n\n.cm-s-railscasts span.cm-property, .cm-s-railscasts span.cm-attribute {color: #a5c261;}\n.cm-s-railscasts span.cm-keyword {color: #da4939;}\n.cm-s-railscasts span.cm-string {color: #ffc66d;}\n\n.cm-s-railscasts span.cm-variable {color: #a5c261;}\n.cm-s-railscasts span.cm-variable-2 {color: #6d9cbe;}\n.cm-s-railscasts span.cm-def {color: #cc7833;}\n.cm-s-railscasts span.cm-error {background: #da4939; color: #d4cfc9;}\n.cm-s-railscasts span.cm-bracket {color: #f4f1ed;}\n.cm-s-railscasts span.cm-tag {color: #da4939;}\n.cm-s-railscasts span.cm-link {color: #b6b3eb;}\n\n.cm-s-railscasts .CodeMirror-matchingbracket { text-decoration: underline; color: white !important;}\n.cm-s-railscasts .CodeMirror-activeline-background { background: #303040; }\n", ""]);
+exports.push([module.i, "/**\n * Pastel On Dark theme ported from ACE editor\n * @license MIT\n * @copyright AtomicPages LLC 2014\n * @author Dennis Thompson, AtomicPages LLC\n * @version 1.1\n * @source https://github.com/atomicpages/codemirror-pastel-on-dark-theme\n */\n\n.cm-s-pastel-on-dark.CodeMirror {\n\tbackground: #2c2827;\n\tcolor: #8F938F;\n\tline-height: 1.5;\n}\n.cm-s-pastel-on-dark div.CodeMirror-selected { background: rgba(221,240,255,0.2); }\n.cm-s-pastel-on-dark .CodeMirror-line::selection, .cm-s-pastel-on-dark .CodeMirror-line > span::selection, .cm-s-pastel-on-dark .CodeMirror-line > span > span::selection { background: rgba(221,240,255,0.2); }\n.cm-s-pastel-on-dark .CodeMirror-line::-moz-selection, .cm-s-pastel-on-dark .CodeMirror-line > span::-moz-selection, .cm-s-pastel-on-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(221,240,255,0.2); }\n\n.cm-s-pastel-on-dark .CodeMirror-gutters {\n\tbackground: #34302f;\n\tborder-right: 0px;\n\tpadding: 0 3px;\n}\n.cm-s-pastel-on-dark .CodeMirror-guttermarker { color: white; }\n.cm-s-pastel-on-dark .CodeMirror-guttermarker-subtle { color: #8F938F; }\n.cm-s-pastel-on-dark .CodeMirror-linenumber { color: #8F938F; }\n.cm-s-pastel-on-dark .CodeMirror-cursor { border-left: 1px solid #A7A7A7; }\n.cm-s-pastel-on-dark span.cm-comment { color: #A6C6FF; }\n.cm-s-pastel-on-dark span.cm-atom { color: #DE8E30; }\n.cm-s-pastel-on-dark span.cm-number { color: #CCCCCC; }\n.cm-s-pastel-on-dark span.cm-property { color: #8F938F; }\n.cm-s-pastel-on-dark span.cm-attribute { color: #a6e22e; }\n.cm-s-pastel-on-dark span.cm-keyword { color: #AEB2F8; }\n.cm-s-pastel-on-dark span.cm-string { color: #66A968; }\n.cm-s-pastel-on-dark span.cm-variable { color: #AEB2F8; }\n.cm-s-pastel-on-dark span.cm-variable-2 { color: #BEBF55; }\n.cm-s-pastel-on-dark span.cm-variable-3, .cm-s-pastel-on-dark span.cm-type { color: #DE8E30; }\n.cm-s-pastel-on-dark span.cm-def { color: #757aD8; }\n.cm-s-pastel-on-dark span.cm-bracket { color: #f8f8f2; }\n.cm-s-pastel-on-dark span.cm-tag { color: #C1C144; }\n.cm-s-pastel-on-dark span.cm-link { color: #ae81ff; }\n.cm-s-pastel-on-dark span.cm-qualifier,.cm-s-pastel-on-dark span.cm-builtin { color: #C1C144; }\n.cm-s-pastel-on-dark span.cm-error {\n\tbackground: #757aD8;\n\tcolor: #f8f8f0;\n}\n.cm-s-pastel-on-dark .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.031); }\n.cm-s-pastel-on-dark .CodeMirror-matchingbracket {\n\tborder: 1px solid rgba(255,255,255,0.25);\n\tcolor: #8F938F !important;\n\tmargin: -1px -1px 0 -1px;\n}\n", ""]);
 
 // exports
 
@@ -71032,8 +71328,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./rubyblue.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./rubyblue.css");
+		module.hot.accept("!!../../css-loader/index.js!./railscasts.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./railscasts.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71046,12 +71342,12 @@ if(false) {
 /* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".cm-s-rubyblue.CodeMirror { background: #112435; color: white; }\n.cm-s-rubyblue div.CodeMirror-selected { background: #38566F; }\n.cm-s-rubyblue .CodeMirror-line::selection, .cm-s-rubyblue .CodeMirror-line > span::selection, .cm-s-rubyblue .CodeMirror-line > span > span::selection { background: rgba(56, 86, 111, 0.99); }\n.cm-s-rubyblue .CodeMirror-line::-moz-selection, .cm-s-rubyblue .CodeMirror-line > span::-moz-selection, .cm-s-rubyblue .CodeMirror-line > span > span::-moz-selection { background: rgba(56, 86, 111, 0.99); }\n.cm-s-rubyblue .CodeMirror-gutters { background: #1F4661; border-right: 7px solid #3E7087; }\n.cm-s-rubyblue .CodeMirror-guttermarker { color: white; }\n.cm-s-rubyblue .CodeMirror-guttermarker-subtle { color: #3E7087; }\n.cm-s-rubyblue .CodeMirror-linenumber { color: white; }\n.cm-s-rubyblue .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-rubyblue span.cm-comment { color: #999; font-style:italic; line-height: 1em; }\n.cm-s-rubyblue span.cm-atom { color: #F4C20B; }\n.cm-s-rubyblue span.cm-number, .cm-s-rubyblue span.cm-attribute { color: #82C6E0; }\n.cm-s-rubyblue span.cm-keyword { color: #F0F; }\n.cm-s-rubyblue span.cm-string { color: #F08047; }\n.cm-s-rubyblue span.cm-meta { color: #F0F; }\n.cm-s-rubyblue span.cm-variable-2, .cm-s-rubyblue span.cm-tag { color: #7BD827; }\n.cm-s-rubyblue span.cm-variable-3, .cm-s-rubyblue span.cm-def, .cm-s-rubyblue span.cm-type { color: white; }\n.cm-s-rubyblue span.cm-bracket { color: #F0F; }\n.cm-s-rubyblue span.cm-link { color: #F4C20B; }\n.cm-s-rubyblue span.CodeMirror-matchingbracket { color:#F0F !important; }\n.cm-s-rubyblue span.cm-builtin, .cm-s-rubyblue span.cm-special { color: #FF9D00; }\n.cm-s-rubyblue span.cm-error { color: #AF2018; }\n\n.cm-s-rubyblue .CodeMirror-activeline-background { background: #173047; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Railscasts\n    Author:     Ryan Bates (http://railscasts.com)\n\n    CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-codemirror)\n    Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)\n\n*/\n\n.cm-s-railscasts.CodeMirror {background: #2b2b2b; color: #f4f1ed;}\n.cm-s-railscasts div.CodeMirror-selected {background: #272935 !important;}\n.cm-s-railscasts .CodeMirror-gutters {background: #2b2b2b; border-right: 0px;}\n.cm-s-railscasts .CodeMirror-linenumber {color: #5a647e;}\n.cm-s-railscasts .CodeMirror-cursor {border-left: 1px solid #d4cfc9 !important;}\n\n.cm-s-railscasts span.cm-comment {color: #bc9458;}\n.cm-s-railscasts span.cm-atom {color: #b6b3eb;}\n.cm-s-railscasts span.cm-number {color: #b6b3eb;}\n\n.cm-s-railscasts span.cm-property, .cm-s-railscasts span.cm-attribute {color: #a5c261;}\n.cm-s-railscasts span.cm-keyword {color: #da4939;}\n.cm-s-railscasts span.cm-string {color: #ffc66d;}\n\n.cm-s-railscasts span.cm-variable {color: #a5c261;}\n.cm-s-railscasts span.cm-variable-2 {color: #6d9cbe;}\n.cm-s-railscasts span.cm-def {color: #cc7833;}\n.cm-s-railscasts span.cm-error {background: #da4939; color: #d4cfc9;}\n.cm-s-railscasts span.cm-bracket {color: #f4f1ed;}\n.cm-s-railscasts span.cm-tag {color: #da4939;}\n.cm-s-railscasts span.cm-link {color: #b6b3eb;}\n\n.cm-s-railscasts .CodeMirror-matchingbracket { text-decoration: underline; color: white !important;}\n.cm-s-railscasts .CodeMirror-activeline-background { background: #303040; }\n", ""]);
 
 // exports
 
@@ -71077,8 +71373,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./seti.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./seti.css");
+		module.hot.accept("!!../../css-loader/index.js!./rubyblue.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./rubyblue.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71091,12 +71387,12 @@ if(false) {
 /* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       seti\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original seti color scheme by Jesse Weed (https://github.com/jesseweed/seti-syntax)\n\n*/\n\n\n.cm-s-seti.CodeMirror {\n  background-color: #151718 !important;\n  color: #CFD2D1 !important;\n  border: none;\n}\n.cm-s-seti .CodeMirror-gutters {\n  color: #404b53;\n  background-color: #0E1112;\n  border: none;\n}\n.cm-s-seti .CodeMirror-cursor { border-left: solid thin #f8f8f0; }\n.cm-s-seti .CodeMirror-linenumber { color: #6D8A88; }\n.cm-s-seti.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti .CodeMirror-line::selection, .cm-s-seti .CodeMirror-line > span::selection, .cm-s-seti .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti .CodeMirror-line::-moz-selection, .cm-s-seti .CodeMirror-line > span::-moz-selection, .cm-s-seti .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti span.cm-comment { color: #41535b; }\n.cm-s-seti span.cm-string, .cm-s-seti span.cm-string-2 { color: #55b5db; }\n.cm-s-seti span.cm-number { color: #cd3f45; }\n.cm-s-seti span.cm-variable { color: #55b5db; }\n.cm-s-seti span.cm-variable-2 { color: #a074c4; }\n.cm-s-seti span.cm-def { color: #55b5db; }\n.cm-s-seti span.cm-keyword { color: #ff79c6; }\n.cm-s-seti span.cm-operator { color: #9fca56; }\n.cm-s-seti span.cm-keyword { color: #e6cd69; }\n.cm-s-seti span.cm-atom { color: #cd3f45; }\n.cm-s-seti span.cm-meta { color: #55b5db; }\n.cm-s-seti span.cm-tag { color: #55b5db; }\n.cm-s-seti span.cm-attribute { color: #9fca56; }\n.cm-s-seti span.cm-qualifier { color: #9fca56; }\n.cm-s-seti span.cm-property { color: #a074c4; }\n.cm-s-seti span.cm-variable-3, .cm-s-seti span.cm-type { color: #9fca56; }\n.cm-s-seti span.cm-builtin { color: #9fca56; }\n.cm-s-seti .CodeMirror-activeline-background { background: #101213; }\n.cm-s-seti .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, ".cm-s-rubyblue.CodeMirror { background: #112435; color: white; }\n.cm-s-rubyblue div.CodeMirror-selected { background: #38566F; }\n.cm-s-rubyblue .CodeMirror-line::selection, .cm-s-rubyblue .CodeMirror-line > span::selection, .cm-s-rubyblue .CodeMirror-line > span > span::selection { background: rgba(56, 86, 111, 0.99); }\n.cm-s-rubyblue .CodeMirror-line::-moz-selection, .cm-s-rubyblue .CodeMirror-line > span::-moz-selection, .cm-s-rubyblue .CodeMirror-line > span > span::-moz-selection { background: rgba(56, 86, 111, 0.99); }\n.cm-s-rubyblue .CodeMirror-gutters { background: #1F4661; border-right: 7px solid #3E7087; }\n.cm-s-rubyblue .CodeMirror-guttermarker { color: white; }\n.cm-s-rubyblue .CodeMirror-guttermarker-subtle { color: #3E7087; }\n.cm-s-rubyblue .CodeMirror-linenumber { color: white; }\n.cm-s-rubyblue .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-rubyblue span.cm-comment { color: #999; font-style:italic; line-height: 1em; }\n.cm-s-rubyblue span.cm-atom { color: #F4C20B; }\n.cm-s-rubyblue span.cm-number, .cm-s-rubyblue span.cm-attribute { color: #82C6E0; }\n.cm-s-rubyblue span.cm-keyword { color: #F0F; }\n.cm-s-rubyblue span.cm-string { color: #F08047; }\n.cm-s-rubyblue span.cm-meta { color: #F0F; }\n.cm-s-rubyblue span.cm-variable-2, .cm-s-rubyblue span.cm-tag { color: #7BD827; }\n.cm-s-rubyblue span.cm-variable-3, .cm-s-rubyblue span.cm-def, .cm-s-rubyblue span.cm-type { color: white; }\n.cm-s-rubyblue span.cm-bracket { color: #F0F; }\n.cm-s-rubyblue span.cm-link { color: #F4C20B; }\n.cm-s-rubyblue span.CodeMirror-matchingbracket { color:#F0F !important; }\n.cm-s-rubyblue span.cm-builtin, .cm-s-rubyblue span.cm-special { color: #FF9D00; }\n.cm-s-rubyblue span.cm-error { color: #AF2018; }\n\n.cm-s-rubyblue .CodeMirror-activeline-background { background: #173047; }\n", ""]);
 
 // exports
 
@@ -71122,8 +71418,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./solarized.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./solarized.css");
+		module.hot.accept("!!../../css-loader/index.js!./seti.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./seti.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71136,12 +71432,12 @@ if(false) {
 /* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\nSolarized theme for code-mirror\nhttp://ethanschoonover.com/solarized\n*/\n\n/*\nSolarized color palette\nhttp://ethanschoonover.com/solarized/img/solarized-palette.png\n*/\n\n.solarized.base03 { color: #002b36; }\n.solarized.base02 { color: #073642; }\n.solarized.base01 { color: #586e75; }\n.solarized.base00 { color: #657b83; }\n.solarized.base0 { color: #839496; }\n.solarized.base1 { color: #93a1a1; }\n.solarized.base2 { color: #eee8d5; }\n.solarized.base3  { color: #fdf6e3; }\n.solarized.solar-yellow  { color: #b58900; }\n.solarized.solar-orange  { color: #cb4b16; }\n.solarized.solar-red { color: #dc322f; }\n.solarized.solar-magenta { color: #d33682; }\n.solarized.solar-violet  { color: #6c71c4; }\n.solarized.solar-blue { color: #268bd2; }\n.solarized.solar-cyan { color: #2aa198; }\n.solarized.solar-green { color: #859900; }\n\n/* Color scheme for code-mirror */\n\n.cm-s-solarized {\n  line-height: 1.45em;\n  color-profile: sRGB;\n  rendering-intent: auto;\n}\n.cm-s-solarized.cm-s-dark {\n  color: #839496;\n  background-color: #002b36;\n  text-shadow: #002b36 0 1px;\n}\n.cm-s-solarized.cm-s-light {\n  background-color: #fdf6e3;\n  color: #657b83;\n  text-shadow: #eee8d5 0 1px;\n}\n\n.cm-s-solarized .CodeMirror-widget {\n  text-shadow: none;\n}\n\n.cm-s-solarized .cm-header { color: #586e75; }\n.cm-s-solarized .cm-quote { color: #93a1a1; }\n\n.cm-s-solarized .cm-keyword { color: #cb4b16; }\n.cm-s-solarized .cm-atom { color: #d33682; }\n.cm-s-solarized .cm-number { color: #d33682; }\n.cm-s-solarized .cm-def { color: #2aa198; }\n\n.cm-s-solarized .cm-variable { color: #839496; }\n.cm-s-solarized .cm-variable-2 { color: #b58900; }\n.cm-s-solarized .cm-variable-3, .cm-s-solarized .cm-type { color: #6c71c4; }\n\n.cm-s-solarized .cm-property { color: #2aa198; }\n.cm-s-solarized .cm-operator { color: #6c71c4; }\n\n.cm-s-solarized .cm-comment { color: #586e75; font-style:italic; }\n\n.cm-s-solarized .cm-string { color: #859900; }\n.cm-s-solarized .cm-string-2 { color: #b58900; }\n\n.cm-s-solarized .cm-meta { color: #859900; }\n.cm-s-solarized .cm-qualifier { color: #b58900; }\n.cm-s-solarized .cm-builtin { color: #d33682; }\n.cm-s-solarized .cm-bracket { color: #cb4b16; }\n.cm-s-solarized .CodeMirror-matchingbracket { color: #859900; }\n.cm-s-solarized .CodeMirror-nonmatchingbracket { color: #dc322f; }\n.cm-s-solarized .cm-tag { color: #93a1a1; }\n.cm-s-solarized .cm-attribute { color: #2aa198; }\n.cm-s-solarized .cm-hr {\n  color: transparent;\n  border-top: 1px solid #586e75;\n  display: block;\n}\n.cm-s-solarized .cm-link { color: #93a1a1; cursor: pointer; }\n.cm-s-solarized .cm-special { color: #6c71c4; }\n.cm-s-solarized .cm-em {\n  color: #999;\n  text-decoration: underline;\n  text-decoration-style: dotted;\n}\n.cm-s-solarized .cm-error,\n.cm-s-solarized .cm-invalidchar {\n  color: #586e75;\n  border-bottom: 1px dotted #dc322f;\n}\n\n.cm-s-solarized.cm-s-dark div.CodeMirror-selected { background: #073642; }\n.cm-s-solarized.cm-s-dark.CodeMirror ::selection { background: rgba(7, 54, 66, 0.99); }\n.cm-s-solarized.cm-s-dark .CodeMirror-line::-moz-selection, .cm-s-dark .CodeMirror-line > span::-moz-selection, .cm-s-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(7, 54, 66, 0.99); }\n\n.cm-s-solarized.cm-s-light div.CodeMirror-selected { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::selection, .cm-s-light .CodeMirror-line > span::selection, .cm-s-light .CodeMirror-line > span > span::selection { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::-moz-selection, .cm-s-ligh .CodeMirror-line > span::-moz-selection, .cm-s-ligh .CodeMirror-line > span > span::-moz-selection { background: #eee8d5; }\n\n/* Editor styling */\n\n\n\n/* Little shadow on the view-port of the buffer view */\n.cm-s-solarized.CodeMirror {\n  -moz-box-shadow: inset 7px 0 12px -6px #000;\n  -webkit-box-shadow: inset 7px 0 12px -6px #000;\n  box-shadow: inset 7px 0 12px -6px #000;\n}\n\n/* Remove gutter border */\n.cm-s-solarized .CodeMirror-gutters {\n  border-right: 0;\n}\n\n/* Gutter colors and line number styling based of color scheme (dark / light) */\n\n/* Dark */\n.cm-s-solarized.cm-s-dark .CodeMirror-gutters {\n  background-color: #073642;\n}\n\n.cm-s-solarized.cm-s-dark .CodeMirror-linenumber {\n  color: #586e75;\n  text-shadow: #021014 0 -1px;\n}\n\n/* Light */\n.cm-s-solarized.cm-s-light .CodeMirror-gutters {\n  background-color: #eee8d5;\n}\n\n.cm-s-solarized.cm-s-light .CodeMirror-linenumber {\n  color: #839496;\n}\n\n/* Common */\n.cm-s-solarized .CodeMirror-linenumber {\n  padding: 0 5px;\n}\n.cm-s-solarized .CodeMirror-guttermarker-subtle { color: #586e75; }\n.cm-s-solarized.cm-s-dark .CodeMirror-guttermarker { color: #ddd; }\n.cm-s-solarized.cm-s-light .CodeMirror-guttermarker { color: #cb4b16; }\n\n.cm-s-solarized .CodeMirror-gutter .CodeMirror-gutter-text {\n  color: #586e75;\n}\n\n/* Cursor */\n.cm-s-solarized .CodeMirror-cursor { border-left: 1px solid #819090; }\n\n/* Fat cursor */\n.cm-s-solarized.cm-s-light.cm-fat-cursor .CodeMirror-cursor { background: #77ee77; }\n.cm-s-solarized.cm-s-light .cm-animate-fat-cursor { background-color: #77ee77; }\n.cm-s-solarized.cm-s-dark.cm-fat-cursor .CodeMirror-cursor { background: #586e75; }\n.cm-s-solarized.cm-s-dark .cm-animate-fat-cursor { background-color: #586e75; }\n\n/* Active line */\n.cm-s-solarized.cm-s-dark .CodeMirror-activeline-background {\n  background: rgba(255, 255, 255, 0.06);\n}\n.cm-s-solarized.cm-s-light .CodeMirror-activeline-background {\n  background: rgba(0, 0, 0, 0.06);\n}\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       seti\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original seti color scheme by Jesse Weed (https://github.com/jesseweed/seti-syntax)\n\n*/\n\n\n.cm-s-seti.CodeMirror {\n  background-color: #151718 !important;\n  color: #CFD2D1 !important;\n  border: none;\n}\n.cm-s-seti .CodeMirror-gutters {\n  color: #404b53;\n  background-color: #0E1112;\n  border: none;\n}\n.cm-s-seti .CodeMirror-cursor { border-left: solid thin #f8f8f0; }\n.cm-s-seti .CodeMirror-linenumber { color: #6D8A88; }\n.cm-s-seti.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti .CodeMirror-line::selection, .cm-s-seti .CodeMirror-line > span::selection, .cm-s-seti .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti .CodeMirror-line::-moz-selection, .cm-s-seti .CodeMirror-line > span::-moz-selection, .cm-s-seti .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti span.cm-comment { color: #41535b; }\n.cm-s-seti span.cm-string, .cm-s-seti span.cm-string-2 { color: #55b5db; }\n.cm-s-seti span.cm-number { color: #cd3f45; }\n.cm-s-seti span.cm-variable { color: #55b5db; }\n.cm-s-seti span.cm-variable-2 { color: #a074c4; }\n.cm-s-seti span.cm-def { color: #55b5db; }\n.cm-s-seti span.cm-keyword { color: #ff79c6; }\n.cm-s-seti span.cm-operator { color: #9fca56; }\n.cm-s-seti span.cm-keyword { color: #e6cd69; }\n.cm-s-seti span.cm-atom { color: #cd3f45; }\n.cm-s-seti span.cm-meta { color: #55b5db; }\n.cm-s-seti span.cm-tag { color: #55b5db; }\n.cm-s-seti span.cm-attribute { color: #9fca56; }\n.cm-s-seti span.cm-qualifier { color: #9fca56; }\n.cm-s-seti span.cm-property { color: #a074c4; }\n.cm-s-seti span.cm-variable-3, .cm-s-seti span.cm-type { color: #9fca56; }\n.cm-s-seti span.cm-builtin { color: #9fca56; }\n.cm-s-seti .CodeMirror-activeline-background { background: #101213; }\n.cm-s-seti .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -71167,8 +71463,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./the-matrix.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./the-matrix.css");
+		module.hot.accept("!!../../css-loader/index.js!./shadowfox.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./shadowfox.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71181,12 +71477,12 @@ if(false) {
 /* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".cm-s-the-matrix.CodeMirror { background: #000000; color: #00FF00; }\n.cm-s-the-matrix div.CodeMirror-selected { background: #2D2D2D; }\n.cm-s-the-matrix .CodeMirror-line::selection, .cm-s-the-matrix .CodeMirror-line > span::selection, .cm-s-the-matrix .CodeMirror-line > span > span::selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-the-matrix .CodeMirror-line::-moz-selection, .cm-s-the-matrix .CodeMirror-line > span::-moz-selection, .cm-s-the-matrix .CodeMirror-line > span > span::-moz-selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-the-matrix .CodeMirror-gutters { background: #060; border-right: 2px solid #00FF00; }\n.cm-s-the-matrix .CodeMirror-guttermarker { color: #0f0; }\n.cm-s-the-matrix .CodeMirror-guttermarker-subtle { color: white; }\n.cm-s-the-matrix .CodeMirror-linenumber { color: #FFFFFF; }\n.cm-s-the-matrix .CodeMirror-cursor { border-left: 1px solid #00FF00; }\n\n.cm-s-the-matrix span.cm-keyword { color: #008803; font-weight: bold; }\n.cm-s-the-matrix span.cm-atom { color: #3FF; }\n.cm-s-the-matrix span.cm-number { color: #FFB94F; }\n.cm-s-the-matrix span.cm-def { color: #99C; }\n.cm-s-the-matrix span.cm-variable { color: #F6C; }\n.cm-s-the-matrix span.cm-variable-2 { color: #C6F; }\n.cm-s-the-matrix span.cm-variable-3, .cm-s-the-matrix span.cm-type { color: #96F; }\n.cm-s-the-matrix span.cm-property { color: #62FFA0; }\n.cm-s-the-matrix span.cm-operator { color: #999; }\n.cm-s-the-matrix span.cm-comment { color: #CCCCCC; }\n.cm-s-the-matrix span.cm-string { color: #39C; }\n.cm-s-the-matrix span.cm-meta { color: #C9F; }\n.cm-s-the-matrix span.cm-qualifier { color: #FFF700; }\n.cm-s-the-matrix span.cm-builtin { color: #30a; }\n.cm-s-the-matrix span.cm-bracket { color: #cc7; }\n.cm-s-the-matrix span.cm-tag { color: #FFBD40; }\n.cm-s-the-matrix span.cm-attribute { color: #FFF700; }\n.cm-s-the-matrix span.cm-error { color: #FF0000; }\n\n.cm-s-the-matrix .CodeMirror-activeline-background { background: #040; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       shadowfox\n    Author:     overdodactyl (http://github.com/overdodactyl)\n\n    Original shadowfox color scheme by Firefox\n\n*/\n\n.cm-s-shadowfox.CodeMirror { background: #2a2a2e; color: #b1b1b3; }\n.cm-s-shadowfox div.CodeMirror-selected { background: #353B48; }\n.cm-s-shadowfox .CodeMirror-line::selection, .cm-s-shadowfox .CodeMirror-line > span::selection, .cm-s-shadowfox .CodeMirror-line > span > span::selection { background: #353B48; }\n.cm-s-shadowfox .CodeMirror-line::-moz-selection, .cm-s-shadowfox .CodeMirror-line > span::-moz-selection, .cm-s-shadowfox .CodeMirror-line > span > span::-moz-selection { background: #353B48; }\n.cm-s-shadowfox .CodeMirror-gutters { background: #0c0c0d ; border-right: 1px solid #0c0c0d; }\n.cm-s-shadowfox .CodeMirror-guttermarker { color: #555; }\n.cm-s-shadowfox .CodeMirror-linenumber { color: #939393; }\n.cm-s-shadowfox .CodeMirror-cursor { border-left: 1px solid #fff; }\n\n.cm-s-shadowfox span.cm-comment { color: #939393; }\n.cm-s-shadowfox span.cm-atom { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-quote { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-builtin { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-attribute { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-keyword { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-error { color: #FF7DE9; }\n\n.cm-s-shadowfox span.cm-number { color: #6B89FF; }\n.cm-s-shadowfox span.cm-string { color: #6B89FF; }\n.cm-s-shadowfox span.cm-string-2 { color: #6B89FF; }\n\n.cm-s-shadowfox span.cm-meta { color: #939393; }\n.cm-s-shadowfox span.cm-hr { color: #939393; }\n\n.cm-s-shadowfox span.cm-header { color: #75BFFF; }\n.cm-s-shadowfox span.cm-qualifier { color: #75BFFF; }\n.cm-s-shadowfox span.cm-variable-2 { color: #75BFFF; }\n\n.cm-s-shadowfox span.cm-property { color: #86DE74; }\n\n.cm-s-shadowfox span.cm-def { color: #75BFFF; }\n.cm-s-shadowfox span.cm-bracket { color: #75BFFF; }\n.cm-s-shadowfox span.cm-tag { color: #75BFFF; }\n.cm-s-shadowfox span.cm-link:visited { color: #75BFFF; }\n\n.cm-s-shadowfox span.cm-variable { color: #B98EFF; }\n.cm-s-shadowfox span.cm-variable-3 { color: #d7d7db; }\n.cm-s-shadowfox span.cm-link { color: #737373; }\n.cm-s-shadowfox span.cm-operator { color: #b1b1b3; }\n.cm-s-shadowfox span.cm-special { color: #d7d7db; }\n\n.cm-s-shadowfox .CodeMirror-activeline-background { background: rgba(185, 215, 253, .15) }\n.cm-s-shadowfox .CodeMirror-matchingbracket { outline: solid 1px rgba(255, 255, 255, .25); color: white !important; }\n", ""]);
 
 // exports
 
@@ -71212,8 +71508,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./tomorrow-night-bright.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./tomorrow-night-bright.css");
+		module.hot.accept("!!../../css-loader/index.js!./solarized.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./solarized.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71226,12 +71522,12 @@ if(false) {
 /* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Tomorrow Night - Bright\n    Author:     Chris Kempson\n\n    Port done by Gerard Braad <me@gbraad.nl>\n\n*/\n\n.cm-s-tomorrow-night-bright.CodeMirror { background: #000000; color: #eaeaea; }\n.cm-s-tomorrow-night-bright div.CodeMirror-selected { background: #424242; }\n.cm-s-tomorrow-night-bright .CodeMirror-gutters { background: #000000; border-right: 0px; }\n.cm-s-tomorrow-night-bright .CodeMirror-guttermarker { color: #e78c45; }\n.cm-s-tomorrow-night-bright .CodeMirror-guttermarker-subtle { color: #777; }\n.cm-s-tomorrow-night-bright .CodeMirror-linenumber { color: #424242; }\n.cm-s-tomorrow-night-bright .CodeMirror-cursor { border-left: 1px solid #6A6A6A; }\n\n.cm-s-tomorrow-night-bright span.cm-comment { color: #d27b53; }\n.cm-s-tomorrow-night-bright span.cm-atom { color: #a16a94; }\n.cm-s-tomorrow-night-bright span.cm-number { color: #a16a94; }\n\n.cm-s-tomorrow-night-bright span.cm-property, .cm-s-tomorrow-night-bright span.cm-attribute { color: #99cc99; }\n.cm-s-tomorrow-night-bright span.cm-keyword { color: #d54e53; }\n.cm-s-tomorrow-night-bright span.cm-string { color: #e7c547; }\n\n.cm-s-tomorrow-night-bright span.cm-variable { color: #b9ca4a; }\n.cm-s-tomorrow-night-bright span.cm-variable-2 { color: #7aa6da; }\n.cm-s-tomorrow-night-bright span.cm-def { color: #e78c45; }\n.cm-s-tomorrow-night-bright span.cm-bracket { color: #eaeaea; }\n.cm-s-tomorrow-night-bright span.cm-tag { color: #d54e53; }\n.cm-s-tomorrow-night-bright span.cm-link { color: #a16a94; }\n.cm-s-tomorrow-night-bright span.cm-error { background: #d54e53; color: #6A6A6A; }\n\n.cm-s-tomorrow-night-bright .CodeMirror-activeline-background { background: #2a2a2a; }\n.cm-s-tomorrow-night-bright .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, "/*\nSolarized theme for code-mirror\nhttp://ethanschoonover.com/solarized\n*/\n\n/*\nSolarized color palette\nhttp://ethanschoonover.com/solarized/img/solarized-palette.png\n*/\n\n.solarized.base03 { color: #002b36; }\n.solarized.base02 { color: #073642; }\n.solarized.base01 { color: #586e75; }\n.solarized.base00 { color: #657b83; }\n.solarized.base0 { color: #839496; }\n.solarized.base1 { color: #93a1a1; }\n.solarized.base2 { color: #eee8d5; }\n.solarized.base3  { color: #fdf6e3; }\n.solarized.solar-yellow  { color: #b58900; }\n.solarized.solar-orange  { color: #cb4b16; }\n.solarized.solar-red { color: #dc322f; }\n.solarized.solar-magenta { color: #d33682; }\n.solarized.solar-violet  { color: #6c71c4; }\n.solarized.solar-blue { color: #268bd2; }\n.solarized.solar-cyan { color: #2aa198; }\n.solarized.solar-green { color: #859900; }\n\n/* Color scheme for code-mirror */\n\n.cm-s-solarized {\n  line-height: 1.45em;\n  color-profile: sRGB;\n  rendering-intent: auto;\n}\n.cm-s-solarized.cm-s-dark {\n  color: #839496;\n  background-color: #002b36;\n  text-shadow: #002b36 0 1px;\n}\n.cm-s-solarized.cm-s-light {\n  background-color: #fdf6e3;\n  color: #657b83;\n  text-shadow: #eee8d5 0 1px;\n}\n\n.cm-s-solarized .CodeMirror-widget {\n  text-shadow: none;\n}\n\n.cm-s-solarized .cm-header { color: #586e75; }\n.cm-s-solarized .cm-quote { color: #93a1a1; }\n\n.cm-s-solarized .cm-keyword { color: #cb4b16; }\n.cm-s-solarized .cm-atom { color: #d33682; }\n.cm-s-solarized .cm-number { color: #d33682; }\n.cm-s-solarized .cm-def { color: #2aa198; }\n\n.cm-s-solarized .cm-variable { color: #839496; }\n.cm-s-solarized .cm-variable-2 { color: #b58900; }\n.cm-s-solarized .cm-variable-3, .cm-s-solarized .cm-type { color: #6c71c4; }\n\n.cm-s-solarized .cm-property { color: #2aa198; }\n.cm-s-solarized .cm-operator { color: #6c71c4; }\n\n.cm-s-solarized .cm-comment { color: #586e75; font-style:italic; }\n\n.cm-s-solarized .cm-string { color: #859900; }\n.cm-s-solarized .cm-string-2 { color: #b58900; }\n\n.cm-s-solarized .cm-meta { color: #859900; }\n.cm-s-solarized .cm-qualifier { color: #b58900; }\n.cm-s-solarized .cm-builtin { color: #d33682; }\n.cm-s-solarized .cm-bracket { color: #cb4b16; }\n.cm-s-solarized .CodeMirror-matchingbracket { color: #859900; }\n.cm-s-solarized .CodeMirror-nonmatchingbracket { color: #dc322f; }\n.cm-s-solarized .cm-tag { color: #93a1a1; }\n.cm-s-solarized .cm-attribute { color: #2aa198; }\n.cm-s-solarized .cm-hr {\n  color: transparent;\n  border-top: 1px solid #586e75;\n  display: block;\n}\n.cm-s-solarized .cm-link { color: #93a1a1; cursor: pointer; }\n.cm-s-solarized .cm-special { color: #6c71c4; }\n.cm-s-solarized .cm-em {\n  color: #999;\n  text-decoration: underline;\n  text-decoration-style: dotted;\n}\n.cm-s-solarized .cm-error,\n.cm-s-solarized .cm-invalidchar {\n  color: #586e75;\n  border-bottom: 1px dotted #dc322f;\n}\n\n.cm-s-solarized.cm-s-dark div.CodeMirror-selected { background: #073642; }\n.cm-s-solarized.cm-s-dark.CodeMirror ::selection { background: rgba(7, 54, 66, 0.99); }\n.cm-s-solarized.cm-s-dark .CodeMirror-line::-moz-selection, .cm-s-dark .CodeMirror-line > span::-moz-selection, .cm-s-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(7, 54, 66, 0.99); }\n\n.cm-s-solarized.cm-s-light div.CodeMirror-selected { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::selection, .cm-s-light .CodeMirror-line > span::selection, .cm-s-light .CodeMirror-line > span > span::selection { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::-moz-selection, .cm-s-ligh .CodeMirror-line > span::-moz-selection, .cm-s-ligh .CodeMirror-line > span > span::-moz-selection { background: #eee8d5; }\n\n/* Editor styling */\n\n\n\n/* Little shadow on the view-port of the buffer view */\n.cm-s-solarized.CodeMirror {\n  -moz-box-shadow: inset 7px 0 12px -6px #000;\n  -webkit-box-shadow: inset 7px 0 12px -6px #000;\n  box-shadow: inset 7px 0 12px -6px #000;\n}\n\n/* Remove gutter border */\n.cm-s-solarized .CodeMirror-gutters {\n  border-right: 0;\n}\n\n/* Gutter colors and line number styling based of color scheme (dark / light) */\n\n/* Dark */\n.cm-s-solarized.cm-s-dark .CodeMirror-gutters {\n  background-color: #073642;\n}\n\n.cm-s-solarized.cm-s-dark .CodeMirror-linenumber {\n  color: #586e75;\n  text-shadow: #021014 0 -1px;\n}\n\n/* Light */\n.cm-s-solarized.cm-s-light .CodeMirror-gutters {\n  background-color: #eee8d5;\n}\n\n.cm-s-solarized.cm-s-light .CodeMirror-linenumber {\n  color: #839496;\n}\n\n/* Common */\n.cm-s-solarized .CodeMirror-linenumber {\n  padding: 0 5px;\n}\n.cm-s-solarized .CodeMirror-guttermarker-subtle { color: #586e75; }\n.cm-s-solarized.cm-s-dark .CodeMirror-guttermarker { color: #ddd; }\n.cm-s-solarized.cm-s-light .CodeMirror-guttermarker { color: #cb4b16; }\n\n.cm-s-solarized .CodeMirror-gutter .CodeMirror-gutter-text {\n  color: #586e75;\n}\n\n/* Cursor */\n.cm-s-solarized .CodeMirror-cursor { border-left: 1px solid #819090; }\n\n/* Fat cursor */\n.cm-s-solarized.cm-s-light.cm-fat-cursor .CodeMirror-cursor { background: #77ee77; }\n.cm-s-solarized.cm-s-light .cm-animate-fat-cursor { background-color: #77ee77; }\n.cm-s-solarized.cm-s-dark.cm-fat-cursor .CodeMirror-cursor { background: #586e75; }\n.cm-s-solarized.cm-s-dark .cm-animate-fat-cursor { background-color: #586e75; }\n\n/* Active line */\n.cm-s-solarized.cm-s-dark .CodeMirror-activeline-background {\n  background: rgba(255, 255, 255, 0.06);\n}\n.cm-s-solarized.cm-s-light .CodeMirror-activeline-background {\n  background: rgba(0, 0, 0, 0.06);\n}\n", ""]);
 
 // exports
 
@@ -71257,8 +71553,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./tomorrow-night-eighties.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./tomorrow-night-eighties.css");
+		module.hot.accept("!!../../css-loader/index.js!./the-matrix.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./the-matrix.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71271,12 +71567,12 @@ if(false) {
 /* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Tomorrow Night - Eighties\n    Author:     Chris Kempson\n\n    CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-codemirror)\n    Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)\n\n*/\n\n.cm-s-tomorrow-night-eighties.CodeMirror { background: #000000; color: #CCCCCC; }\n.cm-s-tomorrow-night-eighties div.CodeMirror-selected { background: #2D2D2D; }\n.cm-s-tomorrow-night-eighties .CodeMirror-line::selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span::selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span > span::selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-tomorrow-night-eighties .CodeMirror-line::-moz-selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span::-moz-selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span > span::-moz-selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-tomorrow-night-eighties .CodeMirror-gutters { background: #000000; border-right: 0px; }\n.cm-s-tomorrow-night-eighties .CodeMirror-guttermarker { color: #f2777a; }\n.cm-s-tomorrow-night-eighties .CodeMirror-guttermarker-subtle { color: #777; }\n.cm-s-tomorrow-night-eighties .CodeMirror-linenumber { color: #515151; }\n.cm-s-tomorrow-night-eighties .CodeMirror-cursor { border-left: 1px solid #6A6A6A; }\n\n.cm-s-tomorrow-night-eighties span.cm-comment { color: #d27b53; }\n.cm-s-tomorrow-night-eighties span.cm-atom { color: #a16a94; }\n.cm-s-tomorrow-night-eighties span.cm-number { color: #a16a94; }\n\n.cm-s-tomorrow-night-eighties span.cm-property, .cm-s-tomorrow-night-eighties span.cm-attribute { color: #99cc99; }\n.cm-s-tomorrow-night-eighties span.cm-keyword { color: #f2777a; }\n.cm-s-tomorrow-night-eighties span.cm-string { color: #ffcc66; }\n\n.cm-s-tomorrow-night-eighties span.cm-variable { color: #99cc99; }\n.cm-s-tomorrow-night-eighties span.cm-variable-2 { color: #6699cc; }\n.cm-s-tomorrow-night-eighties span.cm-def { color: #f99157; }\n.cm-s-tomorrow-night-eighties span.cm-bracket { color: #CCCCCC; }\n.cm-s-tomorrow-night-eighties span.cm-tag { color: #f2777a; }\n.cm-s-tomorrow-night-eighties span.cm-link { color: #a16a94; }\n.cm-s-tomorrow-night-eighties span.cm-error { background: #f2777a; color: #6A6A6A; }\n\n.cm-s-tomorrow-night-eighties .CodeMirror-activeline-background { background: #343600; }\n.cm-s-tomorrow-night-eighties .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, ".cm-s-the-matrix.CodeMirror { background: #000000; color: #00FF00; }\n.cm-s-the-matrix div.CodeMirror-selected { background: #2D2D2D; }\n.cm-s-the-matrix .CodeMirror-line::selection, .cm-s-the-matrix .CodeMirror-line > span::selection, .cm-s-the-matrix .CodeMirror-line > span > span::selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-the-matrix .CodeMirror-line::-moz-selection, .cm-s-the-matrix .CodeMirror-line > span::-moz-selection, .cm-s-the-matrix .CodeMirror-line > span > span::-moz-selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-the-matrix .CodeMirror-gutters { background: #060; border-right: 2px solid #00FF00; }\n.cm-s-the-matrix .CodeMirror-guttermarker { color: #0f0; }\n.cm-s-the-matrix .CodeMirror-guttermarker-subtle { color: white; }\n.cm-s-the-matrix .CodeMirror-linenumber { color: #FFFFFF; }\n.cm-s-the-matrix .CodeMirror-cursor { border-left: 1px solid #00FF00; }\n\n.cm-s-the-matrix span.cm-keyword { color: #008803; font-weight: bold; }\n.cm-s-the-matrix span.cm-atom { color: #3FF; }\n.cm-s-the-matrix span.cm-number { color: #FFB94F; }\n.cm-s-the-matrix span.cm-def { color: #99C; }\n.cm-s-the-matrix span.cm-variable { color: #F6C; }\n.cm-s-the-matrix span.cm-variable-2 { color: #C6F; }\n.cm-s-the-matrix span.cm-variable-3, .cm-s-the-matrix span.cm-type { color: #96F; }\n.cm-s-the-matrix span.cm-property { color: #62FFA0; }\n.cm-s-the-matrix span.cm-operator { color: #999; }\n.cm-s-the-matrix span.cm-comment { color: #CCCCCC; }\n.cm-s-the-matrix span.cm-string { color: #39C; }\n.cm-s-the-matrix span.cm-meta { color: #C9F; }\n.cm-s-the-matrix span.cm-qualifier { color: #FFF700; }\n.cm-s-the-matrix span.cm-builtin { color: #30a; }\n.cm-s-the-matrix span.cm-bracket { color: #cc7; }\n.cm-s-the-matrix span.cm-tag { color: #FFBD40; }\n.cm-s-the-matrix span.cm-attribute { color: #FFF700; }\n.cm-s-the-matrix span.cm-error { color: #FF0000; }\n\n.cm-s-the-matrix .CodeMirror-activeline-background { background: #040; }\n", ""]);
 
 // exports
 
@@ -71302,8 +71598,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./ttcn.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./ttcn.css");
+		module.hot.accept("!!../../css-loader/index.js!./tomorrow-night-bright.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./tomorrow-night-bright.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71316,12 +71612,12 @@ if(false) {
 /* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".cm-s-ttcn .cm-quote { color: #090; }\n.cm-s-ttcn .cm-negative { color: #d44; }\n.cm-s-ttcn .cm-positive { color: #292; }\n.cm-s-ttcn .cm-header, .cm-strong { font-weight: bold; }\n.cm-s-ttcn .cm-em { font-style: italic; }\n.cm-s-ttcn .cm-link { text-decoration: underline; }\n.cm-s-ttcn .cm-strikethrough { text-decoration: line-through; }\n.cm-s-ttcn .cm-header { color: #00f; font-weight: bold; }\n\n.cm-s-ttcn .cm-atom { color: #219; }\n.cm-s-ttcn .cm-attribute { color: #00c; }\n.cm-s-ttcn .cm-bracket { color: #997; }\n.cm-s-ttcn .cm-comment { color: #333333; }\n.cm-s-ttcn .cm-def { color: #00f; }\n.cm-s-ttcn .cm-em { font-style: italic; }\n.cm-s-ttcn .cm-error { color: #f00; }\n.cm-s-ttcn .cm-hr { color: #999; }\n.cm-s-ttcn .cm-invalidchar { color: #f00; }\n.cm-s-ttcn .cm-keyword { font-weight:bold; }\n.cm-s-ttcn .cm-link { color: #00c; text-decoration: underline; }\n.cm-s-ttcn .cm-meta { color: #555; }\n.cm-s-ttcn .cm-negative { color: #d44; }\n.cm-s-ttcn .cm-positive { color: #292; }\n.cm-s-ttcn .cm-qualifier { color: #555; }\n.cm-s-ttcn .cm-strikethrough { text-decoration: line-through; }\n.cm-s-ttcn .cm-string { color: #006400; }\n.cm-s-ttcn .cm-string-2 { color: #f50; }\n.cm-s-ttcn .cm-strong { font-weight: bold; }\n.cm-s-ttcn .cm-tag { color: #170; }\n.cm-s-ttcn .cm-variable { color: #8B2252; }\n.cm-s-ttcn .cm-variable-2 { color: #05a; }\n.cm-s-ttcn .cm-variable-3, .cm-s-ttcn .cm-type { color: #085; }\n\n.cm-s-ttcn .cm-invalidchar { color: #f00; }\n\n/* ASN */\n.cm-s-ttcn .cm-accessTypes,\n.cm-s-ttcn .cm-compareTypes { color: #27408B; }\n.cm-s-ttcn .cm-cmipVerbs { color: #8B2252; }\n.cm-s-ttcn .cm-modifier { color:#D2691E; }\n.cm-s-ttcn .cm-status { color:#8B4545; }\n.cm-s-ttcn .cm-storage { color:#A020F0; }\n.cm-s-ttcn .cm-tags { color:#006400; }\n\n/* CFG */\n.cm-s-ttcn .cm-externalCommands { color: #8B4545; font-weight:bold; }\n.cm-s-ttcn .cm-fileNCtrlMaskOptions,\n.cm-s-ttcn .cm-sectionTitle { color: #2E8B57; font-weight:bold; }\n\n/* TTCN */\n.cm-s-ttcn .cm-booleanConsts,\n.cm-s-ttcn .cm-otherConsts,\n.cm-s-ttcn .cm-verdictConsts { color: #006400; }\n.cm-s-ttcn .cm-configOps,\n.cm-s-ttcn .cm-functionOps,\n.cm-s-ttcn .cm-portOps,\n.cm-s-ttcn .cm-sutOps,\n.cm-s-ttcn .cm-timerOps,\n.cm-s-ttcn .cm-verdictOps { color: #0000FF; }\n.cm-s-ttcn .cm-preprocessor,\n.cm-s-ttcn .cm-templateMatch,\n.cm-s-ttcn .cm-ttcn3Macros { color: #27408B; }\n.cm-s-ttcn .cm-types { color: #A52A2A; font-weight:bold; }\n.cm-s-ttcn .cm-visibilityModifiers { font-weight:bold; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Tomorrow Night - Bright\n    Author:     Chris Kempson\n\n    Port done by Gerard Braad <me@gbraad.nl>\n\n*/\n\n.cm-s-tomorrow-night-bright.CodeMirror { background: #000000; color: #eaeaea; }\n.cm-s-tomorrow-night-bright div.CodeMirror-selected { background: #424242; }\n.cm-s-tomorrow-night-bright .CodeMirror-gutters { background: #000000; border-right: 0px; }\n.cm-s-tomorrow-night-bright .CodeMirror-guttermarker { color: #e78c45; }\n.cm-s-tomorrow-night-bright .CodeMirror-guttermarker-subtle { color: #777; }\n.cm-s-tomorrow-night-bright .CodeMirror-linenumber { color: #424242; }\n.cm-s-tomorrow-night-bright .CodeMirror-cursor { border-left: 1px solid #6A6A6A; }\n\n.cm-s-tomorrow-night-bright span.cm-comment { color: #d27b53; }\n.cm-s-tomorrow-night-bright span.cm-atom { color: #a16a94; }\n.cm-s-tomorrow-night-bright span.cm-number { color: #a16a94; }\n\n.cm-s-tomorrow-night-bright span.cm-property, .cm-s-tomorrow-night-bright span.cm-attribute { color: #99cc99; }\n.cm-s-tomorrow-night-bright span.cm-keyword { color: #d54e53; }\n.cm-s-tomorrow-night-bright span.cm-string { color: #e7c547; }\n\n.cm-s-tomorrow-night-bright span.cm-variable { color: #b9ca4a; }\n.cm-s-tomorrow-night-bright span.cm-variable-2 { color: #7aa6da; }\n.cm-s-tomorrow-night-bright span.cm-def { color: #e78c45; }\n.cm-s-tomorrow-night-bright span.cm-bracket { color: #eaeaea; }\n.cm-s-tomorrow-night-bright span.cm-tag { color: #d54e53; }\n.cm-s-tomorrow-night-bright span.cm-link { color: #a16a94; }\n.cm-s-tomorrow-night-bright span.cm-error { background: #d54e53; color: #6A6A6A; }\n\n.cm-s-tomorrow-night-bright .CodeMirror-activeline-background { background: #2a2a2a; }\n.cm-s-tomorrow-night-bright .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -71347,8 +71643,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./twilight.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./twilight.css");
+		module.hot.accept("!!../../css-loader/index.js!./tomorrow-night-eighties.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./tomorrow-night-eighties.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71361,12 +71657,12 @@ if(false) {
 /* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, ".cm-s-twilight.CodeMirror { background: #141414; color: #f7f7f7; } /**/\n.cm-s-twilight div.CodeMirror-selected { background: #323232; } /**/\n.cm-s-twilight .CodeMirror-line::selection, .cm-s-twilight .CodeMirror-line > span::selection, .cm-s-twilight .CodeMirror-line > span > span::selection { background: rgba(50, 50, 50, 0.99); }\n.cm-s-twilight .CodeMirror-line::-moz-selection, .cm-s-twilight .CodeMirror-line > span::-moz-selection, .cm-s-twilight .CodeMirror-line > span > span::-moz-selection { background: rgba(50, 50, 50, 0.99); }\n\n.cm-s-twilight .CodeMirror-gutters { background: #222; border-right: 1px solid #aaa; }\n.cm-s-twilight .CodeMirror-guttermarker { color: white; }\n.cm-s-twilight .CodeMirror-guttermarker-subtle { color: #aaa; }\n.cm-s-twilight .CodeMirror-linenumber { color: #aaa; }\n.cm-s-twilight .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-twilight .cm-keyword { color: #f9ee98; } /**/\n.cm-s-twilight .cm-atom { color: #FC0; }\n.cm-s-twilight .cm-number { color:  #ca7841; } /**/\n.cm-s-twilight .cm-def { color: #8DA6CE; }\n.cm-s-twilight span.cm-variable-2, .cm-s-twilight span.cm-tag { color: #607392; } /**/\n.cm-s-twilight span.cm-variable-3, .cm-s-twilight span.cm-def, .cm-s-twilight span.cm-type { color: #607392; } /**/\n.cm-s-twilight .cm-operator { color: #cda869; } /**/\n.cm-s-twilight .cm-comment { color:#777; font-style:italic; font-weight:normal; } /**/\n.cm-s-twilight .cm-string { color:#8f9d6a; font-style:italic; } /**/\n.cm-s-twilight .cm-string-2 { color:#bd6b18; } /*?*/\n.cm-s-twilight .cm-meta { background-color:#141414; color:#f7f7f7; } /*?*/\n.cm-s-twilight .cm-builtin { color: #cda869; } /*?*/\n.cm-s-twilight .cm-tag { color: #997643; } /**/\n.cm-s-twilight .cm-attribute { color: #d6bb6d; } /*?*/\n.cm-s-twilight .cm-header { color: #FF6400; }\n.cm-s-twilight .cm-hr { color: #AEAEAE; }\n.cm-s-twilight .cm-link { color:#ad9361; font-style:italic; text-decoration:none; } /**/\n.cm-s-twilight .cm-error { border-bottom: 1px solid red; }\n\n.cm-s-twilight .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-twilight .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Tomorrow Night - Eighties\n    Author:     Chris Kempson\n\n    CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-codemirror)\n    Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)\n\n*/\n\n.cm-s-tomorrow-night-eighties.CodeMirror { background: #000000; color: #CCCCCC; }\n.cm-s-tomorrow-night-eighties div.CodeMirror-selected { background: #2D2D2D; }\n.cm-s-tomorrow-night-eighties .CodeMirror-line::selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span::selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span > span::selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-tomorrow-night-eighties .CodeMirror-line::-moz-selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span::-moz-selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span > span::-moz-selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-tomorrow-night-eighties .CodeMirror-gutters { background: #000000; border-right: 0px; }\n.cm-s-tomorrow-night-eighties .CodeMirror-guttermarker { color: #f2777a; }\n.cm-s-tomorrow-night-eighties .CodeMirror-guttermarker-subtle { color: #777; }\n.cm-s-tomorrow-night-eighties .CodeMirror-linenumber { color: #515151; }\n.cm-s-tomorrow-night-eighties .CodeMirror-cursor { border-left: 1px solid #6A6A6A; }\n\n.cm-s-tomorrow-night-eighties span.cm-comment { color: #d27b53; }\n.cm-s-tomorrow-night-eighties span.cm-atom { color: #a16a94; }\n.cm-s-tomorrow-night-eighties span.cm-number { color: #a16a94; }\n\n.cm-s-tomorrow-night-eighties span.cm-property, .cm-s-tomorrow-night-eighties span.cm-attribute { color: #99cc99; }\n.cm-s-tomorrow-night-eighties span.cm-keyword { color: #f2777a; }\n.cm-s-tomorrow-night-eighties span.cm-string { color: #ffcc66; }\n\n.cm-s-tomorrow-night-eighties span.cm-variable { color: #99cc99; }\n.cm-s-tomorrow-night-eighties span.cm-variable-2 { color: #6699cc; }\n.cm-s-tomorrow-night-eighties span.cm-def { color: #f99157; }\n.cm-s-tomorrow-night-eighties span.cm-bracket { color: #CCCCCC; }\n.cm-s-tomorrow-night-eighties span.cm-tag { color: #f2777a; }\n.cm-s-tomorrow-night-eighties span.cm-link { color: #a16a94; }\n.cm-s-tomorrow-night-eighties span.cm-error { background: #f2777a; color: #6A6A6A; }\n\n.cm-s-tomorrow-night-eighties .CodeMirror-activeline-background { background: #343600; }\n.cm-s-tomorrow-night-eighties .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -71392,8 +71688,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./vibrant-ink.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./vibrant-ink.css");
+		module.hot.accept("!!../../css-loader/index.js!./ttcn.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./ttcn.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71406,12 +71702,12 @@ if(false) {
 /* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/* Taken from the popular Visual Studio Vibrant Ink Schema */\n\n.cm-s-vibrant-ink.CodeMirror { background: black; color: white; }\n.cm-s-vibrant-ink div.CodeMirror-selected { background: #35493c; }\n.cm-s-vibrant-ink .CodeMirror-line::selection, .cm-s-vibrant-ink .CodeMirror-line > span::selection, .cm-s-vibrant-ink .CodeMirror-line > span > span::selection { background: rgba(53, 73, 60, 0.99); }\n.cm-s-vibrant-ink .CodeMirror-line::-moz-selection, .cm-s-vibrant-ink .CodeMirror-line > span::-moz-selection, .cm-s-vibrant-ink .CodeMirror-line > span > span::-moz-selection { background: rgba(53, 73, 60, 0.99); }\n\n.cm-s-vibrant-ink .CodeMirror-gutters { background: #002240; border-right: 1px solid #aaa; }\n.cm-s-vibrant-ink .CodeMirror-guttermarker { color: white; }\n.cm-s-vibrant-ink .CodeMirror-guttermarker-subtle { color: #d0d0d0; }\n.cm-s-vibrant-ink .CodeMirror-linenumber { color: #d0d0d0; }\n.cm-s-vibrant-ink .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-vibrant-ink .cm-keyword { color: #CC7832; }\n.cm-s-vibrant-ink .cm-atom { color: #FC0; }\n.cm-s-vibrant-ink .cm-number { color:  #FFEE98; }\n.cm-s-vibrant-ink .cm-def { color: #8DA6CE; }\n.cm-s-vibrant-ink span.cm-variable-2, .cm-s-vibrant span.cm-tag { color: #FFC66D; }\n.cm-s-vibrant-ink span.cm-variable-3, .cm-s-vibrant span.cm-def, .cm-s-vibrant span.cm-type { color: #FFC66D; }\n.cm-s-vibrant-ink .cm-operator { color: #888; }\n.cm-s-vibrant-ink .cm-comment { color: gray; font-weight: bold; }\n.cm-s-vibrant-ink .cm-string { color:  #A5C25C; }\n.cm-s-vibrant-ink .cm-string-2 { color: red; }\n.cm-s-vibrant-ink .cm-meta { color: #D8FA3C; }\n.cm-s-vibrant-ink .cm-builtin { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-tag { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-attribute { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-header { color: #FF6400; }\n.cm-s-vibrant-ink .cm-hr { color: #AEAEAE; }\n.cm-s-vibrant-ink .cm-link { color: blue; }\n.cm-s-vibrant-ink .cm-error { border-bottom: 1px solid red; }\n\n.cm-s-vibrant-ink .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-vibrant-ink .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
+exports.push([module.i, ".cm-s-ttcn .cm-quote { color: #090; }\n.cm-s-ttcn .cm-negative { color: #d44; }\n.cm-s-ttcn .cm-positive { color: #292; }\n.cm-s-ttcn .cm-header, .cm-strong { font-weight: bold; }\n.cm-s-ttcn .cm-em { font-style: italic; }\n.cm-s-ttcn .cm-link { text-decoration: underline; }\n.cm-s-ttcn .cm-strikethrough { text-decoration: line-through; }\n.cm-s-ttcn .cm-header { color: #00f; font-weight: bold; }\n\n.cm-s-ttcn .cm-atom { color: #219; }\n.cm-s-ttcn .cm-attribute { color: #00c; }\n.cm-s-ttcn .cm-bracket { color: #997; }\n.cm-s-ttcn .cm-comment { color: #333333; }\n.cm-s-ttcn .cm-def { color: #00f; }\n.cm-s-ttcn .cm-em { font-style: italic; }\n.cm-s-ttcn .cm-error { color: #f00; }\n.cm-s-ttcn .cm-hr { color: #999; }\n.cm-s-ttcn .cm-invalidchar { color: #f00; }\n.cm-s-ttcn .cm-keyword { font-weight:bold; }\n.cm-s-ttcn .cm-link { color: #00c; text-decoration: underline; }\n.cm-s-ttcn .cm-meta { color: #555; }\n.cm-s-ttcn .cm-negative { color: #d44; }\n.cm-s-ttcn .cm-positive { color: #292; }\n.cm-s-ttcn .cm-qualifier { color: #555; }\n.cm-s-ttcn .cm-strikethrough { text-decoration: line-through; }\n.cm-s-ttcn .cm-string { color: #006400; }\n.cm-s-ttcn .cm-string-2 { color: #f50; }\n.cm-s-ttcn .cm-strong { font-weight: bold; }\n.cm-s-ttcn .cm-tag { color: #170; }\n.cm-s-ttcn .cm-variable { color: #8B2252; }\n.cm-s-ttcn .cm-variable-2 { color: #05a; }\n.cm-s-ttcn .cm-variable-3, .cm-s-ttcn .cm-type { color: #085; }\n\n.cm-s-ttcn .cm-invalidchar { color: #f00; }\n\n/* ASN */\n.cm-s-ttcn .cm-accessTypes,\n.cm-s-ttcn .cm-compareTypes { color: #27408B; }\n.cm-s-ttcn .cm-cmipVerbs { color: #8B2252; }\n.cm-s-ttcn .cm-modifier { color:#D2691E; }\n.cm-s-ttcn .cm-status { color:#8B4545; }\n.cm-s-ttcn .cm-storage { color:#A020F0; }\n.cm-s-ttcn .cm-tags { color:#006400; }\n\n/* CFG */\n.cm-s-ttcn .cm-externalCommands { color: #8B4545; font-weight:bold; }\n.cm-s-ttcn .cm-fileNCtrlMaskOptions,\n.cm-s-ttcn .cm-sectionTitle { color: #2E8B57; font-weight:bold; }\n\n/* TTCN */\n.cm-s-ttcn .cm-booleanConsts,\n.cm-s-ttcn .cm-otherConsts,\n.cm-s-ttcn .cm-verdictConsts { color: #006400; }\n.cm-s-ttcn .cm-configOps,\n.cm-s-ttcn .cm-functionOps,\n.cm-s-ttcn .cm-portOps,\n.cm-s-ttcn .cm-sutOps,\n.cm-s-ttcn .cm-timerOps,\n.cm-s-ttcn .cm-verdictOps { color: #0000FF; }\n.cm-s-ttcn .cm-preprocessor,\n.cm-s-ttcn .cm-templateMatch,\n.cm-s-ttcn .cm-ttcn3Macros { color: #27408B; }\n.cm-s-ttcn .cm-types { color: #A52A2A; font-weight:bold; }\n.cm-s-ttcn .cm-visibilityModifiers { font-weight:bold; }\n", ""]);
 
 // exports
 
@@ -71437,8 +71733,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./xq-dark.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./xq-dark.css");
+		module.hot.accept("!!../../css-loader/index.js!./twilight.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./twilight.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71451,12 +71747,12 @@ if(false) {
 /* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\nCopyright (C) 2011 by MarkLogic Corporation\nAuthor: Mike Brevoort <mike@brevoort.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n*/\n.cm-s-xq-dark.CodeMirror { background: #0a001f; color: #f8f8f8; }\n.cm-s-xq-dark div.CodeMirror-selected { background: #27007A; }\n.cm-s-xq-dark .CodeMirror-line::selection, .cm-s-xq-dark .CodeMirror-line > span::selection, .cm-s-xq-dark .CodeMirror-line > span > span::selection { background: rgba(39, 0, 122, 0.99); }\n.cm-s-xq-dark .CodeMirror-line::-moz-selection, .cm-s-xq-dark .CodeMirror-line > span::-moz-selection, .cm-s-xq-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(39, 0, 122, 0.99); }\n.cm-s-xq-dark .CodeMirror-gutters { background: #0a001f; border-right: 1px solid #aaa; }\n.cm-s-xq-dark .CodeMirror-guttermarker { color: #FFBD40; }\n.cm-s-xq-dark .CodeMirror-guttermarker-subtle { color: #f8f8f8; }\n.cm-s-xq-dark .CodeMirror-linenumber { color: #f8f8f8; }\n.cm-s-xq-dark .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-xq-dark span.cm-keyword { color: #FFBD40; }\n.cm-s-xq-dark span.cm-atom { color: #6C8CD5; }\n.cm-s-xq-dark span.cm-number { color: #164; }\n.cm-s-xq-dark span.cm-def { color: #FFF; text-decoration:underline; }\n.cm-s-xq-dark span.cm-variable { color: #FFF; }\n.cm-s-xq-dark span.cm-variable-2 { color: #EEE; }\n.cm-s-xq-dark span.cm-variable-3, .cm-s-xq-dark span.cm-type { color: #DDD; }\n.cm-s-xq-dark span.cm-property {}\n.cm-s-xq-dark span.cm-operator {}\n.cm-s-xq-dark span.cm-comment { color: gray; }\n.cm-s-xq-dark span.cm-string { color: #9FEE00; }\n.cm-s-xq-dark span.cm-meta { color: yellow; }\n.cm-s-xq-dark span.cm-qualifier { color: #FFF700; }\n.cm-s-xq-dark span.cm-builtin { color: #30a; }\n.cm-s-xq-dark span.cm-bracket { color: #cc7; }\n.cm-s-xq-dark span.cm-tag { color: #FFBD40; }\n.cm-s-xq-dark span.cm-attribute { color: #FFF700; }\n.cm-s-xq-dark span.cm-error { color: #f00; }\n\n.cm-s-xq-dark .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-xq-dark .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
+exports.push([module.i, ".cm-s-twilight.CodeMirror { background: #141414; color: #f7f7f7; } /**/\n.cm-s-twilight div.CodeMirror-selected { background: #323232; } /**/\n.cm-s-twilight .CodeMirror-line::selection, .cm-s-twilight .CodeMirror-line > span::selection, .cm-s-twilight .CodeMirror-line > span > span::selection { background: rgba(50, 50, 50, 0.99); }\n.cm-s-twilight .CodeMirror-line::-moz-selection, .cm-s-twilight .CodeMirror-line > span::-moz-selection, .cm-s-twilight .CodeMirror-line > span > span::-moz-selection { background: rgba(50, 50, 50, 0.99); }\n\n.cm-s-twilight .CodeMirror-gutters { background: #222; border-right: 1px solid #aaa; }\n.cm-s-twilight .CodeMirror-guttermarker { color: white; }\n.cm-s-twilight .CodeMirror-guttermarker-subtle { color: #aaa; }\n.cm-s-twilight .CodeMirror-linenumber { color: #aaa; }\n.cm-s-twilight .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-twilight .cm-keyword { color: #f9ee98; } /**/\n.cm-s-twilight .cm-atom { color: #FC0; }\n.cm-s-twilight .cm-number { color:  #ca7841; } /**/\n.cm-s-twilight .cm-def { color: #8DA6CE; }\n.cm-s-twilight span.cm-variable-2, .cm-s-twilight span.cm-tag { color: #607392; } /**/\n.cm-s-twilight span.cm-variable-3, .cm-s-twilight span.cm-def, .cm-s-twilight span.cm-type { color: #607392; } /**/\n.cm-s-twilight .cm-operator { color: #cda869; } /**/\n.cm-s-twilight .cm-comment { color:#777; font-style:italic; font-weight:normal; } /**/\n.cm-s-twilight .cm-string { color:#8f9d6a; font-style:italic; } /**/\n.cm-s-twilight .cm-string-2 { color:#bd6b18; } /*?*/\n.cm-s-twilight .cm-meta { background-color:#141414; color:#f7f7f7; } /*?*/\n.cm-s-twilight .cm-builtin { color: #cda869; } /*?*/\n.cm-s-twilight .cm-tag { color: #997643; } /**/\n.cm-s-twilight .cm-attribute { color: #d6bb6d; } /*?*/\n.cm-s-twilight .cm-header { color: #FF6400; }\n.cm-s-twilight .cm-hr { color: #AEAEAE; }\n.cm-s-twilight .cm-link { color:#ad9361; font-style:italic; text-decoration:none; } /**/\n.cm-s-twilight .cm-error { border-bottom: 1px solid red; }\n\n.cm-s-twilight .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-twilight .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
 
 // exports
 
@@ -71482,8 +71778,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./xq-light.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./xq-light.css");
+		module.hot.accept("!!../../css-loader/index.js!./vibrant-ink.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./vibrant-ink.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71496,12 +71792,12 @@ if(false) {
 /* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\nCopyright (C) 2011 by MarkLogic Corporation\nAuthor: Mike Brevoort <mike@brevoort.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n*/\n.cm-s-xq-light span.cm-keyword { line-height: 1em; font-weight: bold; color: #5A5CAD; }\n.cm-s-xq-light span.cm-atom { color: #6C8CD5; }\n.cm-s-xq-light span.cm-number { color: #164; }\n.cm-s-xq-light span.cm-def { text-decoration:underline; }\n.cm-s-xq-light span.cm-variable { color: black; }\n.cm-s-xq-light span.cm-variable-2 { color:black; }\n.cm-s-xq-light span.cm-variable-3, .cm-s-xq-light span.cm-type { color: black; }\n.cm-s-xq-light span.cm-property {}\n.cm-s-xq-light span.cm-operator {}\n.cm-s-xq-light span.cm-comment { color: #0080FF; font-style: italic; }\n.cm-s-xq-light span.cm-string { color: red; }\n.cm-s-xq-light span.cm-meta { color: yellow; }\n.cm-s-xq-light span.cm-qualifier { color: grey; }\n.cm-s-xq-light span.cm-builtin { color: #7EA656; }\n.cm-s-xq-light span.cm-bracket { color: #cc7; }\n.cm-s-xq-light span.cm-tag { color: #3F7F7F; }\n.cm-s-xq-light span.cm-attribute { color: #7F007F; }\n.cm-s-xq-light span.cm-error { color: #f00; }\n\n.cm-s-xq-light .CodeMirror-activeline-background { background: #e8f2ff; }\n.cm-s-xq-light .CodeMirror-matchingbracket { outline:1px solid grey;color:black !important;background:yellow; }\n", ""]);
+exports.push([module.i, "/* Taken from the popular Visual Studio Vibrant Ink Schema */\n\n.cm-s-vibrant-ink.CodeMirror { background: black; color: white; }\n.cm-s-vibrant-ink div.CodeMirror-selected { background: #35493c; }\n.cm-s-vibrant-ink .CodeMirror-line::selection, .cm-s-vibrant-ink .CodeMirror-line > span::selection, .cm-s-vibrant-ink .CodeMirror-line > span > span::selection { background: rgba(53, 73, 60, 0.99); }\n.cm-s-vibrant-ink .CodeMirror-line::-moz-selection, .cm-s-vibrant-ink .CodeMirror-line > span::-moz-selection, .cm-s-vibrant-ink .CodeMirror-line > span > span::-moz-selection { background: rgba(53, 73, 60, 0.99); }\n\n.cm-s-vibrant-ink .CodeMirror-gutters { background: #002240; border-right: 1px solid #aaa; }\n.cm-s-vibrant-ink .CodeMirror-guttermarker { color: white; }\n.cm-s-vibrant-ink .CodeMirror-guttermarker-subtle { color: #d0d0d0; }\n.cm-s-vibrant-ink .CodeMirror-linenumber { color: #d0d0d0; }\n.cm-s-vibrant-ink .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-vibrant-ink .cm-keyword { color: #CC7832; }\n.cm-s-vibrant-ink .cm-atom { color: #FC0; }\n.cm-s-vibrant-ink .cm-number { color:  #FFEE98; }\n.cm-s-vibrant-ink .cm-def { color: #8DA6CE; }\n.cm-s-vibrant-ink span.cm-variable-2, .cm-s-vibrant span.cm-tag { color: #FFC66D; }\n.cm-s-vibrant-ink span.cm-variable-3, .cm-s-vibrant span.cm-def, .cm-s-vibrant span.cm-type { color: #FFC66D; }\n.cm-s-vibrant-ink .cm-operator { color: #888; }\n.cm-s-vibrant-ink .cm-comment { color: gray; font-weight: bold; }\n.cm-s-vibrant-ink .cm-string { color:  #A5C25C; }\n.cm-s-vibrant-ink .cm-string-2 { color: red; }\n.cm-s-vibrant-ink .cm-meta { color: #D8FA3C; }\n.cm-s-vibrant-ink .cm-builtin { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-tag { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-attribute { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-header { color: #FF6400; }\n.cm-s-vibrant-ink .cm-hr { color: #AEAEAE; }\n.cm-s-vibrant-ink .cm-link { color: blue; }\n.cm-s-vibrant-ink .cm-error { border-bottom: 1px solid red; }\n\n.cm-s-vibrant-ink .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-vibrant-ink .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
 
 // exports
 
@@ -71527,8 +71823,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./yeti.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./yeti.css");
+		module.hot.accept("!!../../css-loader/index.js!./xq-dark.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./xq-dark.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71541,12 +71837,12 @@ if(false) {
 /* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       yeti\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original yeti color scheme by Jesse Weed (https://github.com/jesseweed/yeti-syntax)\n\n*/\n\n\n.cm-s-yeti.CodeMirror {\n  background-color: #ECEAE8 !important;\n  color: #d1c9c0 !important;\n  border: none;\n}\n\n.cm-s-yeti .CodeMirror-gutters {\n  color: #adaba6;\n  background-color: #E5E1DB;\n  border: none;\n}\n.cm-s-yeti .CodeMirror-cursor { border-left: solid thin #d1c9c0; }\n.cm-s-yeti .CodeMirror-linenumber { color: #adaba6; }\n.cm-s-yeti.CodeMirror-focused div.CodeMirror-selected { background: #DCD8D2; }\n.cm-s-yeti .CodeMirror-line::selection, .cm-s-yeti .CodeMirror-line > span::selection, .cm-s-yeti .CodeMirror-line > span > span::selection { background: #DCD8D2; }\n.cm-s-yeti .CodeMirror-line::-moz-selection, .cm-s-yeti .CodeMirror-line > span::-moz-selection, .cm-s-yeti .CodeMirror-line > span > span::-moz-selection { background: #DCD8D2; }\n.cm-s-yeti span.cm-comment { color: #d4c8be; }\n.cm-s-yeti span.cm-string, .cm-s-yeti span.cm-string-2 { color: #96c0d8; }\n.cm-s-yeti span.cm-number { color: #a074c4; }\n.cm-s-yeti span.cm-variable { color: #55b5db; }\n.cm-s-yeti span.cm-variable-2 { color: #a074c4; }\n.cm-s-yeti span.cm-def { color: #55b5db; }\n.cm-s-yeti span.cm-operator { color: #9fb96e; }\n.cm-s-yeti span.cm-keyword { color: #9fb96e; }\n.cm-s-yeti span.cm-atom { color: #a074c4; }\n.cm-s-yeti span.cm-meta { color: #96c0d8; }\n.cm-s-yeti span.cm-tag { color: #96c0d8; }\n.cm-s-yeti span.cm-attribute { color: #9fb96e; }\n.cm-s-yeti span.cm-qualifier { color: #96c0d8; }\n.cm-s-yeti span.cm-property { color: #a074c4; }\n.cm-s-yeti span.cm-builtin { color: #a074c4; }\n.cm-s-yeti span.cm-variable-3, .cm-s-yeti span.cm-type { color: #96c0d8; }\n.cm-s-yeti .CodeMirror-activeline-background { background: #E7E4E0; }\n.cm-s-yeti .CodeMirror-matchingbracket { text-decoration: underline; }\n", ""]);
+exports.push([module.i, "/*\nCopyright (C) 2011 by MarkLogic Corporation\nAuthor: Mike Brevoort <mike@brevoort.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n*/\n.cm-s-xq-dark.CodeMirror { background: #0a001f; color: #f8f8f8; }\n.cm-s-xq-dark div.CodeMirror-selected { background: #27007A; }\n.cm-s-xq-dark .CodeMirror-line::selection, .cm-s-xq-dark .CodeMirror-line > span::selection, .cm-s-xq-dark .CodeMirror-line > span > span::selection { background: rgba(39, 0, 122, 0.99); }\n.cm-s-xq-dark .CodeMirror-line::-moz-selection, .cm-s-xq-dark .CodeMirror-line > span::-moz-selection, .cm-s-xq-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(39, 0, 122, 0.99); }\n.cm-s-xq-dark .CodeMirror-gutters { background: #0a001f; border-right: 1px solid #aaa; }\n.cm-s-xq-dark .CodeMirror-guttermarker { color: #FFBD40; }\n.cm-s-xq-dark .CodeMirror-guttermarker-subtle { color: #f8f8f8; }\n.cm-s-xq-dark .CodeMirror-linenumber { color: #f8f8f8; }\n.cm-s-xq-dark .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-xq-dark span.cm-keyword { color: #FFBD40; }\n.cm-s-xq-dark span.cm-atom { color: #6C8CD5; }\n.cm-s-xq-dark span.cm-number { color: #164; }\n.cm-s-xq-dark span.cm-def { color: #FFF; text-decoration:underline; }\n.cm-s-xq-dark span.cm-variable { color: #FFF; }\n.cm-s-xq-dark span.cm-variable-2 { color: #EEE; }\n.cm-s-xq-dark span.cm-variable-3, .cm-s-xq-dark span.cm-type { color: #DDD; }\n.cm-s-xq-dark span.cm-property {}\n.cm-s-xq-dark span.cm-operator {}\n.cm-s-xq-dark span.cm-comment { color: gray; }\n.cm-s-xq-dark span.cm-string { color: #9FEE00; }\n.cm-s-xq-dark span.cm-meta { color: yellow; }\n.cm-s-xq-dark span.cm-qualifier { color: #FFF700; }\n.cm-s-xq-dark span.cm-builtin { color: #30a; }\n.cm-s-xq-dark span.cm-bracket { color: #cc7; }\n.cm-s-xq-dark span.cm-tag { color: #FFBD40; }\n.cm-s-xq-dark span.cm-attribute { color: #FFF700; }\n.cm-s-xq-dark span.cm-error { color: #f00; }\n\n.cm-s-xq-dark .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-xq-dark .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
 
 // exports
 
@@ -71572,8 +71868,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./zenburn.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./zenburn.css");
+		module.hot.accept("!!../../css-loader/index.js!./xq-light.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./xq-light.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71586,7 +71882,97 @@ if(false) {
 /* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "/*\nCopyright (C) 2011 by MarkLogic Corporation\nAuthor: Mike Brevoort <mike@brevoort.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n*/\n.cm-s-xq-light span.cm-keyword { line-height: 1em; font-weight: bold; color: #5A5CAD; }\n.cm-s-xq-light span.cm-atom { color: #6C8CD5; }\n.cm-s-xq-light span.cm-number { color: #164; }\n.cm-s-xq-light span.cm-def { text-decoration:underline; }\n.cm-s-xq-light span.cm-variable { color: black; }\n.cm-s-xq-light span.cm-variable-2 { color:black; }\n.cm-s-xq-light span.cm-variable-3, .cm-s-xq-light span.cm-type { color: black; }\n.cm-s-xq-light span.cm-property {}\n.cm-s-xq-light span.cm-operator {}\n.cm-s-xq-light span.cm-comment { color: #0080FF; font-style: italic; }\n.cm-s-xq-light span.cm-string { color: red; }\n.cm-s-xq-light span.cm-meta { color: yellow; }\n.cm-s-xq-light span.cm-qualifier { color: grey; }\n.cm-s-xq-light span.cm-builtin { color: #7EA656; }\n.cm-s-xq-light span.cm-bracket { color: #cc7; }\n.cm-s-xq-light span.cm-tag { color: #3F7F7F; }\n.cm-s-xq-light span.cm-attribute { color: #7F007F; }\n.cm-s-xq-light span.cm-error { color: #f00; }\n\n.cm-s-xq-light .CodeMirror-activeline-background { background: #e8f2ff; }\n.cm-s-xq-light .CodeMirror-matchingbracket { outline:1px solid grey;color:black !important;background:yellow; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 333 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(334);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../css-loader/index.js!./yeti.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./yeti.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 334 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
+// imports
+
+
+// module
+exports.push([module.i, "/*\n\n    Name:       yeti\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original yeti color scheme by Jesse Weed (https://github.com/jesseweed/yeti-syntax)\n\n*/\n\n\n.cm-s-yeti.CodeMirror {\n  background-color: #ECEAE8 !important;\n  color: #d1c9c0 !important;\n  border: none;\n}\n\n.cm-s-yeti .CodeMirror-gutters {\n  color: #adaba6;\n  background-color: #E5E1DB;\n  border: none;\n}\n.cm-s-yeti .CodeMirror-cursor { border-left: solid thin #d1c9c0; }\n.cm-s-yeti .CodeMirror-linenumber { color: #adaba6; }\n.cm-s-yeti.CodeMirror-focused div.CodeMirror-selected { background: #DCD8D2; }\n.cm-s-yeti .CodeMirror-line::selection, .cm-s-yeti .CodeMirror-line > span::selection, .cm-s-yeti .CodeMirror-line > span > span::selection { background: #DCD8D2; }\n.cm-s-yeti .CodeMirror-line::-moz-selection, .cm-s-yeti .CodeMirror-line > span::-moz-selection, .cm-s-yeti .CodeMirror-line > span > span::-moz-selection { background: #DCD8D2; }\n.cm-s-yeti span.cm-comment { color: #d4c8be; }\n.cm-s-yeti span.cm-string, .cm-s-yeti span.cm-string-2 { color: #96c0d8; }\n.cm-s-yeti span.cm-number { color: #a074c4; }\n.cm-s-yeti span.cm-variable { color: #55b5db; }\n.cm-s-yeti span.cm-variable-2 { color: #a074c4; }\n.cm-s-yeti span.cm-def { color: #55b5db; }\n.cm-s-yeti span.cm-operator { color: #9fb96e; }\n.cm-s-yeti span.cm-keyword { color: #9fb96e; }\n.cm-s-yeti span.cm-atom { color: #a074c4; }\n.cm-s-yeti span.cm-meta { color: #96c0d8; }\n.cm-s-yeti span.cm-tag { color: #96c0d8; }\n.cm-s-yeti span.cm-attribute { color: #9fb96e; }\n.cm-s-yeti span.cm-qualifier { color: #96c0d8; }\n.cm-s-yeti span.cm-property { color: #a074c4; }\n.cm-s-yeti span.cm-builtin { color: #a074c4; }\n.cm-s-yeti span.cm-variable-3, .cm-s-yeti span.cm-type { color: #96c0d8; }\n.cm-s-yeti .CodeMirror-activeline-background { background: #E7E4E0; }\n.cm-s-yeti .CodeMirror-matchingbracket { text-decoration: underline; }\n", ""]);
+
+// exports
+
+
+/***/ }),
+/* 335 */
+/***/ (function(module, exports, __webpack_require__) {
+
+// style-loader: Adds some css to the DOM by adding a <style> tag
+
+// load the styles
+var content = __webpack_require__(336);
+if(typeof content === 'string') content = [[module.i, content, '']];
+// Prepare cssTransformation
+var transform;
+
+var options = {}
+options.transform = transform
+// add the styles to the DOM
+var update = __webpack_require__(4)(content, options);
+if(content.locals) module.exports = content.locals;
+// Hot Module Replacement
+if(false) {
+	// When the styles change, update the <style> tags
+	if(!content.locals) {
+		module.hot.accept("!!../../css-loader/index.js!./zenburn.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./zenburn.css");
+			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
+			update(newContent);
+		});
+	}
+	// When the module is disposed, remove the <style> tags
+	module.hot.dispose(function() { update(); });
+}
+
+/***/ }),
+/* 336 */
+/***/ (function(module, exports, __webpack_require__) {
+
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71597,7 +71983,7 @@ exports.push([module.i, "/**\n * \"\n *  Using Zenburn color palette from the Em
 
 
 /***/ }),
-/* 333 */
+/* 337 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -71612,15 +71998,11 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7f0ea808", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-719301c9", module.exports)
   }
 }
 
 /***/ }),
-/* 334 */,
-/* 335 */,
-/* 336 */,
-/* 337 */,
 /* 338 */,
 /* 339 */,
 /* 340 */,
@@ -71630,15 +72012,19 @@ if (false) {
 /* 344 */,
 /* 345 */,
 /* 346 */,
-/* 347 */
+/* 347 */,
+/* 348 */,
+/* 349 */,
+/* 350 */,
+/* 351 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(348)
+var __vue_script__ = __webpack_require__(352)
 /* template */
-var __vue_template__ = __webpack_require__(349)
+var __vue_template__ = __webpack_require__(353)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -71655,7 +72041,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/scripts/code-preview.vue"
+Component.options.__file = "resources\\assets\\components\\scripts\\code-preview.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -71664,9 +72050,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-176687d8", Component.options)
+    hotAPI.createRecord("data-v-1a43ac0e", Component.options)
   } else {
-    hotAPI.reload("data-v-176687d8", Component.options)
+    hotAPI.reload("data-v-1a43ac0e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -71677,7 +72063,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 348 */
+/* 352 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71725,7 +72111,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 349 */
+/* 353 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -71742,12 +72128,12 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-176687d8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1a43ac0e", module.exports)
   }
 }
 
 /***/ }),
-/* 350 */
+/* 354 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -71797,11 +72183,11 @@ var Token = function () {
 /* harmony default export */ __webpack_exports__["a"] = (Token);
 
 /***/ }),
-/* 351 */
+/* 355 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__token__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__token__ = __webpack_require__(354);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -71871,10 +72257,6 @@ var ListaTokens = function () {
 /* harmony default export */ __webpack_exports__["a"] = (ListaTokens);
 
 /***/ }),
-/* 352 */,
-/* 353 */,
-/* 354 */,
-/* 355 */,
 /* 356 */,
 /* 357 */,
 /* 358 */,
@@ -71995,14 +72377,21 @@ var ListaTokens = function () {
 /* 473 */,
 /* 474 */,
 /* 475 */,
-/* 476 */
+/* 476 */,
+/* 477 */,
+/* 478 */,
+/* 479 */,
+/* 480 */,
+/* 481 */,
+/* 482 */,
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(477);
+module.exports = __webpack_require__(484);
 
 
 /***/ }),
-/* 477 */
+/* 484 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72012,16 +72401,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_codemirror__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_codemirror___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_codemirror__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview__ = __webpack_require__(347);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview__ = __webpack_require__(351);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items__ = __webpack_require__(478);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items__ = __webpack_require__(485);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_utils_modal__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_utils_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_utils_modal__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__plugins_Validate__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__classes_codificacion_reglas_estandar__ = __webpack_require__(484);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__classes_codificacion_reglas_estandar__ = __webpack_require__(491);
 
 
 
@@ -72074,15 +72463,15 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 });
 
 /***/ }),
-/* 478 */
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(479)
+var __vue_script__ = __webpack_require__(486)
 /* template */
-var __vue_template__ = __webpack_require__(483)
+var __vue_template__ = __webpack_require__(490)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -72099,7 +72488,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/scripts/tabla-items.vue"
+Component.options.__file = "resources\\assets\\components\\scripts\\tabla-items.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -72108,9 +72497,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7c3fc7fe", Component.options)
+    hotAPI.createRecord("data-v-15ae44c7", Component.options)
   } else {
-    hotAPI.reload("data-v-7c3fc7fe", Component.options)
+    hotAPI.reload("data-v-15ae44c7", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -72121,7 +72510,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 479 */
+/* 486 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72130,7 +72519,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__inputs_textarea_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__inputs_textarea_input__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputs_text_input__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputs_text_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__inputs_text_input__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fila_item__ = __webpack_require__(480);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fila_item__ = __webpack_require__(487);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fila_item___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__fila_item__);
 //
 //
@@ -72163,15 +72552,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 480 */
+/* 487 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(481)
+var __vue_script__ = __webpack_require__(488)
 /* template */
-var __vue_template__ = __webpack_require__(482)
+var __vue_template__ = __webpack_require__(489)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -72188,7 +72577,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/scripts/fila-item.vue"
+Component.options.__file = "resources\\assets\\components\\scripts\\fila-item.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -72197,9 +72586,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0060a3cc", Component.options)
+    hotAPI.createRecord("data-v-6de373dc", Component.options)
   } else {
-    hotAPI.reload("data-v-0060a3cc", Component.options)
+    hotAPI.reload("data-v-6de373dc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -72210,7 +72599,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 481 */
+/* 488 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72292,7 +72681,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 482 */
+/* 489 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -72391,12 +72780,12 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0060a3cc", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6de373dc", module.exports)
   }
 }
 
 /***/ }),
-/* 483 */
+/* 490 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -72443,18 +72832,18 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7c3fc7fe", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-15ae44c7", module.exports)
   }
 }
 
 /***/ }),
-/* 484 */
+/* 491 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__analizador_lexico__ = __webpack_require__(485);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filtro_items__ = __webpack_require__(487);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__filtro_notaciones__ = __webpack_require__(488);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__analizador_lexico__ = __webpack_require__(492);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filtro_items__ = __webpack_require__(494);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__filtro_notaciones__ = __webpack_require__(495);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72712,13 +73101,13 @@ var ReglasEstandar = function () {
 /* harmony default export */ __webpack_exports__["a"] = (ReglasEstandar);
 
 /***/ }),
-/* 485 */
+/* 492 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__token__ = __webpack_require__(350);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tabla_identificadores__ = __webpack_require__(486);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lista_tokens__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__token__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tabla_identificadores__ = __webpack_require__(493);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lista_tokens__ = __webpack_require__(355);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72906,7 +73295,7 @@ var AnalizadorLexico = function () {
 /* harmony default export */ __webpack_exports__["a"] = (AnalizadorLexico);
 
 /***/ }),
-/* 486 */
+/* 493 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72915,51 +73304,51 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var TablaIdentificadores = function () {
-     function TablaIdentificadores() {
-          _classCallCheck(this, TablaIdentificadores);
+       function TablaIdentificadores() {
+              _classCallCheck(this, TablaIdentificadores);
 
-          this.palabrasReservadas = [{ key: 'abstract', value: 'T_ABSTRACT' }, { key: 'and', value: 'T_AND' }, { key: 'array', value: 'T_ARRAY' }, { key: 'as', value: 'T_AS' }, { key: 'break', value: 'T_BREAK' }, { key: 'callable', value: 'T_CALLABLE' }, { key: 'case', value: 'T_CASE' }, { key: 'catch', value: 'T_CATCH' }, { key: 'class', value: 'T_CLASS' }, { key: 'clone', value: 'T_CLONE' }, { key: 'const', value: 'T_CONST' }, { key: 'continue', value: 'T_CONTINUE' }, { key: 'declare', value: 'T_DECLARE' }, { key: 'default', value: 'T_DEFAULT' }, { key: 'define', value: 'T_DEFINE' }, { key: 'die', value: 'T_DIE' }, { key: 'do', value: 'T_DO' }, { key: 'echo', value: 'T_ECHO' }, { key: 'else', value: 'T_ELSE' }, { key: 'elseif', value: 'T_ELSEIF' }, { key: 'empty', value: 'T_EMPTY' }, { key: 'enddeclare', value: 'T_ENDDECLARE' }, { key: 'endfor', value: 'T_ENDFOR' }, { key: 'endforeach', value: 'T_ENDFOREACH' }, { key: 'endif', value: 'T_ENDIF' }, { key: 'endswitch', value: 'T_ENDSWITCH' }, { key: 'endwhile', value: 'T_ENDWHILE' }, { key: 'eval', value: 'T_EVAL' }, { key: 'exit', value: 'T_EXIT' }, { key: 'extends', value: 'T_EXTENDS' }, { key: 'false', value: 'T_FALSE' }, { key: 'final', value: 'T_FINAL' }, { key: 'finally', value: 'T_FINALLY' }, { key: 'for', value: 'T_FOR' }, { key: 'foreach', value: 'T_FOREACH' }, { key: 'function', value: 'T_FUNCTION' }, { key: 'global', value: 'T_GLOBAL' }, { key: 'goto', value: 'T_GOTO' }, { key: 'if', value: 'T_IF' }, { key: 'implements', value: 'T_IMPLEMENTS' }, { key: 'include', value: 'T_INCLUDE' }, { key: 'include_once', value: 'INCLUDE_ONCE' }, { key: 'instanceof', value: 'T_INSTANCEOF' }, { key: 'insteadof', value: 'T_INSTEADOF' }, { key: 'interface', value: 'T_INTERFACE' }, { key: 'isset', value: 'T_ISSET' }, { key: 'list', value: 'T_LIST' }, { key: 'namespace', value: 'T_NAMESPACE' }, { key: 'new', value: 'T_NEW' }, { key: 'null', value: 'T_NULL' }, { key: 'or', value: 'T_OR' }, { key: 'php', value: 'T_PHP' }, { key: 'print', value: 'T_PRINT' }, { key: 'private', value: 'T_PRIVATE' }, { key: 'protected', value: 'T_PROTECTED' }, { key: 'public', value: 'T_PUBLIC' }, { key: 'require', value: 'T_REQUIRE' }, { key: 'require_once', value: 'T_REQUIRE_ONCE' }, { key: 'return', value: 'T_RETURN' }, { key: 'self', value: 'T_SELF' }, { key: 'static', value: 'T_STATIC' }, { key: 'switch', value: 'T_SWITCH' }, { key: 'throw', value: 'T_THROW' }, { key: 'trait', value: 'T_TRAIT' }, { key: 'true', value: 'T_TRUE' }, { key: 'try', value: 'T_TRY' }, { key: 'unset', value: 'T_UNSET' }, { key: 'use', value: 'T_USE' }, { key: 'var', value: 'T_VAR' }, { key: 'while', value: 'T_WHILE' }, { key: 'xor', value: 'T_XOR' }, { key: 'yield', value: 'T_YIELD' }, { key: '$this', value: 'T_THIS' }];
+              this.palabrasReservadas = [{ key: 'abstract', value: 'T_ABSTRACT' }, { key: 'and', value: 'T_AND' }, { key: 'array', value: 'T_ARRAY' }, { key: 'as', value: 'T_AS' }, { key: 'break', value: 'T_BREAK' }, { key: 'callable', value: 'T_CALLABLE' }, { key: 'case', value: 'T_CASE' }, { key: 'catch', value: 'T_CATCH' }, { key: 'class', value: 'T_CLASS' }, { key: 'clone', value: 'T_CLONE' }, { key: 'const', value: 'T_CONST' }, { key: 'continue', value: 'T_CONTINUE' }, { key: 'declare', value: 'T_DECLARE' }, { key: 'default', value: 'T_DEFAULT' }, { key: 'define', value: 'T_DEFINE' }, { key: 'die', value: 'T_DIE' }, { key: 'do', value: 'T_DO' }, { key: 'echo', value: 'T_ECHO' }, { key: 'else', value: 'T_ELSE' }, { key: 'elseif', value: 'T_ELSEIF' }, { key: 'empty', value: 'T_EMPTY' }, { key: 'enddeclare', value: 'T_ENDDECLARE' }, { key: 'endfor', value: 'T_ENDFOR' }, { key: 'endforeach', value: 'T_ENDFOREACH' }, { key: 'endif', value: 'T_ENDIF' }, { key: 'endswitch', value: 'T_ENDSWITCH' }, { key: 'endwhile', value: 'T_ENDWHILE' }, { key: 'eval', value: 'T_EVAL' }, { key: 'exit', value: 'T_EXIT' }, { key: 'extends', value: 'T_EXTENDS' }, { key: 'false', value: 'T_FALSE' }, { key: 'final', value: 'T_FINAL' }, { key: 'finally', value: 'T_FINALLY' }, { key: 'for', value: 'T_FOR' }, { key: 'foreach', value: 'T_FOREACH' }, { key: 'function', value: 'T_FUNCTION' }, { key: 'global', value: 'T_GLOBAL' }, { key: 'goto', value: 'T_GOTO' }, { key: 'if', value: 'T_IF' }, { key: 'implements', value: 'T_IMPLEMENTS' }, { key: 'include', value: 'T_INCLUDE' }, { key: 'include_once', value: 'INCLUDE_ONCE' }, { key: 'instanceof', value: 'T_INSTANCEOF' }, { key: 'insteadof', value: 'T_INSTEADOF' }, { key: 'interface', value: 'T_INTERFACE' }, { key: 'isset', value: 'T_ISSET' }, { key: 'list', value: 'T_LIST' }, { key: 'namespace', value: 'T_NAMESPACE' }, { key: 'new', value: 'T_NEW' }, { key: 'null', value: 'T_NULL' }, { key: 'or', value: 'T_OR' }, { key: 'php', value: 'T_PHP' }, { key: 'print', value: 'T_PRINT' }, { key: 'private', value: 'T_PRIVATE' }, { key: 'protected', value: 'T_PROTECTED' }, { key: 'public', value: 'T_PUBLIC' }, { key: 'require', value: 'T_REQUIRE' }, { key: 'require_once', value: 'T_REQUIRE_ONCE' }, { key: 'return', value: 'T_RETURN' }, { key: 'self', value: 'T_SELF' }, { key: 'static', value: 'T_STATIC' }, { key: 'switch', value: 'T_SWITCH' }, { key: 'throw', value: 'T_THROW' }, { key: 'trait', value: 'T_TRAIT' }, { key: 'true', value: 'T_TRUE' }, { key: 'try', value: 'T_TRY' }, { key: 'unset', value: 'T_UNSET' }, { key: 'use', value: 'T_USE' }, { key: 'var', value: 'T_VAR' }, { key: 'while', value: 'T_WHILE' }, { key: 'xor', value: 'T_XOR' }, { key: 'yield', value: 'T_YIELD' }, { key: '$this', value: 'T_THIS' }];
 
-          this.operadores = [{ key: '+', value: 'T_SUMA' }, { key: '-', value: 'T_RESTA' }, { key: '*', value: 'T_MULTIPLICACION' }, { key: '/', value: 'T_DIVISION' }, { key: '%', value: 'T_MODULO' }, { key: '**', value: 'T_POTENCIA' }, { key: '=', value: 'T_ASIGNACION' }, { key: '&', value: 'T_OP_AND' }, { key: '|', value: 'T_OP_OR' }, { key: '^', value: 'T_OP_XOR' }, { key: '~', value: 'T_NEGACION' }, { key: '<<', value: 'T_IZQUIERDA' }, { key: '>>', value: 'T_DERECHA' }, { key: '==', value: 'T_IGUAL' }, { key: '===', value: 'T_IDENTICO' }, { key: '!=', value: 'T_DIFERENTE' }, { key: '<>', value: 'T_DIFERENTE' }, { key: '!==', value: 'T_NOIDENTICO' }, { key: '<', value: 'T_MENOR_Q' }, { key: '>', value: 'T_MAYOR_Q' }, { key: '<=', value: 'T_MENOR_IGUAL' }, { key: '>=', value: 'T_MAYOR_IGUAL' }, { key: '<=>', value: 'T_NAVE' }, { key: '??', value: 'T_FUSION' }, { key: '@', value: 'T_ERROR' }, { key: '++', value: 'T_INCREMENTO' }, { key: '--', value: 'T_DECREMENTO' }, { key: '&&', value: 'T_OP_AND' }, { key: '||', value: 'T_OP_OR' }, { key: '!', value: 'T_NEGACION' }, { key: '.', value: 'T_CONCATENACION' }, { key: '.=', value: 'T_CONCATENACION' }, { key: '?', value: 'T_TERNARIO' }, { key: ':', value: 'T_TERNARIO' }, { key: '::', value: 'T_ESTATICA' }, { key: '+=', value: 'T_ASIGNACION' }, { key: '-=', value: 'T_ASIGNACION' }, { key: '*=', value: 'T_ASIGNACION' }, { key: '**=', value: 'T_ASIGNACION' }, { key: '/=', value: 'T_ASIGNACION' }, { key: '%=', value: 'T_ASIGNACION' }, { key: '&=', value: 'T_ASIGNACION' }, { key: '|=', value: 'T_ASIGNACION' }, { key: '^=', value: 'T_ASIGNACION' }, { key: '<<=', value: 'T_ASIGNACION' }, { key: '>>=', value: 'T_ASIGNACION' }, { key: '->', value: 'T_FLECHA' }, { key: '=>', value: 'T_FLECHA_A' }, { key: '<?', value: 'T_OP_PHP' }, { key: '?>', value: 'T_OP_PHP' }, { key: '//', value: 'T_COMENTARIO' }, { key: '/*', value: 'T_COMENTARIO_L' }, { key: '/**', value: 'T_COMENTARIO_L' }];
+              this.operadores = [{ key: '+', value: 'T_SUMA' }, { key: '-', value: 'T_RESTA' }, { key: '*', value: 'T_MULTIPLICACION' }, { key: '/', value: 'T_DIVISION' }, { key: '%', value: 'T_MODULO' }, { key: '**', value: 'T_POTENCIA' }, { key: '=', value: 'T_ASIGNACION' }, { key: '&', value: 'T_OP_AND' }, { key: '|', value: 'T_OP_OR' }, { key: '^', value: 'T_OP_XOR' }, { key: '~', value: 'T_NEGACION' }, { key: '<<', value: 'T_IZQUIERDA' }, { key: '>>', value: 'T_DERECHA' }, { key: '==', value: 'T_IGUAL' }, { key: '===', value: 'T_IDENTICO' }, { key: '!=', value: 'T_DIFERENTE' }, { key: '<>', value: 'T_DIFERENTE' }, { key: '!==', value: 'T_NOIDENTICO' }, { key: '<', value: 'T_MENOR_Q' }, { key: '>', value: 'T_MAYOR_Q' }, { key: '<=', value: 'T_MENOR_IGUAL' }, { key: '>=', value: 'T_MAYOR_IGUAL' }, { key: '<=>', value: 'T_NAVE' }, { key: '??', value: 'T_FUSION' }, { key: '@', value: 'T_ERROR' }, { key: '++', value: 'T_INCREMENTO' }, { key: '--', value: 'T_DECREMENTO' }, { key: '&&', value: 'T_OP_AND' }, { key: '||', value: 'T_OP_OR' }, { key: '!', value: 'T_NEGACION' }, { key: '.', value: 'T_CONCATENACION' }, { key: '.=', value: 'T_CONCATENACION' }, { key: '?', value: 'T_TERNARIO' }, { key: ':', value: 'T_TERNARIO' }, { key: '::', value: 'T_ESTATICA' }, { key: '+=', value: 'T_ASIGNACION' }, { key: '-=', value: 'T_ASIGNACION' }, { key: '*=', value: 'T_ASIGNACION' }, { key: '**=', value: 'T_ASIGNACION' }, { key: '/=', value: 'T_ASIGNACION' }, { key: '%=', value: 'T_ASIGNACION' }, { key: '&=', value: 'T_ASIGNACION' }, { key: '|=', value: 'T_ASIGNACION' }, { key: '^=', value: 'T_ASIGNACION' }, { key: '<<=', value: 'T_ASIGNACION' }, { key: '>>=', value: 'T_ASIGNACION' }, { key: '->', value: 'T_FLECHA' }, { key: '=>', value: 'T_FLECHA_A' }, { key: '<?', value: 'T_OP_PHP' }, { key: '?>', value: 'T_OP_PHP' }, { key: '//', value: 'T_COMENTARIO' }, { key: '/*', value: 'T_COMENTARIO_L' }, { key: '/**', value: 'T_COMENTARIO_L' }];
 
-          this.delimitadores = [{ key: '(', value: 'T_PARENTESIS_A' }, { key: ')', value: 'T_PARENTESIS_C' }, { key: '[', value: 'T_CORCHETE_A' }, { key: ']', value: 'T_CORCHETE_C' }, { key: '{', value: 'T_LLAVE_A' }, { key: '}', value: 'T_LLAVE_C' }, { key: ';', value: 'T_PUNTO_COMA' }, { key: ',', value: 'T_COMA' }];
-     }
+              this.delimitadores = [{ key: '(', value: 'T_PARENTESIS_A' }, { key: ')', value: 'T_PARENTESIS_C' }, { key: '[', value: 'T_CORCHETE_A' }, { key: ']', value: 'T_CORCHETE_C' }, { key: '{', value: 'T_LLAVE_A' }, { key: '}', value: 'T_LLAVE_C' }, { key: ';', value: 'T_PUNTO_COMA' }, { key: ',', value: 'T_COMA' }];
+       }
 
-     _createClass(TablaIdentificadores, [{
-          key: 'findWord',
-          value: function findWord(word) {
-               return this.palabrasReservadas.find(function (e) {
-                    return e.key === word;
-               });
-          }
-     }, {
-          key: 'findOperator',
-          value: function findOperator(operator) {
-               return this.operadores.find(function (e) {
-                    return e.key === operator;
-               });
-          }
-     }, {
-          key: 'findDelimiter',
-          value: function findDelimiter(delimiter) {
-               return this.delimitadores.find(function (e) {
-                    return e.key === delimiter;
-               });
-          }
-     }]);
+       _createClass(TablaIdentificadores, [{
+              key: 'findWord',
+              value: function findWord(word) {
+                     return this.palabrasReservadas.find(function (e) {
+                            return e.key === word;
+                     });
+              }
+       }, {
+              key: 'findOperator',
+              value: function findOperator(operator) {
+                     return this.operadores.find(function (e) {
+                            return e.key === operator;
+                     });
+              }
+       }, {
+              key: 'findDelimiter',
+              value: function findDelimiter(delimiter) {
+                     return this.delimitadores.find(function (e) {
+                            return e.key === delimiter;
+                     });
+              }
+       }]);
 
-     return TablaIdentificadores;
+       return TablaIdentificadores;
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (TablaIdentificadores);
 
 /***/ }),
-/* 487 */
+/* 494 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lista_tokens__ = __webpack_require__(351);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__token__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lista_tokens__ = __webpack_require__(355);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__token__ = __webpack_require__(354);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -73295,7 +73684,7 @@ var FiltroItems = function () {
 /* harmony default export */ __webpack_exports__["a"] = (FiltroItems);
 
 /***/ }),
-/* 488 */
+/* 495 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
