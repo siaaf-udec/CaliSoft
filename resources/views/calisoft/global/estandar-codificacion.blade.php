@@ -1,3 +1,4 @@
+
 @extends('layouts.dash')
 @section('content')
 <div class="col-md-12">
@@ -49,6 +50,7 @@
                         </li>
                         
                     </ul>
+                    
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1">
                             <p>
@@ -61,6 +63,8 @@
                                       variable es de 3 caracteres exceptuando las variables $i, $j, $k 
                                       que se utilizan en los ciclos “for”.
                             </p>
+                            
+                        <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-variables.jpg" alt="ejemplo variables" > 
                         </div>
                         <div class="tab-pane" id="tab2">
                             <p>
@@ -70,7 +74,9 @@
                                     estará en mayúscula, si la palabra conlleva guiones bajos en una posición diferente a la 
                                     inicial la declaración será errónea, también la longitud mínima de una clase es de 3 
                                     caracteres   
+
                             </p>
+                            <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-clases.jpg" alt="ejemplo clases" >  
                         </div>
                         <div class="tab-pane" id="tab3">
                             <p>
@@ -80,6 +86,7 @@
                                      guiones bajos en una posición diferente a la inicial la declaración será errónea, también 
                                      la longitud mínima de una función es de 3 caracteres.
                             </p>
+                            <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-funciones.jpg" alt="ejemplo funciones" >  
                         </div>
                         <div class="tab-pane" id="tab4">
                             <p>
@@ -89,21 +96,25 @@
                                     separada por un underscore o guion abajo, también la longitud mínima de una 
                                     constante es de 3 caracteres.
                             </p>
+                            <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-constantes.jpg" alt="ejemplo constantes" >  
                         </div>
                         <div class="tab-pane" id="tab5-1">
                             <p>La indentación se puede expresar como la sangría que debe tener cada estructura de código.
                                     Entiéndase por estructura de control “if”, “else”, “while”, “for”, etc. para este estándar se definió una indentación mínima de 4 espacios, lo que corresponde a una tabulación, aunque el espacio puede ser mayor, cabe resaltar que cada elemento que este dentro de la estructura debe respetar el mismo espaciado que los demás, toda estructura declarada debe siempre llevar las llaves de apertura y cierre aun cuando esté compuesta por una sola sentencia y la sentencia debe ir después de la estructura (no pueden ir en la misma línea)
                             </p>
+                            <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-identacion1.jpg" alt="ejemplo indentacion" >  
                         </div>
                         <div class="tab-pane" id="tab5-2">
                                 <p>
                                     forma incorrecta 1
                                 </p>
+                                <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-identacion2.jpg" alt="ejemplo indentacion" >  
                         </div>
                         <div class="tab-pane" id="tab5-3">
                                 <p>
                                         forma incorrecta 2
                                 </p>
+                                <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-identacion3.jpg" alt="ejemplo indentacion" >  
                         </div>
                         <div class="tab-pane" id="tab6">
                             <p>
@@ -111,6 +122,7 @@
                                     en su cabecera, el no realizar un comentario la declaración 
                                     será errónea 
                             </p>
+                            <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-comentarios.jpg" alt="ejemplo comentarios" >  
                         </div>
                         <div class="tab-pane" id="tab7">
                             <p>
@@ -124,14 +136,17 @@
                                     también la longitud mínima de un espacio de nombre es de 3 
                                     caracteres
                             </p>
+                            <img class="img-responsive center-block img-rounded" src="/img/estandar-codificacion/ejemplo-espacios-nombre.jpg" alt="ejemplo espacios de nombre" >  
                         </div>
                         
                     </div>
                 </div>
+                
                
                 
             </div>
         </div>
+        
     @endcomponent
 </div>
 @endsection
