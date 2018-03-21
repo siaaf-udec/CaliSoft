@@ -89,7 +89,8 @@ class EvaluatorController extends Controller
 
             $repeticion = substr_count($leerArchivo, $i); 
             $totalImpostantesBD += substr_count($leerArchivo, $i); 
-            $palabra_infos .= $repeticion;
+            $palabra_infos .= "$repeticion,";
+            $array = explode(",", $palabra_infos);
             $palabras .= "$i ($repeticion)<br>";
 
             if(strpos($leerArchivo, $i)> -1)
@@ -101,7 +102,7 @@ class EvaluatorController extends Controller
 
         echo rtrim($mensajePropias, ", ");
 
-        echo "<br>",$palabras,"<br>"; 
+        echo "<br>",$palabra_infos,"<br>"; 
 
         echo "Total Palabras Propias del SQL: ".$totalImpostantesBD, "<br>";
 
@@ -110,7 +111,8 @@ class EvaluatorController extends Controller
 
             $repeticiones = substr_count($leerArchivo, $k); 
             $totalEstandarBD += substr_count($leerArchivo, $k);
-            $palabra_info .= $repeticiones; 
+            $palabra_info .= "$repeticiones,"; 
+            $array1 = explode(",", $palabra_info);
             $palabra .= "$k ($repeticiones)<br>"; 
 
             if(strpos($leerArchivo, $k)> -1)
@@ -142,26 +144,26 @@ class EvaluatorController extends Controller
         }
 
         // array total en la calificacion
-        $total = $palabra_infos[0].$palabra_infos[1];
-        $total1 = $palabra_infos[2].$palabra_infos[3];
-        $total2 = $palabra_infos[4].$palabra_infos[5];
-        $total3 = $palabra_infos[6];
-        $total4 = $palabra_infos[7];
-        $total5 = $palabra_infos[8];
-        $total6 = $palabra_infos[9];
-        $total7 = $palabra_infos[10];
-        $total8 = $palabra_infos[11];
+        $total = $array[0];
+        $total1 = $array[1];
+        $total2 = $array[2];
+        $total3 = $array[3];
+        $total4 = $array[4];
+        $total5 = $array[5];
+        $total6 = $array[6];
+        $total7 = $array[7];
+        $total8 = $array[8];
 
         // array acertadas en la calificacion
-        $acertadas  = $palabra_info[0].$palabra_info[1];
-        $acertadas1 = $palabra_info[2].$palabra_info[3];
-        $acertadas2 = $palabra_info[4].$palabra_info[5];
-        $acertadas3 = $palabra_info[6];
-        $acertadas4 = $palabra_info[7];
-        $acertadas5 = $palabra_info[8];
-        $acertadas6 = $palabra_info[9];
-        $acertadas7 = $palabra_info[10];
-        $acertadas8 = $palabra_info[11];
+        $acertadas  = $array1[0];
+        $acertadas1 = $array1[1];
+        $acertadas2 = $array1[2];
+        $acertadas3 = $array1[3];
+        $acertadas4 = $array1[4];
+        $acertadas5 = $array1[5];
+        $acertadas6 = $array1[6];
+        $acertadas7 = $array1[7];
+        $acertadas8 = $array1[8];
         
 
             $sql = "UPDATE tbl_calificacionbd SET total= ?, acertadas= ?  WHERE FK_TipoNomenclaturaId=? and FK_ArchivoBdId= ?";
