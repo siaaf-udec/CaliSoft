@@ -47,7 +47,7 @@ export default {
 
     validacion(total, acertadas) {
       this.item.pivot.calificacion =
-        total > 0 ? (acertadas / total * this.item.valor).toFixed(2) : 0;
+        total > 0 ? (((acertadas / total * this.item.valor)* 5)/this.item.valor).toFixed(2) : 0;
 
        this.safeExec(()=> this.update(this.item))
     }

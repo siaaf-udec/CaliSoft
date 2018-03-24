@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 483);
+/******/ 	return __webpack_require__(__webpack_require__.s = 479);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -3345,10 +3345,8 @@ function updateHeightsInViewport(cm) {
 // Read and store the height of line widgets associated with the
 // given line.
 function updateWidgetHeight(line) {
-  if (line.widgets) { for (var i = 0; i < line.widgets.length; ++i) {
-    var w = line.widgets[i], parent = w.node.parentNode;
-    if (parent) { w.height = parent.offsetHeight; }
-  } }
+  if (line.widgets) { for (var i = 0; i < line.widgets.length; ++i)
+    { line.widgets[i].height = line.widgets[i].node.parentNode.offsetHeight; } }
 }
 
 // Compute the lines that are visible in a given viewport (defaults
@@ -5294,8 +5292,7 @@ function makeChangeInner(doc, change) {
 
 // Revert a change stored in a document's history.
 function makeChangeFromHistory(doc, type, allowSelectionOnly) {
-  var suppress = doc.cm && doc.cm.state.suppressEdits;
-  if (suppress && !allowSelectionOnly) { return }
+  if (doc.cm && doc.cm.state.suppressEdits && !allowSelectionOnly) { return }
 
   var hist = doc.history, event, selAfter = doc.sel;
   var source = type == "undo" ? hist.done : hist.undone, dest = type == "undo" ? hist.undone : hist.done;
@@ -5320,10 +5317,8 @@ function makeChangeFromHistory(doc, type, allowSelectionOnly) {
         return
       }
       selAfter = event;
-    } else if (suppress) {
-      source.push(event);
-      return
-    } else { break }
+    }
+    else { break }
   }
 
   // Build up a reverse change object to add to the opposite history
@@ -5799,7 +5794,7 @@ function addLineWidget(doc, handle, node, options) {
     }
     return true
   });
-  if (cm) { signalLater(cm, "lineWidgetAdded", cm, widget, typeof handle == "number" ? handle : lineNo(handle)); }
+  signalLater(cm, "lineWidgetAdded", cm, widget, typeof handle == "number" ? handle : lineNo(handle));
   return widget
 }
 
@@ -6657,11 +6652,11 @@ function onResize(cm) {
 }
 
 var keyNames = {
-  3: "Pause", 8: "Backspace", 9: "Tab", 13: "Enter", 16: "Shift", 17: "Ctrl", 18: "Alt",
+  3: "Enter", 8: "Backspace", 9: "Tab", 13: "Enter", 16: "Shift", 17: "Ctrl", 18: "Alt",
   19: "Pause", 20: "CapsLock", 27: "Esc", 32: "Space", 33: "PageUp", 34: "PageDown", 35: "End",
   36: "Home", 37: "Left", 38: "Up", 39: "Right", 40: "Down", 44: "PrintScrn", 45: "Insert",
   46: "Delete", 59: ";", 61: "=", 91: "Mod", 92: "Mod", 93: "Mod",
-  106: "*", 107: "=", 109: "-", 110: ".", 111: "/", 127: "Delete", 145: "ScrollLock",
+  106: "*", 107: "=", 109: "-", 110: ".", 111: "/", 127: "Delete",
   173: "-", 186: ";", 187: "=", 188: ",", 189: "-", 190: ".", 191: "/", 192: "`", 219: "[", 220: "\\",
   221: "]", 222: "'", 63232: "Up", 63233: "Down", 63234: "Left", 63235: "Right", 63272: "Delete",
   63273: "Home", 63275: "End", 63276: "PageUp", 63277: "PageDown", 63302: "Insert"
@@ -6808,9 +6803,6 @@ function keyName(event, noShift) {
   if (presto && event.keyCode == 34 && event["char"]) { return false }
   var name = keyNames[event.keyCode];
   if (name == null || event.altGraphKey) { return false }
-  // Ctrl-ScrollLock has keyCode 3, same as Ctrl-Pause,
-  // so we'll use event.code when available (Chrome 48+, FF 38+, Safari 10.1+)
-  if (event.keyCode == 3 && event.code) { name = event.code; }
   return addModifierNames(name, event, noShift)
 }
 
@@ -7150,26 +7142,18 @@ function lookupKeyForEditor(cm, name, handle) {
 // for bound mouse clicks.
 
 var stopSeq = new Delayed;
-
 function dispatchKey(cm, name, e, handle) {
   var seq = cm.state.keySeq;
   if (seq) {
     if (isModifierKey(name)) { return "handled" }
-    if (/\'$/.test(name))
-      { cm.state.keySeq = null; }
-    else
-      { stopSeq.set(50, function () {
-        if (cm.state.keySeq == seq) {
-          cm.state.keySeq = null;
-          cm.display.input.reset();
-        }
-      }); }
-    if (dispatchKeyInner(cm, seq + " " + name, e, handle)) { return true }
+    stopSeq.set(50, function () {
+      if (cm.state.keySeq == seq) {
+        cm.state.keySeq = null;
+        cm.display.input.reset();
+      }
+    });
+    name = seq + " " + name;
   }
-  return dispatchKeyInner(cm, name, e, handle)
-}
-
-function dispatchKeyInner(cm, name, e, handle) {
   var result = lookupKeyForEditor(cm, name, handle);
 
   if (result == "multi")
@@ -7182,6 +7166,10 @@ function dispatchKeyInner(cm, name, e, handle) {
     restartBlink(cm);
   }
 
+  if (seq && !result && /\'$/.test(name)) {
+    e_preventDefault(e);
+    return true
+  }
   return !!result
 }
 
@@ -7693,7 +7681,6 @@ function defineOptions(CodeMirror) {
     clearCaches(cm);
     regChange(cm);
   }, true);
-
   option("lineSeparator", null, function (cm, val) {
     cm.doc.lineSep = val;
     if (!val) { return }
@@ -8100,7 +8087,7 @@ function applyTextInput(cm, inserted, deleted, sel, origin) {
 
   var paste = cm.state.pasteIncoming || origin == "paste";
   var textLines = splitLinesAuto(inserted), multiPaste = null;
-  // When pasting N lines into N selections, insert one line per selection
+  // When pasing N lines into N selections, insert one line per selection
   if (paste && sel.ranges.length > 1) {
     if (lastCopied && lastCopied.text.join("\n") == inserted) {
       if (sel.ranges.length % lastCopied.text.length == 0) {
@@ -9734,7 +9721,7 @@ CodeMirror$1.fromTextArea = fromTextArea;
 
 addLegacyProps(CodeMirror$1);
 
-CodeMirror$1.version = "5.35.0";
+CodeMirror$1.version = "5.31.0";
 
 return CodeMirror$1;
 
@@ -10599,33 +10586,6 @@ function updateLink (link, options, obj) {
 
 /***/ }),
 /* 5 */
-/***/ (function(module, exports) {
-
-var g;
-
-// This works in non-strict mode
-g = (function() {
-	return this;
-})();
-
-try {
-	// This works if eval is allowed (see CSP)
-	g = g || Function("return this")() || (1,eval)("this");
-} catch(e) {
-	// This works if the window reference is available
-	if(typeof window === "object")
-		g = window;
-}
-
-// g can still be undefined, but nothing to do about it...
-// We return undefined, instead of nothing here, so it's
-// easier to handle this case. if(!global) { ...}
-
-module.exports = g;
-
-
-/***/ }),
-/* 6 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -10724,6 +10684,33 @@ utils.forEach(['post', 'put', 'patch'], function forEachMethodWithData(method) {
 module.exports = defaults;
 
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(8)))
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports) {
+
+var g;
+
+// This works in non-strict mode
+g = (function() {
+	return this;
+})();
+
+try {
+	// This works if eval is allowed (see CSP)
+	g = g || Function("return this")() || (1,eval)("this");
+} catch(e) {
+	// This works if the window reference is available
+	if(typeof window === "object")
+		g = window;
+}
+
+// g can still be undefined, but nothing to do about it...
+// We return undefined, instead of nothing here, so it's
+// easier to handle this case. if(!global) { ...}
+
+module.exports = g;
+
 
 /***/ }),
 /* 7 */
@@ -21994,7 +21981,7 @@ Vue$3.compile = compileToFunctions;
 
 module.exports = Vue$3;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(36).setImmediate))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(36).setImmediate))
 
 /***/ }),
 /* 14 */
@@ -22052,7 +22039,7 @@ __webpack_require__(35);
 var utils = __webpack_require__(2);
 var bind = __webpack_require__(7);
 var Axios = __webpack_require__(17);
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(5);
 
 /**
  * Create an instance of Axios
@@ -22108,7 +22095,7 @@ module.exports.default = axios;
 "use strict";
 
 
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(5);
 var utils = __webpack_require__(2);
 var InterceptorManager = __webpack_require__(26);
 var dispatchRequest = __webpack_require__(27);
@@ -22636,7 +22623,7 @@ module.exports = InterceptorManager;
 var utils = __webpack_require__(2);
 var transformData = __webpack_require__(28);
 var isCancel = __webpack_require__(11);
-var defaults = __webpack_require__(6);
+var defaults = __webpack_require__(5);
 
 /**
  * Throws a `Cancel` if cancellation has been requested.
@@ -27862,7 +27849,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 /* 36 */
 /***/ (function(module, exports, __webpack_require__) {
 
-/* WEBPACK VAR INJECTION */(function(global) {var apply = Function.prototype.apply;
+var apply = Function.prototype.apply;
 
 // DOM APIs, for completeness
 
@@ -27913,17 +27900,9 @@ exports._unrefActive = exports.active = function(item) {
 
 // setimmediate attaches itself to the global object
 __webpack_require__(37);
-// On some exotic environments, it's not clear which object `setimmeidate` was
-// able to install onto.  Search each possibility in the same order as the
-// `setimmediate` library.
-exports.setImmediate = (typeof self !== "undefined" && self.setImmediate) ||
-                       (typeof global !== "undefined" && global.setImmediate) ||
-                       (this && this.setImmediate);
-exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
-                         (typeof global !== "undefined" && global.clearImmediate) ||
-                         (this && this.clearImmediate);
+exports.setImmediate = setImmediate;
+exports.clearImmediate = clearImmediate;
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5)))
 
 /***/ }),
 /* 37 */
@@ -28116,7 +28095,7 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
     attachTo.clearImmediate = clearImmediate;
 }(typeof self === "undefined" ? typeof global === "undefined" ? this : global : self));
 
-/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(5), __webpack_require__(8)))
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(6), __webpack_require__(8)))
 
 /***/ }),
 /* 38 */
@@ -30065,7 +30044,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     var A = kw("keyword a"), B = kw("keyword b"), C = kw("keyword c"), D = kw("keyword d");
     var operator = kw("operator"), atom = {type: "atom", style: "atom"};
 
-    return {
+    var jsKeywords = {
       "if": kw("if"), "while": A, "with": A, "else": B, "do": B, "try": B, "finally": B,
       "return": D, "break": D, "continue": D, "new": kw("new"), "delete": C, "void": C, "throw": C,
       "debugger": kw("debugger"), "var": kw("var"), "const": kw("var"), "let": kw("var"),
@@ -30077,6 +30056,35 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       "yield": C, "export": kw("export"), "import": kw("import"), "extends": C,
       "await": C
     };
+
+    // Extend the 'normal' keywords with the TypeScript language extensions
+    if (isTS) {
+      var type = {type: "variable", style: "type"};
+      var tsKeywords = {
+        // object-like things
+        "interface": kw("class"),
+        "implements": C,
+        "namespace": C,
+        "module": kw("module"),
+        "enum": kw("module"),
+
+        // scope modifiers
+        "public": kw("modifier"),
+        "private": kw("modifier"),
+        "protected": kw("modifier"),
+        "abstract": kw("modifier"),
+        "readonly": kw("modifier"),
+
+        // types
+        "string": type, "number": type, "boolean": type, "any": type
+      };
+
+      for (var attr in tsKeywords) {
+        jsKeywords[attr] = tsKeywords[attr];
+      }
+    }
+
+    return jsKeywords;
   }();
 
   var isOperatorChar = /[+\-*&%=<>!?|~^@]/;
@@ -30165,7 +30173,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
           var kw = keywords[word]
           return ret(kw.type, kw.style, word)
         }
-        if (word == "async" && stream.match(/^(\s|\/\*.*?\*\/)*[\(\w]/, false))
+        if (word == "async" && stream.match(/^\s*[\(\w]/, false))
           return ret("async", "keyword", word)
       }
       return ret("variable", "variable", word)
@@ -30322,10 +30330,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     }
   }
 
-  function isModifier(name) {
-    return name == "public" || name == "private" || name == "protected" || name == "abstract" || name == "readonly"
-  }
-
   // Combinators
 
   var defaultVars = {name: "this", next: {name: "arguments"}};
@@ -30382,19 +30386,13 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     }
     if (type == "function") return cont(functiondef);
     if (type == "for") return cont(pushlex("form"), forspec, statement, poplex);
-    if (type == "class" || (isTS && value == "interface")) { cx.marked = "keyword"; return cont(pushlex("form"), className, poplex); }
     if (type == "variable") {
-      if (isTS && value == "declare") {
+      if (isTS && value == "type") {
+        cx.marked = "keyword"
+        return cont(typeexpr, expect("operator"), typeexpr, expect(";"));
+      } if (isTS && value == "declare") {
         cx.marked = "keyword"
         return cont(statement)
-      } else if (isTS && (value == "module" || value == "enum" || value == "type") && cx.stream.match(/^\s*\w/, false)) {
-        cx.marked = "keyword"
-        if (value == "enum") return cont(enumdef);
-        else if (value == "type") return cont(typeexpr, expect("operator"), typeexpr, expect(";"));
-        else return cont(pushlex("form"), pattern, expect("{"), pushlex("}"), block, poplex, poplex)
-      } else if (isTS && value == "namespace") {
-        cx.marked = "keyword"
-        return cont(pushlex("form"), expression, block, poplex)
       } else {
         return cont(pushlex("stat"), maybelabel);
       }
@@ -30405,23 +30403,25 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "default") return cont(expect(":"));
     if (type == "catch") return cont(pushlex("form"), pushcontext, expect("("), funarg, expect(")"),
                                      statement, poplex, popcontext);
+    if (type == "class") return cont(pushlex("form"), className, poplex);
     if (type == "export") return cont(pushlex("stat"), afterExport, poplex);
     if (type == "import") return cont(pushlex("stat"), afterImport, poplex);
+    if (type == "module") return cont(pushlex("form"), pattern, expect("{"), pushlex("}"), block, poplex, poplex)
     if (type == "async") return cont(statement)
     if (value == "@") return cont(expression, statement)
     return pass(pushlex("stat"), expression, expect(";"), poplex);
   }
-  function expression(type, value) {
-    return expressionInner(type, value, false);
+  function expression(type) {
+    return expressionInner(type, false);
   }
-  function expressionNoComma(type, value) {
-    return expressionInner(type, value, true);
+  function expressionNoComma(type) {
+    return expressionInner(type, true);
   }
   function parenExpr(type) {
     if (type != "(") return pass()
     return cont(pushlex(")"), expression, expect(")"), poplex)
   }
-  function expressionInner(type, value, noComma) {
+  function expressionInner(type, noComma) {
     if (cx.state.fatArrowAt == cx.stream.start) {
       var body = noComma ? arrowBodyNoComma : arrowBody;
       if (type == "(") return cont(pushcontext, pushlex(")"), commasep(funarg, ")"), poplex, expect("=>"), body, popcontext);
@@ -30431,7 +30431,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     var maybeop = noComma ? maybeoperatorNoComma : maybeoperatorComma;
     if (atomicTypes.hasOwnProperty(type)) return cont(maybeop);
     if (type == "function") return cont(functiondef, maybeop);
-    if (type == "class" || (isTS && value == "interface")) { cx.marked = "keyword"; return cont(pushlex("form"), classExpression, poplex); }
+    if (type == "class") return cont(pushlex("form"), classExpression, poplex);
     if (type == "keyword c" || type == "async") return cont(noComma ? expressionNoComma : expression);
     if (type == "(") return cont(pushlex(")"), maybeexpression, expect(")"), poplex, maybeop);
     if (type == "operator" || type == "spread") return cont(noComma ? expressionNoComma : expression);
@@ -30439,7 +30439,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "{") return contCommasep(objprop, "}", null, maybeop);
     if (type == "quasi") return pass(quasi, maybeop);
     if (type == "new") return cont(maybeTarget(noComma));
-    if (type == "import") return cont(expression);
     return cont();
   }
   function maybeexpression(type) {
@@ -30457,8 +30456,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "=>") return cont(pushcontext, noComma ? arrowBodyNoComma : arrowBody, popcontext);
     if (type == "operator") {
       if (/\+\+|--/.test(value) || isTS && value == "!") return cont(me);
-      if (isTS && value == "<" && cx.stream.match(/^([^>]|<.*?>)*>\s*\(/, false))
-        return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, me);
       if (value == "?") return cont(expression, expect(":"), expr);
       return cont(expr);
     }
@@ -30530,11 +30527,10 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return cont(afterprop);
     } else if (type == "jsonld-keyword") {
       return cont(afterprop);
-    } else if (isTS && isModifier(value)) {
-      cx.marked = "keyword"
+    } else if (type == "modifier") {
       return cont(objprop)
     } else if (type == "[") {
-      return cont(expression, maybetype, expect("]"), afterprop);
+      return cont(expression, expect("]"), afterprop);
     } else if (type == "spread") {
       return cont(expressionNoComma, afterprop);
     } else if (value == "*") {
@@ -30586,18 +30582,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       if (value == "?") return cont(maybetype);
     }
   }
-  function mayberettype(type) {
-    if (isTS && type == ":") {
-      if (cx.stream.match(/^\s*\w+\s+is\b/, false)) return cont(expression, isKW, typeexpr)
-      else return cont(typeexpr)
-    }
-  }
-  function isKW(_, value) {
-    if (value == "is") {
-      cx.marked = "keyword"
-      return cont()
-    }
-  }
   function typeexpr(type, value) {
     if (type == "variable" || value == "void") {
       if (value == "keyof") {
@@ -30634,25 +30618,18 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function afterType(type, value) {
     if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, afterType)
-    if (value == "|" || type == "." || value == "&") return cont(typeexpr)
+    if (value == "|" || type == ".") return cont(typeexpr)
     if (type == "[") return cont(expect("]"), afterType)
-    if (value == "extends" || value == "implements") { cx.marked = "keyword"; return cont(typeexpr) }
+    if (value == "extends") return cont(typeexpr)
   }
   function maybeTypeArgs(_, value) {
     if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, afterType)
   }
-  function typeparam() {
-    return pass(typeexpr, maybeTypeDefault)
-  }
-  function maybeTypeDefault(_, value) {
-    if (value == "=") return cont(typeexpr)
-  }
-  function vardef(_, value) {
-    if (value == "enum") {cx.marked = "keyword"; return cont(enumdef)}
+  function vardef() {
     return pass(pattern, maybetype, maybeAssign, vardefCont);
   }
   function pattern(type, value) {
-    if (isTS && isModifier(value)) { cx.marked = "keyword"; return cont(pattern) }
+    if (type == "modifier") return cont(pattern)
     if (type == "variable") { register(value); return cont(); }
     if (type == "spread") return cont(pattern);
     if (type == "[") return contCommasep(pattern, "]");
@@ -30677,8 +30654,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function maybeelse(type, value) {
     if (type == "keyword b" && value == "else") return cont(pushlex("form", "else"), statement, poplex);
   }
-  function forspec(type, value) {
-    if (value == "await") return cont(forspec);
+  function forspec(type) {
     if (type == "(") return cont(pushlex(")"), forspec1, expect(")"), poplex);
   }
   function forspec1(type) {
@@ -30702,13 +30678,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function functiondef(type, value) {
     if (value == "*") {cx.marked = "keyword"; return cont(functiondef);}
     if (type == "variable") {register(value); return cont(functiondef);}
-    if (type == "(") return cont(pushcontext, pushlex(")"), commasep(funarg, ")"), poplex, mayberettype, statement, popcontext);
-    if (isTS && value == "<") return cont(pushlex(">"), commasep(typeparam, ">"), poplex, functiondef)
+    if (type == "(") return cont(pushcontext, pushlex(")"), commasep(funarg, ")"), poplex, maybetype, statement, popcontext);
+    if (isTS && value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, functiondef)
   }
   function funarg(type, value) {
     if (value == "@") cont(expression, funarg)
-    if (type == "spread") return cont(funarg);
-    if (isTS && isModifier(value)) { cx.marked = "keyword"; return cont(funarg); }
+    if (type == "spread" || type == "modifier") return cont(funarg);
     return pass(pattern, maybetype, maybeAssign);
   }
   function classExpression(type, value) {
@@ -30720,17 +30695,15 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "variable") {register(value); return cont(classNameAfter);}
   }
   function classNameAfter(type, value) {
-    if (value == "<") return cont(pushlex(">"), commasep(typeparam, ">"), poplex, classNameAfter)
-    if (value == "extends" || value == "implements" || (isTS && type == ",")) {
-      if (value == "implements") cx.marked = "keyword";
+    if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, classNameAfter)
+    if (value == "extends" || value == "implements" || (isTS && type == ","))
       return cont(isTS ? typeexpr : expression, classNameAfter);
-    }
     if (type == "{") return cont(pushlex("}"), classBody, poplex);
   }
   function classBody(type, value) {
-    if (type == "async" ||
+    if (type == "modifier" || type == "async" ||
         (type == "variable" &&
-         (value == "static" || value == "get" || value == "set" || (isTS && isModifier(value))) &&
+         (value == "static" || value == "get" || value == "set") &&
          cx.stream.match(/^\s+[\w$\xa1-\uffff]/, false))) {
       cx.marked = "keyword";
       return cont(classBody);
@@ -30740,7 +30713,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return cont(isTS ? classfield : functiondef, classBody);
     }
     if (type == "[")
-      return cont(expression, maybetype, expect("]"), isTS ? classfield : functiondef, classBody)
+      return cont(expression, expect("]"), isTS ? classfield : functiondef, classBody)
     if (value == "*") {
       cx.marked = "keyword";
       return cont(classBody);
@@ -30767,7 +30740,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   }
   function afterImport(type) {
     if (type == "string") return cont();
-    if (type == "(") return pass(expression);
     return pass(importSpec, maybeMoreImports, maybeFrom);
   }
   function importSpec(type, value) {
@@ -30788,12 +30760,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function arrayLiteral(type) {
     if (type == "]") return cont();
     return pass(commasep(expressionNoComma, "]"));
-  }
-  function enumdef() {
-    return pass(pushlex("form"), pattern, expect("{"), pushlex("}"), commasep(enummember, "}"), poplex, poplex)
-  }
-  function enummember() {
-    return pass(pattern, maybeAssign);
   }
 
   function isContinuedStatement(state, textAfter) {
@@ -30990,9 +30956,9 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       return ret("qualifier", "qualifier");
     } else if (/[:;{}\[\]\(\)]/.test(ch)) {
       return ret(null, ch);
-    } else if (((ch == "u" || ch == "U") && stream.match(/rl(-prefix)?\(/i)) ||
-               ((ch == "d" || ch == "D") && stream.match("omain(", true, true)) ||
-               ((ch == "r" || ch == "R") && stream.match("egexp(", true, true))) {
+    } else if ((ch == "u" && stream.match(/rl(-prefix)?\(/)) ||
+               (ch == "d" && stream.match("omain(")) ||
+               (ch == "r" && stream.match("egexp("))) {
       stream.backUp(1);
       state.tokenize = tokenParenthesized;
       return ret("property", "word");
@@ -31075,16 +31041,16 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       return pushContext(state, stream, "block");
     } else if (type == "}" && state.context.prev) {
       return popContext(state);
-    } else if (supportsAtComponent && /@component/i.test(type)) {
+    } else if (supportsAtComponent && /@component/.test(type)) {
       return pushContext(state, stream, "atComponentBlock");
-    } else if (/^@(-moz-)?document$/i.test(type)) {
+    } else if (/^@(-moz-)?document$/.test(type)) {
       return pushContext(state, stream, "documentTypes");
-    } else if (/^@(media|supports|(-moz-)?document|import)$/i.test(type)) {
+    } else if (/^@(media|supports|(-moz-)?document|import)$/.test(type)) {
       return pushContext(state, stream, "atBlock");
-    } else if (/^@(font-face|counter-style)/i.test(type)) {
+    } else if (/^@(font-face|counter-style)/.test(type)) {
       state.stateArg = type;
       return "restricted_atBlock_before";
-    } else if (/^@(-(moz|ms|o|webkit)-)?keyframes$/i.test(type)) {
+    } else if (/^@(-(moz|ms|o|webkit)-)?keyframes$/.test(type)) {
       return "keyframes";
     } else if (type && type.charAt(0) == "@") {
       return pushContext(state, stream, "at");
@@ -31706,7 +31672,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       },
       "@": function(stream) {
         if (stream.eat("{")) return [null, "interpolation"];
-        if (stream.match(/^(charset|document|font-face|import|(-(moz|ms|o|webkit)-)?keyframes|media|namespace|page|supports)\b/i, false)) return false;
+        if (stream.match(/^(charset|document|font-face|import|(-(moz|ms|o|webkit)-)?keyframes|media|namespace|page|supports)\b/, false)) return false;
         stream.eatWhile(/[\w\\\-]/);
         if (stream.match(/^\s*:/, false))
           return ["variable-2", "variable-definition"];
@@ -31803,7 +31769,6 @@ var xmlConfig = {
   doNotIndent: {},
   allowUnquoted: false,
   allowMissing: false,
-  allowMissingTagName: false,
   caseFold: false
 }
 
@@ -31978,9 +31943,6 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
       state.tagName = stream.current();
       setStyle = "tag";
       return attrState;
-    } else if (config.allowMissingTagName && type == "endTag") {
-      setStyle = "tag bracket";
-      return attrState(type, stream, state);
     } else {
       setStyle = "error";
       return tagNameState;
@@ -31999,9 +31961,6 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         setStyle = "tag error";
         return closeStateErr;
       }
-    } else if (config.allowMissingTagName && type == "endTag") {
-      setStyle = "tag bracket";
-      return closeState(type, stream, state);
     } else {
       setStyle = "error";
       return closeStateErr;
@@ -32875,7 +32834,7 @@ if (false) {
     {name: "ASN.1", mime: "text/x-ttcn-asn", mode: "asn.1", ext: ["asn", "asn1"]},
     {name: "Asterisk", mime: "text/x-asterisk", mode: "asterisk", file: /^extensions\.conf$/i},
     {name: "Brainfuck", mime: "text/x-brainfuck", mode: "brainfuck", ext: ["b", "bf"]},
-    {name: "C", mime: "text/x-csrc", mode: "clike", ext: ["c", "h", "ino"]},
+    {name: "C", mime: "text/x-csrc", mode: "clike", ext: ["c", "h"]},
     {name: "C++", mime: "text/x-c++src", mode: "clike", ext: ["cpp", "c++", "cc", "cxx", "hpp", "h++", "hh", "hxx"], alias: ["cpp"]},
     {name: "Cobol", mime: "text/x-cobol", mode: "cobol", ext: ["cob", "cpy"]},
     {name: "C#", mime: "text/x-csharp", mode: "clike", ext: ["cs"], alias: ["csharp"]},
@@ -32922,7 +32881,7 @@ if (false) {
     {name: "Haxe", mime: "text/x-haxe", mode: "haxe", ext: ["hx"]},
     {name: "HXML", mime: "text/x-hxml", mode: "haxe", ext: ["hxml"]},
     {name: "ASP.NET", mime: "application/x-aspx", mode: "htmlembedded", ext: ["aspx"], alias: ["asp", "aspx"]},
-    {name: "HTML", mime: "text/html", mode: "htmlmixed", ext: ["html", "htm", "handlebars", "hbs"], alias: ["xhtml"]},
+    {name: "HTML", mime: "text/html", mode: "htmlmixed", ext: ["html", "htm"], alias: ["xhtml"]},
     {name: "HTTP", mime: "message/http", mode: "http"},
     {name: "IDL", mime: "text/x-idl", mode: "idl", ext: ["pro"]},
     {name: "Pug", mime: "text/x-pug", mode: "pug", ext: ["jade", "pug"], alias: ["jade"]},
@@ -32952,14 +32911,14 @@ if (false) {
     {name: "NSIS", mime: "text/x-nsis", mode: "nsis", ext: ["nsh", "nsi"]},
     {name: "NTriples", mimes: ["application/n-triples", "application/n-quads", "text/n-triples"],
      mode: "ntriples", ext: ["nt", "nq"]},
-    {name: "Objective-C", mime: "text/x-objectivec", mode: "clike", ext: ["m", "mm"], alias: ["objective-c", "objc"]},
+    {name: "Objective C", mime: "text/x-objectivec", mode: "clike", ext: ["m", "mm"], alias: ["objective-c", "objc"]},
     {name: "OCaml", mime: "text/x-ocaml", mode: "mllike", ext: ["ml", "mli", "mll", "mly"]},
     {name: "Octave", mime: "text/x-octave", mode: "octave", ext: ["m"]},
     {name: "Oz", mime: "text/x-oz", mode: "oz", ext: ["oz"]},
     {name: "Pascal", mime: "text/x-pascal", mode: "pascal", ext: ["p", "pas"]},
     {name: "PEG.js", mime: "null", mode: "pegjs", ext: ["jsonld"]},
     {name: "Perl", mime: "text/x-perl", mode: "perl", ext: ["pl", "pm"]},
-    {name: "PHP", mimes: ["text/x-php", "application/x-httpd-php", "application/x-httpd-php-open"], mode: "php", ext: ["php", "php3", "php4", "php5", "php7", "phtml"]},
+    {name: "PHP", mime: ["application/x-httpd-php", "text/x-php"], mode: "php", ext: ["php", "php3", "php4", "php5", "php7", "phtml"]},
     {name: "Pig", mime: "text/x-pig", mode: "pig", ext: ["pig"]},
     {name: "Plain Text", mime: "text/plain", mode: "null", ext: ["txt", "text", "conf", "def", "list", "log"]},
     {name: "PLSQL", mime: "text/x-plsql", mode: "sql", ext: ["pls"]},
@@ -32986,7 +32945,6 @@ if (false) {
     {name: "Smalltalk", mime: "text/x-stsrc", mode: "smalltalk", ext: ["st"]},
     {name: "Smarty", mime: "text/x-smarty", mode: "smarty", ext: ["tpl"]},
     {name: "Solr", mime: "text/x-solr", mode: "solr"},
-    {name: "SML", mime: "text/x-sml", mode: "mllike", ext: ["sml", "sig", "fun", "smackspec"]},
     {name: "Soy", mime: "text/x-soy", mode: "soy", ext: ["soy"], alias: ["closure template"]},
     {name: "SPARQL", mime: "application/sparql-query", mode: "sparql", ext: ["rq", "sparql"], alias: ["sparul"]},
     {name: "Spreadsheet", mime: "text/x-spreadsheet", mode: "spreadsheet", alias: ["excel", "formula"]},
@@ -32996,7 +32954,7 @@ if (false) {
     {name: "Stylus", mime: "text/x-styl", mode: "stylus", ext: ["styl"]},
     {name: "Swift", mime: "text/x-swift", mode: "swift", ext: ["swift"]},
     {name: "sTeX", mime: "text/x-stex", mode: "stex"},
-    {name: "LaTeX", mime: "text/x-latex", mode: "stex", ext: ["text", "ltx", "tex"], alias: ["tex"]},
+    {name: "LaTeX", mime: "text/x-latex", mode: "stex", ext: ["text", "ltx"], alias: ["tex"]},
     {name: "SystemVerilog", mime: "text/x-systemverilog", mode: "verilog", ext: ["v", "sv", "svh"]},
     {name: "Tcl", mime: "text/x-tcl", mode: "tcl", ext: ["tcl"]},
     {name: "Textile", mime: "text/x-textile", mode: "textile", ext: ["textile"]},
@@ -33455,7 +33413,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     blockKeywords: words("case do else for if switch while struct"),
     defKeywords: words("struct"),
     typeFirstDefinitions: true,
-    atoms: words("NULL true false"),
+    atoms: words("null true false"),
     hooks: {"#": cppHook, "*": pointerHook},
     modeProps: {fold: ["brace", "include"]}
   });
@@ -33471,7 +33429,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     blockKeywords: words("catch class do else finally for if struct switch try while"),
     defKeywords: words("class namespace struct enum union"),
     typeFirstDefinitions: true,
-    atoms: words("true false NULL"),
+    atoms: words("true false null"),
     dontIndentStatements: /^template$/,
     isIdentifierChar: /[\w\$_~\xa1-\uffff]/,
     hooks: {
@@ -33513,7 +33471,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     types: words("byte short int long float double boolean char void Boolean Byte Character Double Float " +
                  "Integer Long Number Object Short String StringBuffer StringBuilder Void"),
     blockKeywords: words("catch class do else finally for if switch try while"),
-    defKeywords: words("class interface enum @interface"),
+    defKeywords: words("class interface package enum @interface"),
     typeFirstDefinitions: true,
     atoms: words("true false null"),
     number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+\.?\d*|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
@@ -33568,27 +33526,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
       escaped = stream.next() == "\\" && !escaped;
     }
     return "string";
-  }
-
-  function tokenNestedComment(depth) {
-    return function (stream, state) {
-      var ch
-      while (ch = stream.next()) {
-        if (ch == "*" && stream.eat("/")) {
-          if (depth == 1) {
-            state.tokenize = null
-            break
-          } else {
-            state.tokenize = tokenNestedComment(depth - 1)
-            return state.tokenize(stream, state)
-          }
-        } else if (ch == "/" && stream.eat("*")) {
-          state.tokenize = tokenNestedComment(depth + 1)
-          return state.tokenize(stream, state)
-        }
-      }
-      return "comment"
-    }
   }
 
   def("text/x-scala", {
@@ -33646,12 +33583,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
         } else {
           return false
         }
-      },
-
-      "/": function(stream, state) {
-        if (!stream.eat("*")) return false
-        state.tokenize = tokenNestedComment(1)
-        return state.tokenize(stream, state)
       }
     },
     modeProps: {closeBrackets: {triples: '"'}}
@@ -33678,29 +33609,27 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     name: "clike",
     keywords: words(
       /*keywords*/
-      "package as typealias class interface this super val operator " +
-      "var fun for is in This throw return annotation " +
+      "package as typealias class interface this super val " +
+      "var fun for is in This throw return " +
       "break continue object if else while do try when !in !is as? " +
 
       /*soft keywords*/
       "file import where by get set abstract enum open inner override private public internal " +
       "protected catch finally out final vararg reified dynamic companion constructor init " +
       "sealed field property receiver param sparam lateinit data inline noinline tailrec " +
-      "external annotation crossinline const operator infix suspend actual expect setparam"
+      "external annotation crossinline const operator infix suspend"
     ),
     types: words(
       /* package java.lang */
       "Boolean Byte Character CharSequence Class ClassLoader Cloneable Comparable " +
       "Compiler Double Exception Float Integer Long Math Number Object Package Pair Process " +
       "Runtime Runnable SecurityManager Short StackTraceElement StrictMath String " +
-      "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void Annotation Any BooleanArray " +
-      "ByteArray Char CharArray DeprecationLevel DoubleArray Enum FloatArray Function Int IntArray Lazy " +
-      "LazyThreadSafetyMode LongArray Nothing ShortArray Unit"
+      "StringBuffer System Thread ThreadGroup ThreadLocal Throwable Triple Void"
     ),
     intendSwitch: false,
     indentStatements: false,
     multiLineStrings: true,
-    number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+(\.\d+)?|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
+    number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+\.?\d*|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
     blockKeywords: words("catch class do else finally for if where try while enum"),
     defKeywords: words("class val var object interface fun"),
     atoms: words("true false null this"),
@@ -34820,8 +34749,6 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   function blankLine(state) {
     // Reset linkTitle state
     state.linkTitle = false;
-    state.linkHref = false;
-    state.linkText = false;
     // Reset EM state
     state.em = false;
     // Reset STRONG state
@@ -34860,12 +34787,6 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
     if (state.indentationDiff === null) {
       state.indentationDiff = state.indentation;
       if (prevLineIsList) {
-        // Reset inline styles which shouldn't propagate aross list items
-        state.em = false;
-        state.strong = false;
-        state.code = false;
-        state.strikethrough = false;
-
         state.list = null;
         // While this list item's marker's indentation is less than the deepest
         //  list item's content's indentation,pop the deepest list item
@@ -35492,7 +35413,6 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
         formatting: false,
         linkText: s.linkText,
         linkTitle: s.linkTitle,
-        linkHref: s.linkHref,
         code: s.code,
         em: s.em,
         strong: s.strong,
@@ -35571,8 +35491,6 @@ CodeMirror.defineMode("markdown", function(cmCfg, modeCfg) {
   };
   return mode;
 }, "xml");
-
-CodeMirror.defineMIME("text/markdown", "markdown");
 
 CodeMirror.defineMIME("text/x-markdown", "markdown");
 
@@ -35850,14 +35768,13 @@ CodeMirror.defineMode("haskell", function(_config, modeConfig) {
       "\.\.", ":", "::", "=", "\\", "<-", "->", "@", "~", "=>");
 
     setType("builtin")(
-      "!!", "$!", "$", "&&", "+", "++", "-", ".", "/", "/=", "<", "<*", "<=",
-      "<$>", "<*>", "=<<", "==", ">", ">=", ">>", ">>=", "^", "^^", "||", "*",
-      "*>", "**");
+      "!!", "$!", "$", "&&", "+", "++", "-", ".", "/", "/=", "<", "<=", "=<<",
+      "==", ">", ">=", ">>", ">>=", "^", "^^", "||", "*", "**");
 
     setType("builtin")(
-      "Applicative", "Bool", "Bounded", "Char", "Double", "EQ", "Either", "Enum",
-      "Eq", "False", "FilePath", "Float", "Floating", "Fractional", "Functor",
-      "GT", "IO", "IOError", "Int", "Integer", "Integral", "Just", "LT", "Left",
+      "Bool", "Bounded", "Char", "Double", "EQ", "Either", "Enum", "Eq",
+      "False", "FilePath", "Float", "Floating", "Fractional", "Functor", "GT",
+      "IO", "IOError", "Int", "Integer", "Integral", "Just", "LT", "Left",
       "Maybe", "Monad", "Nothing", "Num", "Ord", "Ordering", "Rational", "Read",
       "ReadS", "Real", "RealFloat", "RealFrac", "Right", "Show", "ShowS",
       "String", "True");
@@ -35877,7 +35794,7 @@ CodeMirror.defineMode("haskell", function(_config, modeConfig) {
       "lcm", "length", "lex", "lines", "log", "logBase", "lookup", "map",
       "mapM", "mapM_", "max", "maxBound", "maximum", "maybe", "min", "minBound",
       "minimum", "mod", "negate", "not", "notElem", "null", "odd", "or",
-      "otherwise", "pi", "pred", "print", "product", "properFraction", "pure",
+      "otherwise", "pi", "pred", "print", "product", "properFraction",
       "putChar", "putStr", "putStrLn", "quot", "quotRem", "read", "readFile",
       "readIO", "readList", "readLn", "readParen", "reads", "readsPrec",
       "realToFrac", "recip", "rem", "repeat", "replicate", "return", "reverse",
@@ -36565,7 +36482,7 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
   CodeMirror.defineMode("python", function(conf, parserConf) {
     var ERRORCLASS = "error";
 
-    var delimiters = parserConf.delimiters || parserConf.singleDelimiters || /^[\(\)\[\]\{\}@,:`=;\.\\]/;
+    var delimiters = parserConf.delimiters || parserConf.singleDelimiters || /^[\(\)\[\]\{\}@,:`=;\.]/;
     //               (Backwards-compatiblity with old, cumbersome config system)
     var operators = [parserConf.singleOperators, parserConf.doubleOperators, parserConf.doubleDelimiters, parserConf.tripleDelimiters,
                      parserConf.operators || /^([-+*/%\/&|^]=?|[<>=]+|\/\/=?|\*\*=?|!=|[~!@])/]
@@ -36600,10 +36517,9 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
 
     // tokenizers
     function tokenBase(stream, state) {
-      var sol = stream.sol() && state.lastToken != "\\"
-      if (sol) state.indent = stream.indentation()
+      if (stream.sol()) state.indent = stream.indentation()
       // Handle scope changes
-      if (sol && top(state).type == "py") {
+      if (stream.sol() && top(state).type == "py") {
         var scopeOffset = top(state).offset;
         if (stream.eatSpace()) {
           var lineOffset = stream.indentation();
@@ -36625,8 +36541,13 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
     function tokenBaseInner(stream, state) {
       if (stream.eatSpace()) return null;
 
+      var ch = stream.peek();
+
       // Handle Comments
-      if (stream.match(/^#.*/)) return "comment";
+      if (ch == "#") {
+        stream.skipToEnd();
+        return "comment";
+      }
 
       // Handle Number Literals
       if (stream.match(/^[0-9\.]/, false)) {
@@ -36938,14 +36859,6 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
     plugins["begin"] = addPluginPattern("begin", "tag", ["atom"]);
     plugins["end"] = addPluginPattern("end", "tag", ["atom"]);
 
-    plugins["label"    ] = addPluginPattern("label"    , "tag", ["atom"]);
-    plugins["ref"      ] = addPluginPattern("ref"      , "tag", ["atom"]);
-    plugins["eqref"    ] = addPluginPattern("eqref"    , "tag", ["atom"]);
-    plugins["cite"     ] = addPluginPattern("cite"     , "tag", ["atom"]);
-    plugins["bibitem"  ] = addPluginPattern("bibitem"  , "tag", ["atom"]);
-    plugins["Bibitem"  ] = addPluginPattern("Bibitem"  , "tag", ["atom"]);
-    plugins["RBibitem" ] = addPluginPattern("RBibitem" , "tag", ["atom"]);
-
     plugins["DEFAULT"] = function () {
       this.name = "DEFAULT";
       this.style = "tag";
@@ -36983,10 +36896,6 @@ CodeMirror.defineMIME('text/x-jade', 'pug');
       // find if we're starting various math modes
       if (source.match("\\[")) {
         setState(state, function(source, state){ return inMathMode(source, state, "\\]"); });
-        return "keyword";
-      }
-      if (source.match("\\(")) {
-        setState(state, function(source, state){ return inMathMode(source, state, "\\)"); });
         return "keyword";
       }
       if (source.match("$$")) {
@@ -37665,7 +37574,7 @@ CodeMirror.defineMIME("text/x-sass", "sass");
       if (ch == "#") {
         stream.next();
         // Hex color
-        if (stream.match(/^[0-9a-f]{3}([0-9a-f]([0-9a-f]{2}){0,2})?\b/i)) {
+        if (stream.match(/^[0-9a-f]{6}|[0-9a-f]{3}/i)) {
           return ["atom", "atom"];
         }
         // ID selector
@@ -38474,8 +38383,7 @@ CodeMirror.defineMode("yaml", function() {
         literal: false,
         escaped: false
       };
-    },
-    lineComment: "#"
+    }
   };
 });
 
@@ -38500,8 +38408,8 @@ CodeMirror.defineMIME("text/yaml", "yaml");
 /* unused harmony export Rules */
 /* unused harmony export version */
 /**
-  * vee-validate v2.0.4
-  * (c) 2018 Abdelrahman Awad
+  * vee-validate v2.0.0
+  * (c) 2017 Abdelrahman Awad
   * @license MIT
   */
 // 
@@ -38522,6 +38430,18 @@ var isNullOrUndefined = function (value) {
  * Sets the data attribute.
  */
 var setDataAttribute = function (el, name, value) { return el.setAttribute(("data-vv-" + name), value); };
+
+/**
+ * Creates a proxy object if available in the environment.
+ */
+var createProxy = function (target, handler) {
+  /* istanbul ignore next */
+  if (typeof Proxy === 'undefined') {
+    return target;
+  }
+
+  return new Proxy(target, handler);
+};
 
 /**
  * Creates the default flags object.
@@ -38780,11 +38700,6 @@ var removeClass = function (el, className) {
  */
 var toggleClass = function (el, className, status) {
   if (!el || !className) { return; }
-
-  if (Array.isArray(className)) {
-    className.forEach(function (item) { return toggleClass(el, item, status); });
-    return;
-  }
 
   if (status) {
     return addClass(el, className);
@@ -39101,11 +39016,7 @@ ErrorBag.prototype.first = function first (field, scope) {
     var this$1 = this;
     if ( scope === void 0 ) scope = null;
 
-  if (isNullOrUndefined(field)) {
-    return null;
-  }
-
-  field = String(field);
+  field = !isNullOrUndefined(field) ? String(field) : field;
   var selector = this._selector(field);
   var scoped = this._scope(field);
 
@@ -40106,8 +40017,7 @@ Field.prototype.updateDependencies = function updateDependencies () {
     var el = null;
     // vue ref selector.
     if (selector[0] === '$') {
-      var ref$1 = this$1.vm.$refs[selector.slice(1)];
-      el = Array.isArray(ref$1) ? ref$1[0] : ref$1;
+      el = this$1.vm.$refs[selector.slice(1)];
     } else {
       try {
         // try query selector
@@ -40493,11 +40403,7 @@ var Validator = function Validator (validations, options) {
 
   this.strict = STRICT_MODE;
   this.errors = new ErrorBag();
-
-  // We are running in SSR Mode. Do not keep a reference. It prevent garbage collection.
-  if (typeof window !== 'undefined') {
-    ERRORS.push(this.errors);
-  }
+  ERRORS.push(this.errors);
   this.fields = new FieldBag();
   this.flags = {};
   this._createFields(validations);
@@ -41221,6 +41127,18 @@ Object.defineProperties( Validator, staticAccessors );
 
 // 
 
+/* istanbul ignore next */
+var fakeFlags = createProxy({}, {
+  get: function get (target, key) {
+    // is a scope
+    if (String(key).indexOf('$') === 0) {
+      return fakeFlags;
+    }
+
+    return createFlags();
+  }
+});
+
 /**
  * Checks if a parent validator instance was requested.
  */
@@ -41298,6 +41216,10 @@ var mixin = {
       return this.$validator.errors;
     };
     this.$options.computed[options.fieldsBagName || 'fields'] = function fieldBagGetter () {
+      if (!Object.keys(this.$validator.flags).length) {
+        return fakeFlags;
+      }
+
       return this.$validator.flags;
     };
   },
@@ -44522,9 +44444,9 @@ var date_between = function (value, params) {
     (assign$1 = params, min = assign$1[0], max = assign$1[1], format = assign$1[2]);
   }
 
-  var minDate = parseDate$1(String(min), format);
-  var maxDate = parseDate$1(String(max), format);
-  var dateVal = parseDate$1(String(value), format);
+  var minDate = parseDate$1(min, format);
+  var maxDate = parseDate$1(max, format);
+  var dateVal = parseDate$1(value, format);
 
   if (!minDate || !maxDate || !dateVal) {
     return false;
@@ -45430,7 +45352,7 @@ var mapFields = function (fields) {
   }, {});
 };
 
-var version = '2.0.4';
+var version = '2.0.0';
 
 var rulesPlugin = function (ref) {
   var Validator$$1 = ref.Validator;
@@ -45560,7 +45482,7 @@ var normalizeComponent = __webpack_require__(1)
 /* script */
 var __vue_script__ = __webpack_require__(127)
 /* template */
-var __vue_template__ = __webpack_require__(337)
+var __vue_template__ = __webpack_require__(333)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -45858,7 +45780,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/* BASICS */\n\n.CodeMirror {\n  /* Set height, width, borders, and global font properties here */\n  font-family: monospace;\n  height: 300px;\n  color: black;\n  direction: ltr;\n}\n\n/* PADDING */\n\n.CodeMirror-lines {\n  padding: 4px 0; /* Vertical padding around content */\n}\n.CodeMirror pre {\n  padding: 0 4px; /* Horizontal padding of content */\n}\n\n.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  background-color: white; /* The little square between H and V scrollbars */\n}\n\n/* GUTTER */\n\n.CodeMirror-gutters {\n  border-right: 1px solid #ddd;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n.CodeMirror-linenumbers {}\n.CodeMirror-linenumber {\n  padding: 0 3px 0 5px;\n  min-width: 20px;\n  text-align: right;\n  color: #999;\n  white-space: nowrap;\n}\n\n.CodeMirror-guttermarker { color: black; }\n.CodeMirror-guttermarker-subtle { color: #999; }\n\n/* CURSOR */\n\n.CodeMirror-cursor {\n  border-left: 1px solid black;\n  border-right: none;\n  width: 0;\n}\n/* Shown when moving in bi-directional text */\n.CodeMirror div.CodeMirror-secondarycursor {\n  border-left: 1px solid silver;\n}\n.cm-fat-cursor .CodeMirror-cursor {\n  width: auto;\n  border: 0 !important;\n  background: #7e7;\n}\n.cm-fat-cursor div.CodeMirror-cursors {\n  z-index: 1;\n}\n.cm-fat-cursor-mark {\n  background-color: rgba(20, 255, 20, 0.5);\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n}\n.cm-animate-fat-cursor {\n  width: auto;\n  border: 0;\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n  background-color: #7e7;\n}\n@-moz-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@-webkit-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n\n/* Can style cursor different in overwrite (non-insert) mode */\n.CodeMirror-overwrite .CodeMirror-cursor {}\n\n.cm-tab { display: inline-block; text-decoration: inherit; }\n\n.CodeMirror-rulers {\n  position: absolute;\n  left: 0; right: 0; top: -50px; bottom: -20px;\n  overflow: hidden;\n}\n.CodeMirror-ruler {\n  border-left: 1px solid #ccc;\n  top: 0; bottom: 0;\n  position: absolute;\n}\n\n/* DEFAULT THEME */\n\n.cm-s-default .cm-header {color: blue;}\n.cm-s-default .cm-quote {color: #090;}\n.cm-negative {color: #d44;}\n.cm-positive {color: #292;}\n.cm-header, .cm-strong {font-weight: bold;}\n.cm-em {font-style: italic;}\n.cm-link {text-decoration: underline;}\n.cm-strikethrough {text-decoration: line-through;}\n\n.cm-s-default .cm-keyword {color: #708;}\n.cm-s-default .cm-atom {color: #219;}\n.cm-s-default .cm-number {color: #164;}\n.cm-s-default .cm-def {color: #00f;}\n.cm-s-default .cm-variable,\n.cm-s-default .cm-punctuation,\n.cm-s-default .cm-property,\n.cm-s-default .cm-operator {}\n.cm-s-default .cm-variable-2 {color: #05a;}\n.cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}\n.cm-s-default .cm-comment {color: #a50;}\n.cm-s-default .cm-string {color: #a11;}\n.cm-s-default .cm-string-2 {color: #f50;}\n.cm-s-default .cm-meta {color: #555;}\n.cm-s-default .cm-qualifier {color: #555;}\n.cm-s-default .cm-builtin {color: #30a;}\n.cm-s-default .cm-bracket {color: #997;}\n.cm-s-default .cm-tag {color: #170;}\n.cm-s-default .cm-attribute {color: #00c;}\n.cm-s-default .cm-hr {color: #999;}\n.cm-s-default .cm-link {color: #00c;}\n\n.cm-s-default .cm-error {color: #f00;}\n.cm-invalidchar {color: #f00;}\n\n.CodeMirror-composing { border-bottom: 2px solid; }\n\n/* Default styles for common addons */\n\ndiv.CodeMirror span.CodeMirror-matchingbracket {color: #0b0;}\ndiv.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}\n.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }\n.CodeMirror-activeline-background {background: #e8f2ff;}\n\n/* STOP */\n\n/* The rest of this file contains styles related to the mechanics of\n   the editor. You probably shouldn't touch them. */\n\n.CodeMirror {\n  position: relative;\n  overflow: hidden;\n  background: white;\n}\n\n.CodeMirror-scroll {\n  overflow: scroll !important; /* Things will break if this is overridden */\n  /* 30px is the magic margin used to hide the element's real scrollbars */\n  /* See overflow: hidden in .CodeMirror */\n  margin-bottom: -30px; margin-right: -30px;\n  padding-bottom: 30px;\n  height: 100%;\n  outline: none; /* Prevent dragging from highlighting the element */\n  position: relative;\n}\n.CodeMirror-sizer {\n  position: relative;\n  border-right: 30px solid transparent;\n}\n\n/* The fake, visible scrollbars. Used to force redraw during scrolling\n   before actual scrolling happens, thus preventing shaking and\n   flickering artifacts. */\n.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  position: absolute;\n  z-index: 6;\n  display: none;\n}\n.CodeMirror-vscrollbar {\n  right: 0; top: 0;\n  overflow-x: hidden;\n  overflow-y: scroll;\n}\n.CodeMirror-hscrollbar {\n  bottom: 0; left: 0;\n  overflow-y: hidden;\n  overflow-x: scroll;\n}\n.CodeMirror-scrollbar-filler {\n  right: 0; bottom: 0;\n}\n.CodeMirror-gutter-filler {\n  left: 0; bottom: 0;\n}\n\n.CodeMirror-gutters {\n  position: absolute; left: 0; top: 0;\n  min-height: 100%;\n  z-index: 3;\n}\n.CodeMirror-gutter {\n  white-space: normal;\n  height: 100%;\n  display: inline-block;\n  vertical-align: top;\n  margin-bottom: -30px;\n}\n.CodeMirror-gutter-wrapper {\n  position: absolute;\n  z-index: 4;\n  background: none !important;\n  border: none !important;\n}\n.CodeMirror-gutter-background {\n  position: absolute;\n  top: 0; bottom: 0;\n  z-index: 4;\n}\n.CodeMirror-gutter-elt {\n  position: absolute;\n  cursor: default;\n  z-index: 4;\n}\n.CodeMirror-gutter-wrapper ::selection { background-color: transparent }\n.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }\n\n.CodeMirror-lines {\n  cursor: text;\n  min-height: 1px; /* prevents collapsing before first draw */\n}\n.CodeMirror pre {\n  /* Reset some styles that the rest of the page might have set */\n  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;\n  border-width: 0;\n  background: transparent;\n  font-family: inherit;\n  font-size: inherit;\n  margin: 0;\n  white-space: pre;\n  word-wrap: normal;\n  line-height: inherit;\n  color: inherit;\n  z-index: 2;\n  position: relative;\n  overflow: visible;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-font-variant-ligatures: contextual;\n  font-variant-ligatures: contextual;\n}\n.CodeMirror-wrap pre {\n  word-wrap: break-word;\n  white-space: pre-wrap;\n  word-break: normal;\n}\n\n.CodeMirror-linebackground {\n  position: absolute;\n  left: 0; right: 0; top: 0; bottom: 0;\n  z-index: 0;\n}\n\n.CodeMirror-linewidget {\n  position: relative;\n  z-index: 2;\n  padding: 0.1px; /* Force widget margins to stay inside of the container */\n}\n\n.CodeMirror-widget {}\n\n.CodeMirror-rtl pre { direction: rtl; }\n\n.CodeMirror-code {\n  outline: none;\n}\n\n/* Force content-box sizing for the elements where we expect it */\n.CodeMirror-scroll,\n.CodeMirror-sizer,\n.CodeMirror-gutter,\n.CodeMirror-gutters,\n.CodeMirror-linenumber {\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n.CodeMirror-measure {\n  position: absolute;\n  width: 100%;\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n}\n\n.CodeMirror-cursor {\n  position: absolute;\n  pointer-events: none;\n}\n.CodeMirror-measure pre { position: static; }\n\ndiv.CodeMirror-cursors {\n  visibility: hidden;\n  position: relative;\n  z-index: 3;\n}\ndiv.CodeMirror-dragcursors {\n  visibility: visible;\n}\n\n.CodeMirror-focused div.CodeMirror-cursors {\n  visibility: visible;\n}\n\n.CodeMirror-selected { background: #d9d9d9; }\n.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }\n.CodeMirror-crosshair { cursor: crosshair; }\n.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }\n.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }\n\n.cm-searching {\n  background-color: #ffa;\n  background-color: rgba(255, 255, 0, .4);\n}\n\n/* Used to force a border model for a node */\n.cm-force-border { padding-right: .1px; }\n\n@media print {\n  /* Hide the cursor when printing */\n  .CodeMirror div.CodeMirror-cursors {\n    visibility: hidden;\n  }\n}\n\n/* See issue #2901 */\n.cm-tab-wrap-hack:after { content: ''; }\n\n/* Help users use markselection to safely style text background */\nspan.CodeMirror-selectedtext { background: none; }\n", ""]);
+exports.push([module.i, "/* BASICS */\n\n.CodeMirror {\n  /* Set height, width, borders, and global font properties here */\n  font-family: monospace;\n  height: 300px;\n  color: black;\n  direction: ltr;\n}\n\n/* PADDING */\n\n.CodeMirror-lines {\n  padding: 4px 0; /* Vertical padding around content */\n}\n.CodeMirror pre {\n  padding: 0 4px; /* Horizontal padding of content */\n}\n\n.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  background-color: white; /* The little square between H and V scrollbars */\n}\n\n/* GUTTER */\n\n.CodeMirror-gutters {\n  border-right: 1px solid #ddd;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n.CodeMirror-linenumbers {}\n.CodeMirror-linenumber {\n  padding: 0 3px 0 5px;\n  min-width: 20px;\n  text-align: right;\n  color: #999;\n  white-space: nowrap;\n}\n\n.CodeMirror-guttermarker { color: black; }\n.CodeMirror-guttermarker-subtle { color: #999; }\n\n/* CURSOR */\n\n.CodeMirror-cursor {\n  border-left: 1px solid black;\n  border-right: none;\n  width: 0;\n}\n/* Shown when moving in bi-directional text */\n.CodeMirror div.CodeMirror-secondarycursor {\n  border-left: 1px solid silver;\n}\n.cm-fat-cursor .CodeMirror-cursor {\n  width: auto;\n  border: 0 !important;\n  background: #7e7;\n}\n.cm-fat-cursor div.CodeMirror-cursors {\n  z-index: 1;\n}\n.cm-fat-cursor-mark {\n  background-color: rgba(20, 255, 20, 0.5);\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n}\n.cm-animate-fat-cursor {\n  width: auto;\n  border: 0;\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n  background-color: #7e7;\n}\n@-moz-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@-webkit-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n\n/* Can style cursor different in overwrite (non-insert) mode */\n.CodeMirror-overwrite .CodeMirror-cursor {}\n\n.cm-tab { display: inline-block; text-decoration: inherit; }\n\n.CodeMirror-rulers {\n  position: absolute;\n  left: 0; right: 0; top: -50px; bottom: -20px;\n  overflow: hidden;\n}\n.CodeMirror-ruler {\n  border-left: 1px solid #ccc;\n  top: 0; bottom: 0;\n  position: absolute;\n}\n\n/* DEFAULT THEME */\n\n.cm-s-default .cm-header {color: blue;}\n.cm-s-default .cm-quote {color: #090;}\n.cm-negative {color: #d44;}\n.cm-positive {color: #292;}\n.cm-header, .cm-strong {font-weight: bold;}\n.cm-em {font-style: italic;}\n.cm-link {text-decoration: underline;}\n.cm-strikethrough {text-decoration: line-through;}\n\n.cm-s-default .cm-keyword {color: #708;}\n.cm-s-default .cm-atom {color: #219;}\n.cm-s-default .cm-number {color: #164;}\n.cm-s-default .cm-def {color: #00f;}\n.cm-s-default .cm-variable,\n.cm-s-default .cm-punctuation,\n.cm-s-default .cm-property,\n.cm-s-default .cm-operator {}\n.cm-s-default .cm-variable-2 {color: #05a;}\n.cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}\n.cm-s-default .cm-comment {color: #a50;}\n.cm-s-default .cm-string {color: #a11;}\n.cm-s-default .cm-string-2 {color: #f50;}\n.cm-s-default .cm-meta {color: #555;}\n.cm-s-default .cm-qualifier {color: #555;}\n.cm-s-default .cm-builtin {color: #30a;}\n.cm-s-default .cm-bracket {color: #997;}\n.cm-s-default .cm-tag {color: #170;}\n.cm-s-default .cm-attribute {color: #00c;}\n.cm-s-default .cm-hr {color: #999;}\n.cm-s-default .cm-link {color: #00c;}\n\n.cm-s-default .cm-error {color: #f00;}\n.cm-invalidchar {color: #f00;}\n\n.CodeMirror-composing { border-bottom: 2px solid; }\n\n/* Default styles for common addons */\n\ndiv.CodeMirror span.CodeMirror-matchingbracket {color: #0f0;}\ndiv.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}\n.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }\n.CodeMirror-activeline-background {background: #e8f2ff;}\n\n/* STOP */\n\n/* The rest of this file contains styles related to the mechanics of\n   the editor. You probably shouldn't touch them. */\n\n.CodeMirror {\n  position: relative;\n  overflow: hidden;\n  background: white;\n}\n\n.CodeMirror-scroll {\n  overflow: scroll !important; /* Things will break if this is overridden */\n  /* 30px is the magic margin used to hide the element's real scrollbars */\n  /* See overflow: hidden in .CodeMirror */\n  margin-bottom: -30px; margin-right: -30px;\n  padding-bottom: 30px;\n  height: 100%;\n  outline: none; /* Prevent dragging from highlighting the element */\n  position: relative;\n}\n.CodeMirror-sizer {\n  position: relative;\n  border-right: 30px solid transparent;\n}\n\n/* The fake, visible scrollbars. Used to force redraw during scrolling\n   before actual scrolling happens, thus preventing shaking and\n   flickering artifacts. */\n.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  position: absolute;\n  z-index: 6;\n  display: none;\n}\n.CodeMirror-vscrollbar {\n  right: 0; top: 0;\n  overflow-x: hidden;\n  overflow-y: scroll;\n}\n.CodeMirror-hscrollbar {\n  bottom: 0; left: 0;\n  overflow-y: hidden;\n  overflow-x: scroll;\n}\n.CodeMirror-scrollbar-filler {\n  right: 0; bottom: 0;\n}\n.CodeMirror-gutter-filler {\n  left: 0; bottom: 0;\n}\n\n.CodeMirror-gutters {\n  position: absolute; left: 0; top: 0;\n  min-height: 100%;\n  z-index: 3;\n}\n.CodeMirror-gutter {\n  white-space: normal;\n  height: 100%;\n  display: inline-block;\n  vertical-align: top;\n  margin-bottom: -30px;\n}\n.CodeMirror-gutter-wrapper {\n  position: absolute;\n  z-index: 4;\n  background: none !important;\n  border: none !important;\n}\n.CodeMirror-gutter-background {\n  position: absolute;\n  top: 0; bottom: 0;\n  z-index: 4;\n}\n.CodeMirror-gutter-elt {\n  position: absolute;\n  cursor: default;\n  z-index: 4;\n}\n.CodeMirror-gutter-wrapper ::selection { background-color: transparent }\n.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }\n\n.CodeMirror-lines {\n  cursor: text;\n  min-height: 1px; /* prevents collapsing before first draw */\n}\n.CodeMirror pre {\n  /* Reset some styles that the rest of the page might have set */\n  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;\n  border-width: 0;\n  background: transparent;\n  font-family: inherit;\n  font-size: inherit;\n  margin: 0;\n  white-space: pre;\n  word-wrap: normal;\n  line-height: inherit;\n  color: inherit;\n  z-index: 2;\n  position: relative;\n  overflow: visible;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-font-variant-ligatures: contextual;\n  font-variant-ligatures: contextual;\n}\n.CodeMirror-wrap pre {\n  word-wrap: break-word;\n  white-space: pre-wrap;\n  word-break: normal;\n}\n\n.CodeMirror-linebackground {\n  position: absolute;\n  left: 0; right: 0; top: 0; bottom: 0;\n  z-index: 0;\n}\n\n.CodeMirror-linewidget {\n  position: relative;\n  z-index: 2;\n  overflow: auto;\n}\n\n.CodeMirror-widget {}\n\n.CodeMirror-rtl pre { direction: rtl; }\n\n.CodeMirror-code {\n  outline: none;\n}\n\n/* Force content-box sizing for the elements where we expect it */\n.CodeMirror-scroll,\n.CodeMirror-sizer,\n.CodeMirror-gutter,\n.CodeMirror-gutters,\n.CodeMirror-linenumber {\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n.CodeMirror-measure {\n  position: absolute;\n  width: 100%;\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n}\n\n.CodeMirror-cursor {\n  position: absolute;\n  pointer-events: none;\n}\n.CodeMirror-measure pre { position: static; }\n\ndiv.CodeMirror-cursors {\n  visibility: hidden;\n  position: relative;\n  z-index: 3;\n}\ndiv.CodeMirror-dragcursors {\n  visibility: visible;\n}\n\n.CodeMirror-focused div.CodeMirror-cursors {\n  visibility: visible;\n}\n\n.CodeMirror-selected { background: #d9d9d9; }\n.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }\n.CodeMirror-crosshair { cursor: crosshair; }\n.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }\n.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }\n\n.cm-searching {\n  background-color: #ffa;\n  background-color: rgba(255, 255, 0, .4);\n}\n\n/* Used to force a border model for a node */\n.cm-force-border { padding-right: .1px; }\n\n@media print {\n  /* Hide the cursor when printing */\n  .CodeMirror div.CodeMirror-cursors {\n    visibility: hidden;\n  }\n}\n\n/* See issue #2901 */\n.cm-tab-wrap-hack:after { content: ''; }\n\n/* Help users use markselection to safely style text background */\nspan.CodeMirror-selectedtext { background: none; }\n", ""]);
 
 // exports
 
@@ -49084,64 +49006,30 @@ CodeMirror.defineMIME("text/x-diff", "diff");
 })(function(CodeMirror) {
   "use strict";
 
-  var from = "from";
-  var fromRegex = new RegExp("^(\\s*)\\b(" + from + ")\\b", "i");
-
-  var shells = ["run", "cmd", "entrypoint", "shell"];
-  var shellsAsArrayRegex = new RegExp("^(\\s*)(" + shells.join('|') + ")(\\s+\\[)", "i");
-
-  var expose = "expose";
-  var exposeRegex = new RegExp("^(\\s*)(" + expose + ")(\\s+)", "i");
-
-  var others = [
-    "arg", "from", "maintainer", "label", "env",
-    "add", "copy", "volume", "user",
-    "workdir", "onbuild", "stopsignal", "healthcheck", "shell"
-  ];
-
   // Collect all Dockerfile directives
-  var instructions = [from, expose].concat(shells).concat(others),
+  var instructions = ["from", "maintainer", "run", "cmd", "expose", "env",
+                      "add", "copy", "entrypoint", "volume", "user",
+                      "workdir", "onbuild"],
       instructionRegex = "(" + instructions.join('|') + ")",
-      instructionOnlyLine = new RegExp("^(\\s*)" + instructionRegex + "(\\s*)(#.*)?$", "i"),
-      instructionWithArguments = new RegExp("^(\\s*)" + instructionRegex + "(\\s+)", "i");
+      instructionOnlyLine = new RegExp(instructionRegex + "\\s*$", "i"),
+      instructionWithArguments = new RegExp(instructionRegex + "(\\s+)", "i");
 
   CodeMirror.defineSimpleMode("dockerfile", {
     start: [
       // Block comment: This is a line starting with a comment
       {
-        regex: /^\s*#.*$/,
-        sol: true,
+        regex: /#.*$/,
         token: "comment"
-      },
-      {
-        regex: fromRegex,
-        token: [null, "keyword"],
-        sol: true,
-        next: "from"
       },
       // Highlight an instruction without any arguments (for convenience)
       {
         regex: instructionOnlyLine,
-        token: [null, "keyword", null, "error"],
-        sol: true
-      },
-      {
-        regex: shellsAsArrayRegex,
-        token: [null, "keyword", null],
-        sol: true,
-        next: "array"
-      },
-      {
-        regex: exposeRegex,
-        token: [null, "keyword", null],
-        sol: true,
-        next: "expose"
+        token: "variable-2"
       },
       // Highlight an instruction followed by arguments
       {
         regex: instructionWithArguments,
-        token: [null, "keyword", null],
-        sol: true,
+        token: ["variable-2", null],
         next: "arguments"
       },
       {
@@ -49149,125 +49037,27 @@ CodeMirror.defineMIME("text/x-diff", "diff");
         token: null
       }
     ],
-    from: [
-      {
-        regex: /\s*$/,
-        token: null,
-        next: "start"
-      },
-      {
-        // Line comment without instruction arguments is an error
-        regex: /(\s*)(#.*)$/,
-        token: [null, "error"],
-        next: "start"
-      },
-      {
-        regex: /(\s*\S+\s+)(as)/i,
-        token: [null, "keyword"],
-        next: "start"
-      },
-      // Fail safe return to start
-      {
-        token: null,
-        next: "start"
-      }
-    ],
-    single: [
-      {
-        regex: /(?:[^\\']|\\.)/,
-        token: "string"
-      },
-      {
-        regex: /'/,
-        token: "string",
-        pop: true
-      }
-    ],
-    double: [
-      {
-        regex: /(?:[^\\"]|\\.)/,
-        token: "string"
-      },
-      {
-        regex: /"/,
-        token: "string",
-        pop: true
-      }
-    ],
-    array: [
-      {
-        regex: /\]/,
-        token: null,
-        next: "start"
-      },
-      {
-        regex: /"(?:[^\\"]|\\.)*"?/,
-        token: "string"
-      }
-    ],
-    expose: [
-      {
-        regex: /\d+$/,
-        token: "number",
-        next: "start"
-      },
-      {
-        regex: /[^\d]+$/,
-        token: null,
-        next: "start"
-      },
-      {
-        regex: /\d+/,
-        token: "number"
-      },
-      {
-        regex: /[^\d]+/,
-        token: null
-      },
-      // Fail safe return to start
-      {
-        token: null,
-        next: "start"
-      }
-    ],
     arguments: [
       {
-        regex: /^\s*#.*$/,
-        sol: true,
-        token: "comment"
-      },
-      {
-        regex: /"(?:[^\\"]|\\.)*"?$/,
-        token: "string",
+        // Line comment without instruction arguments is an error
+        regex: /#.*$/,
+        token: "error",
         next: "start"
       },
       {
-        regex: /"/,
-        token: "string",
-        push: "double"
-      },
-      {
-        regex: /'(?:[^\\']|\\.)*'?$/,
-        token: "string",
-        next: "start"
-      },
-      {
-        regex: /'/,
-        token: "string",
-        push: "single"
-      },
-      {
-        regex: /[^#"']+[\\`]$/,
+        regex: /[^#]+\\$/,
         token: null
       },
       {
-        regex: /[^#"']+$/,
+        // Match everything except for the inline comment
+        regex: /[^#]+/,
         token: null,
         next: "start"
       },
       {
-        regex: /[^#"']+/,
-        token: null
+        regex: /$/,
+        token: null,
+        next: "start"
       },
       // Fail safe return to start
       {
@@ -49275,9 +49065,9 @@ CodeMirror.defineMIME("text/x-diff", "diff");
         next: "start"
       }
     ],
-    meta: {
-      lineComment: "#"
-    }
+      meta: {
+          lineComment: "#"
+      }
   });
 
   CodeMirror.defineMIME("text/x-dockerfile", "dockerfile");
@@ -53711,16 +53501,7 @@ CodeMirror.defineMIME("text/x-hxml", "hxml");
   "use strict";
 
   CodeMirror.defineMode("htmlembedded", function(config, parserConfig) {
-    var closeComment = parserConfig.closeComment || "--%>"
     return CodeMirror.multiplexingMode(CodeMirror.getMode(config, "htmlmixed"), {
-      open: parserConfig.openComment || "<%--",
-      close: closeComment,
-      delimStyle: "comment",
-      mode: {token: function(stream) {
-        stream.skipTo(closeComment) || stream.skipToEnd()
-        return "comment"
-      }}
-    }, {
       open: parserConfig.open || parserConfig.scriptStartRegex || "<%",
       close: parserConfig.close || parserConfig.scriptEndRegex || "%>",
       mode: CodeMirror.getMode(config, parserConfig.scriptingModeSpec)
@@ -54329,7 +54110,7 @@ CodeMirror.defineMIME("message/http", "http");
   }
 
   CodeMirror.defineMode("jsx", function(config, modeConfig) {
-    var xmlMode = CodeMirror.getMode(config, {name: "xml", allowMissing: true, multilineTagIndentPastTag: false, allowMissingTagName: true})
+    var xmlMode = CodeMirror.getMode(config, {name: "xml", allowMissing: true, multilineTagIndentPastTag: false})
     var jsMode = CodeMirror.getMode(config, modeConfig && modeConfig.base || "javascript")
 
     function flatXMLIndent(state) {
@@ -55403,12 +55184,12 @@ CodeMirror.defineMode('mathematica', function(_config, _parserConfig) {
     }
 
     // usage
-    if (stream.match(/([a-zA-Z\$][a-zA-Z0-9\$]*(?:`[a-zA-Z0-9\$]+)*::usage)/, true, false)) {
+    if (stream.match(/([a-zA-Z\$]+(?:`?[a-zA-Z0-9\$])*::usage)/, true, false)) {
       return 'meta';
     }
 
     // message
-    if (stream.match(/([a-zA-Z\$][a-zA-Z0-9\$]*(?:`[a-zA-Z0-9\$]+)*::[a-zA-Z\$][a-zA-Z0-9\$]*):?/, true, false)) {
+    if (stream.match(/([a-zA-Z\$]+(?:`?[a-zA-Z0-9\$])*::[a-zA-Z\$][a-zA-Z0-9\$]*):?/, true, false)) {
       return 'string-2';
     }
 
@@ -55861,26 +55642,31 @@ CodeMirror.defineMode("mirc", function() {
 
 CodeMirror.defineMode('mllike', function(_config, parserConfig) {
   var words = {
-    'as': 'keyword',
-    'do': 'keyword',
-    'else': 'keyword',
-    'end': 'keyword',
-    'exception': 'keyword',
-    'fun': 'keyword',
-    'functor': 'keyword',
-    'if': 'keyword',
-    'in': 'keyword',
-    'include': 'keyword',
     'let': 'keyword',
-    'of': 'keyword',
-    'open': 'keyword',
     'rec': 'keyword',
-    'struct': 'keyword',
+    'in': 'keyword',
+    'of': 'keyword',
+    'and': 'keyword',
+    'if': 'keyword',
     'then': 'keyword',
-    'type': 'keyword',
-    'val': 'keyword',
+    'else': 'keyword',
+    'for': 'keyword',
+    'to': 'keyword',
     'while': 'keyword',
-    'with': 'keyword'
+    'do': 'keyword',
+    'done': 'keyword',
+    'fun': 'keyword',
+    'function': 'keyword',
+    'val': 'keyword',
+    'type': 'keyword',
+    'mutable': 'keyword',
+    'match': 'keyword',
+    'with': 'keyword',
+    'try': 'keyword',
+    'open': 'builtin',
+    'ignore': 'builtin',
+    'begin': 'keyword',
+    'end': 'keyword'
   };
 
   var extraWords = parserConfig.extraWords || {};
@@ -55897,13 +55683,6 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
       state.tokenize = tokenString;
       return state.tokenize(stream, state);
     }
-    if (ch === '{') {
-      if (stream.eat('|')) {
-        state.longString = true;
-        state.tokenize = tokenLongString;
-        return state.tokenize(stream, state);
-      }
-    }
     if (ch === '(') {
       if (stream.eat('*')) {
         state.commentLevel++;
@@ -55911,7 +55690,7 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
         return state.tokenize(stream, state);
       }
     }
-    if (ch === '~' || ch === '?') {
+    if (ch === '~') {
       stream.eatWhile(/\w/);
       return 'variable-2';
     }
@@ -55924,24 +55703,13 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
       return 'comment';
     }
     if (/\d/.test(ch)) {
-      if (ch === '0' && stream.eat(/[bB]/)) {
-        stream.eatWhile(/[01]/);
-      } if (ch === '0' && stream.eat(/[xX]/)) {
-        stream.eatWhile(/[0-9a-fA-F]/)
-      } if (ch === '0' && stream.eat(/[oO]/)) {
-        stream.eatWhile(/[0-7]/);
-      } else {
-        stream.eatWhile(/[\d_]/);
-        if (stream.eat('.')) {
-          stream.eatWhile(/[\d]/);
-        }
-        if (stream.eat(/[eE]/)) {
-          stream.eatWhile(/[\d\-+]/);
-        }
+      stream.eatWhile(/[\d]/);
+      if (stream.eat('.')) {
+        stream.eatWhile(/[\d]/);
       }
       return 'number';
     }
-    if ( /[+\-*&%=<>!?|@\.~:]/.test(ch)) {
+    if ( /[+\-*&%=<>!?|]/.test(ch)) {
       return 'operator';
     }
     if (/[\w\xa1-\uffff]/.test(ch)) {
@@ -55980,20 +55748,8 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
     return 'comment';
   }
 
-  function tokenLongString(stream, state) {
-    var prev, next;
-    while (state.longString && (next = stream.next()) != null) {
-      if (prev === '|' && next === '}') state.longString = false;
-      prev = next;
-    }
-    if (!state.longString) {
-      state.tokenize = tokenBase;
-    }
-    return 'string';
-  }
-
   return {
-    startState: function() {return {tokenize: tokenBase, commentLevel: 0, longString: false};},
+    startState: function() {return {tokenize: tokenBase, commentLevel: 0};},
     token: function(stream, state) {
       if (stream.eatSpace()) return null;
       return state.tokenize(stream, state);
@@ -56008,64 +55764,14 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
 CodeMirror.defineMIME('text/x-ocaml', {
   name: 'mllike',
   extraWords: {
-    'and': 'keyword',
-    'assert': 'keyword',
-    'begin': 'keyword',
-    'class': 'keyword',
-    'constraint': 'keyword',
-    'done': 'keyword',
-    'downto': 'keyword',
-    'external': 'keyword',
-    'function': 'keyword',
-    'initializer': 'keyword',
-    'lazy': 'keyword',
-    'match': 'keyword',
-    'method': 'keyword',
-    'module': 'keyword',
-    'mutable': 'keyword',
-    'new': 'keyword',
-    'nonrec': 'keyword',
-    'object': 'keyword',
-    'private': 'keyword',
-    'sig': 'keyword',
-    'to': 'keyword',
-    'try': 'keyword',
-    'value': 'keyword',
-    'virtual': 'keyword',
-    'when': 'keyword',
-
-    // builtins
-    'raise': 'builtin',
-    'failwith': 'builtin',
-    'true': 'builtin',
-    'false': 'builtin',
-
-    // Pervasives builtins
-    'asr': 'builtin',
-    'land': 'builtin',
-    'lor': 'builtin',
-    'lsl': 'builtin',
-    'lsr': 'builtin',
-    'lxor': 'builtin',
-    'mod': 'builtin',
-    'or': 'builtin',
-
-    // More Pervasives
-    'raise_notrace': 'builtin',
+    'succ': 'keyword',
     'trace': 'builtin',
     'exit': 'builtin',
     'print_string': 'builtin',
     'print_endline': 'builtin',
-
-     'int': 'type',
-     'float': 'type',
-     'bool': 'type',
-     'char': 'type',
-     'string': 'type',
-     'unit': 'type',
-
-     // Modules
-     'List': 'builtin'
+    'true': 'atom',
+    'false': 'atom',
+    'raise': 'keyword'
   }
 });
 
@@ -56073,21 +55779,18 @@ CodeMirror.defineMIME('text/x-fsharp', {
   name: 'mllike',
   extraWords: {
     'abstract': 'keyword',
+    'as': 'keyword',
     'assert': 'keyword',
     'base': 'keyword',
-    'begin': 'keyword',
     'class': 'keyword',
     'default': 'keyword',
     'delegate': 'keyword',
-    'do!': 'keyword',
-    'done': 'keyword',
     'downcast': 'keyword',
     'downto': 'keyword',
     'elif': 'keyword',
+    'exception': 'keyword',
     'extern': 'keyword',
     'finally': 'keyword',
-    'for': 'keyword',
-    'function': 'keyword',
     'global': 'keyword',
     'inherit': 'keyword',
     'inline': 'keyword',
@@ -56095,108 +55798,38 @@ CodeMirror.defineMIME('text/x-fsharp', {
     'internal': 'keyword',
     'lazy': 'keyword',
     'let!': 'keyword',
-    'match': 'keyword',
-    'member': 'keyword',
+    'member' : 'keyword',
     'module': 'keyword',
-    'mutable': 'keyword',
     'namespace': 'keyword',
     'new': 'keyword',
     'null': 'keyword',
     'override': 'keyword',
     'private': 'keyword',
     'public': 'keyword',
-    'return!': 'keyword',
     'return': 'keyword',
+    'return!': 'keyword',
     'select': 'keyword',
     'static': 'keyword',
-    'to': 'keyword',
-    'try': 'keyword',
+    'struct': 'keyword',
     'upcast': 'keyword',
-    'use!': 'keyword',
     'use': 'keyword',
-    'void': 'keyword',
+    'use!': 'keyword',
+    'val': 'keyword',
     'when': 'keyword',
-    'yield!': 'keyword',
     'yield': 'keyword',
+    'yield!': 'keyword',
 
-    // Reserved words
-    'atomic': 'keyword',
-    'break': 'keyword',
-    'checked': 'keyword',
-    'component': 'keyword',
-    'const': 'keyword',
-    'constraint': 'keyword',
-    'constructor': 'keyword',
-    'continue': 'keyword',
-    'eager': 'keyword',
-    'event': 'keyword',
-    'external': 'keyword',
-    'fixed': 'keyword',
-    'method': 'keyword',
-    'mixin': 'keyword',
-    'object': 'keyword',
-    'parallel': 'keyword',
-    'process': 'keyword',
-    'protected': 'keyword',
-    'pure': 'keyword',
-    'sealed': 'keyword',
-    'tailcall': 'keyword',
-    'trait': 'keyword',
-    'virtual': 'keyword',
-    'volatile': 'keyword',
-
-    // builtins
     'List': 'builtin',
     'Seq': 'builtin',
     'Map': 'builtin',
     'Set': 'builtin',
-    'Option': 'builtin',
     'int': 'builtin',
     'string': 'builtin',
+    'raise': 'builtin',
+    'failwith': 'builtin',
     'not': 'builtin',
     'true': 'builtin',
-    'false': 'builtin',
-
-    'raise': 'builtin',
-    'failwith': 'builtin'
-  },
-  slashComments: true
-});
-
-
-CodeMirror.defineMIME('text/x-sml', {
-  name: 'mllike',
-  extraWords: {
-    'abstype': 'keyword',
-    'and': 'keyword',
-    'andalso': 'keyword',
-    'case': 'keyword',
-    'datatype': 'keyword',
-    'fn': 'keyword',
-    'handle': 'keyword',
-    'infix': 'keyword',
-    'infixr': 'keyword',
-    'local': 'keyword',
-    'nonfix': 'keyword',
-    'op': 'keyword',
-    'orelse': 'keyword',
-    'raise': 'keyword',
-    'withtype': 'keyword',
-    'eqtype': 'keyword',
-    'sharing': 'keyword',
-    'sig': 'keyword',
-    'signature': 'keyword',
-    'structure': 'keyword',
-    'where': 'keyword',
-    'true': 'keyword',
-    'false': 'keyword',
-
-    // types
-    'int': 'builtin',
-    'real': 'builtin',
-    'string': 'builtin',
-    'char': 'builtin',
-    'bool': 'builtin'
+    'false': 'builtin'
   },
   slashComments: true
 });
@@ -57004,14 +56637,14 @@ CodeMirror.defineSimpleMode("nsis",{
     { regex: /`(?:[^\\`]|\\.)*`?/, token: "string" },
 
     // Compile Time Commands
-    {regex: /^\s*(?:\!(include|addincludedir|addplugindir|appendfile|cd|delfile|echo|error|execute|packhdr|pragma|finalize|getdllversion|gettlbversion|system|tempfile|warning|verbose|define|undef|insertmacro|macro|macroend|makensis|searchparse|searchreplace))\b/, token: "keyword"},
+    {regex: /^\s*(?:\!(include|addincludedir|addplugindir|appendfile|cd|delfile|echo|error|execute|packhdr|pragma|finalize|getdllversion|system|tempfile|warning|verbose|define|undef|insertmacro|makensis|searchparse|searchreplace))\b/, token: "keyword"},
 
     // Conditional Compilation
     {regex: /^\s*(?:\!(if(?:n?def)?|ifmacron?def|macro))\b/, token: "keyword", indent: true},
     {regex: /^\s*(?:\!(else|endif|macroend))\b/, token: "keyword", dedent: true},
 
     // Runtime Commands
-    {regex: /^\s*(?:Abort|AddBrandingImage|AddSize|AllowRootDirInstall|AllowSkipFiles|AutoCloseWindow|BGFont|BGGradient|BrandingText|BringToFront|Call|CallInstDLL|Caption|ChangeUI|CheckBitmap|ClearErrors|CompletedText|ComponentText|CopyFiles|CRCCheck|CreateDirectory|CreateFont|CreateShortCut|Delete|DeleteINISec|DeleteINIStr|DeleteRegKey|DeleteRegValue|DetailPrint|DetailsButtonText|DirText|DirVar|DirVerify|EnableWindow|EnumRegKey|EnumRegValue|Exch|Exec|ExecShell|ExecShellWait|ExecWait|ExpandEnvStrings|File|FileBufSize|FileClose|FileErrorText|FileOpen|FileRead|FileReadByte|FileReadUTF16LE|FileReadWord|FileWriteUTF16LE|FileSeek|FileWrite|FileWriteByte|FileWriteWord|FindClose|FindFirst|FindNext|FindWindow|FlushINI|GetCurInstType|GetCurrentAddress|GetDlgItem|GetDLLVersion|GetDLLVersionLocal|GetErrorLevel|GetFileTime|GetFileTimeLocal|GetFullPathName|GetFunctionAddress|GetInstDirError|GetLabelAddress|GetTempFileName|Goto|HideWindow|Icon|IfAbort|IfErrors|IfFileExists|IfRebootFlag|IfSilent|InitPluginsDir|InstallButtonText|InstallColors|InstallDir|InstallDirRegKey|InstProgressFlags|InstType|InstTypeGetText|InstTypeSetText|Int64Cmp|Int64CmpU|Int64Fmt|IntCmp|IntCmpU|IntFmt|IntOp|IntPtrCmp|IntPtrCmpU|IntPtrOp|IsWindow|LangString|LicenseBkColor|LicenseData|LicenseForceSelection|LicenseLangString|LicenseText|LoadLanguageFile|LockWindow|LogSet|LogText|ManifestDPIAware|ManifestSupportedOS|MessageBox|MiscButtonText|Name|Nop|OutFile|Page|PageCallbacks|PEDllCharacteristics|PESubsysVer|Pop|Push|Quit|ReadEnvStr|ReadINIStr|ReadRegDWORD|ReadRegStr|Reboot|RegDLL|Rename|RequestExecutionLevel|ReserveFile|Return|RMDir|SearchPath|SectionGetFlags|SectionGetInstTypes|SectionGetSize|SectionGetText|SectionIn|SectionSetFlags|SectionSetInstTypes|SectionSetSize|SectionSetText|SendMessage|SetAutoClose|SetBrandingImage|SetCompress|SetCompressor|SetCompressorDictSize|SetCtlColors|SetCurInstType|SetDatablockOptimize|SetDateSave|SetDetailsPrint|SetDetailsView|SetErrorLevel|SetErrors|SetFileAttributes|SetFont|SetOutPath|SetOverwrite|SetRebootFlag|SetRegView|SetShellVarContext|SetSilent|ShowInstDetails|ShowUninstDetails|ShowWindow|SilentInstall|SilentUnInstall|Sleep|SpaceTexts|StrCmp|StrCmpS|StrCpy|StrLen|SubCaption|Unicode|UninstallButtonText|UninstallCaption|UninstallIcon|UninstallSubCaption|UninstallText|UninstPage|UnRegDLL|Var|VIAddVersionKey|VIFileVersion|VIProductVersion|WindowIcon|WriteINIStr|WriteRegBin|WriteRegDWORD|WriteRegExpandStr|WriteRegMultiStr|WriteRegNone|WriteRegStr|WriteUninstaller|XPStyle)\b/, token: "keyword"},
+    {regex: /^\s*(?:Abort|AddBrandingImage|AddSize|AllowRootDirInstall|AllowSkipFiles|AutoCloseWindow|BGFont|BGGradient|BrandingText|BringToFront|Call|CallInstDLL|Caption|ChangeUI|CheckBitmap|ClearErrors|CompletedText|ComponentText|CopyFiles|CRCCheck|CreateDirectory|CreateFont|CreateShortCut|Delete|DeleteINISec|DeleteINIStr|DeleteRegKey|DeleteRegValue|DetailPrint|DetailsButtonText|DirText|DirVar|DirVerify|EnableWindow|EnumRegKey|EnumRegValue|Exch|Exec|ExecShell|ExecShellWait|ExecWait|ExpandEnvStrings|File|FileBufSize|FileClose|FileErrorText|FileOpen|FileRead|FileReadByte|FileReadUTF16LE|FileReadWord|FileWriteUTF16LE|FileSeek|FileWrite|FileWriteByte|FileWriteWord|FindClose|FindFirst|FindNext|FindWindow|FlushINI|GetCurInstType|GetCurrentAddress|GetDlgItem|GetDLLVersion|GetDLLVersionLocal|GetErrorLevel|GetFileTime|GetFileTimeLocal|GetFullPathName|GetFunctionAddress|GetInstDirError|GetLabelAddress|GetTempFileName|Goto|HideWindow|Icon|IfAbort|IfErrors|IfFileExists|IfRebootFlag|IfSilent|InitPluginsDir|InstallButtonText|InstallColors|InstallDir|InstallDirRegKey|InstProgressFlags|InstType|InstTypeGetText|InstTypeSetText|IntCmp|IntCmpU|IntFmt|IntOp|IsWindow|LangString|LicenseBkColor|LicenseData|LicenseForceSelection|LicenseLangString|LicenseText|LoadLanguageFile|LockWindow|LogSet|LogText|ManifestDPIAware|ManifestSupportedOS|MessageBox|MiscButtonText|Name|Nop|OutFile|Page|PageCallbacks|Pop|Push|Quit|ReadEnvStr|ReadINIStr|ReadRegDWORD|ReadRegStr|Reboot|RegDLL|Rename|RequestExecutionLevel|ReserveFile|Return|RMDir|SearchPath|SectionGetFlags|SectionGetInstTypes|SectionGetSize|SectionGetText|SectionIn|SectionSetFlags|SectionSetInstTypes|SectionSetSize|SectionSetText|SendMessage|SetAutoClose|SetBrandingImage|SetCompress|SetCompressor|SetCompressorDictSize|SetCtlColors|SetCurInstType|SetDatablockOptimize|SetDateSave|SetDetailsPrint|SetDetailsView|SetErrorLevel|SetErrors|SetFileAttributes|SetFont|SetOutPath|SetOverwrite|SetRebootFlag|SetRegView|SetShellVarContext|SetSilent|ShowInstDetails|ShowUninstDetails|ShowWindow|SilentInstall|SilentUnInstall|Sleep|SpaceTexts|StrCmp|StrCmpS|StrCpy|StrLen|SubCaption|Unicode|UninstallButtonText|UninstallCaption|UninstallIcon|UninstallSubCaption|UninstallText|UninstPage|UnRegDLL|Var|VIAddVersionKey|VIFileVersion|VIProductVersion|WindowIcon|WriteINIStr|WriteRegBin|WriteRegDWORD|WriteRegExpandStr|WriteRegMultiStr|WriteRegNone|WriteRegStr|WriteUninstaller|XPStyle)\b/, token: "keyword"},
     {regex: /^\s*(?:Function|PageEx|Section(?:Group)?)\b/, token: "keyword", indent: true},
     {regex: /^\s*(?:(Function|PageEx|Section(?:Group)?)End)\b/, token: "keyword", dedent: true},
 
@@ -61714,37 +61347,28 @@ CodeMirror.defineMode('shell', function() {
   function tokenString(quote, style) {
     var close = quote == "(" ? ")" : quote == "{" ? "}" : quote
     return function(stream, state) {
-      var next, escaped = false;
+      var next, end = false, escaped = false;
       while ((next = stream.next()) != null) {
         if (next === close && !escaped) {
-          state.tokens.shift();
+          end = true;
           break;
-        } else if (next === '$' && !escaped && quote !== "'" && stream.peek() != close) {
+        }
+        if (next === '$' && !escaped && quote !== "'") {
           escaped = true;
           stream.backUp(1);
           state.tokens.unshift(tokenDollar);
           break;
-        } else if (!escaped && quote !== close && next === quote) {
+        }
+        if (!escaped && next === quote && quote !== close) {
           state.tokens.unshift(tokenString(quote, style))
           return tokenize(stream, state)
-        } else if (!escaped && /['"]/.test(next) && !/['"]/.test(quote)) {
-          state.tokens.unshift(tokenStringStart(next, "string"));
-          stream.backUp(1);
-          break;
         }
         escaped = !escaped && next === '\\';
       }
+      if (end) state.tokens.shift();
       return style;
     };
   };
-
-  function tokenStringStart(quote, style) {
-    return function(stream, state) {
-      state.tokens[0] = tokenString(quote, style)
-      stream.next()
-      return tokenize(stream, state)
-    }
-  }
 
   var tokenDollar = function(stream, state) {
     if (state.tokens.length > 1) stream.eat('$');
@@ -63219,25 +62843,6 @@ CodeMirror.defineMIME("text/x-solr", "solr");
             }
             return "comment";
 
-          case "string":
-            var match = stream.match(/^.*?(["']|\\[\s\S])/);
-            if (!match) {
-              stream.skipToEnd();
-            } else if (match[1] == state.quoteKind) {
-              state.quoteKind = null;
-              state.soyState.pop();
-            }
-            return "string";
-        }
-
-        if (stream.match(/^\/\*/)) {
-          state.soyState.push("comment");
-          return "comment";
-        } else if (stream.match(stream.sol() || (state.soyState.length && last(state.soyState) != "literal") ? /^\s*\/\/.*/ : /^\s+\/\/.*/)) {
-          return "comment";
-        }
-
-        switch (last(state.soyState)) {
           case "templ-def":
             if (match = stream.match(/^\.?([\w]+(?!\.[\w]+)*)/)) {
               state.templates = prepend(state.templates, match[1]);
@@ -63343,15 +62948,36 @@ CodeMirror.defineMIME("text/x-solr", "solr");
               return this.token(stream, state);
             }
             return tokenUntil(stream, state, /\{\/literal}/);
+
+          case "string":
+            var match = stream.match(/^.*?(["']|\\[\s\S])/);
+            if (!match) {
+              stream.skipToEnd();
+            } else if (match[1] == state.quoteKind) {
+              state.quoteKind = null;
+              state.soyState.pop();
+            }
+            return "string";
         }
 
-        if (stream.match(/^\{literal}/)) {
+        if (stream.match(/^\/\*/)) {
+          state.soyState.push("comment");
+          if (!state.scopes) {
+            state.variables = prepend(null, 'ij');
+          }
+          return "comment";
+        } else if (stream.match(stream.sol() ? /^\s*\/\/.*/ : /^\s+\/\/.*/)) {
+          if (!state.scopes) {
+            state.variables = prepend(null, 'ij');
+          }
+          return "comment";
+        } else if (stream.match(/^\{literal}/)) {
           state.indent += config.indentUnit;
           state.soyState.push("literal");
           return "keyword";
 
-        // A tag-keyword must be followed by whitespace, comment or a closing tag.
-        } else if (match = stream.match(/^\{([\/@\\]?\w+\??)(?=[\s\}]|\/[/*])/)) {
+        // A tag-keyword must be followed by whitespace or a closing tag.
+        } else if (match = stream.match(/^\{([\/@\\]?\w+\??)(?=[\s\}])/)) {
           if (match[1] != "/switch")
             state.indent += (/^(\/|(else|elseif|ifempty|case|fallbackmsg|default)$)/.test(match[1]) && state.tag != "switch" ? 1 : 2) * config.indentUnit;
           state.tag = match[1];
@@ -63767,8 +63393,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
       operatorChars  = parserConfig.operatorChars || /^[*+\-%<>!=&|~^]/,
       support        = parserConfig.support || {},
       hooks          = parserConfig.hooks || {},
-      dateSQL        = parserConfig.dateSQL || {"date" : true, "time" : true, "timestamp" : true},
-      backslashStringEscapes = parserConfig.backslashStringEscapes !== false
+      dateSQL        = parserConfig.dateSQL || {"date" : true, "time" : true, "timestamp" : true};
 
   function tokenBase(stream, state) {
     var ch = stream.next();
@@ -63872,7 +63497,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
           state.tokenize = tokenBase;
           break;
         }
-        escaped = backslashStringEscapes && !escaped && ch == "\\";
+        escaped = !escaped && ch == "\\";
       }
       return "string";
     };
@@ -64039,7 +63664,6 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     builtin: set("bigint numeric bit smallint decimal smallmoney int tinyint money float real char varchar text nchar nvarchar ntext binary varbinary image cursor timestamp hierarchyid uniqueidentifier sql_variant xml table "),
     atoms: set("false true null unknown"),
     operatorChars: /^[*+\-%<>!=]/,
-    backslashStringEscapes: false,
     dateSQL: set("date datetimeoffset datetime2 smalldatetime datetime time"),
     hooks: {
       "@":   hookVar
@@ -64148,7 +63772,7 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
     name: "sql",
     client: set("source"),
     // https://www.postgresql.org/docs/10/static/sql-keywords-appendix.html
-    keywords: set(sqlKeywords + "a abort abs absent absolute access according action ada add admin after aggregate all allocate also always analyse analyze any are array array_agg array_max_cardinality asensitive assertion assignment asymmetric at atomic attribute attributes authorization avg backward base64 before begin begin_frame begin_partition bernoulli binary bit_length blob blocked bom both breadth c cache call called cardinality cascade cascaded case cast catalog catalog_name ceil ceiling chain characteristics characters character_length character_set_catalog character_set_name character_set_schema char_length check checkpoint class class_origin clob close cluster coalesce cobol collate collation collation_catalog collation_name collation_schema collect column columns column_name command_function command_function_code comment comments commit committed concurrently condition condition_number configuration conflict connect connection connection_name constraint constraints constraint_catalog constraint_name constraint_schema constructor contains content continue control conversion convert copy corr corresponding cost covar_pop covar_samp cross csv cube cume_dist current current_catalog current_date current_default_transform_group current_path current_role current_row current_schema current_time current_timestamp current_transform_group_for_type current_user cursor cursor_name cycle data database datalink datetime_interval_code datetime_interval_precision day db deallocate dec declare default defaults deferrable deferred defined definer degree delimiter delimiters dense_rank depth deref derived describe descriptor deterministic diagnostics dictionary disable discard disconnect dispatch dlnewcopy dlpreviouscopy dlurlcomplete dlurlcompleteonly dlurlcompletewrite dlurlpath dlurlpathonly dlurlpathwrite dlurlscheme dlurlserver dlvalue do document domain dynamic dynamic_function dynamic_function_code each element else empty enable encoding encrypted end end-exec end_frame end_partition enforced enum equals escape event every except exception exclude excluding exclusive exec execute exists exp explain expression extension external extract false family fetch file filter final first first_value flag float floor following for force foreign fortran forward found frame_row free freeze fs full function functions fusion g general generated get global go goto grant granted greatest grouping groups handler header hex hierarchy hold hour id identity if ignore ilike immediate immediately immutable implementation implicit import including increment indent index indexes indicator inherit inherits initially inline inner inout input insensitive instance instantiable instead integrity intersect intersection invoker isnull isolation k key key_member key_type label lag language large last last_value lateral lc_collate lc_ctype lead leading leakproof least left length level library like_regex link listen ln load local localtime localtimestamp location locator lock locked logged lower m map mapping match matched materialized max maxvalue max_cardinality member merge message_length message_octet_length message_text method min minute minvalue mod mode modifies module month more move multiset mumps name names namespace national natural nchar nclob nesting new next nfc nfd nfkc nfkd nil no none normalize normalized nothing notify notnull nowait nth_value ntile null nullable nullif nulls number object occurrences_regex octets octet_length of off offset oids old only open operator option options ordering ordinality others out outer output over overlaps overlay overriding owned owner p pad parallel parameter parameter_mode parameter_name parameter_ordinal_position parameter_specific_catalog parameter_specific_name parameter_specific_schema parser partial partition pascal passing passthrough password percent percentile_cont percentile_disc percent_rank period permission placing plans pli policy portion position position_regex power precedes preceding prepare prepared preserve primary prior privileges procedural procedure program public quote range rank read reads reassign recheck recovery recursive ref references referencing refresh regr_avgx regr_avgy regr_count regr_intercept regr_r2 regr_slope regr_sxx regr_sxy regr_syy reindex relative release rename repeatable replace replica requiring reset respect restart restore restrict restricted result return returned_cardinality returned_length returned_octet_length returned_sqlstate returning returns revoke right role rollback rollup routine routine_catalog routine_name routine_schema row rows row_count row_number rule savepoint scale schema schema_name scope scope_catalog scope_name scope_schema scroll search second section security selective self sensitive sequence sequences serializable server server_name session session_user setof sets share show similar simple size skip snapshot some source space specific specifictype specific_name sql sqlcode sqlerror sqlexception sqlstate sqlwarning sqrt stable standalone start state statement static statistics stddev_pop stddev_samp stdin stdout storage strict strip structure style subclass_origin submultiset substring substring_regex succeeds sum symmetric sysid system system_time system_user t tables tablesample tablespace table_name temp template temporary then ties timezone_hour timezone_minute to token top_level_count trailing transaction transactions_committed transactions_rolled_back transaction_active transform transforms translate translate_regex translation treat trigger trigger_catalog trigger_name trigger_schema trim trim_array true truncate trusted type types uescape unbounded uncommitted under unencrypted unique unknown unlink unlisten unlogged unnamed unnest until untyped upper uri usage user user_defined_type_catalog user_defined_type_code user_defined_type_name user_defined_type_schema using vacuum valid validate validator value value_of varbinary variadic var_pop var_samp verbose version versioning view views volatile when whenever whitespace width_bucket window within work wrapper write xmlagg xmlattributes xmlbinary xmlcast xmlcomment xmlconcat xmldeclaration xmldocument xmlelement xmlexists xmlforest xmliterate xmlnamespaces xmlparse xmlpi xmlquery xmlroot xmlschema xmlserialize xmltable xmltext xmlvalidate year yes loop repeat attach path depends detach zone"),
+    keywords: set(sqlKeywords + "a abort abs absent absolute access according action ada add admin after aggregate all allocate also always analyse analyze any are array array_agg array_max_cardinality asensitive assertion assignment asymmetric at atomic attribute attributes authorization avg backward base64 before begin begin_frame begin_partition bernoulli binary bit_length blob blocked bom both breadth c cache call called cardinality cascade cascaded case cast catalog catalog_name ceil ceiling chain characteristics characters character_length character_set_catalog character_set_name character_set_schema char_length check checkpoint class class_origin clob close cluster coalesce cobol collate collation collation_catalog collation_name collation_schema collect column columns column_name command_function command_function_code comment comments commit committed concurrently condition condition_number configuration conflict connect connection connection_name constraint constraints constraint_catalog constraint_name constraint_schema constructor contains content continue control conversion convert copy corr corresponding cost covar_pop covar_samp cross csv cube cume_dist current current_catalog current_date current_default_transform_group current_path current_role current_row current_schema current_time current_timestamp current_transform_group_for_type current_user cursor cursor_name cycle data database datalink datetime_interval_code datetime_interval_precision day db deallocate dec declare default defaults deferrable deferred defined definer degree delimiter delimiters dense_rank depth deref derived describe descriptor deterministic diagnostics dictionary disable discard disconnect dispatch dlnewcopy dlpreviouscopy dlurlcomplete dlurlcompleteonly dlurlcompletewrite dlurlpath dlurlpathonly dlurlpathwrite dlurlscheme dlurlserver dlvalue do document domain dynamic dynamic_function dynamic_function_code each element else empty enable encoding encrypted end end-exec end_frame end_partition enforced enum equals escape event every except exception exclude excluding exclusive exec execute exists exp explain expression extension external extract false family fetch file filter final first first_value flag float floor following for force foreign fortran forward found frame_row free freeze fs full function functions fusion g general generated get global go goto grant granted greatest grouping groups handler header hex hierarchy hold hour id identity if ignore ilike immediate immediately immutable implementation implicit import including increment indent index indexes indicator inherit inherits initially inline inner inout input insensitive instance instantiable instead integrity intersect intersection invoker isnull isolation k key key_member key_type label lag language large last last_value lateral lead leading leakproof least left length level library like_regex link listen ln load local localtime localtimestamp location locator lock locked logged lower m map mapping match matched materialized max maxvalue max_cardinality member merge message_length message_octet_length message_text method min minute minvalue mod mode modifies module month more move multiset mumps name names namespace national natural nchar nclob nesting new next nfc nfd nfkc nfkd nil no none normalize normalized nothing notify notnull nowait nth_value ntile null nullable nullif nulls number object occurrences_regex octets octet_length of off offset oids old only open operator option options ordering ordinality others out outer output over overlaps overlay overriding owned owner p pad parallel parameter parameter_mode parameter_name parameter_ordinal_position parameter_specific_catalog parameter_specific_name parameter_specific_schema parser partial partition pascal passing passthrough password percent percentile_cont percentile_disc percent_rank period permission placing plans pli policy portion position position_regex power precedes preceding prepare prepared preserve primary prior privileges procedural procedure program public quote range rank read reads reassign recheck recovery recursive ref references referencing refresh regr_avgx regr_avgy regr_count regr_intercept regr_r2 regr_slope regr_sxx regr_sxy regr_syy reindex relative release rename repeatable replace replica requiring reset respect restart restore restrict restricted result return returned_cardinality returned_length returned_octet_length returned_sqlstate returning returns revoke right role rollback rollup routine routine_catalog routine_name routine_schema row rows row_count row_number rule savepoint scale schema schema_name scope scope_catalog scope_name scope_schema scroll search second section security selective self sensitive sequence sequences serializable server server_name session session_user setof sets share show similar simple size skip snapshot some source space specific specifictype specific_name sql sqlcode sqlerror sqlexception sqlstate sqlwarning sqrt stable standalone start state statement static statistics stddev_pop stddev_samp stdin stdout storage strict strip structure style subclass_origin submultiset substring substring_regex succeeds sum symmetric sysid system system_time system_user t tables tablesample tablespace table_name temp template temporary then ties timezone_hour timezone_minute to token top_level_count trailing transaction transactions_committed transactions_rolled_back transaction_active transform transforms translate translate_regex translation treat trigger trigger_catalog trigger_name trigger_schema trim trim_array true truncate trusted type types uescape unbounded uncommitted under unencrypted unique unknown unlink unlisten unlogged unnamed unnest until untyped upper uri usage user user_defined_type_catalog user_defined_type_code user_defined_type_name user_defined_type_schema using vacuum valid validate validator value value_of varbinary variadic var_pop var_samp verbose version versioning view views volatile when whenever whitespace width_bucket window within work wrapper write xmlagg xmlattributes xmlbinary xmlcast xmlcomment xmlconcat xmldeclaration xmldocument xmlelement xmlexists xmlforest xmliterate xmlnamespaces xmlparse xmlpi xmlquery xmlroot xmlschema xmlserialize xmltable xmltext xmlvalidate year yes loop repeat attach path depends detach zone"),
     // https://www.postgresql.org/docs/10/static/datatype.html
     builtin: set("bigint int8 bigserial serial8 bit varying varbit boolean bool box bytea character char varchar cidr circle date double precision float8 inet integer int int4 interval json jsonb line lseg macaddr macaddr8 money numeric decimal path pg_lsn point polygon real float4 smallint int2 smallserial serial2 serial serial4 text time without zone with timetz timestamp timestamptz tsquery tsvector txid_snapshot uuid xml"),
     atoms: set("false true null unknown"),
@@ -64380,17 +64004,8 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
   }
 
   function tokenComment(stream, state) {
-    var ch
-    while (true) {
-      stream.match(/^[^/*]+/, true)
-      ch = stream.next()
-      if (!ch) break
-      if (ch === "/" && stream.eat("*")) {
-        state.tokenize.push(tokenComment)
-      } else if (ch === "*" && stream.eat("/")) {
-        state.tokenize.pop()
-      }
-    }
+    stream.match(/^(?:[^*]|\*(?!\/))*/)
+    if (stream.match("*/")) state.tokenize.pop()
     return "comment"
   }
 
@@ -69693,26 +69308,24 @@ var map = {
 	"./neat.css": 291,
 	"./neo.css": 293,
 	"./night.css": 295,
-	"./oceanic-next.css": 297,
-	"./panda-syntax.css": 299,
-	"./paraiso-dark.css": 301,
-	"./paraiso-light.css": 303,
-	"./pastel-on-dark.css": 305,
-	"./railscasts.css": 307,
-	"./rubyblue.css": 309,
-	"./seti.css": 311,
-	"./shadowfox.css": 313,
-	"./solarized.css": 315,
-	"./the-matrix.css": 317,
-	"./tomorrow-night-bright.css": 319,
-	"./tomorrow-night-eighties.css": 321,
-	"./ttcn.css": 323,
-	"./twilight.css": 325,
-	"./vibrant-ink.css": 327,
-	"./xq-dark.css": 329,
-	"./xq-light.css": 331,
-	"./yeti.css": 333,
-	"./zenburn.css": 335
+	"./panda-syntax.css": 297,
+	"./paraiso-dark.css": 299,
+	"./paraiso-light.css": 301,
+	"./pastel-on-dark.css": 303,
+	"./railscasts.css": 305,
+	"./rubyblue.css": 307,
+	"./seti.css": 309,
+	"./solarized.css": 311,
+	"./the-matrix.css": 313,
+	"./tomorrow-night-bright.css": 315,
+	"./tomorrow-night-eighties.css": 317,
+	"./ttcn.css": 319,
+	"./twilight.css": 321,
+	"./vibrant-ink.css": 323,
+	"./xq-dark.css": 325,
+	"./xq-light.css": 327,
+	"./yeti.css": 329,
+	"./zenburn.css": 331
 };
 function webpackContext(req) {
 	return __webpack_require__(webpackContextResolve(req));
@@ -71101,8 +70714,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./oceanic-next.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./oceanic-next.css");
+		module.hot.accept("!!../../css-loader/index.js!./panda-syntax.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./panda-syntax.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71120,7 +70733,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       oceanic-next\n    Author:     Filype Pereira (https://github.com/fpereira1)\n\n    Original oceanic-next color scheme by Dmitri Voronianski (https://github.com/voronianski/oceanic-next-color-scheme)\n\n*/\n\n.cm-s-oceanic-next.CodeMirror { background: #304148; color: #f8f8f2; }\n.cm-s-oceanic-next div.CodeMirror-selected { background: rgba(101, 115, 126, 0.33); }\n.cm-s-oceanic-next .CodeMirror-line::selection, .cm-s-oceanic-next .CodeMirror-line > span::selection, .cm-s-oceanic-next .CodeMirror-line > span > span::selection { background: rgba(101, 115, 126, 0.33); }\n.cm-s-oceanic-next .CodeMirror-line::-moz-selection, .cm-s-oceanic-next .CodeMirror-line > span::-moz-selection, .cm-s-oceanic-next .CodeMirror-line > span > span::-moz-selection { background: rgba(101, 115, 126, 0.33); }\n.cm-s-oceanic-next .CodeMirror-gutters { background: #304148; border-right: 10px; }\n.cm-s-oceanic-next .CodeMirror-guttermarker { color: white; }\n.cm-s-oceanic-next .CodeMirror-guttermarker-subtle { color: #d0d0d0; }\n.cm-s-oceanic-next .CodeMirror-linenumber { color: #d0d0d0; }\n.cm-s-oceanic-next .CodeMirror-cursor { border-left: 1px solid #f8f8f0; }\n\n.cm-s-oceanic-next span.cm-comment { color: #65737E; }\n.cm-s-oceanic-next span.cm-atom { color: #C594C5; }\n.cm-s-oceanic-next span.cm-number { color: #F99157; }\n\n.cm-s-oceanic-next span.cm-property { color: #99C794; }\n.cm-s-oceanic-next span.cm-attribute,\n.cm-s-oceanic-next span.cm-keyword { color: #C594C5; }\n.cm-s-oceanic-next span.cm-builtin { color: #66d9ef; }\n.cm-s-oceanic-next span.cm-string { color: #99C794; }\n\n.cm-s-oceanic-next span.cm-variable,\n.cm-s-oceanic-next span.cm-variable-2,\n.cm-s-oceanic-next span.cm-variable-3 { color: #f8f8f2; }\n.cm-s-oceanic-next span.cm-def { color: #6699CC; }\n.cm-s-oceanic-next span.cm-bracket { color: #5FB3B3; }\n.cm-s-oceanic-next span.cm-tag { color: #C594C5; }\n.cm-s-oceanic-next span.cm-header { color: #C594C5; }\n.cm-s-oceanic-next span.cm-link { color: #C594C5; }\n.cm-s-oceanic-next span.cm-error { background: #C594C5; color: #f8f8f0; }\n\n.cm-s-oceanic-next .CodeMirror-activeline-background { background: rgba(101, 115, 126, 0.33); }\n.cm-s-oceanic-next .CodeMirror-matchingbracket {\n  text-decoration: underline;\n  color: white !important;\n}\n", ""]);
+exports.push([module.i, "/*\n\tName:       Panda Syntax\n\tAuthor:     Siamak Mokhtari (http://github.com/siamak/)\n\tCodeMirror template by Siamak Mokhtari (https://github.com/siamak/atom-panda-syntax)\n*/\n.cm-s-panda-syntax {\n\tbackground: #292A2B;\n\tcolor: #E6E6E6;\n\tline-height: 1.5;\n\tfont-family: 'Operator Mono', 'Source Sans Pro', Menlo, Monaco, Consolas, Courier New, monospace;\n}\n.cm-s-panda-syntax .CodeMirror-cursor { border-color: #ff2c6d; }\n.cm-s-panda-syntax .CodeMirror-activeline-background {\n\tbackground: rgba(99, 123, 156, 0.1);\n}\n.cm-s-panda-syntax .CodeMirror-selected {\n\tbackground: #FFF;\n}\n.cm-s-panda-syntax .cm-comment {\n\tfont-style: italic;\n\tcolor: #676B79;\n}\n.cm-s-panda-syntax .cm-operator {\n\tcolor: #f3f3f3;\n}\n.cm-s-panda-syntax .cm-string {\n\tcolor: #19F9D8;\n}\n.cm-s-panda-syntax .cm-string-2 {\n    color: #FFB86C;\n}\n\n.cm-s-panda-syntax .cm-tag {\n\tcolor: #ff2c6d;\n}\n.cm-s-panda-syntax .cm-meta {\n\tcolor: #b084eb;\n}\n\n.cm-s-panda-syntax .cm-number {\n\tcolor: #FFB86C;\n}\n.cm-s-panda-syntax .cm-atom {\n\tcolor: #ff2c6d;\n}\n.cm-s-panda-syntax .cm-keyword {\n\tcolor: #FF75B5;\n}\n.cm-s-panda-syntax .cm-variable {\n\tcolor: #ffb86c;\n}\n.cm-s-panda-syntax .cm-variable-2 {\n\tcolor: #ff9ac1;\n}\n.cm-s-panda-syntax .cm-variable-3, .cm-s-panda-syntax .cm-type {\n\tcolor: #ff9ac1;\n}\n\n.cm-s-panda-syntax .cm-def {\n\tcolor: #e6e6e6;\n}\n.cm-s-panda-syntax .cm-property {\n\tcolor: #f3f3f3;\n}\n.cm-s-panda-syntax .cm-unit {\n    color: #ffb86c;\n}\n\n.cm-s-panda-syntax .cm-attribute {\n    color: #ffb86c;\n}\n\n.cm-s-panda-syntax .CodeMirror-matchingbracket {\n    border-bottom: 1px dotted #19F9D8;\n    padding-bottom: 2px;\n    color: #e6e6e6;\n}\n.cm-s-panda-syntax .CodeMirror-gutters {\n    background: #292a2b;\n    border-right-color: rgba(255, 255, 255, 0.1);\n}\n.cm-s-panda-syntax .CodeMirror-linenumber {\n    color: #e6e6e6;\n    opacity: 0.6;\n}\n", ""]);
 
 // exports
 
@@ -71146,8 +70759,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./panda-syntax.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./panda-syntax.css");
+		module.hot.accept("!!../../css-loader/index.js!./paraiso-dark.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./paraiso-dark.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71165,7 +70778,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\tName:       Panda Syntax\n\tAuthor:     Siamak Mokhtari (http://github.com/siamak/)\n\tCodeMirror template by Siamak Mokhtari (https://github.com/siamak/atom-panda-syntax)\n*/\n.cm-s-panda-syntax {\n\tbackground: #292A2B;\n\tcolor: #E6E6E6;\n\tline-height: 1.5;\n\tfont-family: 'Operator Mono', 'Source Sans Pro', Menlo, Monaco, Consolas, Courier New, monospace;\n}\n.cm-s-panda-syntax .CodeMirror-cursor { border-color: #ff2c6d; }\n.cm-s-panda-syntax .CodeMirror-activeline-background {\n\tbackground: rgba(99, 123, 156, 0.1);\n}\n.cm-s-panda-syntax .CodeMirror-selected {\n\tbackground: #FFF;\n}\n.cm-s-panda-syntax .cm-comment {\n\tfont-style: italic;\n\tcolor: #676B79;\n}\n.cm-s-panda-syntax .cm-operator {\n\tcolor: #f3f3f3;\n}\n.cm-s-panda-syntax .cm-string {\n\tcolor: #19F9D8;\n}\n.cm-s-panda-syntax .cm-string-2 {\n    color: #FFB86C;\n}\n\n.cm-s-panda-syntax .cm-tag {\n\tcolor: #ff2c6d;\n}\n.cm-s-panda-syntax .cm-meta {\n\tcolor: #b084eb;\n}\n\n.cm-s-panda-syntax .cm-number {\n\tcolor: #FFB86C;\n}\n.cm-s-panda-syntax .cm-atom {\n\tcolor: #ff2c6d;\n}\n.cm-s-panda-syntax .cm-keyword {\n\tcolor: #FF75B5;\n}\n.cm-s-panda-syntax .cm-variable {\n\tcolor: #ffb86c;\n}\n.cm-s-panda-syntax .cm-variable-2 {\n\tcolor: #ff9ac1;\n}\n.cm-s-panda-syntax .cm-variable-3, .cm-s-panda-syntax .cm-type {\n\tcolor: #ff9ac1;\n}\n\n.cm-s-panda-syntax .cm-def {\n\tcolor: #e6e6e6;\n}\n.cm-s-panda-syntax .cm-property {\n\tcolor: #f3f3f3;\n}\n.cm-s-panda-syntax .cm-unit {\n    color: #ffb86c;\n}\n\n.cm-s-panda-syntax .cm-attribute {\n    color: #ffb86c;\n}\n\n.cm-s-panda-syntax .CodeMirror-matchingbracket {\n    border-bottom: 1px dotted #19F9D8;\n    padding-bottom: 2px;\n    color: #e6e6e6;\n}\n.cm-s-panda-syntax .CodeMirror-gutters {\n    background: #292a2b;\n    border-right-color: rgba(255, 255, 255, 0.1);\n}\n.cm-s-panda-syntax .CodeMirror-linenumber {\n    color: #e6e6e6;\n    opacity: 0.6;\n}\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Paraíso (Dark)\n    Author:     Jan T. Sott\n\n    Color scheme by Jan T. Sott (https://github.com/idleberg/Paraiso-CodeMirror)\n    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)\n\n*/\n\n.cm-s-paraiso-dark.CodeMirror { background: #2f1e2e; color: #b9b6b0; }\n.cm-s-paraiso-dark div.CodeMirror-selected { background: #41323f; }\n.cm-s-paraiso-dark .CodeMirror-line::selection, .cm-s-paraiso-dark .CodeMirror-line > span::selection, .cm-s-paraiso-dark .CodeMirror-line > span > span::selection { background: rgba(65, 50, 63, .99); }\n.cm-s-paraiso-dark .CodeMirror-line::-moz-selection, .cm-s-paraiso-dark .CodeMirror-line > span::-moz-selection, .cm-s-paraiso-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(65, 50, 63, .99); }\n.cm-s-paraiso-dark .CodeMirror-gutters { background: #2f1e2e; border-right: 0px; }\n.cm-s-paraiso-dark .CodeMirror-guttermarker { color: #ef6155; }\n.cm-s-paraiso-dark .CodeMirror-guttermarker-subtle { color: #776e71; }\n.cm-s-paraiso-dark .CodeMirror-linenumber { color: #776e71; }\n.cm-s-paraiso-dark .CodeMirror-cursor { border-left: 1px solid #8d8687; }\n\n.cm-s-paraiso-dark span.cm-comment { color: #e96ba8; }\n.cm-s-paraiso-dark span.cm-atom { color: #815ba4; }\n.cm-s-paraiso-dark span.cm-number { color: #815ba4; }\n\n.cm-s-paraiso-dark span.cm-property, .cm-s-paraiso-dark span.cm-attribute { color: #48b685; }\n.cm-s-paraiso-dark span.cm-keyword { color: #ef6155; }\n.cm-s-paraiso-dark span.cm-string { color: #fec418; }\n\n.cm-s-paraiso-dark span.cm-variable { color: #48b685; }\n.cm-s-paraiso-dark span.cm-variable-2 { color: #06b6ef; }\n.cm-s-paraiso-dark span.cm-def { color: #f99b15; }\n.cm-s-paraiso-dark span.cm-bracket { color: #b9b6b0; }\n.cm-s-paraiso-dark span.cm-tag { color: #ef6155; }\n.cm-s-paraiso-dark span.cm-link { color: #815ba4; }\n.cm-s-paraiso-dark span.cm-error { background: #ef6155; color: #8d8687; }\n\n.cm-s-paraiso-dark .CodeMirror-activeline-background { background: #4D344A; }\n.cm-s-paraiso-dark .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -71191,8 +70804,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./paraiso-dark.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./paraiso-dark.css");
+		module.hot.accept("!!../../css-loader/index.js!./paraiso-light.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./paraiso-light.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71210,7 +70823,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Paraíso (Dark)\n    Author:     Jan T. Sott\n\n    Color scheme by Jan T. Sott (https://github.com/idleberg/Paraiso-CodeMirror)\n    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)\n\n*/\n\n.cm-s-paraiso-dark.CodeMirror { background: #2f1e2e; color: #b9b6b0; }\n.cm-s-paraiso-dark div.CodeMirror-selected { background: #41323f; }\n.cm-s-paraiso-dark .CodeMirror-line::selection, .cm-s-paraiso-dark .CodeMirror-line > span::selection, .cm-s-paraiso-dark .CodeMirror-line > span > span::selection { background: rgba(65, 50, 63, .99); }\n.cm-s-paraiso-dark .CodeMirror-line::-moz-selection, .cm-s-paraiso-dark .CodeMirror-line > span::-moz-selection, .cm-s-paraiso-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(65, 50, 63, .99); }\n.cm-s-paraiso-dark .CodeMirror-gutters { background: #2f1e2e; border-right: 0px; }\n.cm-s-paraiso-dark .CodeMirror-guttermarker { color: #ef6155; }\n.cm-s-paraiso-dark .CodeMirror-guttermarker-subtle { color: #776e71; }\n.cm-s-paraiso-dark .CodeMirror-linenumber { color: #776e71; }\n.cm-s-paraiso-dark .CodeMirror-cursor { border-left: 1px solid #8d8687; }\n\n.cm-s-paraiso-dark span.cm-comment { color: #e96ba8; }\n.cm-s-paraiso-dark span.cm-atom { color: #815ba4; }\n.cm-s-paraiso-dark span.cm-number { color: #815ba4; }\n\n.cm-s-paraiso-dark span.cm-property, .cm-s-paraiso-dark span.cm-attribute { color: #48b685; }\n.cm-s-paraiso-dark span.cm-keyword { color: #ef6155; }\n.cm-s-paraiso-dark span.cm-string { color: #fec418; }\n\n.cm-s-paraiso-dark span.cm-variable { color: #48b685; }\n.cm-s-paraiso-dark span.cm-variable-2 { color: #06b6ef; }\n.cm-s-paraiso-dark span.cm-def { color: #f99b15; }\n.cm-s-paraiso-dark span.cm-bracket { color: #b9b6b0; }\n.cm-s-paraiso-dark span.cm-tag { color: #ef6155; }\n.cm-s-paraiso-dark span.cm-link { color: #815ba4; }\n.cm-s-paraiso-dark span.cm-error { background: #ef6155; color: #8d8687; }\n\n.cm-s-paraiso-dark .CodeMirror-activeline-background { background: #4D344A; }\n.cm-s-paraiso-dark .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Paraíso (Light)\n    Author:     Jan T. Sott\n\n    Color scheme by Jan T. Sott (https://github.com/idleberg/Paraiso-CodeMirror)\n    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)\n\n*/\n\n.cm-s-paraiso-light.CodeMirror { background: #e7e9db; color: #41323f; }\n.cm-s-paraiso-light div.CodeMirror-selected { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-line::selection, .cm-s-paraiso-light .CodeMirror-line > span::selection, .cm-s-paraiso-light .CodeMirror-line > span > span::selection { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-line::-moz-selection, .cm-s-paraiso-light .CodeMirror-line > span::-moz-selection, .cm-s-paraiso-light .CodeMirror-line > span > span::-moz-selection { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-gutters { background: #e7e9db; border-right: 0px; }\n.cm-s-paraiso-light .CodeMirror-guttermarker { color: black; }\n.cm-s-paraiso-light .CodeMirror-guttermarker-subtle { color: #8d8687; }\n.cm-s-paraiso-light .CodeMirror-linenumber { color: #8d8687; }\n.cm-s-paraiso-light .CodeMirror-cursor { border-left: 1px solid #776e71; }\n\n.cm-s-paraiso-light span.cm-comment { color: #e96ba8; }\n.cm-s-paraiso-light span.cm-atom { color: #815ba4; }\n.cm-s-paraiso-light span.cm-number { color: #815ba4; }\n\n.cm-s-paraiso-light span.cm-property, .cm-s-paraiso-light span.cm-attribute { color: #48b685; }\n.cm-s-paraiso-light span.cm-keyword { color: #ef6155; }\n.cm-s-paraiso-light span.cm-string { color: #fec418; }\n\n.cm-s-paraiso-light span.cm-variable { color: #48b685; }\n.cm-s-paraiso-light span.cm-variable-2 { color: #06b6ef; }\n.cm-s-paraiso-light span.cm-def { color: #f99b15; }\n.cm-s-paraiso-light span.cm-bracket { color: #41323f; }\n.cm-s-paraiso-light span.cm-tag { color: #ef6155; }\n.cm-s-paraiso-light span.cm-link { color: #815ba4; }\n.cm-s-paraiso-light span.cm-error { background: #ef6155; color: #776e71; }\n\n.cm-s-paraiso-light .CodeMirror-activeline-background { background: #CFD1C4; }\n.cm-s-paraiso-light .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -71236,8 +70849,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./paraiso-light.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./paraiso-light.css");
+		module.hot.accept("!!../../css-loader/index.js!./pastel-on-dark.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./pastel-on-dark.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71255,7 +70868,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Paraíso (Light)\n    Author:     Jan T. Sott\n\n    Color scheme by Jan T. Sott (https://github.com/idleberg/Paraiso-CodeMirror)\n    Inspired by the art of Rubens LP (http://www.rubenslp.com.br)\n\n*/\n\n.cm-s-paraiso-light.CodeMirror { background: #e7e9db; color: #41323f; }\n.cm-s-paraiso-light div.CodeMirror-selected { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-line::selection, .cm-s-paraiso-light .CodeMirror-line > span::selection, .cm-s-paraiso-light .CodeMirror-line > span > span::selection { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-line::-moz-selection, .cm-s-paraiso-light .CodeMirror-line > span::-moz-selection, .cm-s-paraiso-light .CodeMirror-line > span > span::-moz-selection { background: #b9b6b0; }\n.cm-s-paraiso-light .CodeMirror-gutters { background: #e7e9db; border-right: 0px; }\n.cm-s-paraiso-light .CodeMirror-guttermarker { color: black; }\n.cm-s-paraiso-light .CodeMirror-guttermarker-subtle { color: #8d8687; }\n.cm-s-paraiso-light .CodeMirror-linenumber { color: #8d8687; }\n.cm-s-paraiso-light .CodeMirror-cursor { border-left: 1px solid #776e71; }\n\n.cm-s-paraiso-light span.cm-comment { color: #e96ba8; }\n.cm-s-paraiso-light span.cm-atom { color: #815ba4; }\n.cm-s-paraiso-light span.cm-number { color: #815ba4; }\n\n.cm-s-paraiso-light span.cm-property, .cm-s-paraiso-light span.cm-attribute { color: #48b685; }\n.cm-s-paraiso-light span.cm-keyword { color: #ef6155; }\n.cm-s-paraiso-light span.cm-string { color: #fec418; }\n\n.cm-s-paraiso-light span.cm-variable { color: #48b685; }\n.cm-s-paraiso-light span.cm-variable-2 { color: #06b6ef; }\n.cm-s-paraiso-light span.cm-def { color: #f99b15; }\n.cm-s-paraiso-light span.cm-bracket { color: #41323f; }\n.cm-s-paraiso-light span.cm-tag { color: #ef6155; }\n.cm-s-paraiso-light span.cm-link { color: #815ba4; }\n.cm-s-paraiso-light span.cm-error { background: #ef6155; color: #776e71; }\n\n.cm-s-paraiso-light .CodeMirror-activeline-background { background: #CFD1C4; }\n.cm-s-paraiso-light .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, "/**\n * Pastel On Dark theme ported from ACE editor\n * @license MIT\n * @copyright AtomicPages LLC 2014\n * @author Dennis Thompson, AtomicPages LLC\n * @version 1.1\n * @source https://github.com/atomicpages/codemirror-pastel-on-dark-theme\n */\n\n.cm-s-pastel-on-dark.CodeMirror {\n\tbackground: #2c2827;\n\tcolor: #8F938F;\n\tline-height: 1.5;\n}\n.cm-s-pastel-on-dark div.CodeMirror-selected { background: rgba(221,240,255,0.2); }\n.cm-s-pastel-on-dark .CodeMirror-line::selection, .cm-s-pastel-on-dark .CodeMirror-line > span::selection, .cm-s-pastel-on-dark .CodeMirror-line > span > span::selection { background: rgba(221,240,255,0.2); }\n.cm-s-pastel-on-dark .CodeMirror-line::-moz-selection, .cm-s-pastel-on-dark .CodeMirror-line > span::-moz-selection, .cm-s-pastel-on-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(221,240,255,0.2); }\n\n.cm-s-pastel-on-dark .CodeMirror-gutters {\n\tbackground: #34302f;\n\tborder-right: 0px;\n\tpadding: 0 3px;\n}\n.cm-s-pastel-on-dark .CodeMirror-guttermarker { color: white; }\n.cm-s-pastel-on-dark .CodeMirror-guttermarker-subtle { color: #8F938F; }\n.cm-s-pastel-on-dark .CodeMirror-linenumber { color: #8F938F; }\n.cm-s-pastel-on-dark .CodeMirror-cursor { border-left: 1px solid #A7A7A7; }\n.cm-s-pastel-on-dark span.cm-comment { color: #A6C6FF; }\n.cm-s-pastel-on-dark span.cm-atom { color: #DE8E30; }\n.cm-s-pastel-on-dark span.cm-number { color: #CCCCCC; }\n.cm-s-pastel-on-dark span.cm-property { color: #8F938F; }\n.cm-s-pastel-on-dark span.cm-attribute { color: #a6e22e; }\n.cm-s-pastel-on-dark span.cm-keyword { color: #AEB2F8; }\n.cm-s-pastel-on-dark span.cm-string { color: #66A968; }\n.cm-s-pastel-on-dark span.cm-variable { color: #AEB2F8; }\n.cm-s-pastel-on-dark span.cm-variable-2 { color: #BEBF55; }\n.cm-s-pastel-on-dark span.cm-variable-3, .cm-s-pastel-on-dark span.cm-type { color: #DE8E30; }\n.cm-s-pastel-on-dark span.cm-def { color: #757aD8; }\n.cm-s-pastel-on-dark span.cm-bracket { color: #f8f8f2; }\n.cm-s-pastel-on-dark span.cm-tag { color: #C1C144; }\n.cm-s-pastel-on-dark span.cm-link { color: #ae81ff; }\n.cm-s-pastel-on-dark span.cm-qualifier,.cm-s-pastel-on-dark span.cm-builtin { color: #C1C144; }\n.cm-s-pastel-on-dark span.cm-error {\n\tbackground: #757aD8;\n\tcolor: #f8f8f0;\n}\n.cm-s-pastel-on-dark .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.031); }\n.cm-s-pastel-on-dark .CodeMirror-matchingbracket {\n\tborder: 1px solid rgba(255,255,255,0.25);\n\tcolor: #8F938F !important;\n\tmargin: -1px -1px 0 -1px;\n}\n", ""]);
 
 // exports
 
@@ -71281,8 +70894,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./pastel-on-dark.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./pastel-on-dark.css");
+		module.hot.accept("!!../../css-loader/index.js!./railscasts.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./railscasts.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71300,7 +70913,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/**\n * Pastel On Dark theme ported from ACE editor\n * @license MIT\n * @copyright AtomicPages LLC 2014\n * @author Dennis Thompson, AtomicPages LLC\n * @version 1.1\n * @source https://github.com/atomicpages/codemirror-pastel-on-dark-theme\n */\n\n.cm-s-pastel-on-dark.CodeMirror {\n\tbackground: #2c2827;\n\tcolor: #8F938F;\n\tline-height: 1.5;\n}\n.cm-s-pastel-on-dark div.CodeMirror-selected { background: rgba(221,240,255,0.2); }\n.cm-s-pastel-on-dark .CodeMirror-line::selection, .cm-s-pastel-on-dark .CodeMirror-line > span::selection, .cm-s-pastel-on-dark .CodeMirror-line > span > span::selection { background: rgba(221,240,255,0.2); }\n.cm-s-pastel-on-dark .CodeMirror-line::-moz-selection, .cm-s-pastel-on-dark .CodeMirror-line > span::-moz-selection, .cm-s-pastel-on-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(221,240,255,0.2); }\n\n.cm-s-pastel-on-dark .CodeMirror-gutters {\n\tbackground: #34302f;\n\tborder-right: 0px;\n\tpadding: 0 3px;\n}\n.cm-s-pastel-on-dark .CodeMirror-guttermarker { color: white; }\n.cm-s-pastel-on-dark .CodeMirror-guttermarker-subtle { color: #8F938F; }\n.cm-s-pastel-on-dark .CodeMirror-linenumber { color: #8F938F; }\n.cm-s-pastel-on-dark .CodeMirror-cursor { border-left: 1px solid #A7A7A7; }\n.cm-s-pastel-on-dark span.cm-comment { color: #A6C6FF; }\n.cm-s-pastel-on-dark span.cm-atom { color: #DE8E30; }\n.cm-s-pastel-on-dark span.cm-number { color: #CCCCCC; }\n.cm-s-pastel-on-dark span.cm-property { color: #8F938F; }\n.cm-s-pastel-on-dark span.cm-attribute { color: #a6e22e; }\n.cm-s-pastel-on-dark span.cm-keyword { color: #AEB2F8; }\n.cm-s-pastel-on-dark span.cm-string { color: #66A968; }\n.cm-s-pastel-on-dark span.cm-variable { color: #AEB2F8; }\n.cm-s-pastel-on-dark span.cm-variable-2 { color: #BEBF55; }\n.cm-s-pastel-on-dark span.cm-variable-3, .cm-s-pastel-on-dark span.cm-type { color: #DE8E30; }\n.cm-s-pastel-on-dark span.cm-def { color: #757aD8; }\n.cm-s-pastel-on-dark span.cm-bracket { color: #f8f8f2; }\n.cm-s-pastel-on-dark span.cm-tag { color: #C1C144; }\n.cm-s-pastel-on-dark span.cm-link { color: #ae81ff; }\n.cm-s-pastel-on-dark span.cm-qualifier,.cm-s-pastel-on-dark span.cm-builtin { color: #C1C144; }\n.cm-s-pastel-on-dark span.cm-error {\n\tbackground: #757aD8;\n\tcolor: #f8f8f0;\n}\n.cm-s-pastel-on-dark .CodeMirror-activeline-background { background: rgba(255, 255, 255, 0.031); }\n.cm-s-pastel-on-dark .CodeMirror-matchingbracket {\n\tborder: 1px solid rgba(255,255,255,0.25);\n\tcolor: #8F938F !important;\n\tmargin: -1px -1px 0 -1px;\n}\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Railscasts\n    Author:     Ryan Bates (http://railscasts.com)\n\n    CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-codemirror)\n    Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)\n\n*/\n\n.cm-s-railscasts.CodeMirror {background: #2b2b2b; color: #f4f1ed;}\n.cm-s-railscasts div.CodeMirror-selected {background: #272935 !important;}\n.cm-s-railscasts .CodeMirror-gutters {background: #2b2b2b; border-right: 0px;}\n.cm-s-railscasts .CodeMirror-linenumber {color: #5a647e;}\n.cm-s-railscasts .CodeMirror-cursor {border-left: 1px solid #d4cfc9 !important;}\n\n.cm-s-railscasts span.cm-comment {color: #bc9458;}\n.cm-s-railscasts span.cm-atom {color: #b6b3eb;}\n.cm-s-railscasts span.cm-number {color: #b6b3eb;}\n\n.cm-s-railscasts span.cm-property, .cm-s-railscasts span.cm-attribute {color: #a5c261;}\n.cm-s-railscasts span.cm-keyword {color: #da4939;}\n.cm-s-railscasts span.cm-string {color: #ffc66d;}\n\n.cm-s-railscasts span.cm-variable {color: #a5c261;}\n.cm-s-railscasts span.cm-variable-2 {color: #6d9cbe;}\n.cm-s-railscasts span.cm-def {color: #cc7833;}\n.cm-s-railscasts span.cm-error {background: #da4939; color: #d4cfc9;}\n.cm-s-railscasts span.cm-bracket {color: #f4f1ed;}\n.cm-s-railscasts span.cm-tag {color: #da4939;}\n.cm-s-railscasts span.cm-link {color: #b6b3eb;}\n\n.cm-s-railscasts .CodeMirror-matchingbracket { text-decoration: underline; color: white !important;}\n.cm-s-railscasts .CodeMirror-activeline-background { background: #303040; }\n", ""]);
 
 // exports
 
@@ -71326,8 +70939,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./railscasts.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./railscasts.css");
+		module.hot.accept("!!../../css-loader/index.js!./rubyblue.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./rubyblue.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71345,7 +70958,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Railscasts\n    Author:     Ryan Bates (http://railscasts.com)\n\n    CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-codemirror)\n    Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)\n\n*/\n\n.cm-s-railscasts.CodeMirror {background: #2b2b2b; color: #f4f1ed;}\n.cm-s-railscasts div.CodeMirror-selected {background: #272935 !important;}\n.cm-s-railscasts .CodeMirror-gutters {background: #2b2b2b; border-right: 0px;}\n.cm-s-railscasts .CodeMirror-linenumber {color: #5a647e;}\n.cm-s-railscasts .CodeMirror-cursor {border-left: 1px solid #d4cfc9 !important;}\n\n.cm-s-railscasts span.cm-comment {color: #bc9458;}\n.cm-s-railscasts span.cm-atom {color: #b6b3eb;}\n.cm-s-railscasts span.cm-number {color: #b6b3eb;}\n\n.cm-s-railscasts span.cm-property, .cm-s-railscasts span.cm-attribute {color: #a5c261;}\n.cm-s-railscasts span.cm-keyword {color: #da4939;}\n.cm-s-railscasts span.cm-string {color: #ffc66d;}\n\n.cm-s-railscasts span.cm-variable {color: #a5c261;}\n.cm-s-railscasts span.cm-variable-2 {color: #6d9cbe;}\n.cm-s-railscasts span.cm-def {color: #cc7833;}\n.cm-s-railscasts span.cm-error {background: #da4939; color: #d4cfc9;}\n.cm-s-railscasts span.cm-bracket {color: #f4f1ed;}\n.cm-s-railscasts span.cm-tag {color: #da4939;}\n.cm-s-railscasts span.cm-link {color: #b6b3eb;}\n\n.cm-s-railscasts .CodeMirror-matchingbracket { text-decoration: underline; color: white !important;}\n.cm-s-railscasts .CodeMirror-activeline-background { background: #303040; }\n", ""]);
+exports.push([module.i, ".cm-s-rubyblue.CodeMirror { background: #112435; color: white; }\n.cm-s-rubyblue div.CodeMirror-selected { background: #38566F; }\n.cm-s-rubyblue .CodeMirror-line::selection, .cm-s-rubyblue .CodeMirror-line > span::selection, .cm-s-rubyblue .CodeMirror-line > span > span::selection { background: rgba(56, 86, 111, 0.99); }\n.cm-s-rubyblue .CodeMirror-line::-moz-selection, .cm-s-rubyblue .CodeMirror-line > span::-moz-selection, .cm-s-rubyblue .CodeMirror-line > span > span::-moz-selection { background: rgba(56, 86, 111, 0.99); }\n.cm-s-rubyblue .CodeMirror-gutters { background: #1F4661; border-right: 7px solid #3E7087; }\n.cm-s-rubyblue .CodeMirror-guttermarker { color: white; }\n.cm-s-rubyblue .CodeMirror-guttermarker-subtle { color: #3E7087; }\n.cm-s-rubyblue .CodeMirror-linenumber { color: white; }\n.cm-s-rubyblue .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-rubyblue span.cm-comment { color: #999; font-style:italic; line-height: 1em; }\n.cm-s-rubyblue span.cm-atom { color: #F4C20B; }\n.cm-s-rubyblue span.cm-number, .cm-s-rubyblue span.cm-attribute { color: #82C6E0; }\n.cm-s-rubyblue span.cm-keyword { color: #F0F; }\n.cm-s-rubyblue span.cm-string { color: #F08047; }\n.cm-s-rubyblue span.cm-meta { color: #F0F; }\n.cm-s-rubyblue span.cm-variable-2, .cm-s-rubyblue span.cm-tag { color: #7BD827; }\n.cm-s-rubyblue span.cm-variable-3, .cm-s-rubyblue span.cm-def, .cm-s-rubyblue span.cm-type { color: white; }\n.cm-s-rubyblue span.cm-bracket { color: #F0F; }\n.cm-s-rubyblue span.cm-link { color: #F4C20B; }\n.cm-s-rubyblue span.CodeMirror-matchingbracket { color:#F0F !important; }\n.cm-s-rubyblue span.cm-builtin, .cm-s-rubyblue span.cm-special { color: #FF9D00; }\n.cm-s-rubyblue span.cm-error { color: #AF2018; }\n\n.cm-s-rubyblue .CodeMirror-activeline-background { background: #173047; }\n", ""]);
 
 // exports
 
@@ -71371,8 +70984,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./rubyblue.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./rubyblue.css");
+		module.hot.accept("!!../../css-loader/index.js!./seti.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./seti.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71390,7 +71003,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".cm-s-rubyblue.CodeMirror { background: #112435; color: white; }\n.cm-s-rubyblue div.CodeMirror-selected { background: #38566F; }\n.cm-s-rubyblue .CodeMirror-line::selection, .cm-s-rubyblue .CodeMirror-line > span::selection, .cm-s-rubyblue .CodeMirror-line > span > span::selection { background: rgba(56, 86, 111, 0.99); }\n.cm-s-rubyblue .CodeMirror-line::-moz-selection, .cm-s-rubyblue .CodeMirror-line > span::-moz-selection, .cm-s-rubyblue .CodeMirror-line > span > span::-moz-selection { background: rgba(56, 86, 111, 0.99); }\n.cm-s-rubyblue .CodeMirror-gutters { background: #1F4661; border-right: 7px solid #3E7087; }\n.cm-s-rubyblue .CodeMirror-guttermarker { color: white; }\n.cm-s-rubyblue .CodeMirror-guttermarker-subtle { color: #3E7087; }\n.cm-s-rubyblue .CodeMirror-linenumber { color: white; }\n.cm-s-rubyblue .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-rubyblue span.cm-comment { color: #999; font-style:italic; line-height: 1em; }\n.cm-s-rubyblue span.cm-atom { color: #F4C20B; }\n.cm-s-rubyblue span.cm-number, .cm-s-rubyblue span.cm-attribute { color: #82C6E0; }\n.cm-s-rubyblue span.cm-keyword { color: #F0F; }\n.cm-s-rubyblue span.cm-string { color: #F08047; }\n.cm-s-rubyblue span.cm-meta { color: #F0F; }\n.cm-s-rubyblue span.cm-variable-2, .cm-s-rubyblue span.cm-tag { color: #7BD827; }\n.cm-s-rubyblue span.cm-variable-3, .cm-s-rubyblue span.cm-def, .cm-s-rubyblue span.cm-type { color: white; }\n.cm-s-rubyblue span.cm-bracket { color: #F0F; }\n.cm-s-rubyblue span.cm-link { color: #F4C20B; }\n.cm-s-rubyblue span.CodeMirror-matchingbracket { color:#F0F !important; }\n.cm-s-rubyblue span.cm-builtin, .cm-s-rubyblue span.cm-special { color: #FF9D00; }\n.cm-s-rubyblue span.cm-error { color: #AF2018; }\n\n.cm-s-rubyblue .CodeMirror-activeline-background { background: #173047; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       seti\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original seti color scheme by Jesse Weed (https://github.com/jesseweed/seti-syntax)\n\n*/\n\n\n.cm-s-seti.CodeMirror {\n  background-color: #151718 !important;\n  color: #CFD2D1 !important;\n  border: none;\n}\n.cm-s-seti .CodeMirror-gutters {\n  color: #404b53;\n  background-color: #0E1112;\n  border: none;\n}\n.cm-s-seti .CodeMirror-cursor { border-left: solid thin #f8f8f0; }\n.cm-s-seti .CodeMirror-linenumber { color: #6D8A88; }\n.cm-s-seti.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti .CodeMirror-line::selection, .cm-s-seti .CodeMirror-line > span::selection, .cm-s-seti .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti .CodeMirror-line::-moz-selection, .cm-s-seti .CodeMirror-line > span::-moz-selection, .cm-s-seti .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti span.cm-comment { color: #41535b; }\n.cm-s-seti span.cm-string, .cm-s-seti span.cm-string-2 { color: #55b5db; }\n.cm-s-seti span.cm-number { color: #cd3f45; }\n.cm-s-seti span.cm-variable { color: #55b5db; }\n.cm-s-seti span.cm-variable-2 { color: #a074c4; }\n.cm-s-seti span.cm-def { color: #55b5db; }\n.cm-s-seti span.cm-keyword { color: #ff79c6; }\n.cm-s-seti span.cm-operator { color: #9fca56; }\n.cm-s-seti span.cm-keyword { color: #e6cd69; }\n.cm-s-seti span.cm-atom { color: #cd3f45; }\n.cm-s-seti span.cm-meta { color: #55b5db; }\n.cm-s-seti span.cm-tag { color: #55b5db; }\n.cm-s-seti span.cm-attribute { color: #9fca56; }\n.cm-s-seti span.cm-qualifier { color: #9fca56; }\n.cm-s-seti span.cm-property { color: #a074c4; }\n.cm-s-seti span.cm-variable-3, .cm-s-seti span.cm-type { color: #9fca56; }\n.cm-s-seti span.cm-builtin { color: #9fca56; }\n.cm-s-seti .CodeMirror-activeline-background { background: #101213; }\n.cm-s-seti .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -71416,8 +71029,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./seti.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./seti.css");
+		module.hot.accept("!!../../css-loader/index.js!./solarized.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./solarized.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71435,7 +71048,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       seti\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original seti color scheme by Jesse Weed (https://github.com/jesseweed/seti-syntax)\n\n*/\n\n\n.cm-s-seti.CodeMirror {\n  background-color: #151718 !important;\n  color: #CFD2D1 !important;\n  border: none;\n}\n.cm-s-seti .CodeMirror-gutters {\n  color: #404b53;\n  background-color: #0E1112;\n  border: none;\n}\n.cm-s-seti .CodeMirror-cursor { border-left: solid thin #f8f8f0; }\n.cm-s-seti .CodeMirror-linenumber { color: #6D8A88; }\n.cm-s-seti.CodeMirror-focused div.CodeMirror-selected { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti .CodeMirror-line::selection, .cm-s-seti .CodeMirror-line > span::selection, .cm-s-seti .CodeMirror-line > span > span::selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti .CodeMirror-line::-moz-selection, .cm-s-seti .CodeMirror-line > span::-moz-selection, .cm-s-seti .CodeMirror-line > span > span::-moz-selection { background: rgba(255, 255, 255, 0.10); }\n.cm-s-seti span.cm-comment { color: #41535b; }\n.cm-s-seti span.cm-string, .cm-s-seti span.cm-string-2 { color: #55b5db; }\n.cm-s-seti span.cm-number { color: #cd3f45; }\n.cm-s-seti span.cm-variable { color: #55b5db; }\n.cm-s-seti span.cm-variable-2 { color: #a074c4; }\n.cm-s-seti span.cm-def { color: #55b5db; }\n.cm-s-seti span.cm-keyword { color: #ff79c6; }\n.cm-s-seti span.cm-operator { color: #9fca56; }\n.cm-s-seti span.cm-keyword { color: #e6cd69; }\n.cm-s-seti span.cm-atom { color: #cd3f45; }\n.cm-s-seti span.cm-meta { color: #55b5db; }\n.cm-s-seti span.cm-tag { color: #55b5db; }\n.cm-s-seti span.cm-attribute { color: #9fca56; }\n.cm-s-seti span.cm-qualifier { color: #9fca56; }\n.cm-s-seti span.cm-property { color: #a074c4; }\n.cm-s-seti span.cm-variable-3, .cm-s-seti span.cm-type { color: #9fca56; }\n.cm-s-seti span.cm-builtin { color: #9fca56; }\n.cm-s-seti .CodeMirror-activeline-background { background: #101213; }\n.cm-s-seti .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, "/*\nSolarized theme for code-mirror\nhttp://ethanschoonover.com/solarized\n*/\n\n/*\nSolarized color palette\nhttp://ethanschoonover.com/solarized/img/solarized-palette.png\n*/\n\n.solarized.base03 { color: #002b36; }\n.solarized.base02 { color: #073642; }\n.solarized.base01 { color: #586e75; }\n.solarized.base00 { color: #657b83; }\n.solarized.base0 { color: #839496; }\n.solarized.base1 { color: #93a1a1; }\n.solarized.base2 { color: #eee8d5; }\n.solarized.base3  { color: #fdf6e3; }\n.solarized.solar-yellow  { color: #b58900; }\n.solarized.solar-orange  { color: #cb4b16; }\n.solarized.solar-red { color: #dc322f; }\n.solarized.solar-magenta { color: #d33682; }\n.solarized.solar-violet  { color: #6c71c4; }\n.solarized.solar-blue { color: #268bd2; }\n.solarized.solar-cyan { color: #2aa198; }\n.solarized.solar-green { color: #859900; }\n\n/* Color scheme for code-mirror */\n\n.cm-s-solarized {\n  line-height: 1.45em;\n  color-profile: sRGB;\n  rendering-intent: auto;\n}\n.cm-s-solarized.cm-s-dark {\n  color: #839496;\n  background-color: #002b36;\n  text-shadow: #002b36 0 1px;\n}\n.cm-s-solarized.cm-s-light {\n  background-color: #fdf6e3;\n  color: #657b83;\n  text-shadow: #eee8d5 0 1px;\n}\n\n.cm-s-solarized .CodeMirror-widget {\n  text-shadow: none;\n}\n\n.cm-s-solarized .cm-header { color: #586e75; }\n.cm-s-solarized .cm-quote { color: #93a1a1; }\n\n.cm-s-solarized .cm-keyword { color: #cb4b16; }\n.cm-s-solarized .cm-atom { color: #d33682; }\n.cm-s-solarized .cm-number { color: #d33682; }\n.cm-s-solarized .cm-def { color: #2aa198; }\n\n.cm-s-solarized .cm-variable { color: #839496; }\n.cm-s-solarized .cm-variable-2 { color: #b58900; }\n.cm-s-solarized .cm-variable-3, .cm-s-solarized .cm-type { color: #6c71c4; }\n\n.cm-s-solarized .cm-property { color: #2aa198; }\n.cm-s-solarized .cm-operator { color: #6c71c4; }\n\n.cm-s-solarized .cm-comment { color: #586e75; font-style:italic; }\n\n.cm-s-solarized .cm-string { color: #859900; }\n.cm-s-solarized .cm-string-2 { color: #b58900; }\n\n.cm-s-solarized .cm-meta { color: #859900; }\n.cm-s-solarized .cm-qualifier { color: #b58900; }\n.cm-s-solarized .cm-builtin { color: #d33682; }\n.cm-s-solarized .cm-bracket { color: #cb4b16; }\n.cm-s-solarized .CodeMirror-matchingbracket { color: #859900; }\n.cm-s-solarized .CodeMirror-nonmatchingbracket { color: #dc322f; }\n.cm-s-solarized .cm-tag { color: #93a1a1; }\n.cm-s-solarized .cm-attribute { color: #2aa198; }\n.cm-s-solarized .cm-hr {\n  color: transparent;\n  border-top: 1px solid #586e75;\n  display: block;\n}\n.cm-s-solarized .cm-link { color: #93a1a1; cursor: pointer; }\n.cm-s-solarized .cm-special { color: #6c71c4; }\n.cm-s-solarized .cm-em {\n  color: #999;\n  text-decoration: underline;\n  text-decoration-style: dotted;\n}\n.cm-s-solarized .cm-strong { color: #eee; }\n.cm-s-solarized .cm-error,\n.cm-s-solarized .cm-invalidchar {\n  color: #586e75;\n  border-bottom: 1px dotted #dc322f;\n}\n\n.cm-s-solarized.cm-s-dark div.CodeMirror-selected { background: #073642; }\n.cm-s-solarized.cm-s-dark.CodeMirror ::selection { background: rgba(7, 54, 66, 0.99); }\n.cm-s-solarized.cm-s-dark .CodeMirror-line::-moz-selection, .cm-s-dark .CodeMirror-line > span::-moz-selection, .cm-s-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(7, 54, 66, 0.99); }\n\n.cm-s-solarized.cm-s-light div.CodeMirror-selected { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::selection, .cm-s-light .CodeMirror-line > span::selection, .cm-s-light .CodeMirror-line > span > span::selection { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::-moz-selection, .cm-s-ligh .CodeMirror-line > span::-moz-selection, .cm-s-ligh .CodeMirror-line > span > span::-moz-selection { background: #eee8d5; }\n\n/* Editor styling */\n\n\n\n/* Little shadow on the view-port of the buffer view */\n.cm-s-solarized.CodeMirror {\n  -moz-box-shadow: inset 7px 0 12px -6px #000;\n  -webkit-box-shadow: inset 7px 0 12px -6px #000;\n  box-shadow: inset 7px 0 12px -6px #000;\n}\n\n/* Remove gutter border */\n.cm-s-solarized .CodeMirror-gutters {\n  border-right: 0;\n}\n\n/* Gutter colors and line number styling based of color scheme (dark / light) */\n\n/* Dark */\n.cm-s-solarized.cm-s-dark .CodeMirror-gutters {\n  background-color: #073642;\n}\n\n.cm-s-solarized.cm-s-dark .CodeMirror-linenumber {\n  color: #586e75;\n  text-shadow: #021014 0 -1px;\n}\n\n/* Light */\n.cm-s-solarized.cm-s-light .CodeMirror-gutters {\n  background-color: #eee8d5;\n}\n\n.cm-s-solarized.cm-s-light .CodeMirror-linenumber {\n  color: #839496;\n}\n\n/* Common */\n.cm-s-solarized .CodeMirror-linenumber {\n  padding: 0 5px;\n}\n.cm-s-solarized .CodeMirror-guttermarker-subtle { color: #586e75; }\n.cm-s-solarized.cm-s-dark .CodeMirror-guttermarker { color: #ddd; }\n.cm-s-solarized.cm-s-light .CodeMirror-guttermarker { color: #cb4b16; }\n\n.cm-s-solarized .CodeMirror-gutter .CodeMirror-gutter-text {\n  color: #586e75;\n}\n\n/* Cursor */\n.cm-s-solarized .CodeMirror-cursor { border-left: 1px solid #819090; }\n\n/* Fat cursor */\n.cm-s-solarized.cm-s-light.cm-fat-cursor .CodeMirror-cursor { background: #77ee77; }\n.cm-s-solarized.cm-s-light .cm-animate-fat-cursor { background-color: #77ee77; }\n.cm-s-solarized.cm-s-dark.cm-fat-cursor .CodeMirror-cursor { background: #586e75; }\n.cm-s-solarized.cm-s-dark .cm-animate-fat-cursor { background-color: #586e75; }\n\n/* Active line */\n.cm-s-solarized.cm-s-dark .CodeMirror-activeline-background {\n  background: rgba(255, 255, 255, 0.06);\n}\n.cm-s-solarized.cm-s-light .CodeMirror-activeline-background {\n  background: rgba(0, 0, 0, 0.06);\n}\n", ""]);
 
 // exports
 
@@ -71461,8 +71074,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./shadowfox.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./shadowfox.css");
+		module.hot.accept("!!../../css-loader/index.js!./the-matrix.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./the-matrix.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71480,7 +71093,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       shadowfox\n    Author:     overdodactyl (http://github.com/overdodactyl)\n\n    Original shadowfox color scheme by Firefox\n\n*/\n\n.cm-s-shadowfox.CodeMirror { background: #2a2a2e; color: #b1b1b3; }\n.cm-s-shadowfox div.CodeMirror-selected { background: #353B48; }\n.cm-s-shadowfox .CodeMirror-line::selection, .cm-s-shadowfox .CodeMirror-line > span::selection, .cm-s-shadowfox .CodeMirror-line > span > span::selection { background: #353B48; }\n.cm-s-shadowfox .CodeMirror-line::-moz-selection, .cm-s-shadowfox .CodeMirror-line > span::-moz-selection, .cm-s-shadowfox .CodeMirror-line > span > span::-moz-selection { background: #353B48; }\n.cm-s-shadowfox .CodeMirror-gutters { background: #0c0c0d ; border-right: 1px solid #0c0c0d; }\n.cm-s-shadowfox .CodeMirror-guttermarker { color: #555; }\n.cm-s-shadowfox .CodeMirror-linenumber { color: #939393; }\n.cm-s-shadowfox .CodeMirror-cursor { border-left: 1px solid #fff; }\n\n.cm-s-shadowfox span.cm-comment { color: #939393; }\n.cm-s-shadowfox span.cm-atom { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-quote { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-builtin { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-attribute { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-keyword { color: #FF7DE9; }\n.cm-s-shadowfox span.cm-error { color: #FF7DE9; }\n\n.cm-s-shadowfox span.cm-number { color: #6B89FF; }\n.cm-s-shadowfox span.cm-string { color: #6B89FF; }\n.cm-s-shadowfox span.cm-string-2 { color: #6B89FF; }\n\n.cm-s-shadowfox span.cm-meta { color: #939393; }\n.cm-s-shadowfox span.cm-hr { color: #939393; }\n\n.cm-s-shadowfox span.cm-header { color: #75BFFF; }\n.cm-s-shadowfox span.cm-qualifier { color: #75BFFF; }\n.cm-s-shadowfox span.cm-variable-2 { color: #75BFFF; }\n\n.cm-s-shadowfox span.cm-property { color: #86DE74; }\n\n.cm-s-shadowfox span.cm-def { color: #75BFFF; }\n.cm-s-shadowfox span.cm-bracket { color: #75BFFF; }\n.cm-s-shadowfox span.cm-tag { color: #75BFFF; }\n.cm-s-shadowfox span.cm-link:visited { color: #75BFFF; }\n\n.cm-s-shadowfox span.cm-variable { color: #B98EFF; }\n.cm-s-shadowfox span.cm-variable-3 { color: #d7d7db; }\n.cm-s-shadowfox span.cm-link { color: #737373; }\n.cm-s-shadowfox span.cm-operator { color: #b1b1b3; }\n.cm-s-shadowfox span.cm-special { color: #d7d7db; }\n\n.cm-s-shadowfox .CodeMirror-activeline-background { background: rgba(185, 215, 253, .15) }\n.cm-s-shadowfox .CodeMirror-matchingbracket { outline: solid 1px rgba(255, 255, 255, .25); color: white !important; }\n", ""]);
+exports.push([module.i, ".cm-s-the-matrix.CodeMirror { background: #000000; color: #00FF00; }\n.cm-s-the-matrix div.CodeMirror-selected { background: #2D2D2D; }\n.cm-s-the-matrix .CodeMirror-line::selection, .cm-s-the-matrix .CodeMirror-line > span::selection, .cm-s-the-matrix .CodeMirror-line > span > span::selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-the-matrix .CodeMirror-line::-moz-selection, .cm-s-the-matrix .CodeMirror-line > span::-moz-selection, .cm-s-the-matrix .CodeMirror-line > span > span::-moz-selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-the-matrix .CodeMirror-gutters { background: #060; border-right: 2px solid #00FF00; }\n.cm-s-the-matrix .CodeMirror-guttermarker { color: #0f0; }\n.cm-s-the-matrix .CodeMirror-guttermarker-subtle { color: white; }\n.cm-s-the-matrix .CodeMirror-linenumber { color: #FFFFFF; }\n.cm-s-the-matrix .CodeMirror-cursor { border-left: 1px solid #00FF00; }\n\n.cm-s-the-matrix span.cm-keyword { color: #008803; font-weight: bold; }\n.cm-s-the-matrix span.cm-atom { color: #3FF; }\n.cm-s-the-matrix span.cm-number { color: #FFB94F; }\n.cm-s-the-matrix span.cm-def { color: #99C; }\n.cm-s-the-matrix span.cm-variable { color: #F6C; }\n.cm-s-the-matrix span.cm-variable-2 { color: #C6F; }\n.cm-s-the-matrix span.cm-variable-3, .cm-s-the-matrix span.cm-type { color: #96F; }\n.cm-s-the-matrix span.cm-property { color: #62FFA0; }\n.cm-s-the-matrix span.cm-operator { color: #999; }\n.cm-s-the-matrix span.cm-comment { color: #CCCCCC; }\n.cm-s-the-matrix span.cm-string { color: #39C; }\n.cm-s-the-matrix span.cm-meta { color: #C9F; }\n.cm-s-the-matrix span.cm-qualifier { color: #FFF700; }\n.cm-s-the-matrix span.cm-builtin { color: #30a; }\n.cm-s-the-matrix span.cm-bracket { color: #cc7; }\n.cm-s-the-matrix span.cm-tag { color: #FFBD40; }\n.cm-s-the-matrix span.cm-attribute { color: #FFF700; }\n.cm-s-the-matrix span.cm-error { color: #FF0000; }\n\n.cm-s-the-matrix .CodeMirror-activeline-background { background: #040; }\n", ""]);
 
 // exports
 
@@ -71506,8 +71119,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./solarized.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./solarized.css");
+		module.hot.accept("!!../../css-loader/index.js!./tomorrow-night-bright.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./tomorrow-night-bright.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71525,7 +71138,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\nSolarized theme for code-mirror\nhttp://ethanschoonover.com/solarized\n*/\n\n/*\nSolarized color palette\nhttp://ethanschoonover.com/solarized/img/solarized-palette.png\n*/\n\n.solarized.base03 { color: #002b36; }\n.solarized.base02 { color: #073642; }\n.solarized.base01 { color: #586e75; }\n.solarized.base00 { color: #657b83; }\n.solarized.base0 { color: #839496; }\n.solarized.base1 { color: #93a1a1; }\n.solarized.base2 { color: #eee8d5; }\n.solarized.base3  { color: #fdf6e3; }\n.solarized.solar-yellow  { color: #b58900; }\n.solarized.solar-orange  { color: #cb4b16; }\n.solarized.solar-red { color: #dc322f; }\n.solarized.solar-magenta { color: #d33682; }\n.solarized.solar-violet  { color: #6c71c4; }\n.solarized.solar-blue { color: #268bd2; }\n.solarized.solar-cyan { color: #2aa198; }\n.solarized.solar-green { color: #859900; }\n\n/* Color scheme for code-mirror */\n\n.cm-s-solarized {\n  line-height: 1.45em;\n  color-profile: sRGB;\n  rendering-intent: auto;\n}\n.cm-s-solarized.cm-s-dark {\n  color: #839496;\n  background-color: #002b36;\n  text-shadow: #002b36 0 1px;\n}\n.cm-s-solarized.cm-s-light {\n  background-color: #fdf6e3;\n  color: #657b83;\n  text-shadow: #eee8d5 0 1px;\n}\n\n.cm-s-solarized .CodeMirror-widget {\n  text-shadow: none;\n}\n\n.cm-s-solarized .cm-header { color: #586e75; }\n.cm-s-solarized .cm-quote { color: #93a1a1; }\n\n.cm-s-solarized .cm-keyword { color: #cb4b16; }\n.cm-s-solarized .cm-atom { color: #d33682; }\n.cm-s-solarized .cm-number { color: #d33682; }\n.cm-s-solarized .cm-def { color: #2aa198; }\n\n.cm-s-solarized .cm-variable { color: #839496; }\n.cm-s-solarized .cm-variable-2 { color: #b58900; }\n.cm-s-solarized .cm-variable-3, .cm-s-solarized .cm-type { color: #6c71c4; }\n\n.cm-s-solarized .cm-property { color: #2aa198; }\n.cm-s-solarized .cm-operator { color: #6c71c4; }\n\n.cm-s-solarized .cm-comment { color: #586e75; font-style:italic; }\n\n.cm-s-solarized .cm-string { color: #859900; }\n.cm-s-solarized .cm-string-2 { color: #b58900; }\n\n.cm-s-solarized .cm-meta { color: #859900; }\n.cm-s-solarized .cm-qualifier { color: #b58900; }\n.cm-s-solarized .cm-builtin { color: #d33682; }\n.cm-s-solarized .cm-bracket { color: #cb4b16; }\n.cm-s-solarized .CodeMirror-matchingbracket { color: #859900; }\n.cm-s-solarized .CodeMirror-nonmatchingbracket { color: #dc322f; }\n.cm-s-solarized .cm-tag { color: #93a1a1; }\n.cm-s-solarized .cm-attribute { color: #2aa198; }\n.cm-s-solarized .cm-hr {\n  color: transparent;\n  border-top: 1px solid #586e75;\n  display: block;\n}\n.cm-s-solarized .cm-link { color: #93a1a1; cursor: pointer; }\n.cm-s-solarized .cm-special { color: #6c71c4; }\n.cm-s-solarized .cm-em {\n  color: #999;\n  text-decoration: underline;\n  text-decoration-style: dotted;\n}\n.cm-s-solarized .cm-error,\n.cm-s-solarized .cm-invalidchar {\n  color: #586e75;\n  border-bottom: 1px dotted #dc322f;\n}\n\n.cm-s-solarized.cm-s-dark div.CodeMirror-selected { background: #073642; }\n.cm-s-solarized.cm-s-dark.CodeMirror ::selection { background: rgba(7, 54, 66, 0.99); }\n.cm-s-solarized.cm-s-dark .CodeMirror-line::-moz-selection, .cm-s-dark .CodeMirror-line > span::-moz-selection, .cm-s-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(7, 54, 66, 0.99); }\n\n.cm-s-solarized.cm-s-light div.CodeMirror-selected { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::selection, .cm-s-light .CodeMirror-line > span::selection, .cm-s-light .CodeMirror-line > span > span::selection { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::-moz-selection, .cm-s-ligh .CodeMirror-line > span::-moz-selection, .cm-s-ligh .CodeMirror-line > span > span::-moz-selection { background: #eee8d5; }\n\n/* Editor styling */\n\n\n\n/* Little shadow on the view-port of the buffer view */\n.cm-s-solarized.CodeMirror {\n  -moz-box-shadow: inset 7px 0 12px -6px #000;\n  -webkit-box-shadow: inset 7px 0 12px -6px #000;\n  box-shadow: inset 7px 0 12px -6px #000;\n}\n\n/* Remove gutter border */\n.cm-s-solarized .CodeMirror-gutters {\n  border-right: 0;\n}\n\n/* Gutter colors and line number styling based of color scheme (dark / light) */\n\n/* Dark */\n.cm-s-solarized.cm-s-dark .CodeMirror-gutters {\n  background-color: #073642;\n}\n\n.cm-s-solarized.cm-s-dark .CodeMirror-linenumber {\n  color: #586e75;\n  text-shadow: #021014 0 -1px;\n}\n\n/* Light */\n.cm-s-solarized.cm-s-light .CodeMirror-gutters {\n  background-color: #eee8d5;\n}\n\n.cm-s-solarized.cm-s-light .CodeMirror-linenumber {\n  color: #839496;\n}\n\n/* Common */\n.cm-s-solarized .CodeMirror-linenumber {\n  padding: 0 5px;\n}\n.cm-s-solarized .CodeMirror-guttermarker-subtle { color: #586e75; }\n.cm-s-solarized.cm-s-dark .CodeMirror-guttermarker { color: #ddd; }\n.cm-s-solarized.cm-s-light .CodeMirror-guttermarker { color: #cb4b16; }\n\n.cm-s-solarized .CodeMirror-gutter .CodeMirror-gutter-text {\n  color: #586e75;\n}\n\n/* Cursor */\n.cm-s-solarized .CodeMirror-cursor { border-left: 1px solid #819090; }\n\n/* Fat cursor */\n.cm-s-solarized.cm-s-light.cm-fat-cursor .CodeMirror-cursor { background: #77ee77; }\n.cm-s-solarized.cm-s-light .cm-animate-fat-cursor { background-color: #77ee77; }\n.cm-s-solarized.cm-s-dark.cm-fat-cursor .CodeMirror-cursor { background: #586e75; }\n.cm-s-solarized.cm-s-dark .cm-animate-fat-cursor { background-color: #586e75; }\n\n/* Active line */\n.cm-s-solarized.cm-s-dark .CodeMirror-activeline-background {\n  background: rgba(255, 255, 255, 0.06);\n}\n.cm-s-solarized.cm-s-light .CodeMirror-activeline-background {\n  background: rgba(0, 0, 0, 0.06);\n}\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Tomorrow Night - Bright\n    Author:     Chris Kempson\n\n    Port done by Gerard Braad <me@gbraad.nl>\n\n*/\n\n.cm-s-tomorrow-night-bright.CodeMirror { background: #000000; color: #eaeaea; }\n.cm-s-tomorrow-night-bright div.CodeMirror-selected { background: #424242; }\n.cm-s-tomorrow-night-bright .CodeMirror-gutters { background: #000000; border-right: 0px; }\n.cm-s-tomorrow-night-bright .CodeMirror-guttermarker { color: #e78c45; }\n.cm-s-tomorrow-night-bright .CodeMirror-guttermarker-subtle { color: #777; }\n.cm-s-tomorrow-night-bright .CodeMirror-linenumber { color: #424242; }\n.cm-s-tomorrow-night-bright .CodeMirror-cursor { border-left: 1px solid #6A6A6A; }\n\n.cm-s-tomorrow-night-bright span.cm-comment { color: #d27b53; }\n.cm-s-tomorrow-night-bright span.cm-atom { color: #a16a94; }\n.cm-s-tomorrow-night-bright span.cm-number { color: #a16a94; }\n\n.cm-s-tomorrow-night-bright span.cm-property, .cm-s-tomorrow-night-bright span.cm-attribute { color: #99cc99; }\n.cm-s-tomorrow-night-bright span.cm-keyword { color: #d54e53; }\n.cm-s-tomorrow-night-bright span.cm-string { color: #e7c547; }\n\n.cm-s-tomorrow-night-bright span.cm-variable { color: #b9ca4a; }\n.cm-s-tomorrow-night-bright span.cm-variable-2 { color: #7aa6da; }\n.cm-s-tomorrow-night-bright span.cm-def { color: #e78c45; }\n.cm-s-tomorrow-night-bright span.cm-bracket { color: #eaeaea; }\n.cm-s-tomorrow-night-bright span.cm-tag { color: #d54e53; }\n.cm-s-tomorrow-night-bright span.cm-link { color: #a16a94; }\n.cm-s-tomorrow-night-bright span.cm-error { background: #d54e53; color: #6A6A6A; }\n\n.cm-s-tomorrow-night-bright .CodeMirror-activeline-background { background: #2a2a2a; }\n.cm-s-tomorrow-night-bright .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -71551,8 +71164,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./the-matrix.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./the-matrix.css");
+		module.hot.accept("!!../../css-loader/index.js!./tomorrow-night-eighties.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./tomorrow-night-eighties.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71570,7 +71183,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".cm-s-the-matrix.CodeMirror { background: #000000; color: #00FF00; }\n.cm-s-the-matrix div.CodeMirror-selected { background: #2D2D2D; }\n.cm-s-the-matrix .CodeMirror-line::selection, .cm-s-the-matrix .CodeMirror-line > span::selection, .cm-s-the-matrix .CodeMirror-line > span > span::selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-the-matrix .CodeMirror-line::-moz-selection, .cm-s-the-matrix .CodeMirror-line > span::-moz-selection, .cm-s-the-matrix .CodeMirror-line > span > span::-moz-selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-the-matrix .CodeMirror-gutters { background: #060; border-right: 2px solid #00FF00; }\n.cm-s-the-matrix .CodeMirror-guttermarker { color: #0f0; }\n.cm-s-the-matrix .CodeMirror-guttermarker-subtle { color: white; }\n.cm-s-the-matrix .CodeMirror-linenumber { color: #FFFFFF; }\n.cm-s-the-matrix .CodeMirror-cursor { border-left: 1px solid #00FF00; }\n\n.cm-s-the-matrix span.cm-keyword { color: #008803; font-weight: bold; }\n.cm-s-the-matrix span.cm-atom { color: #3FF; }\n.cm-s-the-matrix span.cm-number { color: #FFB94F; }\n.cm-s-the-matrix span.cm-def { color: #99C; }\n.cm-s-the-matrix span.cm-variable { color: #F6C; }\n.cm-s-the-matrix span.cm-variable-2 { color: #C6F; }\n.cm-s-the-matrix span.cm-variable-3, .cm-s-the-matrix span.cm-type { color: #96F; }\n.cm-s-the-matrix span.cm-property { color: #62FFA0; }\n.cm-s-the-matrix span.cm-operator { color: #999; }\n.cm-s-the-matrix span.cm-comment { color: #CCCCCC; }\n.cm-s-the-matrix span.cm-string { color: #39C; }\n.cm-s-the-matrix span.cm-meta { color: #C9F; }\n.cm-s-the-matrix span.cm-qualifier { color: #FFF700; }\n.cm-s-the-matrix span.cm-builtin { color: #30a; }\n.cm-s-the-matrix span.cm-bracket { color: #cc7; }\n.cm-s-the-matrix span.cm-tag { color: #FFBD40; }\n.cm-s-the-matrix span.cm-attribute { color: #FFF700; }\n.cm-s-the-matrix span.cm-error { color: #FF0000; }\n\n.cm-s-the-matrix .CodeMirror-activeline-background { background: #040; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       Tomorrow Night - Eighties\n    Author:     Chris Kempson\n\n    CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-codemirror)\n    Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)\n\n*/\n\n.cm-s-tomorrow-night-eighties.CodeMirror { background: #000000; color: #CCCCCC; }\n.cm-s-tomorrow-night-eighties div.CodeMirror-selected { background: #2D2D2D; }\n.cm-s-tomorrow-night-eighties .CodeMirror-line::selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span::selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span > span::selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-tomorrow-night-eighties .CodeMirror-line::-moz-selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span::-moz-selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span > span::-moz-selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-tomorrow-night-eighties .CodeMirror-gutters { background: #000000; border-right: 0px; }\n.cm-s-tomorrow-night-eighties .CodeMirror-guttermarker { color: #f2777a; }\n.cm-s-tomorrow-night-eighties .CodeMirror-guttermarker-subtle { color: #777; }\n.cm-s-tomorrow-night-eighties .CodeMirror-linenumber { color: #515151; }\n.cm-s-tomorrow-night-eighties .CodeMirror-cursor { border-left: 1px solid #6A6A6A; }\n\n.cm-s-tomorrow-night-eighties span.cm-comment { color: #d27b53; }\n.cm-s-tomorrow-night-eighties span.cm-atom { color: #a16a94; }\n.cm-s-tomorrow-night-eighties span.cm-number { color: #a16a94; }\n\n.cm-s-tomorrow-night-eighties span.cm-property, .cm-s-tomorrow-night-eighties span.cm-attribute { color: #99cc99; }\n.cm-s-tomorrow-night-eighties span.cm-keyword { color: #f2777a; }\n.cm-s-tomorrow-night-eighties span.cm-string { color: #ffcc66; }\n\n.cm-s-tomorrow-night-eighties span.cm-variable { color: #99cc99; }\n.cm-s-tomorrow-night-eighties span.cm-variable-2 { color: #6699cc; }\n.cm-s-tomorrow-night-eighties span.cm-def { color: #f99157; }\n.cm-s-tomorrow-night-eighties span.cm-bracket { color: #CCCCCC; }\n.cm-s-tomorrow-night-eighties span.cm-tag { color: #f2777a; }\n.cm-s-tomorrow-night-eighties span.cm-link { color: #a16a94; }\n.cm-s-tomorrow-night-eighties span.cm-error { background: #f2777a; color: #6A6A6A; }\n\n.cm-s-tomorrow-night-eighties .CodeMirror-activeline-background { background: #343600; }\n.cm-s-tomorrow-night-eighties .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
 
 // exports
 
@@ -71596,8 +71209,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./tomorrow-night-bright.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./tomorrow-night-bright.css");
+		module.hot.accept("!!../../css-loader/index.js!./ttcn.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./ttcn.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71615,7 +71228,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Tomorrow Night - Bright\n    Author:     Chris Kempson\n\n    Port done by Gerard Braad <me@gbraad.nl>\n\n*/\n\n.cm-s-tomorrow-night-bright.CodeMirror { background: #000000; color: #eaeaea; }\n.cm-s-tomorrow-night-bright div.CodeMirror-selected { background: #424242; }\n.cm-s-tomorrow-night-bright .CodeMirror-gutters { background: #000000; border-right: 0px; }\n.cm-s-tomorrow-night-bright .CodeMirror-guttermarker { color: #e78c45; }\n.cm-s-tomorrow-night-bright .CodeMirror-guttermarker-subtle { color: #777; }\n.cm-s-tomorrow-night-bright .CodeMirror-linenumber { color: #424242; }\n.cm-s-tomorrow-night-bright .CodeMirror-cursor { border-left: 1px solid #6A6A6A; }\n\n.cm-s-tomorrow-night-bright span.cm-comment { color: #d27b53; }\n.cm-s-tomorrow-night-bright span.cm-atom { color: #a16a94; }\n.cm-s-tomorrow-night-bright span.cm-number { color: #a16a94; }\n\n.cm-s-tomorrow-night-bright span.cm-property, .cm-s-tomorrow-night-bright span.cm-attribute { color: #99cc99; }\n.cm-s-tomorrow-night-bright span.cm-keyword { color: #d54e53; }\n.cm-s-tomorrow-night-bright span.cm-string { color: #e7c547; }\n\n.cm-s-tomorrow-night-bright span.cm-variable { color: #b9ca4a; }\n.cm-s-tomorrow-night-bright span.cm-variable-2 { color: #7aa6da; }\n.cm-s-tomorrow-night-bright span.cm-def { color: #e78c45; }\n.cm-s-tomorrow-night-bright span.cm-bracket { color: #eaeaea; }\n.cm-s-tomorrow-night-bright span.cm-tag { color: #d54e53; }\n.cm-s-tomorrow-night-bright span.cm-link { color: #a16a94; }\n.cm-s-tomorrow-night-bright span.cm-error { background: #d54e53; color: #6A6A6A; }\n\n.cm-s-tomorrow-night-bright .CodeMirror-activeline-background { background: #2a2a2a; }\n.cm-s-tomorrow-night-bright .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, ".cm-s-ttcn .cm-quote { color: #090; }\n.cm-s-ttcn .cm-negative { color: #d44; }\n.cm-s-ttcn .cm-positive { color: #292; }\n.cm-s-ttcn .cm-header, .cm-strong { font-weight: bold; }\n.cm-s-ttcn .cm-em { font-style: italic; }\n.cm-s-ttcn .cm-link { text-decoration: underline; }\n.cm-s-ttcn .cm-strikethrough { text-decoration: line-through; }\n.cm-s-ttcn .cm-header { color: #00f; font-weight: bold; }\n\n.cm-s-ttcn .cm-atom { color: #219; }\n.cm-s-ttcn .cm-attribute { color: #00c; }\n.cm-s-ttcn .cm-bracket { color: #997; }\n.cm-s-ttcn .cm-comment { color: #333333; }\n.cm-s-ttcn .cm-def { color: #00f; }\n.cm-s-ttcn .cm-em { font-style: italic; }\n.cm-s-ttcn .cm-error { color: #f00; }\n.cm-s-ttcn .cm-hr { color: #999; }\n.cm-s-ttcn .cm-invalidchar { color: #f00; }\n.cm-s-ttcn .cm-keyword { font-weight:bold; }\n.cm-s-ttcn .cm-link { color: #00c; text-decoration: underline; }\n.cm-s-ttcn .cm-meta { color: #555; }\n.cm-s-ttcn .cm-negative { color: #d44; }\n.cm-s-ttcn .cm-positive { color: #292; }\n.cm-s-ttcn .cm-qualifier { color: #555; }\n.cm-s-ttcn .cm-strikethrough { text-decoration: line-through; }\n.cm-s-ttcn .cm-string { color: #006400; }\n.cm-s-ttcn .cm-string-2 { color: #f50; }\n.cm-s-ttcn .cm-strong { font-weight: bold; }\n.cm-s-ttcn .cm-tag { color: #170; }\n.cm-s-ttcn .cm-variable { color: #8B2252; }\n.cm-s-ttcn .cm-variable-2 { color: #05a; }\n.cm-s-ttcn .cm-variable-3, .cm-s-ttcn .cm-type { color: #085; }\n\n.cm-s-ttcn .cm-invalidchar { color: #f00; }\n\n/* ASN */\n.cm-s-ttcn .cm-accessTypes,\n.cm-s-ttcn .cm-compareTypes { color: #27408B; }\n.cm-s-ttcn .cm-cmipVerbs { color: #8B2252; }\n.cm-s-ttcn .cm-modifier { color:#D2691E; }\n.cm-s-ttcn .cm-status { color:#8B4545; }\n.cm-s-ttcn .cm-storage { color:#A020F0; }\n.cm-s-ttcn .cm-tags { color:#006400; }\n\n/* CFG */\n.cm-s-ttcn .cm-externalCommands { color: #8B4545; font-weight:bold; }\n.cm-s-ttcn .cm-fileNCtrlMaskOptions,\n.cm-s-ttcn .cm-sectionTitle { color: #2E8B57; font-weight:bold; }\n\n/* TTCN */\n.cm-s-ttcn .cm-booleanConsts,\n.cm-s-ttcn .cm-otherConsts,\n.cm-s-ttcn .cm-verdictConsts { color: #006400; }\n.cm-s-ttcn .cm-configOps,\n.cm-s-ttcn .cm-functionOps,\n.cm-s-ttcn .cm-portOps,\n.cm-s-ttcn .cm-sutOps,\n.cm-s-ttcn .cm-timerOps,\n.cm-s-ttcn .cm-verdictOps { color: #0000FF; }\n.cm-s-ttcn .cm-preprocessor,\n.cm-s-ttcn .cm-templateMatch,\n.cm-s-ttcn .cm-ttcn3Macros { color: #27408B; }\n.cm-s-ttcn .cm-types { color: #A52A2A; font-weight:bold; }\n.cm-s-ttcn .cm-visibilityModifiers { font-weight:bold; }\n", ""]);
 
 // exports
 
@@ -71641,8 +71254,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./tomorrow-night-eighties.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./tomorrow-night-eighties.css");
+		module.hot.accept("!!../../css-loader/index.js!./twilight.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./twilight.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71660,7 +71273,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\n\n    Name:       Tomorrow Night - Eighties\n    Author:     Chris Kempson\n\n    CodeMirror template by Jan T. Sott (https://github.com/idleberg/base16-codemirror)\n    Original Base16 color scheme by Chris Kempson (https://github.com/chriskempson/base16)\n\n*/\n\n.cm-s-tomorrow-night-eighties.CodeMirror { background: #000000; color: #CCCCCC; }\n.cm-s-tomorrow-night-eighties div.CodeMirror-selected { background: #2D2D2D; }\n.cm-s-tomorrow-night-eighties .CodeMirror-line::selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span::selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span > span::selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-tomorrow-night-eighties .CodeMirror-line::-moz-selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span::-moz-selection, .cm-s-tomorrow-night-eighties .CodeMirror-line > span > span::-moz-selection { background: rgba(45, 45, 45, 0.99); }\n.cm-s-tomorrow-night-eighties .CodeMirror-gutters { background: #000000; border-right: 0px; }\n.cm-s-tomorrow-night-eighties .CodeMirror-guttermarker { color: #f2777a; }\n.cm-s-tomorrow-night-eighties .CodeMirror-guttermarker-subtle { color: #777; }\n.cm-s-tomorrow-night-eighties .CodeMirror-linenumber { color: #515151; }\n.cm-s-tomorrow-night-eighties .CodeMirror-cursor { border-left: 1px solid #6A6A6A; }\n\n.cm-s-tomorrow-night-eighties span.cm-comment { color: #d27b53; }\n.cm-s-tomorrow-night-eighties span.cm-atom { color: #a16a94; }\n.cm-s-tomorrow-night-eighties span.cm-number { color: #a16a94; }\n\n.cm-s-tomorrow-night-eighties span.cm-property, .cm-s-tomorrow-night-eighties span.cm-attribute { color: #99cc99; }\n.cm-s-tomorrow-night-eighties span.cm-keyword { color: #f2777a; }\n.cm-s-tomorrow-night-eighties span.cm-string { color: #ffcc66; }\n\n.cm-s-tomorrow-night-eighties span.cm-variable { color: #99cc99; }\n.cm-s-tomorrow-night-eighties span.cm-variable-2 { color: #6699cc; }\n.cm-s-tomorrow-night-eighties span.cm-def { color: #f99157; }\n.cm-s-tomorrow-night-eighties span.cm-bracket { color: #CCCCCC; }\n.cm-s-tomorrow-night-eighties span.cm-tag { color: #f2777a; }\n.cm-s-tomorrow-night-eighties span.cm-link { color: #a16a94; }\n.cm-s-tomorrow-night-eighties span.cm-error { background: #f2777a; color: #6A6A6A; }\n\n.cm-s-tomorrow-night-eighties .CodeMirror-activeline-background { background: #343600; }\n.cm-s-tomorrow-night-eighties .CodeMirror-matchingbracket { text-decoration: underline; color: white !important; }\n", ""]);
+exports.push([module.i, ".cm-s-twilight.CodeMirror { background: #141414; color: #f7f7f7; } /**/\n.cm-s-twilight div.CodeMirror-selected { background: #323232; } /**/\n.cm-s-twilight .CodeMirror-line::selection, .cm-s-twilight .CodeMirror-line > span::selection, .cm-s-twilight .CodeMirror-line > span > span::selection { background: rgba(50, 50, 50, 0.99); }\n.cm-s-twilight .CodeMirror-line::-moz-selection, .cm-s-twilight .CodeMirror-line > span::-moz-selection, .cm-s-twilight .CodeMirror-line > span > span::-moz-selection { background: rgba(50, 50, 50, 0.99); }\n\n.cm-s-twilight .CodeMirror-gutters { background: #222; border-right: 1px solid #aaa; }\n.cm-s-twilight .CodeMirror-guttermarker { color: white; }\n.cm-s-twilight .CodeMirror-guttermarker-subtle { color: #aaa; }\n.cm-s-twilight .CodeMirror-linenumber { color: #aaa; }\n.cm-s-twilight .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-twilight .cm-keyword { color: #f9ee98; } /**/\n.cm-s-twilight .cm-atom { color: #FC0; }\n.cm-s-twilight .cm-number { color:  #ca7841; } /**/\n.cm-s-twilight .cm-def { color: #8DA6CE; }\n.cm-s-twilight span.cm-variable-2, .cm-s-twilight span.cm-tag { color: #607392; } /**/\n.cm-s-twilight span.cm-variable-3, .cm-s-twilight span.cm-def, .cm-s-twilight span.cm-type { color: #607392; } /**/\n.cm-s-twilight .cm-operator { color: #cda869; } /**/\n.cm-s-twilight .cm-comment { color:#777; font-style:italic; font-weight:normal; } /**/\n.cm-s-twilight .cm-string { color:#8f9d6a; font-style:italic; } /**/\n.cm-s-twilight .cm-string-2 { color:#bd6b18; } /*?*/\n.cm-s-twilight .cm-meta { background-color:#141414; color:#f7f7f7; } /*?*/\n.cm-s-twilight .cm-builtin { color: #cda869; } /*?*/\n.cm-s-twilight .cm-tag { color: #997643; } /**/\n.cm-s-twilight .cm-attribute { color: #d6bb6d; } /*?*/\n.cm-s-twilight .cm-header { color: #FF6400; }\n.cm-s-twilight .cm-hr { color: #AEAEAE; }\n.cm-s-twilight .cm-link { color:#ad9361; font-style:italic; text-decoration:none; } /**/\n.cm-s-twilight .cm-error { border-bottom: 1px solid red; }\n\n.cm-s-twilight .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-twilight .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
 
 // exports
 
@@ -71686,8 +71299,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./ttcn.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./ttcn.css");
+		module.hot.accept("!!../../css-loader/index.js!./vibrant-ink.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./vibrant-ink.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71705,7 +71318,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".cm-s-ttcn .cm-quote { color: #090; }\n.cm-s-ttcn .cm-negative { color: #d44; }\n.cm-s-ttcn .cm-positive { color: #292; }\n.cm-s-ttcn .cm-header, .cm-strong { font-weight: bold; }\n.cm-s-ttcn .cm-em { font-style: italic; }\n.cm-s-ttcn .cm-link { text-decoration: underline; }\n.cm-s-ttcn .cm-strikethrough { text-decoration: line-through; }\n.cm-s-ttcn .cm-header { color: #00f; font-weight: bold; }\n\n.cm-s-ttcn .cm-atom { color: #219; }\n.cm-s-ttcn .cm-attribute { color: #00c; }\n.cm-s-ttcn .cm-bracket { color: #997; }\n.cm-s-ttcn .cm-comment { color: #333333; }\n.cm-s-ttcn .cm-def { color: #00f; }\n.cm-s-ttcn .cm-em { font-style: italic; }\n.cm-s-ttcn .cm-error { color: #f00; }\n.cm-s-ttcn .cm-hr { color: #999; }\n.cm-s-ttcn .cm-invalidchar { color: #f00; }\n.cm-s-ttcn .cm-keyword { font-weight:bold; }\n.cm-s-ttcn .cm-link { color: #00c; text-decoration: underline; }\n.cm-s-ttcn .cm-meta { color: #555; }\n.cm-s-ttcn .cm-negative { color: #d44; }\n.cm-s-ttcn .cm-positive { color: #292; }\n.cm-s-ttcn .cm-qualifier { color: #555; }\n.cm-s-ttcn .cm-strikethrough { text-decoration: line-through; }\n.cm-s-ttcn .cm-string { color: #006400; }\n.cm-s-ttcn .cm-string-2 { color: #f50; }\n.cm-s-ttcn .cm-strong { font-weight: bold; }\n.cm-s-ttcn .cm-tag { color: #170; }\n.cm-s-ttcn .cm-variable { color: #8B2252; }\n.cm-s-ttcn .cm-variable-2 { color: #05a; }\n.cm-s-ttcn .cm-variable-3, .cm-s-ttcn .cm-type { color: #085; }\n\n.cm-s-ttcn .cm-invalidchar { color: #f00; }\n\n/* ASN */\n.cm-s-ttcn .cm-accessTypes,\n.cm-s-ttcn .cm-compareTypes { color: #27408B; }\n.cm-s-ttcn .cm-cmipVerbs { color: #8B2252; }\n.cm-s-ttcn .cm-modifier { color:#D2691E; }\n.cm-s-ttcn .cm-status { color:#8B4545; }\n.cm-s-ttcn .cm-storage { color:#A020F0; }\n.cm-s-ttcn .cm-tags { color:#006400; }\n\n/* CFG */\n.cm-s-ttcn .cm-externalCommands { color: #8B4545; font-weight:bold; }\n.cm-s-ttcn .cm-fileNCtrlMaskOptions,\n.cm-s-ttcn .cm-sectionTitle { color: #2E8B57; font-weight:bold; }\n\n/* TTCN */\n.cm-s-ttcn .cm-booleanConsts,\n.cm-s-ttcn .cm-otherConsts,\n.cm-s-ttcn .cm-verdictConsts { color: #006400; }\n.cm-s-ttcn .cm-configOps,\n.cm-s-ttcn .cm-functionOps,\n.cm-s-ttcn .cm-portOps,\n.cm-s-ttcn .cm-sutOps,\n.cm-s-ttcn .cm-timerOps,\n.cm-s-ttcn .cm-verdictOps { color: #0000FF; }\n.cm-s-ttcn .cm-preprocessor,\n.cm-s-ttcn .cm-templateMatch,\n.cm-s-ttcn .cm-ttcn3Macros { color: #27408B; }\n.cm-s-ttcn .cm-types { color: #A52A2A; font-weight:bold; }\n.cm-s-ttcn .cm-visibilityModifiers { font-weight:bold; }\n", ""]);
+exports.push([module.i, "/* Taken from the popular Visual Studio Vibrant Ink Schema */\n\n.cm-s-vibrant-ink.CodeMirror { background: black; color: white; }\n.cm-s-vibrant-ink div.CodeMirror-selected { background: #35493c; }\n.cm-s-vibrant-ink .CodeMirror-line::selection, .cm-s-vibrant-ink .CodeMirror-line > span::selection, .cm-s-vibrant-ink .CodeMirror-line > span > span::selection { background: rgba(53, 73, 60, 0.99); }\n.cm-s-vibrant-ink .CodeMirror-line::-moz-selection, .cm-s-vibrant-ink .CodeMirror-line > span::-moz-selection, .cm-s-vibrant-ink .CodeMirror-line > span > span::-moz-selection { background: rgba(53, 73, 60, 0.99); }\n\n.cm-s-vibrant-ink .CodeMirror-gutters { background: #002240; border-right: 1px solid #aaa; }\n.cm-s-vibrant-ink .CodeMirror-guttermarker { color: white; }\n.cm-s-vibrant-ink .CodeMirror-guttermarker-subtle { color: #d0d0d0; }\n.cm-s-vibrant-ink .CodeMirror-linenumber { color: #d0d0d0; }\n.cm-s-vibrant-ink .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-vibrant-ink .cm-keyword { color: #CC7832; }\n.cm-s-vibrant-ink .cm-atom { color: #FC0; }\n.cm-s-vibrant-ink .cm-number { color:  #FFEE98; }\n.cm-s-vibrant-ink .cm-def { color: #8DA6CE; }\n.cm-s-vibrant-ink span.cm-variable-2, .cm-s-vibrant span.cm-tag { color: #FFC66D; }\n.cm-s-vibrant-ink span.cm-variable-3, .cm-s-vibrant span.cm-def, .cm-s-vibrant span.cm-type { color: #FFC66D; }\n.cm-s-vibrant-ink .cm-operator { color: #888; }\n.cm-s-vibrant-ink .cm-comment { color: gray; font-weight: bold; }\n.cm-s-vibrant-ink .cm-string { color:  #A5C25C; }\n.cm-s-vibrant-ink .cm-string-2 { color: red; }\n.cm-s-vibrant-ink .cm-meta { color: #D8FA3C; }\n.cm-s-vibrant-ink .cm-builtin { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-tag { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-attribute { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-header { color: #FF6400; }\n.cm-s-vibrant-ink .cm-hr { color: #AEAEAE; }\n.cm-s-vibrant-ink .cm-link { color: blue; }\n.cm-s-vibrant-ink .cm-error { border-bottom: 1px solid red; }\n\n.cm-s-vibrant-ink .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-vibrant-ink .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
 
 // exports
 
@@ -71731,8 +71344,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./twilight.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./twilight.css");
+		module.hot.accept("!!../../css-loader/index.js!./xq-dark.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./xq-dark.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71750,7 +71363,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, ".cm-s-twilight.CodeMirror { background: #141414; color: #f7f7f7; } /**/\n.cm-s-twilight div.CodeMirror-selected { background: #323232; } /**/\n.cm-s-twilight .CodeMirror-line::selection, .cm-s-twilight .CodeMirror-line > span::selection, .cm-s-twilight .CodeMirror-line > span > span::selection { background: rgba(50, 50, 50, 0.99); }\n.cm-s-twilight .CodeMirror-line::-moz-selection, .cm-s-twilight .CodeMirror-line > span::-moz-selection, .cm-s-twilight .CodeMirror-line > span > span::-moz-selection { background: rgba(50, 50, 50, 0.99); }\n\n.cm-s-twilight .CodeMirror-gutters { background: #222; border-right: 1px solid #aaa; }\n.cm-s-twilight .CodeMirror-guttermarker { color: white; }\n.cm-s-twilight .CodeMirror-guttermarker-subtle { color: #aaa; }\n.cm-s-twilight .CodeMirror-linenumber { color: #aaa; }\n.cm-s-twilight .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-twilight .cm-keyword { color: #f9ee98; } /**/\n.cm-s-twilight .cm-atom { color: #FC0; }\n.cm-s-twilight .cm-number { color:  #ca7841; } /**/\n.cm-s-twilight .cm-def { color: #8DA6CE; }\n.cm-s-twilight span.cm-variable-2, .cm-s-twilight span.cm-tag { color: #607392; } /**/\n.cm-s-twilight span.cm-variable-3, .cm-s-twilight span.cm-def, .cm-s-twilight span.cm-type { color: #607392; } /**/\n.cm-s-twilight .cm-operator { color: #cda869; } /**/\n.cm-s-twilight .cm-comment { color:#777; font-style:italic; font-weight:normal; } /**/\n.cm-s-twilight .cm-string { color:#8f9d6a; font-style:italic; } /**/\n.cm-s-twilight .cm-string-2 { color:#bd6b18; } /*?*/\n.cm-s-twilight .cm-meta { background-color:#141414; color:#f7f7f7; } /*?*/\n.cm-s-twilight .cm-builtin { color: #cda869; } /*?*/\n.cm-s-twilight .cm-tag { color: #997643; } /**/\n.cm-s-twilight .cm-attribute { color: #d6bb6d; } /*?*/\n.cm-s-twilight .cm-header { color: #FF6400; }\n.cm-s-twilight .cm-hr { color: #AEAEAE; }\n.cm-s-twilight .cm-link { color:#ad9361; font-style:italic; text-decoration:none; } /**/\n.cm-s-twilight .cm-error { border-bottom: 1px solid red; }\n\n.cm-s-twilight .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-twilight .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
+exports.push([module.i, "/*\nCopyright (C) 2011 by MarkLogic Corporation\nAuthor: Mike Brevoort <mike@brevoort.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n*/\n.cm-s-xq-dark.CodeMirror { background: #0a001f; color: #f8f8f8; }\n.cm-s-xq-dark div.CodeMirror-selected { background: #27007A; }\n.cm-s-xq-dark .CodeMirror-line::selection, .cm-s-xq-dark .CodeMirror-line > span::selection, .cm-s-xq-dark .CodeMirror-line > span > span::selection { background: rgba(39, 0, 122, 0.99); }\n.cm-s-xq-dark .CodeMirror-line::-moz-selection, .cm-s-xq-dark .CodeMirror-line > span::-moz-selection, .cm-s-xq-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(39, 0, 122, 0.99); }\n.cm-s-xq-dark .CodeMirror-gutters { background: #0a001f; border-right: 1px solid #aaa; }\n.cm-s-xq-dark .CodeMirror-guttermarker { color: #FFBD40; }\n.cm-s-xq-dark .CodeMirror-guttermarker-subtle { color: #f8f8f8; }\n.cm-s-xq-dark .CodeMirror-linenumber { color: #f8f8f8; }\n.cm-s-xq-dark .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-xq-dark span.cm-keyword { color: #FFBD40; }\n.cm-s-xq-dark span.cm-atom { color: #6C8CD5; }\n.cm-s-xq-dark span.cm-number { color: #164; }\n.cm-s-xq-dark span.cm-def { color: #FFF; text-decoration:underline; }\n.cm-s-xq-dark span.cm-variable { color: #FFF; }\n.cm-s-xq-dark span.cm-variable-2 { color: #EEE; }\n.cm-s-xq-dark span.cm-variable-3, .cm-s-xq-dark span.cm-type { color: #DDD; }\n.cm-s-xq-dark span.cm-property {}\n.cm-s-xq-dark span.cm-operator {}\n.cm-s-xq-dark span.cm-comment { color: gray; }\n.cm-s-xq-dark span.cm-string { color: #9FEE00; }\n.cm-s-xq-dark span.cm-meta { color: yellow; }\n.cm-s-xq-dark span.cm-qualifier { color: #FFF700; }\n.cm-s-xq-dark span.cm-builtin { color: #30a; }\n.cm-s-xq-dark span.cm-bracket { color: #cc7; }\n.cm-s-xq-dark span.cm-tag { color: #FFBD40; }\n.cm-s-xq-dark span.cm-attribute { color: #FFF700; }\n.cm-s-xq-dark span.cm-error { color: #f00; }\n\n.cm-s-xq-dark .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-xq-dark .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
 
 // exports
 
@@ -71776,8 +71389,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./vibrant-ink.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./vibrant-ink.css");
+		module.hot.accept("!!../../css-loader/index.js!./xq-light.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./xq-light.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71795,7 +71408,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/* Taken from the popular Visual Studio Vibrant Ink Schema */\n\n.cm-s-vibrant-ink.CodeMirror { background: black; color: white; }\n.cm-s-vibrant-ink div.CodeMirror-selected { background: #35493c; }\n.cm-s-vibrant-ink .CodeMirror-line::selection, .cm-s-vibrant-ink .CodeMirror-line > span::selection, .cm-s-vibrant-ink .CodeMirror-line > span > span::selection { background: rgba(53, 73, 60, 0.99); }\n.cm-s-vibrant-ink .CodeMirror-line::-moz-selection, .cm-s-vibrant-ink .CodeMirror-line > span::-moz-selection, .cm-s-vibrant-ink .CodeMirror-line > span > span::-moz-selection { background: rgba(53, 73, 60, 0.99); }\n\n.cm-s-vibrant-ink .CodeMirror-gutters { background: #002240; border-right: 1px solid #aaa; }\n.cm-s-vibrant-ink .CodeMirror-guttermarker { color: white; }\n.cm-s-vibrant-ink .CodeMirror-guttermarker-subtle { color: #d0d0d0; }\n.cm-s-vibrant-ink .CodeMirror-linenumber { color: #d0d0d0; }\n.cm-s-vibrant-ink .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-vibrant-ink .cm-keyword { color: #CC7832; }\n.cm-s-vibrant-ink .cm-atom { color: #FC0; }\n.cm-s-vibrant-ink .cm-number { color:  #FFEE98; }\n.cm-s-vibrant-ink .cm-def { color: #8DA6CE; }\n.cm-s-vibrant-ink span.cm-variable-2, .cm-s-vibrant span.cm-tag { color: #FFC66D; }\n.cm-s-vibrant-ink span.cm-variable-3, .cm-s-vibrant span.cm-def, .cm-s-vibrant span.cm-type { color: #FFC66D; }\n.cm-s-vibrant-ink .cm-operator { color: #888; }\n.cm-s-vibrant-ink .cm-comment { color: gray; font-weight: bold; }\n.cm-s-vibrant-ink .cm-string { color:  #A5C25C; }\n.cm-s-vibrant-ink .cm-string-2 { color: red; }\n.cm-s-vibrant-ink .cm-meta { color: #D8FA3C; }\n.cm-s-vibrant-ink .cm-builtin { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-tag { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-attribute { color: #8DA6CE; }\n.cm-s-vibrant-ink .cm-header { color: #FF6400; }\n.cm-s-vibrant-ink .cm-hr { color: #AEAEAE; }\n.cm-s-vibrant-ink .cm-link { color: blue; }\n.cm-s-vibrant-ink .cm-error { border-bottom: 1px solid red; }\n\n.cm-s-vibrant-ink .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-vibrant-ink .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
+exports.push([module.i, "/*\nCopyright (C) 2011 by MarkLogic Corporation\nAuthor: Mike Brevoort <mike@brevoort.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n*/\n.cm-s-xq-light span.cm-keyword { line-height: 1em; font-weight: bold; color: #5A5CAD; }\n.cm-s-xq-light span.cm-atom { color: #6C8CD5; }\n.cm-s-xq-light span.cm-number { color: #164; }\n.cm-s-xq-light span.cm-def { text-decoration:underline; }\n.cm-s-xq-light span.cm-variable { color: black; }\n.cm-s-xq-light span.cm-variable-2 { color:black; }\n.cm-s-xq-light span.cm-variable-3, .cm-s-xq-light span.cm-type { color: black; }\n.cm-s-xq-light span.cm-property {}\n.cm-s-xq-light span.cm-operator {}\n.cm-s-xq-light span.cm-comment { color: #0080FF; font-style: italic; }\n.cm-s-xq-light span.cm-string { color: red; }\n.cm-s-xq-light span.cm-meta { color: yellow; }\n.cm-s-xq-light span.cm-qualifier { color: grey; }\n.cm-s-xq-light span.cm-builtin { color: #7EA656; }\n.cm-s-xq-light span.cm-bracket { color: #cc7; }\n.cm-s-xq-light span.cm-tag { color: #3F7F7F; }\n.cm-s-xq-light span.cm-attribute { color: #7F007F; }\n.cm-s-xq-light span.cm-error { color: #f00; }\n\n.cm-s-xq-light .CodeMirror-activeline-background { background: #e8f2ff; }\n.cm-s-xq-light .CodeMirror-matchingbracket { outline:1px solid grey;color:black !important;background:yellow; }\n", ""]);
 
 // exports
 
@@ -71821,8 +71434,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./xq-dark.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./xq-dark.css");
+		module.hot.accept("!!../../css-loader/index.js!./yeti.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./yeti.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71840,7 +71453,7 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\nCopyright (C) 2011 by MarkLogic Corporation\nAuthor: Mike Brevoort <mike@brevoort.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n*/\n.cm-s-xq-dark.CodeMirror { background: #0a001f; color: #f8f8f8; }\n.cm-s-xq-dark div.CodeMirror-selected { background: #27007A; }\n.cm-s-xq-dark .CodeMirror-line::selection, .cm-s-xq-dark .CodeMirror-line > span::selection, .cm-s-xq-dark .CodeMirror-line > span > span::selection { background: rgba(39, 0, 122, 0.99); }\n.cm-s-xq-dark .CodeMirror-line::-moz-selection, .cm-s-xq-dark .CodeMirror-line > span::-moz-selection, .cm-s-xq-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(39, 0, 122, 0.99); }\n.cm-s-xq-dark .CodeMirror-gutters { background: #0a001f; border-right: 1px solid #aaa; }\n.cm-s-xq-dark .CodeMirror-guttermarker { color: #FFBD40; }\n.cm-s-xq-dark .CodeMirror-guttermarker-subtle { color: #f8f8f8; }\n.cm-s-xq-dark .CodeMirror-linenumber { color: #f8f8f8; }\n.cm-s-xq-dark .CodeMirror-cursor { border-left: 1px solid white; }\n\n.cm-s-xq-dark span.cm-keyword { color: #FFBD40; }\n.cm-s-xq-dark span.cm-atom { color: #6C8CD5; }\n.cm-s-xq-dark span.cm-number { color: #164; }\n.cm-s-xq-dark span.cm-def { color: #FFF; text-decoration:underline; }\n.cm-s-xq-dark span.cm-variable { color: #FFF; }\n.cm-s-xq-dark span.cm-variable-2 { color: #EEE; }\n.cm-s-xq-dark span.cm-variable-3, .cm-s-xq-dark span.cm-type { color: #DDD; }\n.cm-s-xq-dark span.cm-property {}\n.cm-s-xq-dark span.cm-operator {}\n.cm-s-xq-dark span.cm-comment { color: gray; }\n.cm-s-xq-dark span.cm-string { color: #9FEE00; }\n.cm-s-xq-dark span.cm-meta { color: yellow; }\n.cm-s-xq-dark span.cm-qualifier { color: #FFF700; }\n.cm-s-xq-dark span.cm-builtin { color: #30a; }\n.cm-s-xq-dark span.cm-bracket { color: #cc7; }\n.cm-s-xq-dark span.cm-tag { color: #FFBD40; }\n.cm-s-xq-dark span.cm-attribute { color: #FFF700; }\n.cm-s-xq-dark span.cm-error { color: #f00; }\n\n.cm-s-xq-dark .CodeMirror-activeline-background { background: #27282E; }\n.cm-s-xq-dark .CodeMirror-matchingbracket { outline:1px solid grey; color:white !important; }\n", ""]);
+exports.push([module.i, "/*\n\n    Name:       yeti\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original yeti color scheme by Jesse Weed (https://github.com/jesseweed/yeti-syntax)\n\n*/\n\n\n.cm-s-yeti.CodeMirror {\n  background-color: #ECEAE8 !important;\n  color: #d1c9c0 !important;\n  border: none;\n}\n\n.cm-s-yeti .CodeMirror-gutters {\n  color: #adaba6;\n  background-color: #E5E1DB;\n  border: none;\n}\n.cm-s-yeti .CodeMirror-cursor { border-left: solid thin #d1c9c0; }\n.cm-s-yeti .CodeMirror-linenumber { color: #adaba6; }\n.cm-s-yeti.CodeMirror-focused div.CodeMirror-selected { background: #DCD8D2; }\n.cm-s-yeti .CodeMirror-line::selection, .cm-s-yeti .CodeMirror-line > span::selection, .cm-s-yeti .CodeMirror-line > span > span::selection { background: #DCD8D2; }\n.cm-s-yeti .CodeMirror-line::-moz-selection, .cm-s-yeti .CodeMirror-line > span::-moz-selection, .cm-s-yeti .CodeMirror-line > span > span::-moz-selection { background: #DCD8D2; }\n.cm-s-yeti span.cm-comment { color: #d4c8be; }\n.cm-s-yeti span.cm-string, .cm-s-yeti span.cm-string-2 { color: #96c0d8; }\n.cm-s-yeti span.cm-number { color: #a074c4; }\n.cm-s-yeti span.cm-variable { color: #55b5db; }\n.cm-s-yeti span.cm-variable-2 { color: #a074c4; }\n.cm-s-yeti span.cm-def { color: #55b5db; }\n.cm-s-yeti span.cm-operator { color: #9fb96e; }\n.cm-s-yeti span.cm-keyword { color: #9fb96e; }\n.cm-s-yeti span.cm-atom { color: #a074c4; }\n.cm-s-yeti span.cm-meta { color: #96c0d8; }\n.cm-s-yeti span.cm-tag { color: #96c0d8; }\n.cm-s-yeti span.cm-attribute { color: #9fb96e; }\n.cm-s-yeti span.cm-qualifier { color: #96c0d8; }\n.cm-s-yeti span.cm-property { color: #a074c4; }\n.cm-s-yeti span.cm-builtin { color: #a074c4; }\n.cm-s-yeti span.cm-variable-3, .cm-s-yeti span.cm-type { color: #96c0d8; }\n.cm-s-yeti .CodeMirror-activeline-background { background: #E7E4E0; }\n.cm-s-yeti .CodeMirror-matchingbracket { text-decoration: underline; }\n", ""]);
 
 // exports
 
@@ -71866,8 +71479,8 @@ if(content.locals) module.exports = content.locals;
 if(false) {
 	// When the styles change, update the <style> tags
 	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./xq-light.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./xq-light.css");
+		module.hot.accept("!!../../css-loader/index.js!./zenburn.css", function() {
+			var newContent = require("!!../../css-loader/index.js!./zenburn.css");
 			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
 			update(newContent);
 		});
@@ -71885,103 +71498,13 @@ exports = module.exports = __webpack_require__(3)(false);
 
 
 // module
-exports.push([module.i, "/*\nCopyright (C) 2011 by MarkLogic Corporation\nAuthor: Mike Brevoort <mike@brevoort.com>\n\nPermission is hereby granted, free of charge, to any person obtaining a copy\nof this software and associated documentation files (the \"Software\"), to deal\nin the Software without restriction, including without limitation the rights\nto use, copy, modify, merge, publish, distribute, sublicense, and/or sell\ncopies of the Software, and to permit persons to whom the Software is\nfurnished to do so, subject to the following conditions:\n\nThe above copyright notice and this permission notice shall be included in\nall copies or substantial portions of the Software.\n\nTHE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\nIMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\nFITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\nAUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\nLIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\nOUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN\nTHE SOFTWARE.\n*/\n.cm-s-xq-light span.cm-keyword { line-height: 1em; font-weight: bold; color: #5A5CAD; }\n.cm-s-xq-light span.cm-atom { color: #6C8CD5; }\n.cm-s-xq-light span.cm-number { color: #164; }\n.cm-s-xq-light span.cm-def { text-decoration:underline; }\n.cm-s-xq-light span.cm-variable { color: black; }\n.cm-s-xq-light span.cm-variable-2 { color:black; }\n.cm-s-xq-light span.cm-variable-3, .cm-s-xq-light span.cm-type { color: black; }\n.cm-s-xq-light span.cm-property {}\n.cm-s-xq-light span.cm-operator {}\n.cm-s-xq-light span.cm-comment { color: #0080FF; font-style: italic; }\n.cm-s-xq-light span.cm-string { color: red; }\n.cm-s-xq-light span.cm-meta { color: yellow; }\n.cm-s-xq-light span.cm-qualifier { color: grey; }\n.cm-s-xq-light span.cm-builtin { color: #7EA656; }\n.cm-s-xq-light span.cm-bracket { color: #cc7; }\n.cm-s-xq-light span.cm-tag { color: #3F7F7F; }\n.cm-s-xq-light span.cm-attribute { color: #7F007F; }\n.cm-s-xq-light span.cm-error { color: #f00; }\n\n.cm-s-xq-light .CodeMirror-activeline-background { background: #e8f2ff; }\n.cm-s-xq-light .CodeMirror-matchingbracket { outline:1px solid grey;color:black !important;background:yellow; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 333 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(334);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./yeti.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./yeti.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 334 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
-exports.push([module.i, "/*\n\n    Name:       yeti\n    Author:     Michael Kaminsky (http://github.com/mkaminsky11)\n\n    Original yeti color scheme by Jesse Weed (https://github.com/jesseweed/yeti-syntax)\n\n*/\n\n\n.cm-s-yeti.CodeMirror {\n  background-color: #ECEAE8 !important;\n  color: #d1c9c0 !important;\n  border: none;\n}\n\n.cm-s-yeti .CodeMirror-gutters {\n  color: #adaba6;\n  background-color: #E5E1DB;\n  border: none;\n}\n.cm-s-yeti .CodeMirror-cursor { border-left: solid thin #d1c9c0; }\n.cm-s-yeti .CodeMirror-linenumber { color: #adaba6; }\n.cm-s-yeti.CodeMirror-focused div.CodeMirror-selected { background: #DCD8D2; }\n.cm-s-yeti .CodeMirror-line::selection, .cm-s-yeti .CodeMirror-line > span::selection, .cm-s-yeti .CodeMirror-line > span > span::selection { background: #DCD8D2; }\n.cm-s-yeti .CodeMirror-line::-moz-selection, .cm-s-yeti .CodeMirror-line > span::-moz-selection, .cm-s-yeti .CodeMirror-line > span > span::-moz-selection { background: #DCD8D2; }\n.cm-s-yeti span.cm-comment { color: #d4c8be; }\n.cm-s-yeti span.cm-string, .cm-s-yeti span.cm-string-2 { color: #96c0d8; }\n.cm-s-yeti span.cm-number { color: #a074c4; }\n.cm-s-yeti span.cm-variable { color: #55b5db; }\n.cm-s-yeti span.cm-variable-2 { color: #a074c4; }\n.cm-s-yeti span.cm-def { color: #55b5db; }\n.cm-s-yeti span.cm-operator { color: #9fb96e; }\n.cm-s-yeti span.cm-keyword { color: #9fb96e; }\n.cm-s-yeti span.cm-atom { color: #a074c4; }\n.cm-s-yeti span.cm-meta { color: #96c0d8; }\n.cm-s-yeti span.cm-tag { color: #96c0d8; }\n.cm-s-yeti span.cm-attribute { color: #9fb96e; }\n.cm-s-yeti span.cm-qualifier { color: #96c0d8; }\n.cm-s-yeti span.cm-property { color: #a074c4; }\n.cm-s-yeti span.cm-builtin { color: #a074c4; }\n.cm-s-yeti span.cm-variable-3, .cm-s-yeti span.cm-type { color: #96c0d8; }\n.cm-s-yeti .CodeMirror-activeline-background { background: #E7E4E0; }\n.cm-s-yeti .CodeMirror-matchingbracket { text-decoration: underline; }\n", ""]);
-
-// exports
-
-
-/***/ }),
-/* 335 */
-/***/ (function(module, exports, __webpack_require__) {
-
-// style-loader: Adds some css to the DOM by adding a <style> tag
-
-// load the styles
-var content = __webpack_require__(336);
-if(typeof content === 'string') content = [[module.i, content, '']];
-// Prepare cssTransformation
-var transform;
-
-var options = {}
-options.transform = transform
-// add the styles to the DOM
-var update = __webpack_require__(4)(content, options);
-if(content.locals) module.exports = content.locals;
-// Hot Module Replacement
-if(false) {
-	// When the styles change, update the <style> tags
-	if(!content.locals) {
-		module.hot.accept("!!../../css-loader/index.js!./zenburn.css", function() {
-			var newContent = require("!!../../css-loader/index.js!./zenburn.css");
-			if(typeof newContent === 'string') newContent = [[module.id, newContent, '']];
-			update(newContent);
-		});
-	}
-	// When the module is disposed, remove the <style> tags
-	module.hot.dispose(function() { update(); });
-}
-
-/***/ }),
-/* 336 */
-/***/ (function(module, exports, __webpack_require__) {
-
-exports = module.exports = __webpack_require__(3)(false);
-// imports
-
-
-// module
 exports.push([module.i, "/**\n * \"\n *  Using Zenburn color palette from the Emacs Zenburn Theme\n *  https://github.com/bbatsov/zenburn-emacs/blob/master/zenburn-theme.el\n *\n *  Also using parts of https://github.com/xavi/coderay-lighttable-theme\n * \"\n * From: https://github.com/wisenomad/zenburn-lighttable-theme/blob/master/zenburn.css\n */\n\n.cm-s-zenburn .CodeMirror-gutters { background: #3f3f3f !important; }\n.cm-s-zenburn .CodeMirror-foldgutter-open, .CodeMirror-foldgutter-folded { color: #999; }\n.cm-s-zenburn .CodeMirror-cursor { border-left: 1px solid white; }\n.cm-s-zenburn { background-color: #3f3f3f; color: #dcdccc; }\n.cm-s-zenburn span.cm-builtin { color: #dcdccc; font-weight: bold; }\n.cm-s-zenburn span.cm-comment { color: #7f9f7f; }\n.cm-s-zenburn span.cm-keyword { color: #f0dfaf; font-weight: bold; }\n.cm-s-zenburn span.cm-atom { color: #bfebbf; }\n.cm-s-zenburn span.cm-def { color: #dcdccc; }\n.cm-s-zenburn span.cm-variable { color: #dfaf8f; }\n.cm-s-zenburn span.cm-variable-2 { color: #dcdccc; }\n.cm-s-zenburn span.cm-string { color: #cc9393; }\n.cm-s-zenburn span.cm-string-2 { color: #cc9393; }\n.cm-s-zenburn span.cm-number { color: #dcdccc; }\n.cm-s-zenburn span.cm-tag { color: #93e0e3; }\n.cm-s-zenburn span.cm-property { color: #dfaf8f; }\n.cm-s-zenburn span.cm-attribute { color: #dfaf8f; }\n.cm-s-zenburn span.cm-qualifier { color: #7cb8bb; }\n.cm-s-zenburn span.cm-meta { color: #f0dfaf; }\n.cm-s-zenburn span.cm-header { color: #f0efd0; }\n.cm-s-zenburn span.cm-operator { color: #f0efd0; }\n.cm-s-zenburn span.CodeMirror-matchingbracket { box-sizing: border-box; background: transparent; border-bottom: 1px solid; }\n.cm-s-zenburn span.CodeMirror-nonmatchingbracket { border-bottom: 1px solid; background: none; }\n.cm-s-zenburn .CodeMirror-activeline { background: #000000; }\n.cm-s-zenburn .CodeMirror-activeline-background { background: #000000; }\n.cm-s-zenburn div.CodeMirror-selected { background: #545454; }\n.cm-s-zenburn .CodeMirror-focused div.CodeMirror-selected { background: #4f4f4f; }\n", ""]);
 
 // exports
 
 
 /***/ }),
-/* 337 */
+/* 333 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -72001,6 +71524,10 @@ if (false) {
 }
 
 /***/ }),
+/* 334 */,
+/* 335 */,
+/* 336 */,
+/* 337 */,
 /* 338 */,
 /* 339 */,
 /* 340 */,
@@ -72010,19 +71537,15 @@ if (false) {
 /* 344 */,
 /* 345 */,
 /* 346 */,
-/* 347 */,
-/* 348 */,
-/* 349 */,
-/* 350 */,
-/* 351 */
+/* 347 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(352)
+var __vue_script__ = __webpack_require__(348)
 /* template */
-var __vue_template__ = __webpack_require__(353)
+var __vue_template__ = __webpack_require__(349)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -72061,7 +71584,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 352 */
+/* 348 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72109,7 +71632,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 353 */
+/* 349 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -72131,7 +71654,7 @@ if (false) {
 }
 
 /***/ }),
-/* 354 */
+/* 350 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72181,11 +71704,11 @@ var Token = function () {
 /* harmony default export */ __webpack_exports__["a"] = (Token);
 
 /***/ }),
-/* 355 */
+/* 351 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__token__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__token__ = __webpack_require__(350);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -72255,6 +71778,10 @@ var ListaTokens = function () {
 /* harmony default export */ __webpack_exports__["a"] = (ListaTokens);
 
 /***/ }),
+/* 352 */,
+/* 353 */,
+/* 354 */,
+/* 355 */,
 /* 356 */,
 /* 357 */,
 /* 358 */,
@@ -72378,18 +71905,14 @@ var ListaTokens = function () {
 /* 476 */,
 /* 477 */,
 /* 478 */,
-/* 479 */,
-/* 480 */,
-/* 481 */,
-/* 482 */,
-/* 483 */
+/* 479 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(484);
+module.exports = __webpack_require__(480);
 
 
 /***/ }),
-/* 484 */
+/* 480 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72399,16 +71922,16 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_vue__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_codemirror__ = __webpack_require__(125);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vue_codemirror___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2_vue_codemirror__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview__ = __webpack_require__(347);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3__components_scripts_code_preview__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items__ = __webpack_require__(485);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items__ = __webpack_require__(481);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4__components_scripts_tabla_items__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input__ = __webpack_require__(94);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_5__components_inputs_textarea_input__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_utils_modal__ = __webpack_require__(91);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__components_utils_modal___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_6__components_utils_modal__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__plugins_Validate__ = __webpack_require__(118);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__classes_codificacion_reglas_estandar__ = __webpack_require__(491);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__classes_codificacion_reglas_estandar__ = __webpack_require__(487);
 
 
 
@@ -72461,15 +71984,15 @@ new __WEBPACK_IMPORTED_MODULE_1_vue___default.a({
 });
 
 /***/ }),
-/* 485 */
+/* 481 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(486)
+var __vue_script__ = __webpack_require__(482)
 /* template */
-var __vue_template__ = __webpack_require__(490)
+var __vue_template__ = __webpack_require__(486)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -72508,7 +72031,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 486 */
+/* 482 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72517,7 +72040,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__inputs_textarea_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__inputs_textarea_input__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputs_text_input__ = __webpack_require__(88);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__inputs_text_input___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__inputs_text_input__);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fila_item__ = __webpack_require__(487);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fila_item__ = __webpack_require__(483);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__fila_item___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__fila_item__);
 //
 //
@@ -72550,15 +72073,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 487 */
+/* 483 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(1)
 /* script */
-var __vue_script__ = __webpack_require__(488)
+var __vue_script__ = __webpack_require__(484)
 /* template */
-var __vue_template__ = __webpack_require__(489)
+var __vue_template__ = __webpack_require__(485)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -72597,7 +72120,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 488 */
+/* 484 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -72679,7 +72202,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 489 */
+/* 485 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -72783,7 +72306,7 @@ if (false) {
 }
 
 /***/ }),
-/* 490 */
+/* 486 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -72835,13 +72358,13 @@ if (false) {
 }
 
 /***/ }),
-/* 491 */
+/* 487 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__analizador_lexico__ = __webpack_require__(492);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filtro_items__ = __webpack_require__(494);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__filtro_notaciones__ = __webpack_require__(495);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__analizador_lexico__ = __webpack_require__(488);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__filtro_items__ = __webpack_require__(490);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__filtro_notaciones__ = __webpack_require__(491);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -73099,13 +72622,13 @@ var ReglasEstandar = function () {
 /* harmony default export */ __webpack_exports__["a"] = (ReglasEstandar);
 
 /***/ }),
-/* 492 */
+/* 488 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__token__ = __webpack_require__(354);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tabla_identificadores__ = __webpack_require__(493);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lista_tokens__ = __webpack_require__(355);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__token__ = __webpack_require__(350);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__tabla_identificadores__ = __webpack_require__(489);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lista_tokens__ = __webpack_require__(351);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -73293,7 +72816,7 @@ var AnalizadorLexico = function () {
 /* harmony default export */ __webpack_exports__["a"] = (AnalizadorLexico);
 
 /***/ }),
-/* 493 */
+/* 489 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -73341,12 +72864,12 @@ var TablaIdentificadores = function () {
 /* harmony default export */ __webpack_exports__["a"] = (TablaIdentificadores);
 
 /***/ }),
-/* 494 */
+/* 490 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lista_tokens__ = __webpack_require__(355);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__token__ = __webpack_require__(354);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__lista_tokens__ = __webpack_require__(351);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__token__ = __webpack_require__(350);
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -73682,7 +73205,7 @@ var FiltroItems = function () {
 /* harmony default export */ __webpack_exports__["a"] = (FiltroItems);
 
 /***/ }),
-/* 495 */
+/* 491 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
