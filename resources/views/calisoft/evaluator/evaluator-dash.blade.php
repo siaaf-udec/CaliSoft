@@ -10,7 +10,7 @@
 
     
 @endcomponent
-@component('components.nav-dropdown', ['icon'=> 'fa fa-book','title'=>'estandares'])
+@component('components.nav-dropdown', ['icon'=> 'fa fa-book','title'=>'Estandares'])
     @component('components.nav-link', ['icon' => 'fa fa-book','link'=>route('estandar-codificacion'),'title' => 'Codificación'])
     @endcomponent
 @endcomponent

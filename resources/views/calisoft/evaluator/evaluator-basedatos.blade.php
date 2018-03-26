@@ -13,7 +13,7 @@
                         <code-preview url="{{$proyecto->sql->url}}" prefix="/api/sql/preview/" mode="text/x-sql"></code-preview>                  
                     </div>
                     <div class="col-md-6">
-                           <a href="/proyectos/{{$proyecto->sql->PK_id}}/analizesql"><button type="button"  class="btn green-jungle center-block">
+                           <a href="/proyectos/{{$proyecto->PK_id}}/analizesql"><button type="button"  class="btn green-jungle center-block">
                                     <i class="fa fa-arrow-circle-right"></i>
                                     Calificación Automatica
                                 </button></a> 

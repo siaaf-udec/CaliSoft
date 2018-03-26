@@ -50,4 +50,9 @@
         'link' => route('codificacion')
     ])
     @endcomponent
+    
+@endcomponent
+@component('components.nav-dropdown', ['icon'=> 'fa fa-book','title'=>'Estandares'])
+    @component('components.nav-link', ['icon' => 'fa fa-book','link'=>route('estandar-codificacion'),'title' => 'Codificación'])
+    @endcomponent
 @endcomponent

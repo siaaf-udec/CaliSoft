@@ -3345,10 +3345,8 @@ function updateHeightsInViewport(cm) {
 // Read and store the height of line widgets associated with the
 // given line.
 function updateWidgetHeight(line) {
-  if (line.widgets) { for (var i = 0; i < line.widgets.length; ++i) {
-    var w = line.widgets[i], parent = w.node.parentNode;
-    if (parent) { w.height = parent.offsetHeight; }
-  } }
+  if (line.widgets) { for (var i = 0; i < line.widgets.length; ++i)
+    { line.widgets[i].height = line.widgets[i].node.parentNode.offsetHeight; } }
 }
 
 // Compute the lines that are visible in a given viewport (defaults
@@ -7144,26 +7142,18 @@ function lookupKeyForEditor(cm, name, handle) {
 // for bound mouse clicks.
 
 var stopSeq = new Delayed;
-
 function dispatchKey(cm, name, e, handle) {
   var seq = cm.state.keySeq;
   if (seq) {
     if (isModifierKey(name)) { return "handled" }
-    if (/\'$/.test(name))
-      { cm.state.keySeq = null; }
-    else
-      { stopSeq.set(50, function () {
-        if (cm.state.keySeq == seq) {
-          cm.state.keySeq = null;
-          cm.display.input.reset();
-        }
-      }); }
-    if (dispatchKeyInner(cm, seq + " " + name, e, handle)) { return true }
+    stopSeq.set(50, function () {
+      if (cm.state.keySeq == seq) {
+        cm.state.keySeq = null;
+        cm.display.input.reset();
+      }
+    });
+    name = seq + " " + name;
   }
-  return dispatchKeyInner(cm, name, e, handle)
-}
-
-function dispatchKeyInner(cm, name, e, handle) {
   var result = lookupKeyForEditor(cm, name, handle);
 
   if (result == "multi")
@@ -7176,6 +7166,10 @@ function dispatchKeyInner(cm, name, e, handle) {
     restartBlink(cm);
   }
 
+  if (seq && !result && /\'$/.test(name)) {
+    e_preventDefault(e);
+    return true
+  }
   return !!result
 }
 
@@ -7687,7 +7681,6 @@ function defineOptions(CodeMirror) {
     clearCaches(cm);
     regChange(cm);
   }, true);
-
   option("lineSeparator", null, function (cm, val) {
     cm.doc.lineSep = val;
     if (!val) { return }
@@ -9728,7 +9721,7 @@ CodeMirror$1.fromTextArea = fromTextArea;
 
 addLegacyProps(CodeMirror$1);
 
-CodeMirror$1.version = "5.33.0";
+CodeMirror$1.version = "5.31.0";
 
 return CodeMirror$1;
 
@@ -28130,7 +28123,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/notifications.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\notifications.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28139,9 +28132,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-cb5abbe8", Component.options)
+    hotAPI.createRecord("data-v-407571dc", Component.options)
   } else {
-    hotAPI.reload("data-v-cb5abbe8", Component.options)
+    hotAPI.reload("data-v-407571dc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28298,7 +28291,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-creado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-creado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28307,9 +28300,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-10950002", Component.options)
+    hotAPI.createRecord("data-v-781b08f0", Component.options)
   } else {
-    hotAPI.reload("data-v-10950002", Component.options)
+    hotAPI.reload("data-v-781b08f0", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28376,7 +28369,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-10950002", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-781b08f0", module.exports)
   }
 }
 
@@ -28406,7 +28399,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/invitacion-recibida.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\invitacion-recibida.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28415,9 +28408,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-f34c2cb8", Component.options)
+    hotAPI.createRecord("data-v-0fe2322a", Component.options)
   } else {
-    hotAPI.reload("data-v-f34c2cb8", Component.options)
+    hotAPI.reload("data-v-0fe2322a", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28490,7 +28483,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-f34c2cb8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-0fe2322a", module.exports)
   }
 }
 
@@ -28520,7 +28513,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/invitacion-aceptada.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\invitacion-aceptada.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28529,9 +28522,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-76d9c1be", Component.options)
+    hotAPI.createRecord("data-v-00620a44", Component.options)
   } else {
-    hotAPI.reload("data-v-76d9c1be", Component.options)
+    hotAPI.reload("data-v-00620a44", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28602,7 +28595,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-76d9c1be", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-00620a44", module.exports)
   }
 }
 
@@ -28632,7 +28625,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/invitacion-rechazada.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\invitacion-rechazada.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28641,9 +28634,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0b6337b6", Component.options)
+    hotAPI.createRecord("data-v-9a380020", Component.options)
   } else {
-    hotAPI.reload("data-v-0b6337b6", Component.options)
+    hotAPI.reload("data-v-9a380020", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28714,7 +28707,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0b6337b6", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-9a380020", module.exports)
   }
 }
 
@@ -28744,7 +28737,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-denegado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-denegado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28753,9 +28746,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-4dbfad49", Component.options)
+    hotAPI.createRecord("data-v-c0a74162", Component.options)
   } else {
-    hotAPI.reload("data-v-4dbfad49", Component.options)
+    hotAPI.reload("data-v-c0a74162", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28825,7 +28818,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-4dbfad49", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-c0a74162", module.exports)
   }
 }
 
@@ -28855,7 +28848,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-asignado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-asignado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28864,9 +28857,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-d523338c", Component.options)
+    hotAPI.createRecord("data-v-3149cf80", Component.options)
   } else {
-    hotAPI.reload("data-v-d523338c", Component.options)
+    hotAPI.reload("data-v-3149cf80", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -28935,7 +28928,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-d523338c", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-3149cf80", module.exports)
   }
 }
 
@@ -28965,7 +28958,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/evaluador-asignado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\evaluador-asignado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -28974,9 +28967,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1ce8cdc8", Component.options)
+    hotAPI.createRecord("data-v-08925c82", Component.options)
   } else {
-    hotAPI.reload("data-v-1ce8cdc8", Component.options)
+    hotAPI.reload("data-v-08925c82", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29045,7 +29038,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1ce8cdc8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-08925c82", module.exports)
   }
 }
 
@@ -29075,7 +29068,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-aceptado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-aceptado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29084,9 +29077,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1bac69f1", Component.options)
+    hotAPI.createRecord("data-v-6d991bf7", Component.options)
   } else {
-    hotAPI.reload("data-v-1bac69f1", Component.options)
+    hotAPI.reload("data-v-6d991bf7", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29154,7 +29147,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1bac69f1", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6d991bf7", module.exports)
   }
 }
 
@@ -29184,7 +29177,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-evaluacion.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-evaluacion.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29193,9 +29186,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-686e2059", Component.options)
+    hotAPI.createRecord("data-v-1c132e42", Component.options)
   } else {
-    hotAPI.reload("data-v-686e2059", Component.options)
+    hotAPI.reload("data-v-1c132e42", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29264,7 +29257,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-686e2059", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1c132e42", module.exports)
   }
 }
 
@@ -29294,7 +29287,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/caso-prueba-creado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\caso-prueba-creado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29303,9 +29296,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-6743896a", Component.options)
+    hotAPI.createRecord("data-v-8ff06bf6", Component.options)
   } else {
-    hotAPI.reload("data-v-6743896a", Component.options)
+    hotAPI.reload("data-v-8ff06bf6", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29376,7 +29369,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-6743896a", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-8ff06bf6", module.exports)
   }
 }
 
@@ -29406,7 +29399,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/caso-prueba-enviado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\caso-prueba-enviado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29415,9 +29408,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-fcc650aa", Component.options)
+    hotAPI.createRecord("data-v-0b252031", Component.options)
   } else {
-    hotAPI.reload("data-v-fcc650aa", Component.options)
+    hotAPI.reload("data-v-0b252031", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29488,7 +29481,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-fcc650aa", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-0b252031", module.exports)
   }
 }
 
@@ -29518,7 +29511,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-completado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-completado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29527,9 +29520,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-94e8d328", Component.options)
+    hotAPI.createRecord("data-v-3f13def2", Component.options)
   } else {
-    hotAPI.reload("data-v-94e8d328", Component.options)
+    hotAPI.reload("data-v-3f13def2", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29597,7 +29590,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-94e8d328", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-3f13def2", module.exports)
   }
 }
 
@@ -29627,7 +29620,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/notifications/proyecto-activado.vue"
+Component.options.__file = "resources\\assets\\components\\notifications\\proyecto-activado.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -29636,9 +29629,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-2ddd5b79", Component.options)
+    hotAPI.createRecord("data-v-7fca0d7f", Component.options)
   } else {
-    hotAPI.reload("data-v-2ddd5b79", Component.options)
+    hotAPI.reload("data-v-7fca0d7f", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -29706,7 +29699,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-2ddd5b79", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-7fca0d7f", module.exports)
   }
 }
 
@@ -29820,7 +29813,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-cb5abbe8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-407571dc", module.exports)
   }
 }
 
@@ -30051,7 +30044,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     var A = kw("keyword a"), B = kw("keyword b"), C = kw("keyword c"), D = kw("keyword d");
     var operator = kw("operator"), atom = {type: "atom", style: "atom"};
 
-    return {
+    var jsKeywords = {
       "if": kw("if"), "while": A, "with": A, "else": B, "do": B, "try": B, "finally": B,
       "return": D, "break": D, "continue": D, "new": kw("new"), "delete": C, "void": C, "throw": C,
       "debugger": kw("debugger"), "var": kw("var"), "const": kw("var"), "let": kw("var"),
@@ -30063,6 +30056,35 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       "yield": C, "export": kw("export"), "import": kw("import"), "extends": C,
       "await": C
     };
+
+    // Extend the 'normal' keywords with the TypeScript language extensions
+    if (isTS) {
+      var type = {type: "variable", style: "type"};
+      var tsKeywords = {
+        // object-like things
+        "interface": kw("class"),
+        "implements": C,
+        "namespace": C,
+        "module": kw("module"),
+        "enum": kw("module"),
+
+        // scope modifiers
+        "public": kw("modifier"),
+        "private": kw("modifier"),
+        "protected": kw("modifier"),
+        "abstract": kw("modifier"),
+        "readonly": kw("modifier"),
+
+        // types
+        "string": type, "number": type, "boolean": type, "any": type
+      };
+
+      for (var attr in tsKeywords) {
+        jsKeywords[attr] = tsKeywords[attr];
+      }
+    }
+
+    return jsKeywords;
   }();
 
   var isOperatorChar = /[+\-*&%=<>!?|~^@]/;
@@ -30151,7 +30173,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
           var kw = keywords[word]
           return ret(kw.type, kw.style, word)
         }
-        if (word == "async" && stream.match(/^(\s|\/\*.*?\*\/)*[\(\w]/, false))
+        if (word == "async" && stream.match(/^\s*[\(\w]/, false))
           return ret("async", "keyword", word)
       }
       return ret("variable", "variable", word)
@@ -30308,10 +30330,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     }
   }
 
-  function isModifier(name) {
-    return name == "public" || name == "private" || name == "protected" || name == "abstract" || name == "readonly"
-  }
-
   // Combinators
 
   var defaultVars = {name: "this", next: {name: "arguments"}};
@@ -30368,20 +30386,13 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     }
     if (type == "function") return cont(functiondef);
     if (type == "for") return cont(pushlex("form"), forspec, statement, poplex);
-    if (type == "class" || (isTS && value == "interface")) { cx.marked = "keyword"; return cont(pushlex("form"), className, poplex); }
     if (type == "variable") {
       if (isTS && value == "type") {
         cx.marked = "keyword"
         return cont(typeexpr, expect("operator"), typeexpr, expect(";"));
-      } else if (isTS && value == "declare") {
+      } if (isTS && value == "declare") {
         cx.marked = "keyword"
         return cont(statement)
-      } else if (isTS && (value == "module" || value == "enum") && cx.stream.match(/^\s*\w/, false)) {
-        cx.marked = "keyword"
-        return cont(pushlex("form"), pattern, expect("{"), pushlex("}"), block, poplex, poplex)
-      } else if (isTS && value == "namespace") {
-        cx.marked = "keyword"
-        return cont(pushlex("form"), expression, block, poplex)
       } else {
         return cont(pushlex("stat"), maybelabel);
       }
@@ -30392,23 +30403,25 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "default") return cont(expect(":"));
     if (type == "catch") return cont(pushlex("form"), pushcontext, expect("("), funarg, expect(")"),
                                      statement, poplex, popcontext);
+    if (type == "class") return cont(pushlex("form"), className, poplex);
     if (type == "export") return cont(pushlex("stat"), afterExport, poplex);
     if (type == "import") return cont(pushlex("stat"), afterImport, poplex);
+    if (type == "module") return cont(pushlex("form"), pattern, expect("{"), pushlex("}"), block, poplex, poplex)
     if (type == "async") return cont(statement)
     if (value == "@") return cont(expression, statement)
     return pass(pushlex("stat"), expression, expect(";"), poplex);
   }
-  function expression(type, value) {
-    return expressionInner(type, value, false);
+  function expression(type) {
+    return expressionInner(type, false);
   }
-  function expressionNoComma(type, value) {
-    return expressionInner(type, value, true);
+  function expressionNoComma(type) {
+    return expressionInner(type, true);
   }
   function parenExpr(type) {
     if (type != "(") return pass()
     return cont(pushlex(")"), expression, expect(")"), poplex)
   }
-  function expressionInner(type, value, noComma) {
+  function expressionInner(type, noComma) {
     if (cx.state.fatArrowAt == cx.stream.start) {
       var body = noComma ? arrowBodyNoComma : arrowBody;
       if (type == "(") return cont(pushcontext, pushlex(")"), commasep(funarg, ")"), poplex, expect("=>"), body, popcontext);
@@ -30418,7 +30431,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     var maybeop = noComma ? maybeoperatorNoComma : maybeoperatorComma;
     if (atomicTypes.hasOwnProperty(type)) return cont(maybeop);
     if (type == "function") return cont(functiondef, maybeop);
-    if (type == "class" || (isTS && value == "interface")) { cx.marked = "keyword"; return cont(pushlex("form"), classExpression, poplex); }
+    if (type == "class") return cont(pushlex("form"), classExpression, poplex);
     if (type == "keyword c" || type == "async") return cont(noComma ? expressionNoComma : expression);
     if (type == "(") return cont(pushlex(")"), maybeexpression, expect(")"), poplex, maybeop);
     if (type == "operator" || type == "spread") return cont(noComma ? expressionNoComma : expression);
@@ -30443,8 +30456,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "=>") return cont(pushcontext, noComma ? arrowBodyNoComma : arrowBody, popcontext);
     if (type == "operator") {
       if (/\+\+|--/.test(value) || isTS && value == "!") return cont(me);
-      if (isTS && value == "<" && cx.stream.match(/^([^>]|<.*?>)*>\s*\(/, false))
-        return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, me);
       if (value == "?") return cont(expression, expect(":"), expr);
       return cont(expr);
     }
@@ -30516,11 +30527,10 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return cont(afterprop);
     } else if (type == "jsonld-keyword") {
       return cont(afterprop);
-    } else if (isTS && isModifier(value)) {
-      cx.marked = "keyword"
+    } else if (type == "modifier") {
       return cont(objprop)
     } else if (type == "[") {
-      return cont(expression, maybetype, expect("]"), afterprop);
+      return cont(expression, expect("]"), afterprop);
     } else if (type == "spread") {
       return cont(expressionNoComma, afterprop);
     } else if (value == "*") {
@@ -30572,18 +30582,6 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       if (value == "?") return cont(maybetype);
     }
   }
-  function mayberettype(type) {
-    if (isTS && type == ":") {
-      if (cx.stream.match(/^\s*\w+\s+is\b/, false)) return cont(expression, isKW, typeexpr)
-      else return cont(typeexpr)
-    }
-  }
-  function isKW(_, value) {
-    if (value == "is") {
-      cx.marked = "keyword"
-      return cont()
-    }
-  }
   function typeexpr(type, value) {
     if (type == "variable" || value == "void") {
       if (value == "keyof") {
@@ -30622,22 +30620,16 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, afterType)
     if (value == "|" || type == ".") return cont(typeexpr)
     if (type == "[") return cont(expect("]"), afterType)
-    if (value == "extends" || value == "implements") { cx.marked = "keyword"; return cont(typeexpr) }
+    if (value == "extends") return cont(typeexpr)
   }
   function maybeTypeArgs(_, value) {
     if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, afterType)
-  }
-  function typeparam() {
-    return pass(typeexpr, maybeTypeDefault)
-  }
-  function maybeTypeDefault(_, value) {
-    if (value == "=") return cont(typeexpr)
   }
   function vardef() {
     return pass(pattern, maybetype, maybeAssign, vardefCont);
   }
   function pattern(type, value) {
-    if (isTS && isModifier(value)) { cx.marked = "keyword"; return cont(pattern) }
+    if (type == "modifier") return cont(pattern)
     if (type == "variable") { register(value); return cont(); }
     if (type == "spread") return cont(pattern);
     if (type == "[") return contCommasep(pattern, "]");
@@ -30686,13 +30678,12 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
   function functiondef(type, value) {
     if (value == "*") {cx.marked = "keyword"; return cont(functiondef);}
     if (type == "variable") {register(value); return cont(functiondef);}
-    if (type == "(") return cont(pushcontext, pushlex(")"), commasep(funarg, ")"), poplex, mayberettype, statement, popcontext);
-    if (isTS && value == "<") return cont(pushlex(">"), commasep(typeparam, ">"), poplex, functiondef)
+    if (type == "(") return cont(pushcontext, pushlex(")"), commasep(funarg, ")"), poplex, maybetype, statement, popcontext);
+    if (isTS && value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, functiondef)
   }
   function funarg(type, value) {
     if (value == "@") cont(expression, funarg)
-    if (type == "spread") return cont(funarg);
-    if (isTS && isModifier(value)) { cx.marked = "keyword"; return cont(funarg); }
+    if (type == "spread" || type == "modifier") return cont(funarg);
     return pass(pattern, maybetype, maybeAssign);
   }
   function classExpression(type, value) {
@@ -30704,15 +30695,15 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
     if (type == "variable") {register(value); return cont(classNameAfter);}
   }
   function classNameAfter(type, value) {
-    if (value == "<") return cont(pushlex(">"), commasep(typeparam, ">"), poplex, classNameAfter)
+    if (value == "<") return cont(pushlex(">"), commasep(typeexpr, ">"), poplex, classNameAfter)
     if (value == "extends" || value == "implements" || (isTS && type == ","))
       return cont(isTS ? typeexpr : expression, classNameAfter);
     if (type == "{") return cont(pushlex("}"), classBody, poplex);
   }
   function classBody(type, value) {
-    if (type == "async" ||
+    if (type == "modifier" || type == "async" ||
         (type == "variable" &&
-         (value == "static" || value == "get" || value == "set" || (isTS && isModifier(value))) &&
+         (value == "static" || value == "get" || value == "set") &&
          cx.stream.match(/^\s+[\w$\xa1-\uffff]/, false))) {
       cx.marked = "keyword";
       return cont(classBody);
@@ -30722,7 +30713,7 @@ CodeMirror.defineMode("javascript", function(config, parserConfig) {
       return cont(isTS ? classfield : functiondef, classBody);
     }
     if (type == "[")
-      return cont(expression, maybetype, expect("]"), isTS ? classfield : functiondef, classBody)
+      return cont(expression, expect("]"), isTS ? classfield : functiondef, classBody)
     if (value == "*") {
       cx.marked = "keyword";
       return cont(classBody);
@@ -30965,9 +30956,9 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       return ret("qualifier", "qualifier");
     } else if (/[:;{}\[\]\(\)]/.test(ch)) {
       return ret(null, ch);
-    } else if (((ch == "u" || ch == "U") && stream.match(/rl(-prefix)?\(/i)) ||
-               ((ch == "d" || ch == "D") && stream.match("omain(", true, true)) ||
-               ((ch == "r" || ch == "R") && stream.match("egexp(", true, true))) {
+    } else if ((ch == "u" && stream.match(/rl(-prefix)?\(/)) ||
+               (ch == "d" && stream.match("omain(")) ||
+               (ch == "r" && stream.match("egexp("))) {
       stream.backUp(1);
       state.tokenize = tokenParenthesized;
       return ret("property", "word");
@@ -31050,16 +31041,16 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       return pushContext(state, stream, "block");
     } else if (type == "}" && state.context.prev) {
       return popContext(state);
-    } else if (supportsAtComponent && /@component/i.test(type)) {
+    } else if (supportsAtComponent && /@component/.test(type)) {
       return pushContext(state, stream, "atComponentBlock");
-    } else if (/^@(-moz-)?document$/i.test(type)) {
+    } else if (/^@(-moz-)?document$/.test(type)) {
       return pushContext(state, stream, "documentTypes");
-    } else if (/^@(media|supports|(-moz-)?document|import)$/i.test(type)) {
+    } else if (/^@(media|supports|(-moz-)?document|import)$/.test(type)) {
       return pushContext(state, stream, "atBlock");
-    } else if (/^@(font-face|counter-style)/i.test(type)) {
+    } else if (/^@(font-face|counter-style)/.test(type)) {
       state.stateArg = type;
       return "restricted_atBlock_before";
-    } else if (/^@(-(moz|ms|o|webkit)-)?keyframes$/i.test(type)) {
+    } else if (/^@(-(moz|ms|o|webkit)-)?keyframes$/.test(type)) {
       return "keyframes";
     } else if (type && type.charAt(0) == "@") {
       return pushContext(state, stream, "at");
@@ -31681,7 +31672,7 @@ CodeMirror.defineMode("css", function(config, parserConfig) {
       },
       "@": function(stream) {
         if (stream.eat("{")) return [null, "interpolation"];
-        if (stream.match(/^(charset|document|font-face|import|(-(moz|ms|o|webkit)-)?keyframes|media|namespace|page|supports)\b/i, false)) return false;
+        if (stream.match(/^(charset|document|font-face|import|(-(moz|ms|o|webkit)-)?keyframes|media|namespace|page|supports)\b/, false)) return false;
         stream.eatWhile(/[\w\\\-]/);
         if (stream.match(/^\s*:/, false))
           return ["variable-2", "variable-definition"];
@@ -31778,7 +31769,6 @@ var xmlConfig = {
   doNotIndent: {},
   allowUnquoted: false,
   allowMissing: false,
-  allowMissingTagName: false,
   caseFold: false
 }
 
@@ -31953,9 +31943,6 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
       state.tagName = stream.current();
       setStyle = "tag";
       return attrState;
-    } else if (config.allowMissingTagName && type == "endTag") {
-      setStyle = "tag bracket";
-      return attrState(type, stream, state);
     } else {
       setStyle = "error";
       return tagNameState;
@@ -31974,9 +31961,6 @@ CodeMirror.defineMode("xml", function(editorConf, config_) {
         setStyle = "tag error";
         return closeStateErr;
       }
-    } else if (config.allowMissingTagName && type == "endTag") {
-      setStyle = "tag bracket";
-      return closeState(type, stream, state);
     } else {
       setStyle = "error";
       return closeStateErr;
@@ -32471,7 +32455,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/inputs/text-input.vue"
+Component.options.__file = "resources\\assets\\components\\inputs\\text-input.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -32480,9 +32464,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-12193d5b", Component.options)
+    hotAPI.createRecord("data-v-1b47c7ca", Component.options)
   } else {
-    hotAPI.reload("data-v-12193d5b", Component.options)
+    hotAPI.reload("data-v-1b47c7ca", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -32573,7 +32557,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-12193d5b", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1b47c7ca", module.exports)
   }
 }
 
@@ -32603,7 +32587,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/utils/modal.vue"
+Component.options.__file = "resources\\assets\\components\\utils\\modal.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -32612,9 +32596,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-1d9da0da", Component.options)
+    hotAPI.createRecord("data-v-f2002240", Component.options)
   } else {
-    hotAPI.reload("data-v-1d9da0da", Component.options)
+    hotAPI.reload("data-v-f2002240", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -32701,7 +32685,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-1d9da0da", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-f2002240", module.exports)
   }
 }
 
@@ -32731,7 +32715,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/inputs/textarea-input.vue"
+Component.options.__file = "resources\\assets\\components\\inputs\\textarea-input.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -32740,9 +32724,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-a92162b0", Component.options)
+    hotAPI.createRecord("data-v-44b66530", Component.options)
   } else {
-    hotAPI.reload("data-v-a92162b0", Component.options)
+    hotAPI.reload("data-v-44b66530", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -32823,7 +32807,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-a92162b0", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-44b66530", module.exports)
   }
 }
 
@@ -32927,7 +32911,7 @@ if (false) {
     {name: "NSIS", mime: "text/x-nsis", mode: "nsis", ext: ["nsh", "nsi"]},
     {name: "NTriples", mimes: ["application/n-triples", "application/n-quads", "text/n-triples"],
      mode: "ntriples", ext: ["nt", "nq"]},
-    {name: "Objective-C", mime: "text/x-objectivec", mode: "clike", ext: ["m", "mm"], alias: ["objective-c", "objc"]},
+    {name: "Objective C", mime: "text/x-objectivec", mode: "clike", ext: ["m", "mm"], alias: ["objective-c", "objc"]},
     {name: "OCaml", mime: "text/x-ocaml", mode: "mllike", ext: ["ml", "mli", "mll", "mly"]},
     {name: "Octave", mime: "text/x-octave", mode: "octave", ext: ["m"]},
     {name: "Oz", mime: "text/x-oz", mode: "oz", ext: ["oz"]},
@@ -33487,7 +33471,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
     types: words("byte short int long float double boolean char void Boolean Byte Character Double Float " +
                  "Integer Long Number Object Short String StringBuffer StringBuilder Void"),
     blockKeywords: words("catch class do else finally for if switch try while"),
-    defKeywords: words("class interface enum @interface"),
+    defKeywords: words("class interface package enum @interface"),
     typeFirstDefinitions: true,
     atoms: words("true false null"),
     number: /^(?:0x[a-f\d_]+|0b[01_]+|(?:[\d_]+\.?\d*|\.\d+)(?:e[-+]?[\d_]+)?)(u|ll?|l|f)?/i,
@@ -33542,27 +33526,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
       escaped = stream.next() == "\\" && !escaped;
     }
     return "string";
-  }
-
-  function tokenNestedComment(depth) {
-    return function (stream, state) {
-      var ch
-      while (ch = stream.next()) {
-        if (ch == "*" && stream.eat("/")) {
-          if (depth == 1) {
-            state.tokenize = null
-            break
-          } else {
-            state.tokenize = tokenNestedComment(depth - 1)
-            return state.tokenize(stream, state)
-          }
-        } else if (ch == "/" && stream.eat("*")) {
-          state.tokenize = tokenNestedComment(depth + 1)
-          return state.tokenize(stream, state)
-        }
-      }
-      return "comment"
-    }
   }
 
   def("text/x-scala", {
@@ -33620,12 +33583,6 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
         } else {
           return false
         }
-      },
-
-      "/": function(stream, state) {
-        if (!stream.eat("*")) return false
-        state.tokenize = tokenNestedComment(1)
-        return state.tokenize(stream, state)
       }
     },
     modeProps: {closeBrackets: {triples: '"'}}
@@ -33660,7 +33617,7 @@ CodeMirror.defineMode("clike", function(config, parserConfig) {
       "file import where by get set abstract enum open inner override private public internal " +
       "protected catch finally out final vararg reified dynamic companion constructor init " +
       "sealed field property receiver param sparam lateinit data inline noinline tailrec " +
-      "external annotation crossinline const operator infix suspend actual expect"
+      "external annotation crossinline const operator infix suspend"
     ),
     types: words(
       /* package java.lang */
@@ -38451,8 +38408,8 @@ CodeMirror.defineMIME("text/yaml", "yaml");
 /* unused harmony export Rules */
 /* unused harmony export version */
 /**
-  * vee-validate v2.0.2
-  * (c) 2018 Abdelrahman Awad
+  * vee-validate v2.0.0
+  * (c) 2017 Abdelrahman Awad
   * @license MIT
   */
 // 
@@ -40457,9 +40414,7 @@ var Validator = function Validator (validations, options) {
   this.reset = options.vm && isCallable(options.vm.$nextTick) ? function (matcher) {
     return new Promise(function (resolve) {
       options.vm.$nextTick(function () {
-        options.vm.$nextTick(function () {
-          resolve(this$1._reset(matcher));
-        });
+        resolve(this$1._reset(matcher));
       });
     });
   } : this._reset;
@@ -45397,7 +45352,7 @@ var mapFields = function (fields) {
   }, {});
 };
 
-var version = '2.0.2';
+var version = '2.0.0';
 
 var rulesPlugin = function (ref) {
   var Validator$$1 = ref.Validator;
@@ -45544,7 +45499,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "node_modules/vue-codemirror/src/codemirror.vue"
+Component.options.__file = "node_modules\\vue-codemirror\\src\\codemirror.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -45553,9 +45508,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7f0ea808", Component.options)
+    hotAPI.createRecord("data-v-719301c9", Component.options)
   } else {
-    hotAPI.reload("data-v-7f0ea808", Component.options)
+    hotAPI.reload("data-v-719301c9", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -45820,12 +45775,12 @@ if(false) {
 /* 129 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/* BASICS */\n\n.CodeMirror {\n  /* Set height, width, borders, and global font properties here */\n  font-family: monospace;\n  height: 300px;\n  color: black;\n  direction: ltr;\n}\n\n/* PADDING */\n\n.CodeMirror-lines {\n  padding: 4px 0; /* Vertical padding around content */\n}\n.CodeMirror pre {\n  padding: 0 4px; /* Horizontal padding of content */\n}\n\n.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  background-color: white; /* The little square between H and V scrollbars */\n}\n\n/* GUTTER */\n\n.CodeMirror-gutters {\n  border-right: 1px solid #ddd;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n.CodeMirror-linenumbers {}\n.CodeMirror-linenumber {\n  padding: 0 3px 0 5px;\n  min-width: 20px;\n  text-align: right;\n  color: #999;\n  white-space: nowrap;\n}\n\n.CodeMirror-guttermarker { color: black; }\n.CodeMirror-guttermarker-subtle { color: #999; }\n\n/* CURSOR */\n\n.CodeMirror-cursor {\n  border-left: 1px solid black;\n  border-right: none;\n  width: 0;\n}\n/* Shown when moving in bi-directional text */\n.CodeMirror div.CodeMirror-secondarycursor {\n  border-left: 1px solid silver;\n}\n.cm-fat-cursor .CodeMirror-cursor {\n  width: auto;\n  border: 0 !important;\n  background: #7e7;\n}\n.cm-fat-cursor div.CodeMirror-cursors {\n  z-index: 1;\n}\n.cm-fat-cursor-mark {\n  background-color: rgba(20, 255, 20, 0.5);\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n}\n.cm-animate-fat-cursor {\n  width: auto;\n  border: 0;\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n  background-color: #7e7;\n}\n@-moz-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@-webkit-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n\n/* Can style cursor different in overwrite (non-insert) mode */\n.CodeMirror-overwrite .CodeMirror-cursor {}\n\n.cm-tab { display: inline-block; text-decoration: inherit; }\n\n.CodeMirror-rulers {\n  position: absolute;\n  left: 0; right: 0; top: -50px; bottom: -20px;\n  overflow: hidden;\n}\n.CodeMirror-ruler {\n  border-left: 1px solid #ccc;\n  top: 0; bottom: 0;\n  position: absolute;\n}\n\n/* DEFAULT THEME */\n\n.cm-s-default .cm-header {color: blue;}\n.cm-s-default .cm-quote {color: #090;}\n.cm-negative {color: #d44;}\n.cm-positive {color: #292;}\n.cm-header, .cm-strong {font-weight: bold;}\n.cm-em {font-style: italic;}\n.cm-link {text-decoration: underline;}\n.cm-strikethrough {text-decoration: line-through;}\n\n.cm-s-default .cm-keyword {color: #708;}\n.cm-s-default .cm-atom {color: #219;}\n.cm-s-default .cm-number {color: #164;}\n.cm-s-default .cm-def {color: #00f;}\n.cm-s-default .cm-variable,\n.cm-s-default .cm-punctuation,\n.cm-s-default .cm-property,\n.cm-s-default .cm-operator {}\n.cm-s-default .cm-variable-2 {color: #05a;}\n.cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}\n.cm-s-default .cm-comment {color: #a50;}\n.cm-s-default .cm-string {color: #a11;}\n.cm-s-default .cm-string-2 {color: #f50;}\n.cm-s-default .cm-meta {color: #555;}\n.cm-s-default .cm-qualifier {color: #555;}\n.cm-s-default .cm-builtin {color: #30a;}\n.cm-s-default .cm-bracket {color: #997;}\n.cm-s-default .cm-tag {color: #170;}\n.cm-s-default .cm-attribute {color: #00c;}\n.cm-s-default .cm-hr {color: #999;}\n.cm-s-default .cm-link {color: #00c;}\n\n.cm-s-default .cm-error {color: #f00;}\n.cm-invalidchar {color: #f00;}\n\n.CodeMirror-composing { border-bottom: 2px solid; }\n\n/* Default styles for common addons */\n\ndiv.CodeMirror span.CodeMirror-matchingbracket {color: #0b0;}\ndiv.CodeMirror span.CodeMirror-nonmatchingbracket {color: #a22;}\n.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }\n.CodeMirror-activeline-background {background: #e8f2ff;}\n\n/* STOP */\n\n/* The rest of this file contains styles related to the mechanics of\n   the editor. You probably shouldn't touch them. */\n\n.CodeMirror {\n  position: relative;\n  overflow: hidden;\n  background: white;\n}\n\n.CodeMirror-scroll {\n  overflow: scroll !important; /* Things will break if this is overridden */\n  /* 30px is the magic margin used to hide the element's real scrollbars */\n  /* See overflow: hidden in .CodeMirror */\n  margin-bottom: -30px; margin-right: -30px;\n  padding-bottom: 30px;\n  height: 100%;\n  outline: none; /* Prevent dragging from highlighting the element */\n  position: relative;\n}\n.CodeMirror-sizer {\n  position: relative;\n  border-right: 30px solid transparent;\n}\n\n/* The fake, visible scrollbars. Used to force redraw during scrolling\n   before actual scrolling happens, thus preventing shaking and\n   flickering artifacts. */\n.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  position: absolute;\n  z-index: 6;\n  display: none;\n}\n.CodeMirror-vscrollbar {\n  right: 0; top: 0;\n  overflow-x: hidden;\n  overflow-y: scroll;\n}\n.CodeMirror-hscrollbar {\n  bottom: 0; left: 0;\n  overflow-y: hidden;\n  overflow-x: scroll;\n}\n.CodeMirror-scrollbar-filler {\n  right: 0; bottom: 0;\n}\n.CodeMirror-gutter-filler {\n  left: 0; bottom: 0;\n}\n\n.CodeMirror-gutters {\n  position: absolute; left: 0; top: 0;\n  min-height: 100%;\n  z-index: 3;\n}\n.CodeMirror-gutter {\n  white-space: normal;\n  height: 100%;\n  display: inline-block;\n  vertical-align: top;\n  margin-bottom: -30px;\n}\n.CodeMirror-gutter-wrapper {\n  position: absolute;\n  z-index: 4;\n  background: none !important;\n  border: none !important;\n}\n.CodeMirror-gutter-background {\n  position: absolute;\n  top: 0; bottom: 0;\n  z-index: 4;\n}\n.CodeMirror-gutter-elt {\n  position: absolute;\n  cursor: default;\n  z-index: 4;\n}\n.CodeMirror-gutter-wrapper ::selection { background-color: transparent }\n.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }\n\n.CodeMirror-lines {\n  cursor: text;\n  min-height: 1px; /* prevents collapsing before first draw */\n}\n.CodeMirror pre {\n  /* Reset some styles that the rest of the page might have set */\n  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;\n  border-width: 0;\n  background: transparent;\n  font-family: inherit;\n  font-size: inherit;\n  margin: 0;\n  white-space: pre;\n  word-wrap: normal;\n  line-height: inherit;\n  color: inherit;\n  z-index: 2;\n  position: relative;\n  overflow: visible;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-font-variant-ligatures: contextual;\n  font-variant-ligatures: contextual;\n}\n.CodeMirror-wrap pre {\n  word-wrap: break-word;\n  white-space: pre-wrap;\n  word-break: normal;\n}\n\n.CodeMirror-linebackground {\n  position: absolute;\n  left: 0; right: 0; top: 0; bottom: 0;\n  z-index: 0;\n}\n\n.CodeMirror-linewidget {\n  position: relative;\n  z-index: 2;\n  padding: 0.1px; /* Force widget margins to stay inside of the container */\n}\n\n.CodeMirror-widget {}\n\n.CodeMirror-rtl pre { direction: rtl; }\n\n.CodeMirror-code {\n  outline: none;\n}\n\n/* Force content-box sizing for the elements where we expect it */\n.CodeMirror-scroll,\n.CodeMirror-sizer,\n.CodeMirror-gutter,\n.CodeMirror-gutters,\n.CodeMirror-linenumber {\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n.CodeMirror-measure {\n  position: absolute;\n  width: 100%;\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n}\n\n.CodeMirror-cursor {\n  position: absolute;\n  pointer-events: none;\n}\n.CodeMirror-measure pre { position: static; }\n\ndiv.CodeMirror-cursors {\n  visibility: hidden;\n  position: relative;\n  z-index: 3;\n}\ndiv.CodeMirror-dragcursors {\n  visibility: visible;\n}\n\n.CodeMirror-focused div.CodeMirror-cursors {\n  visibility: visible;\n}\n\n.CodeMirror-selected { background: #d9d9d9; }\n.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }\n.CodeMirror-crosshair { cursor: crosshair; }\n.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }\n.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }\n\n.cm-searching {\n  background-color: #ffa;\n  background-color: rgba(255, 255, 0, .4);\n}\n\n/* Used to force a border model for a node */\n.cm-force-border { padding-right: .1px; }\n\n@media print {\n  /* Hide the cursor when printing */\n  .CodeMirror div.CodeMirror-cursors {\n    visibility: hidden;\n  }\n}\n\n/* See issue #2901 */\n.cm-tab-wrap-hack:after { content: ''; }\n\n/* Help users use markselection to safely style text background */\nspan.CodeMirror-selectedtext { background: none; }\n", ""]);
+exports.push([module.i, "/* BASICS */\n\n.CodeMirror {\n  /* Set height, width, borders, and global font properties here */\n  font-family: monospace;\n  height: 300px;\n  color: black;\n  direction: ltr;\n}\n\n/* PADDING */\n\n.CodeMirror-lines {\n  padding: 4px 0; /* Vertical padding around content */\n}\n.CodeMirror pre {\n  padding: 0 4px; /* Horizontal padding of content */\n}\n\n.CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  background-color: white; /* The little square between H and V scrollbars */\n}\n\n/* GUTTER */\n\n.CodeMirror-gutters {\n  border-right: 1px solid #ddd;\n  background-color: #f7f7f7;\n  white-space: nowrap;\n}\n.CodeMirror-linenumbers {}\n.CodeMirror-linenumber {\n  padding: 0 3px 0 5px;\n  min-width: 20px;\n  text-align: right;\n  color: #999;\n  white-space: nowrap;\n}\n\n.CodeMirror-guttermarker { color: black; }\n.CodeMirror-guttermarker-subtle { color: #999; }\n\n/* CURSOR */\n\n.CodeMirror-cursor {\n  border-left: 1px solid black;\n  border-right: none;\n  width: 0;\n}\n/* Shown when moving in bi-directional text */\n.CodeMirror div.CodeMirror-secondarycursor {\n  border-left: 1px solid silver;\n}\n.cm-fat-cursor .CodeMirror-cursor {\n  width: auto;\n  border: 0 !important;\n  background: #7e7;\n}\n.cm-fat-cursor div.CodeMirror-cursors {\n  z-index: 1;\n}\n.cm-fat-cursor-mark {\n  background-color: rgba(20, 255, 20, 0.5);\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n}\n.cm-animate-fat-cursor {\n  width: auto;\n  border: 0;\n  -webkit-animation: blink 1.06s steps(1) infinite;\n  -moz-animation: blink 1.06s steps(1) infinite;\n  animation: blink 1.06s steps(1) infinite;\n  background-color: #7e7;\n}\n@-moz-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@-webkit-keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n@keyframes blink {\n  0% {}\n  50% { background-color: transparent; }\n  100% {}\n}\n\n/* Can style cursor different in overwrite (non-insert) mode */\n.CodeMirror-overwrite .CodeMirror-cursor {}\n\n.cm-tab { display: inline-block; text-decoration: inherit; }\n\n.CodeMirror-rulers {\n  position: absolute;\n  left: 0; right: 0; top: -50px; bottom: -20px;\n  overflow: hidden;\n}\n.CodeMirror-ruler {\n  border-left: 1px solid #ccc;\n  top: 0; bottom: 0;\n  position: absolute;\n}\n\n/* DEFAULT THEME */\n\n.cm-s-default .cm-header {color: blue;}\n.cm-s-default .cm-quote {color: #090;}\n.cm-negative {color: #d44;}\n.cm-positive {color: #292;}\n.cm-header, .cm-strong {font-weight: bold;}\n.cm-em {font-style: italic;}\n.cm-link {text-decoration: underline;}\n.cm-strikethrough {text-decoration: line-through;}\n\n.cm-s-default .cm-keyword {color: #708;}\n.cm-s-default .cm-atom {color: #219;}\n.cm-s-default .cm-number {color: #164;}\n.cm-s-default .cm-def {color: #00f;}\n.cm-s-default .cm-variable,\n.cm-s-default .cm-punctuation,\n.cm-s-default .cm-property,\n.cm-s-default .cm-operator {}\n.cm-s-default .cm-variable-2 {color: #05a;}\n.cm-s-default .cm-variable-3, .cm-s-default .cm-type {color: #085;}\n.cm-s-default .cm-comment {color: #a50;}\n.cm-s-default .cm-string {color: #a11;}\n.cm-s-default .cm-string-2 {color: #f50;}\n.cm-s-default .cm-meta {color: #555;}\n.cm-s-default .cm-qualifier {color: #555;}\n.cm-s-default .cm-builtin {color: #30a;}\n.cm-s-default .cm-bracket {color: #997;}\n.cm-s-default .cm-tag {color: #170;}\n.cm-s-default .cm-attribute {color: #00c;}\n.cm-s-default .cm-hr {color: #999;}\n.cm-s-default .cm-link {color: #00c;}\n\n.cm-s-default .cm-error {color: #f00;}\n.cm-invalidchar {color: #f00;}\n\n.CodeMirror-composing { border-bottom: 2px solid; }\n\n/* Default styles for common addons */\n\ndiv.CodeMirror span.CodeMirror-matchingbracket {color: #0f0;}\ndiv.CodeMirror span.CodeMirror-nonmatchingbracket {color: #f22;}\n.CodeMirror-matchingtag { background: rgba(255, 150, 0, .3); }\n.CodeMirror-activeline-background {background: #e8f2ff;}\n\n/* STOP */\n\n/* The rest of this file contains styles related to the mechanics of\n   the editor. You probably shouldn't touch them. */\n\n.CodeMirror {\n  position: relative;\n  overflow: hidden;\n  background: white;\n}\n\n.CodeMirror-scroll {\n  overflow: scroll !important; /* Things will break if this is overridden */\n  /* 30px is the magic margin used to hide the element's real scrollbars */\n  /* See overflow: hidden in .CodeMirror */\n  margin-bottom: -30px; margin-right: -30px;\n  padding-bottom: 30px;\n  height: 100%;\n  outline: none; /* Prevent dragging from highlighting the element */\n  position: relative;\n}\n.CodeMirror-sizer {\n  position: relative;\n  border-right: 30px solid transparent;\n}\n\n/* The fake, visible scrollbars. Used to force redraw during scrolling\n   before actual scrolling happens, thus preventing shaking and\n   flickering artifacts. */\n.CodeMirror-vscrollbar, .CodeMirror-hscrollbar, .CodeMirror-scrollbar-filler, .CodeMirror-gutter-filler {\n  position: absolute;\n  z-index: 6;\n  display: none;\n}\n.CodeMirror-vscrollbar {\n  right: 0; top: 0;\n  overflow-x: hidden;\n  overflow-y: scroll;\n}\n.CodeMirror-hscrollbar {\n  bottom: 0; left: 0;\n  overflow-y: hidden;\n  overflow-x: scroll;\n}\n.CodeMirror-scrollbar-filler {\n  right: 0; bottom: 0;\n}\n.CodeMirror-gutter-filler {\n  left: 0; bottom: 0;\n}\n\n.CodeMirror-gutters {\n  position: absolute; left: 0; top: 0;\n  min-height: 100%;\n  z-index: 3;\n}\n.CodeMirror-gutter {\n  white-space: normal;\n  height: 100%;\n  display: inline-block;\n  vertical-align: top;\n  margin-bottom: -30px;\n}\n.CodeMirror-gutter-wrapper {\n  position: absolute;\n  z-index: 4;\n  background: none !important;\n  border: none !important;\n}\n.CodeMirror-gutter-background {\n  position: absolute;\n  top: 0; bottom: 0;\n  z-index: 4;\n}\n.CodeMirror-gutter-elt {\n  position: absolute;\n  cursor: default;\n  z-index: 4;\n}\n.CodeMirror-gutter-wrapper ::selection { background-color: transparent }\n.CodeMirror-gutter-wrapper ::-moz-selection { background-color: transparent }\n\n.CodeMirror-lines {\n  cursor: text;\n  min-height: 1px; /* prevents collapsing before first draw */\n}\n.CodeMirror pre {\n  /* Reset some styles that the rest of the page might have set */\n  -moz-border-radius: 0; -webkit-border-radius: 0; border-radius: 0;\n  border-width: 0;\n  background: transparent;\n  font-family: inherit;\n  font-size: inherit;\n  margin: 0;\n  white-space: pre;\n  word-wrap: normal;\n  line-height: inherit;\n  color: inherit;\n  z-index: 2;\n  position: relative;\n  overflow: visible;\n  -webkit-tap-highlight-color: transparent;\n  -webkit-font-variant-ligatures: contextual;\n  font-variant-ligatures: contextual;\n}\n.CodeMirror-wrap pre {\n  word-wrap: break-word;\n  white-space: pre-wrap;\n  word-break: normal;\n}\n\n.CodeMirror-linebackground {\n  position: absolute;\n  left: 0; right: 0; top: 0; bottom: 0;\n  z-index: 0;\n}\n\n.CodeMirror-linewidget {\n  position: relative;\n  z-index: 2;\n  overflow: auto;\n}\n\n.CodeMirror-widget {}\n\n.CodeMirror-rtl pre { direction: rtl; }\n\n.CodeMirror-code {\n  outline: none;\n}\n\n/* Force content-box sizing for the elements where we expect it */\n.CodeMirror-scroll,\n.CodeMirror-sizer,\n.CodeMirror-gutter,\n.CodeMirror-gutters,\n.CodeMirror-linenumber {\n  -moz-box-sizing: content-box;\n  box-sizing: content-box;\n}\n\n.CodeMirror-measure {\n  position: absolute;\n  width: 100%;\n  height: 0;\n  overflow: hidden;\n  visibility: hidden;\n}\n\n.CodeMirror-cursor {\n  position: absolute;\n  pointer-events: none;\n}\n.CodeMirror-measure pre { position: static; }\n\ndiv.CodeMirror-cursors {\n  visibility: hidden;\n  position: relative;\n  z-index: 3;\n}\ndiv.CodeMirror-dragcursors {\n  visibility: visible;\n}\n\n.CodeMirror-focused div.CodeMirror-cursors {\n  visibility: visible;\n}\n\n.CodeMirror-selected { background: #d9d9d9; }\n.CodeMirror-focused .CodeMirror-selected { background: #d7d4f0; }\n.CodeMirror-crosshair { cursor: crosshair; }\n.CodeMirror-line::selection, .CodeMirror-line > span::selection, .CodeMirror-line > span > span::selection { background: #d7d4f0; }\n.CodeMirror-line::-moz-selection, .CodeMirror-line > span::-moz-selection, .CodeMirror-line > span > span::-moz-selection { background: #d7d4f0; }\n\n.cm-searching {\n  background-color: #ffa;\n  background-color: rgba(255, 255, 0, .4);\n}\n\n/* Used to force a border model for a node */\n.cm-force-border { padding-right: .1px; }\n\n@media print {\n  /* Hide the cursor when printing */\n  .CodeMirror div.CodeMirror-cursors {\n    visibility: hidden;\n  }\n}\n\n/* See issue #2901 */\n.cm-tab-wrap-hack:after { content: ''; }\n\n/* Help users use markselection to safely style text background */\nspan.CodeMirror-selectedtext { background: none; }\n", ""]);
 
 // exports
 
@@ -53546,16 +53501,7 @@ CodeMirror.defineMIME("text/x-hxml", "hxml");
   "use strict";
 
   CodeMirror.defineMode("htmlembedded", function(config, parserConfig) {
-    var closeComment = parserConfig.closeComment || "--%>"
     return CodeMirror.multiplexingMode(CodeMirror.getMode(config, "htmlmixed"), {
-      open: parserConfig.openComment || "<%--",
-      close: closeComment,
-      delimStyle: "comment",
-      mode: {token: function(stream) {
-        stream.skipTo(closeComment) || stream.skipToEnd()
-        return "comment"
-      }}
-    }, {
       open: parserConfig.open || parserConfig.scriptStartRegex || "<%",
       close: parserConfig.close || parserConfig.scriptEndRegex || "%>",
       mode: CodeMirror.getMode(config, parserConfig.scriptingModeSpec)
@@ -54164,7 +54110,7 @@ CodeMirror.defineMIME("message/http", "http");
   }
 
   CodeMirror.defineMode("jsx", function(config, modeConfig) {
-    var xmlMode = CodeMirror.getMode(config, {name: "xml", allowMissing: true, multilineTagIndentPastTag: false, allowMissingTagName: true})
+    var xmlMode = CodeMirror.getMode(config, {name: "xml", allowMissing: true, multilineTagIndentPastTag: false})
     var jsMode = CodeMirror.getMode(config, modeConfig && modeConfig.base || "javascript")
 
     function flatXMLIndent(state) {
@@ -55737,13 +55683,6 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
       state.tokenize = tokenString;
       return state.tokenize(stream, state);
     }
-    if (ch === '{') {
-      if (stream.eat('|')) {
-        state.longString = true;
-        state.tokenize = tokenLongString;
-        return state.tokenize(stream, state);
-      }
-    }
     if (ch === '(') {
       if (stream.eat('*')) {
         state.commentLevel++;
@@ -55764,24 +55703,13 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
       return 'comment';
     }
     if (/\d/.test(ch)) {
-      if (ch === '0' && stream.eat(/[bB]/)) {
-        stream.eatWhile(/[01]/);
-      } if (ch === '0' && stream.eat(/[xX]/)) {
-        stream.eatWhile(/[0-9a-fA-F]/)
-      } if (ch === '0' && stream.eat(/[oO]/)) {
-        stream.eatWhile(/[0-7]/);
-      } else {
-        stream.eatWhile(/[\d_]/);
-        if (stream.eat('.')) {
-          stream.eatWhile(/[\d]/);
-        }
-        if (stream.eat(/[eE]/)) {
-          stream.eatWhile(/[\d\-+]/);
-        }
+      stream.eatWhile(/[\d]/);
+      if (stream.eat('.')) {
+        stream.eatWhile(/[\d]/);
       }
       return 'number';
     }
-    if ( /[+\-*&%=<>!?|@]/.test(ch)) {
+    if ( /[+\-*&%=<>!?|]/.test(ch)) {
       return 'operator';
     }
     if (/[\w\xa1-\uffff]/.test(ch)) {
@@ -55820,20 +55748,8 @@ CodeMirror.defineMode('mllike', function(_config, parserConfig) {
     return 'comment';
   }
 
-  function tokenLongString(stream, state) {
-    var prev, next;
-    while (state.longString && (next = stream.next()) != null) {
-      if (prev === '|' && next === '}') state.longString = false;
-      prev = next;
-    }
-    if (!state.longString) {
-      state.tokenize = tokenBase;
-    }
-    return 'string';
-  }
-
   return {
-    startState: function() {return {tokenize: tokenBase, commentLevel: 0, longString: false};},
+    startState: function() {return {tokenize: tokenBase, commentLevel: 0};},
     token: function(stream, state) {
       if (stream.eatSpace()) return null;
       return state.tokenize(stream, state);
@@ -55855,9 +55771,7 @@ CodeMirror.defineMIME('text/x-ocaml', {
     'print_endline': 'builtin',
     'true': 'atom',
     'false': 'atom',
-    'raise': 'keyword',
-    'module': 'keyword',
-    'sig': 'keyword'
+    'raise': 'keyword'
   }
 });
 
@@ -62929,25 +62843,6 @@ CodeMirror.defineMIME("text/x-solr", "solr");
             }
             return "comment";
 
-          case "string":
-            var match = stream.match(/^.*?(["']|\\[\s\S])/);
-            if (!match) {
-              stream.skipToEnd();
-            } else if (match[1] == state.quoteKind) {
-              state.quoteKind = null;
-              state.soyState.pop();
-            }
-            return "string";
-        }
-
-        if (stream.match(/^\/\*/)) {
-          state.soyState.push("comment");
-          return "comment";
-        } else if (stream.match(stream.sol() || (state.soyState.length && last(state.soyState) != "literal") ? /^\s*\/\/.*/ : /^\s+\/\/.*/)) {
-          return "comment";
-        }
-
-        switch (last(state.soyState)) {
           case "templ-def":
             if (match = stream.match(/^\.?([\w]+(?!\.[\w]+)*)/)) {
               state.templates = prepend(state.templates, match[1]);
@@ -63053,15 +62948,36 @@ CodeMirror.defineMIME("text/x-solr", "solr");
               return this.token(stream, state);
             }
             return tokenUntil(stream, state, /\{\/literal}/);
+
+          case "string":
+            var match = stream.match(/^.*?(["']|\\[\s\S])/);
+            if (!match) {
+              stream.skipToEnd();
+            } else if (match[1] == state.quoteKind) {
+              state.quoteKind = null;
+              state.soyState.pop();
+            }
+            return "string";
         }
 
-        if (stream.match(/^\{literal}/)) {
+        if (stream.match(/^\/\*/)) {
+          state.soyState.push("comment");
+          if (!state.scopes) {
+            state.variables = prepend(null, 'ij');
+          }
+          return "comment";
+        } else if (stream.match(stream.sol() ? /^\s*\/\/.*/ : /^\s+\/\/.*/)) {
+          if (!state.scopes) {
+            state.variables = prepend(null, 'ij');
+          }
+          return "comment";
+        } else if (stream.match(/^\{literal}/)) {
           state.indent += config.indentUnit;
           state.soyState.push("literal");
           return "keyword";
 
-        // A tag-keyword must be followed by whitespace, comment or a closing tag.
-        } else if (match = stream.match(/^\{([\/@\\]?\w+\??)(?=[\s\}]|\/[/*])/)) {
+        // A tag-keyword must be followed by whitespace or a closing tag.
+        } else if (match = stream.match(/^\{([\/@\\]?\w+\??)(?=[\s\}])/)) {
           if (match[1] != "/switch")
             state.indent += (/^(\/|(else|elseif|ifempty|case|fallbackmsg|default)$)/.test(match[1]) && state.tag != "switch" ? 1 : 2) * config.indentUnit;
           state.tag = match[1];
@@ -64088,17 +64004,8 @@ CodeMirror.defineMode("sql", function(config, parserConfig) {
   }
 
   function tokenComment(stream, state) {
-    var ch
-    while (true) {
-      stream.match(/^[^/*]+/, true)
-      ch = stream.next()
-      if (!ch) break
-      if (ch === "/" && stream.eat("*")) {
-        state.tokenize.push(tokenComment)
-      } else if (ch === "*" && stream.eat("/")) {
-        state.tokenize.pop()
-      }
-    }
+    stream.match(/^(?:[^*]|\*(?!\/))*/)
+    if (stream.match("*/")) state.tokenize.pop()
     return "comment"
   }
 
@@ -69471,7 +69378,7 @@ if(false) {
 /* 238 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69516,7 +69423,7 @@ if(false) {
 /* 240 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69561,7 +69468,7 @@ if(false) {
 /* 242 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69606,7 +69513,7 @@ if(false) {
 /* 244 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69651,7 +69558,7 @@ if(false) {
 /* 246 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69696,7 +69603,7 @@ if(false) {
 /* 248 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69741,7 +69648,7 @@ if(false) {
 /* 250 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69786,7 +69693,7 @@ if(false) {
 /* 252 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69831,7 +69738,7 @@ if(false) {
 /* 254 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69876,7 +69783,7 @@ if(false) {
 /* 256 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69921,7 +69828,7 @@ if(false) {
 /* 258 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -69966,7 +69873,7 @@ if(false) {
 /* 260 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70011,7 +69918,7 @@ if(false) {
 /* 262 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70056,7 +69963,7 @@ if(false) {
 /* 264 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70101,7 +70008,7 @@ if(false) {
 /* 266 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70146,7 +70053,7 @@ if(false) {
 /* 268 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70191,7 +70098,7 @@ if(false) {
 /* 270 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70236,7 +70143,7 @@ if(false) {
 /* 272 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70281,7 +70188,7 @@ if(false) {
 /* 274 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70326,7 +70233,7 @@ if(false) {
 /* 276 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70371,7 +70278,7 @@ if(false) {
 /* 278 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70416,7 +70323,7 @@ if(false) {
 /* 280 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70461,7 +70368,7 @@ if(false) {
 /* 282 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70506,7 +70413,7 @@ if(false) {
 /* 284 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70551,7 +70458,7 @@ if(false) {
 /* 286 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70596,7 +70503,7 @@ if(false) {
 /* 288 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70641,7 +70548,7 @@ if(false) {
 /* 290 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70686,7 +70593,7 @@ if(false) {
 /* 292 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70731,7 +70638,7 @@ if(false) {
 /* 294 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70776,7 +70683,7 @@ if(false) {
 /* 296 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70821,7 +70728,7 @@ if(false) {
 /* 298 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70866,7 +70773,7 @@ if(false) {
 /* 300 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70911,7 +70818,7 @@ if(false) {
 /* 302 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -70956,7 +70863,7 @@ if(false) {
 /* 304 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71001,7 +70908,7 @@ if(false) {
 /* 306 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71046,7 +70953,7 @@ if(false) {
 /* 308 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71091,7 +70998,7 @@ if(false) {
 /* 310 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71136,12 +71043,12 @@ if(false) {
 /* 312 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
 // module
-exports.push([module.i, "/*\nSolarized theme for code-mirror\nhttp://ethanschoonover.com/solarized\n*/\n\n/*\nSolarized color palette\nhttp://ethanschoonover.com/solarized/img/solarized-palette.png\n*/\n\n.solarized.base03 { color: #002b36; }\n.solarized.base02 { color: #073642; }\n.solarized.base01 { color: #586e75; }\n.solarized.base00 { color: #657b83; }\n.solarized.base0 { color: #839496; }\n.solarized.base1 { color: #93a1a1; }\n.solarized.base2 { color: #eee8d5; }\n.solarized.base3  { color: #fdf6e3; }\n.solarized.solar-yellow  { color: #b58900; }\n.solarized.solar-orange  { color: #cb4b16; }\n.solarized.solar-red { color: #dc322f; }\n.solarized.solar-magenta { color: #d33682; }\n.solarized.solar-violet  { color: #6c71c4; }\n.solarized.solar-blue { color: #268bd2; }\n.solarized.solar-cyan { color: #2aa198; }\n.solarized.solar-green { color: #859900; }\n\n/* Color scheme for code-mirror */\n\n.cm-s-solarized {\n  line-height: 1.45em;\n  color-profile: sRGB;\n  rendering-intent: auto;\n}\n.cm-s-solarized.cm-s-dark {\n  color: #839496;\n  background-color: #002b36;\n  text-shadow: #002b36 0 1px;\n}\n.cm-s-solarized.cm-s-light {\n  background-color: #fdf6e3;\n  color: #657b83;\n  text-shadow: #eee8d5 0 1px;\n}\n\n.cm-s-solarized .CodeMirror-widget {\n  text-shadow: none;\n}\n\n.cm-s-solarized .cm-header { color: #586e75; }\n.cm-s-solarized .cm-quote { color: #93a1a1; }\n\n.cm-s-solarized .cm-keyword { color: #cb4b16; }\n.cm-s-solarized .cm-atom { color: #d33682; }\n.cm-s-solarized .cm-number { color: #d33682; }\n.cm-s-solarized .cm-def { color: #2aa198; }\n\n.cm-s-solarized .cm-variable { color: #839496; }\n.cm-s-solarized .cm-variable-2 { color: #b58900; }\n.cm-s-solarized .cm-variable-3, .cm-s-solarized .cm-type { color: #6c71c4; }\n\n.cm-s-solarized .cm-property { color: #2aa198; }\n.cm-s-solarized .cm-operator { color: #6c71c4; }\n\n.cm-s-solarized .cm-comment { color: #586e75; font-style:italic; }\n\n.cm-s-solarized .cm-string { color: #859900; }\n.cm-s-solarized .cm-string-2 { color: #b58900; }\n\n.cm-s-solarized .cm-meta { color: #859900; }\n.cm-s-solarized .cm-qualifier { color: #b58900; }\n.cm-s-solarized .cm-builtin { color: #d33682; }\n.cm-s-solarized .cm-bracket { color: #cb4b16; }\n.cm-s-solarized .CodeMirror-matchingbracket { color: #859900; }\n.cm-s-solarized .CodeMirror-nonmatchingbracket { color: #dc322f; }\n.cm-s-solarized .cm-tag { color: #93a1a1; }\n.cm-s-solarized .cm-attribute { color: #2aa198; }\n.cm-s-solarized .cm-hr {\n  color: transparent;\n  border-top: 1px solid #586e75;\n  display: block;\n}\n.cm-s-solarized .cm-link { color: #93a1a1; cursor: pointer; }\n.cm-s-solarized .cm-special { color: #6c71c4; }\n.cm-s-solarized .cm-em {\n  color: #999;\n  text-decoration: underline;\n  text-decoration-style: dotted;\n}\n.cm-s-solarized .cm-error,\n.cm-s-solarized .cm-invalidchar {\n  color: #586e75;\n  border-bottom: 1px dotted #dc322f;\n}\n\n.cm-s-solarized.cm-s-dark div.CodeMirror-selected { background: #073642; }\n.cm-s-solarized.cm-s-dark.CodeMirror ::selection { background: rgba(7, 54, 66, 0.99); }\n.cm-s-solarized.cm-s-dark .CodeMirror-line::-moz-selection, .cm-s-dark .CodeMirror-line > span::-moz-selection, .cm-s-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(7, 54, 66, 0.99); }\n\n.cm-s-solarized.cm-s-light div.CodeMirror-selected { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::selection, .cm-s-light .CodeMirror-line > span::selection, .cm-s-light .CodeMirror-line > span > span::selection { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::-moz-selection, .cm-s-ligh .CodeMirror-line > span::-moz-selection, .cm-s-ligh .CodeMirror-line > span > span::-moz-selection { background: #eee8d5; }\n\n/* Editor styling */\n\n\n\n/* Little shadow on the view-port of the buffer view */\n.cm-s-solarized.CodeMirror {\n  -moz-box-shadow: inset 7px 0 12px -6px #000;\n  -webkit-box-shadow: inset 7px 0 12px -6px #000;\n  box-shadow: inset 7px 0 12px -6px #000;\n}\n\n/* Remove gutter border */\n.cm-s-solarized .CodeMirror-gutters {\n  border-right: 0;\n}\n\n/* Gutter colors and line number styling based of color scheme (dark / light) */\n\n/* Dark */\n.cm-s-solarized.cm-s-dark .CodeMirror-gutters {\n  background-color: #073642;\n}\n\n.cm-s-solarized.cm-s-dark .CodeMirror-linenumber {\n  color: #586e75;\n  text-shadow: #021014 0 -1px;\n}\n\n/* Light */\n.cm-s-solarized.cm-s-light .CodeMirror-gutters {\n  background-color: #eee8d5;\n}\n\n.cm-s-solarized.cm-s-light .CodeMirror-linenumber {\n  color: #839496;\n}\n\n/* Common */\n.cm-s-solarized .CodeMirror-linenumber {\n  padding: 0 5px;\n}\n.cm-s-solarized .CodeMirror-guttermarker-subtle { color: #586e75; }\n.cm-s-solarized.cm-s-dark .CodeMirror-guttermarker { color: #ddd; }\n.cm-s-solarized.cm-s-light .CodeMirror-guttermarker { color: #cb4b16; }\n\n.cm-s-solarized .CodeMirror-gutter .CodeMirror-gutter-text {\n  color: #586e75;\n}\n\n/* Cursor */\n.cm-s-solarized .CodeMirror-cursor { border-left: 1px solid #819090; }\n\n/* Fat cursor */\n.cm-s-solarized.cm-s-light.cm-fat-cursor .CodeMirror-cursor { background: #77ee77; }\n.cm-s-solarized.cm-s-light .cm-animate-fat-cursor { background-color: #77ee77; }\n.cm-s-solarized.cm-s-dark.cm-fat-cursor .CodeMirror-cursor { background: #586e75; }\n.cm-s-solarized.cm-s-dark .cm-animate-fat-cursor { background-color: #586e75; }\n\n/* Active line */\n.cm-s-solarized.cm-s-dark .CodeMirror-activeline-background {\n  background: rgba(255, 255, 255, 0.06);\n}\n.cm-s-solarized.cm-s-light .CodeMirror-activeline-background {\n  background: rgba(0, 0, 0, 0.06);\n}\n", ""]);
+exports.push([module.i, "/*\nSolarized theme for code-mirror\nhttp://ethanschoonover.com/solarized\n*/\n\n/*\nSolarized color palette\nhttp://ethanschoonover.com/solarized/img/solarized-palette.png\n*/\n\n.solarized.base03 { color: #002b36; }\n.solarized.base02 { color: #073642; }\n.solarized.base01 { color: #586e75; }\n.solarized.base00 { color: #657b83; }\n.solarized.base0 { color: #839496; }\n.solarized.base1 { color: #93a1a1; }\n.solarized.base2 { color: #eee8d5; }\n.solarized.base3  { color: #fdf6e3; }\n.solarized.solar-yellow  { color: #b58900; }\n.solarized.solar-orange  { color: #cb4b16; }\n.solarized.solar-red { color: #dc322f; }\n.solarized.solar-magenta { color: #d33682; }\n.solarized.solar-violet  { color: #6c71c4; }\n.solarized.solar-blue { color: #268bd2; }\n.solarized.solar-cyan { color: #2aa198; }\n.solarized.solar-green { color: #859900; }\n\n/* Color scheme for code-mirror */\n\n.cm-s-solarized {\n  line-height: 1.45em;\n  color-profile: sRGB;\n  rendering-intent: auto;\n}\n.cm-s-solarized.cm-s-dark {\n  color: #839496;\n  background-color: #002b36;\n  text-shadow: #002b36 0 1px;\n}\n.cm-s-solarized.cm-s-light {\n  background-color: #fdf6e3;\n  color: #657b83;\n  text-shadow: #eee8d5 0 1px;\n}\n\n.cm-s-solarized .CodeMirror-widget {\n  text-shadow: none;\n}\n\n.cm-s-solarized .cm-header { color: #586e75; }\n.cm-s-solarized .cm-quote { color: #93a1a1; }\n\n.cm-s-solarized .cm-keyword { color: #cb4b16; }\n.cm-s-solarized .cm-atom { color: #d33682; }\n.cm-s-solarized .cm-number { color: #d33682; }\n.cm-s-solarized .cm-def { color: #2aa198; }\n\n.cm-s-solarized .cm-variable { color: #839496; }\n.cm-s-solarized .cm-variable-2 { color: #b58900; }\n.cm-s-solarized .cm-variable-3, .cm-s-solarized .cm-type { color: #6c71c4; }\n\n.cm-s-solarized .cm-property { color: #2aa198; }\n.cm-s-solarized .cm-operator { color: #6c71c4; }\n\n.cm-s-solarized .cm-comment { color: #586e75; font-style:italic; }\n\n.cm-s-solarized .cm-string { color: #859900; }\n.cm-s-solarized .cm-string-2 { color: #b58900; }\n\n.cm-s-solarized .cm-meta { color: #859900; }\n.cm-s-solarized .cm-qualifier { color: #b58900; }\n.cm-s-solarized .cm-builtin { color: #d33682; }\n.cm-s-solarized .cm-bracket { color: #cb4b16; }\n.cm-s-solarized .CodeMirror-matchingbracket { color: #859900; }\n.cm-s-solarized .CodeMirror-nonmatchingbracket { color: #dc322f; }\n.cm-s-solarized .cm-tag { color: #93a1a1; }\n.cm-s-solarized .cm-attribute { color: #2aa198; }\n.cm-s-solarized .cm-hr {\n  color: transparent;\n  border-top: 1px solid #586e75;\n  display: block;\n}\n.cm-s-solarized .cm-link { color: #93a1a1; cursor: pointer; }\n.cm-s-solarized .cm-special { color: #6c71c4; }\n.cm-s-solarized .cm-em {\n  color: #999;\n  text-decoration: underline;\n  text-decoration-style: dotted;\n}\n.cm-s-solarized .cm-strong { color: #eee; }\n.cm-s-solarized .cm-error,\n.cm-s-solarized .cm-invalidchar {\n  color: #586e75;\n  border-bottom: 1px dotted #dc322f;\n}\n\n.cm-s-solarized.cm-s-dark div.CodeMirror-selected { background: #073642; }\n.cm-s-solarized.cm-s-dark.CodeMirror ::selection { background: rgba(7, 54, 66, 0.99); }\n.cm-s-solarized.cm-s-dark .CodeMirror-line::-moz-selection, .cm-s-dark .CodeMirror-line > span::-moz-selection, .cm-s-dark .CodeMirror-line > span > span::-moz-selection { background: rgba(7, 54, 66, 0.99); }\n\n.cm-s-solarized.cm-s-light div.CodeMirror-selected { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::selection, .cm-s-light .CodeMirror-line > span::selection, .cm-s-light .CodeMirror-line > span > span::selection { background: #eee8d5; }\n.cm-s-solarized.cm-s-light .CodeMirror-line::-moz-selection, .cm-s-ligh .CodeMirror-line > span::-moz-selection, .cm-s-ligh .CodeMirror-line > span > span::-moz-selection { background: #eee8d5; }\n\n/* Editor styling */\n\n\n\n/* Little shadow on the view-port of the buffer view */\n.cm-s-solarized.CodeMirror {\n  -moz-box-shadow: inset 7px 0 12px -6px #000;\n  -webkit-box-shadow: inset 7px 0 12px -6px #000;\n  box-shadow: inset 7px 0 12px -6px #000;\n}\n\n/* Remove gutter border */\n.cm-s-solarized .CodeMirror-gutters {\n  border-right: 0;\n}\n\n/* Gutter colors and line number styling based of color scheme (dark / light) */\n\n/* Dark */\n.cm-s-solarized.cm-s-dark .CodeMirror-gutters {\n  background-color: #073642;\n}\n\n.cm-s-solarized.cm-s-dark .CodeMirror-linenumber {\n  color: #586e75;\n  text-shadow: #021014 0 -1px;\n}\n\n/* Light */\n.cm-s-solarized.cm-s-light .CodeMirror-gutters {\n  background-color: #eee8d5;\n}\n\n.cm-s-solarized.cm-s-light .CodeMirror-linenumber {\n  color: #839496;\n}\n\n/* Common */\n.cm-s-solarized .CodeMirror-linenumber {\n  padding: 0 5px;\n}\n.cm-s-solarized .CodeMirror-guttermarker-subtle { color: #586e75; }\n.cm-s-solarized.cm-s-dark .CodeMirror-guttermarker { color: #ddd; }\n.cm-s-solarized.cm-s-light .CodeMirror-guttermarker { color: #cb4b16; }\n\n.cm-s-solarized .CodeMirror-gutter .CodeMirror-gutter-text {\n  color: #586e75;\n}\n\n/* Cursor */\n.cm-s-solarized .CodeMirror-cursor { border-left: 1px solid #819090; }\n\n/* Fat cursor */\n.cm-s-solarized.cm-s-light.cm-fat-cursor .CodeMirror-cursor { background: #77ee77; }\n.cm-s-solarized.cm-s-light .cm-animate-fat-cursor { background-color: #77ee77; }\n.cm-s-solarized.cm-s-dark.cm-fat-cursor .CodeMirror-cursor { background: #586e75; }\n.cm-s-solarized.cm-s-dark .cm-animate-fat-cursor { background-color: #586e75; }\n\n/* Active line */\n.cm-s-solarized.cm-s-dark .CodeMirror-activeline-background {\n  background: rgba(255, 255, 255, 0.06);\n}\n.cm-s-solarized.cm-s-light .CodeMirror-activeline-background {\n  background: rgba(0, 0, 0, 0.06);\n}\n", ""]);
 
 // exports
 
@@ -71181,7 +71088,7 @@ if(false) {
 /* 314 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71226,7 +71133,7 @@ if(false) {
 /* 316 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71271,7 +71178,7 @@ if(false) {
 /* 318 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71316,7 +71223,7 @@ if(false) {
 /* 320 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71361,7 +71268,7 @@ if(false) {
 /* 322 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71406,7 +71313,7 @@ if(false) {
 /* 324 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71451,7 +71358,7 @@ if(false) {
 /* 326 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71496,7 +71403,7 @@ if(false) {
 /* 328 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71541,7 +71448,7 @@ if(false) {
 /* 330 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71586,7 +71493,7 @@ if(false) {
 /* 332 */
 /***/ (function(module, exports, __webpack_require__) {
 
-exports = module.exports = __webpack_require__(3)(undefined);
+exports = module.exports = __webpack_require__(3)(false);
 // imports
 
 
@@ -71612,7 +71519,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7f0ea808", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-719301c9", module.exports)
   }
 }
 
@@ -71655,7 +71562,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/scripts/code-preview.vue"
+Component.options.__file = "resources\\assets\\components\\scripts\\code-preview.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -71664,9 +71571,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-176687d8", Component.options)
+    hotAPI.createRecord("data-v-1a43ac0e", Component.options)
   } else {
-    hotAPI.reload("data-v-176687d8", Component.options)
+    hotAPI.reload("data-v-1a43ac0e", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -71742,7 +71649,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-176687d8", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-1a43ac0e", module.exports)
   }
 }
 
@@ -72102,7 +72009,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/scripts/tabla-items.vue"
+Component.options.__file = "resources\\assets\\components\\scripts\\tabla-items.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -72111,9 +72018,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-7c3fc7fe", Component.options)
+    hotAPI.createRecord("data-v-15ae44c7", Component.options)
   } else {
-    hotAPI.reload("data-v-7c3fc7fe", Component.options)
+    hotAPI.reload("data-v-15ae44c7", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -72191,7 +72098,7 @@ var Component = normalizeComponent(
   __vue_scopeId__,
   __vue_module_identifier__
 )
-Component.options.__file = "resources/assets/components/scripts/fila-item.vue"
+Component.options.__file = "resources\\assets\\components\\scripts\\fila-item.vue"
 
 /* hot reload */
 if (false) {(function () {
@@ -72200,9 +72107,9 @@ if (false) {(function () {
   if (!hotAPI.compatible) return
   module.hot.accept()
   if (!module.hot.data) {
-    hotAPI.createRecord("data-v-0060a3cc", Component.options)
+    hotAPI.createRecord("data-v-6de373dc", Component.options)
   } else {
-    hotAPI.reload("data-v-0060a3cc", Component.options)
+    hotAPI.reload("data-v-6de373dc", Component.options)
   }
   module.hot.dispose(function (data) {
     disposed = true
@@ -72394,7 +72301,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-0060a3cc", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-6de373dc", module.exports)
   }
 }
 
@@ -72446,7 +72353,7 @@ module.exports = { render: render, staticRenderFns: staticRenderFns }
 if (false) {
   module.hot.accept()
   if (module.hot.data) {
-    require("vue-hot-reload-api")      .rerender("data-v-7c3fc7fe", module.exports)
+    require("vue-hot-reload-api")      .rerender("data-v-15ae44c7", module.exports)
   }
 }
 
@@ -72918,40 +72825,40 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var TablaIdentificadores = function () {
-     function TablaIdentificadores() {
-          _classCallCheck(this, TablaIdentificadores);
+       function TablaIdentificadores() {
+              _classCallCheck(this, TablaIdentificadores);
 
-          this.palabrasReservadas = [{ key: 'abstract', value: 'T_ABSTRACT' }, { key: 'and', value: 'T_AND' }, { key: 'array', value: 'T_ARRAY' }, { key: 'as', value: 'T_AS' }, { key: 'break', value: 'T_BREAK' }, { key: 'callable', value: 'T_CALLABLE' }, { key: 'case', value: 'T_CASE' }, { key: 'catch', value: 'T_CATCH' }, { key: 'class', value: 'T_CLASS' }, { key: 'clone', value: 'T_CLONE' }, { key: 'const', value: 'T_CONST' }, { key: 'continue', value: 'T_CONTINUE' }, { key: 'declare', value: 'T_DECLARE' }, { key: 'default', value: 'T_DEFAULT' }, { key: 'define', value: 'T_DEFINE' }, { key: 'die', value: 'T_DIE' }, { key: 'do', value: 'T_DO' }, { key: 'echo', value: 'T_ECHO' }, { key: 'else', value: 'T_ELSE' }, { key: 'elseif', value: 'T_ELSEIF' }, { key: 'empty', value: 'T_EMPTY' }, { key: 'enddeclare', value: 'T_ENDDECLARE' }, { key: 'endfor', value: 'T_ENDFOR' }, { key: 'endforeach', value: 'T_ENDFOREACH' }, { key: 'endif', value: 'T_ENDIF' }, { key: 'endswitch', value: 'T_ENDSWITCH' }, { key: 'endwhile', value: 'T_ENDWHILE' }, { key: 'eval', value: 'T_EVAL' }, { key: 'exit', value: 'T_EXIT' }, { key: 'extends', value: 'T_EXTENDS' }, { key: 'false', value: 'T_FALSE' }, { key: 'final', value: 'T_FINAL' }, { key: 'finally', value: 'T_FINALLY' }, { key: 'for', value: 'T_FOR' }, { key: 'foreach', value: 'T_FOREACH' }, { key: 'function', value: 'T_FUNCTION' }, { key: 'global', value: 'T_GLOBAL' }, { key: 'goto', value: 'T_GOTO' }, { key: 'if', value: 'T_IF' }, { key: 'implements', value: 'T_IMPLEMENTS' }, { key: 'include', value: 'T_INCLUDE' }, { key: 'include_once', value: 'INCLUDE_ONCE' }, { key: 'instanceof', value: 'T_INSTANCEOF' }, { key: 'insteadof', value: 'T_INSTEADOF' }, { key: 'interface', value: 'T_INTERFACE' }, { key: 'isset', value: 'T_ISSET' }, { key: 'list', value: 'T_LIST' }, { key: 'namespace', value: 'T_NAMESPACE' }, { key: 'new', value: 'T_NEW' }, { key: 'null', value: 'T_NULL' }, { key: 'or', value: 'T_OR' }, { key: 'php', value: 'T_PHP' }, { key: 'print', value: 'T_PRINT' }, { key: 'private', value: 'T_PRIVATE' }, { key: 'protected', value: 'T_PROTECTED' }, { key: 'public', value: 'T_PUBLIC' }, { key: 'require', value: 'T_REQUIRE' }, { key: 'require_once', value: 'T_REQUIRE_ONCE' }, { key: 'return', value: 'T_RETURN' }, { key: 'self', value: 'T_SELF' }, { key: 'static', value: 'T_STATIC' }, { key: 'switch', value: 'T_SWITCH' }, { key: 'throw', value: 'T_THROW' }, { key: 'trait', value: 'T_TRAIT' }, { key: 'true', value: 'T_TRUE' }, { key: 'try', value: 'T_TRY' }, { key: 'unset', value: 'T_UNSET' }, { key: 'use', value: 'T_USE' }, { key: 'var', value: 'T_VAR' }, { key: 'while', value: 'T_WHILE' }, { key: 'xor', value: 'T_XOR' }, { key: 'yield', value: 'T_YIELD' }, { key: '$this', value: 'T_THIS' }];
+              this.palabrasReservadas = [{ key: 'abstract', value: 'T_ABSTRACT' }, { key: 'and', value: 'T_AND' }, { key: 'array', value: 'T_ARRAY' }, { key: 'as', value: 'T_AS' }, { key: 'break', value: 'T_BREAK' }, { key: 'callable', value: 'T_CALLABLE' }, { key: 'case', value: 'T_CASE' }, { key: 'catch', value: 'T_CATCH' }, { key: 'class', value: 'T_CLASS' }, { key: 'clone', value: 'T_CLONE' }, { key: 'const', value: 'T_CONST' }, { key: 'continue', value: 'T_CONTINUE' }, { key: 'declare', value: 'T_DECLARE' }, { key: 'default', value: 'T_DEFAULT' }, { key: 'define', value: 'T_DEFINE' }, { key: 'die', value: 'T_DIE' }, { key: 'do', value: 'T_DO' }, { key: 'echo', value: 'T_ECHO' }, { key: 'else', value: 'T_ELSE' }, { key: 'elseif', value: 'T_ELSEIF' }, { key: 'empty', value: 'T_EMPTY' }, { key: 'enddeclare', value: 'T_ENDDECLARE' }, { key: 'endfor', value: 'T_ENDFOR' }, { key: 'endforeach', value: 'T_ENDFOREACH' }, { key: 'endif', value: 'T_ENDIF' }, { key: 'endswitch', value: 'T_ENDSWITCH' }, { key: 'endwhile', value: 'T_ENDWHILE' }, { key: 'eval', value: 'T_EVAL' }, { key: 'exit', value: 'T_EXIT' }, { key: 'extends', value: 'T_EXTENDS' }, { key: 'false', value: 'T_FALSE' }, { key: 'final', value: 'T_FINAL' }, { key: 'finally', value: 'T_FINALLY' }, { key: 'for', value: 'T_FOR' }, { key: 'foreach', value: 'T_FOREACH' }, { key: 'function', value: 'T_FUNCTION' }, { key: 'global', value: 'T_GLOBAL' }, { key: 'goto', value: 'T_GOTO' }, { key: 'if', value: 'T_IF' }, { key: 'implements', value: 'T_IMPLEMENTS' }, { key: 'include', value: 'T_INCLUDE' }, { key: 'include_once', value: 'INCLUDE_ONCE' }, { key: 'instanceof', value: 'T_INSTANCEOF' }, { key: 'insteadof', value: 'T_INSTEADOF' }, { key: 'interface', value: 'T_INTERFACE' }, { key: 'isset', value: 'T_ISSET' }, { key: 'list', value: 'T_LIST' }, { key: 'namespace', value: 'T_NAMESPACE' }, { key: 'new', value: 'T_NEW' }, { key: 'null', value: 'T_NULL' }, { key: 'or', value: 'T_OR' }, { key: 'php', value: 'T_PHP' }, { key: 'print', value: 'T_PRINT' }, { key: 'private', value: 'T_PRIVATE' }, { key: 'protected', value: 'T_PROTECTED' }, { key: 'public', value: 'T_PUBLIC' }, { key: 'require', value: 'T_REQUIRE' }, { key: 'require_once', value: 'T_REQUIRE_ONCE' }, { key: 'return', value: 'T_RETURN' }, { key: 'self', value: 'T_SELF' }, { key: 'static', value: 'T_STATIC' }, { key: 'switch', value: 'T_SWITCH' }, { key: 'throw', value: 'T_THROW' }, { key: 'trait', value: 'T_TRAIT' }, { key: 'true', value: 'T_TRUE' }, { key: 'try', value: 'T_TRY' }, { key: 'unset', value: 'T_UNSET' }, { key: 'use', value: 'T_USE' }, { key: 'var', value: 'T_VAR' }, { key: 'while', value: 'T_WHILE' }, { key: 'xor', value: 'T_XOR' }, { key: 'yield', value: 'T_YIELD' }, { key: '$this', value: 'T_THIS' }];
 
-          this.operadores = [{ key: '+', value: 'T_SUMA' }, { key: '-', value: 'T_RESTA' }, { key: '*', value: 'T_MULTIPLICACION' }, { key: '/', value: 'T_DIVISION' }, { key: '%', value: 'T_MODULO' }, { key: '**', value: 'T_POTENCIA' }, { key: '=', value: 'T_ASIGNACION' }, { key: '&', value: 'T_OP_AND' }, { key: '|', value: 'T_OP_OR' }, { key: '^', value: 'T_OP_XOR' }, { key: '~', value: 'T_NEGACION' }, { key: '<<', value: 'T_IZQUIERDA' }, { key: '>>', value: 'T_DERECHA' }, { key: '==', value: 'T_IGUAL' }, { key: '===', value: 'T_IDENTICO' }, { key: '!=', value: 'T_DIFERENTE' }, { key: '<>', value: 'T_DIFERENTE' }, { key: '!==', value: 'T_NOIDENTICO' }, { key: '<', value: 'T_MENOR_Q' }, { key: '>', value: 'T_MAYOR_Q' }, { key: '<=', value: 'T_MENOR_IGUAL' }, { key: '>=', value: 'T_MAYOR_IGUAL' }, { key: '<=>', value: 'T_NAVE' }, { key: '??', value: 'T_FUSION' }, { key: '@', value: 'T_ERROR' }, { key: '++', value: 'T_INCREMENTO' }, { key: '--', value: 'T_DECREMENTO' }, { key: '&&', value: 'T_OP_AND' }, { key: '||', value: 'T_OP_OR' }, { key: '!', value: 'T_NEGACION' }, { key: '.', value: 'T_CONCATENACION' }, { key: '.=', value: 'T_CONCATENACION' }, { key: '?', value: 'T_TERNARIO' }, { key: ':', value: 'T_TERNARIO' }, { key: '::', value: 'T_ESTATICA' }, { key: '+=', value: 'T_ASIGNACION' }, { key: '-=', value: 'T_ASIGNACION' }, { key: '*=', value: 'T_ASIGNACION' }, { key: '**=', value: 'T_ASIGNACION' }, { key: '/=', value: 'T_ASIGNACION' }, { key: '%=', value: 'T_ASIGNACION' }, { key: '&=', value: 'T_ASIGNACION' }, { key: '|=', value: 'T_ASIGNACION' }, { key: '^=', value: 'T_ASIGNACION' }, { key: '<<=', value: 'T_ASIGNACION' }, { key: '>>=', value: 'T_ASIGNACION' }, { key: '->', value: 'T_FLECHA' }, { key: '=>', value: 'T_FLECHA_A' }, { key: '<?', value: 'T_OP_PHP' }, { key: '?>', value: 'T_OP_PHP' }, { key: '//', value: 'T_COMENTARIO' }, { key: '/*', value: 'T_COMENTARIO_L' }, { key: '/**', value: 'T_COMENTARIO_L' }];
+              this.operadores = [{ key: '+', value: 'T_SUMA' }, { key: '-', value: 'T_RESTA' }, { key: '*', value: 'T_MULTIPLICACION' }, { key: '/', value: 'T_DIVISION' }, { key: '%', value: 'T_MODULO' }, { key: '**', value: 'T_POTENCIA' }, { key: '=', value: 'T_ASIGNACION' }, { key: '&', value: 'T_OP_AND' }, { key: '|', value: 'T_OP_OR' }, { key: '^', value: 'T_OP_XOR' }, { key: '~', value: 'T_NEGACION' }, { key: '<<', value: 'T_IZQUIERDA' }, { key: '>>', value: 'T_DERECHA' }, { key: '==', value: 'T_IGUAL' }, { key: '===', value: 'T_IDENTICO' }, { key: '!=', value: 'T_DIFERENTE' }, { key: '<>', value: 'T_DIFERENTE' }, { key: '!==', value: 'T_NOIDENTICO' }, { key: '<', value: 'T_MENOR_Q' }, { key: '>', value: 'T_MAYOR_Q' }, { key: '<=', value: 'T_MENOR_IGUAL' }, { key: '>=', value: 'T_MAYOR_IGUAL' }, { key: '<=>', value: 'T_NAVE' }, { key: '??', value: 'T_FUSION' }, { key: '@', value: 'T_ERROR' }, { key: '++', value: 'T_INCREMENTO' }, { key: '--', value: 'T_DECREMENTO' }, { key: '&&', value: 'T_OP_AND' }, { key: '||', value: 'T_OP_OR' }, { key: '!', value: 'T_NEGACION' }, { key: '.', value: 'T_CONCATENACION' }, { key: '.=', value: 'T_CONCATENACION' }, { key: '?', value: 'T_TERNARIO' }, { key: ':', value: 'T_TERNARIO' }, { key: '::', value: 'T_ESTATICA' }, { key: '+=', value: 'T_ASIGNACION' }, { key: '-=', value: 'T_ASIGNACION' }, { key: '*=', value: 'T_ASIGNACION' }, { key: '**=', value: 'T_ASIGNACION' }, { key: '/=', value: 'T_ASIGNACION' }, { key: '%=', value: 'T_ASIGNACION' }, { key: '&=', value: 'T_ASIGNACION' }, { key: '|=', value: 'T_ASIGNACION' }, { key: '^=', value: 'T_ASIGNACION' }, { key: '<<=', value: 'T_ASIGNACION' }, { key: '>>=', value: 'T_ASIGNACION' }, { key: '->', value: 'T_FLECHA' }, { key: '=>', value: 'T_FLECHA_A' }, { key: '<?', value: 'T_OP_PHP' }, { key: '?>', value: 'T_OP_PHP' }, { key: '//', value: 'T_COMENTARIO' }, { key: '/*', value: 'T_COMENTARIO_L' }, { key: '/**', value: 'T_COMENTARIO_L' }];
 
-          this.delimitadores = [{ key: '(', value: 'T_PARENTESIS_A' }, { key: ')', value: 'T_PARENTESIS_C' }, { key: '[', value: 'T_CORCHETE_A' }, { key: ']', value: 'T_CORCHETE_C' }, { key: '{', value: 'T_LLAVE_A' }, { key: '}', value: 'T_LLAVE_C' }, { key: ';', value: 'T_PUNTO_COMA' }, { key: ',', value: 'T_COMA' }];
-     }
+              this.delimitadores = [{ key: '(', value: 'T_PARENTESIS_A' }, { key: ')', value: 'T_PARENTESIS_C' }, { key: '[', value: 'T_CORCHETE_A' }, { key: ']', value: 'T_CORCHETE_C' }, { key: '{', value: 'T_LLAVE_A' }, { key: '}', value: 'T_LLAVE_C' }, { key: ';', value: 'T_PUNTO_COMA' }, { key: ',', value: 'T_COMA' }];
+       }
 
-     _createClass(TablaIdentificadores, [{
-          key: 'findWord',
-          value: function findWord(word) {
-               return this.palabrasReservadas.find(function (e) {
-                    return e.key === word;
-               });
-          }
-     }, {
-          key: 'findOperator',
-          value: function findOperator(operator) {
-               return this.operadores.find(function (e) {
-                    return e.key === operator;
-               });
-          }
-     }, {
-          key: 'findDelimiter',
-          value: function findDelimiter(delimiter) {
-               return this.delimitadores.find(function (e) {
-                    return e.key === delimiter;
-               });
-          }
-     }]);
+       _createClass(TablaIdentificadores, [{
+              key: 'findWord',
+              value: function findWord(word) {
+                     return this.palabrasReservadas.find(function (e) {
+                            return e.key === word;
+                     });
+              }
+       }, {
+              key: 'findOperator',
+              value: function findOperator(operator) {
+                     return this.operadores.find(function (e) {
+                            return e.key === operator;
+                     });
+              }
+       }, {
+              key: 'findDelimiter',
+              value: function findDelimiter(delimiter) {
+                     return this.delimitadores.find(function (e) {
+                            return e.key === delimiter;
+                     });
+              }
+       }]);
 
-     return TablaIdentificadores;
+       return TablaIdentificadores;
 }();
 
 /* harmony default export */ __webpack_exports__["a"] = (TablaIdentificadores);
