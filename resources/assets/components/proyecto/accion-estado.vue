@@ -1,6 +1,6 @@
 <template>
     <div class="btn-group btn-group-vertical center-block">
-        <template v-if="proyecto.state == 'creacion'">
+        <template v-if="creacion">
             <button type="button" class="btn blue" @click="$emit('propuesta')">
                 Enviar Propuesta
             </button>
@@ -11,21 +11,23 @@
                 Eliminar
             </button>
         </template>
-        <template v-if="proyecto.state == 'activo'">
+        <template v-if="activo">
             <button class="btn btn-primary" @click="$emit('evaluacion')">
                 Realizar Evaluacion
             </button>
         </template>
-        <proyecto-resultados v-if="proyecto.state = 'completado'" :proyecto-id="proyecto.PK_id"/>
+        <proyecto-resultados v-if="completado" :proyecto-id="proyecto.PK_id"/>
 
     </div>
 </template>
 <script>
 import ProyectoResultados from './proyecto-resultados'
+import EstadosMixin from '../mixins/proyecto-estados'
 export default {
   props: {
     proyecto: { type: Object, required: true }
   },
+  mixins: [EstadosMixin],
   components: {
       ProyectoResultados
   }
