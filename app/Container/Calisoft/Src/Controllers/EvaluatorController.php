@@ -92,7 +92,7 @@ class EvaluatorController extends Controller
             $palabra_infos .= "$repeticion,";
             $array = explode(",", $palabra_infos);
             $palabras .= "$i ($repeticion)<br>";
-
+    
             if(strpos($leerArchivo, $i)> -1)
             {
             $mensajePropias .= $i . ', ';
