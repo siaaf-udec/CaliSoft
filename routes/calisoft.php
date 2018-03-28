@@ -13,6 +13,9 @@ Route::get('porcentajesbd', 'UserController@porcentajesBD')->name('porcentajesbd
 Route::get('/estandar-codificacion','UserController@estandaresCodificacion')
 ->name('estandar-codificacion');
 
+Route::get('/estandar-basedatos','UserController@estandaresBasedatos')
+->name('estandar-basedatos');
+
 Route::get('porcentajesCodificacion', 'UserController@porcentajesCodificacion')->name('porcentajesCod');
 
 

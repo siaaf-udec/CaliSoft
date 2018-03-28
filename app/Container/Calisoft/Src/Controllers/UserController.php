@@ -112,5 +112,8 @@ class UserController extends Controller
     public function estandaresCodificacion(){
         return view('calisoft.global.estandar-codificacion');
     }
+    public function estandaresBasedatos(){
+        return view('calisoft.global.estandar-baseDatos');
+    }
 
 }

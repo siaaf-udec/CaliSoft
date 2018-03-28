@@ -5,7 +5,7 @@
     @component('components.portlet', ['icon' => 'fa fa-code', 'title' => 'Estandar de Codificación'])
        
             <div class="portlet-body">
-                <p>
+                <p align="justify">
                      La siguiente tabla que se presta a continuación es un manual de uso del estándar de codificación seleccionado por el semillero de ¨aplicaciones móviles¨ para el desarrollo de aplicativos web en la universidad de Cundinamarca, que utilicen el lenguaje de programación de PHP 
                     Se establecen 7 directrices de calificación que son los más relevantes en el momento de escribir código entre las cuáles se presentan a continuación 
                             
@@ -53,7 +53,7 @@
                     
                     <div class="tab-content">
                         <div class="tab-pane active" id="tab1">
-                            <p>
+                            <p align="justify">
                                     La notación recomendada para la declaración de variables es la 
                                     notación lowerCamelCase está consiste en que cuando las variables
                                      formadas por más de una palabra cada una de estas deberá iniciar

@@ -40414,9 +40414,7 @@ var Validator = function Validator (validations, options) {
   this.reset = options.vm && isCallable(options.vm.$nextTick) ? function (matcher) {
     return new Promise(function (resolve) {
       options.vm.$nextTick(function () {
-        options.vm.$nextTick(function () {
-          resolve(this$1._reset(matcher));
-        });
+        resolve(this$1._reset(matcher));
       });
     });
   } : this._reset;
