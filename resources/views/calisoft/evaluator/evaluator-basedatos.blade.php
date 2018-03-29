@@ -22,11 +22,17 @@
 
                                 <!-- Modal content-->
                                 <div class="modal-content">
-                                <div class="modal-header">
+                                <div class="modal-header bg-info">
                                     <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                    <h4 class="modal-title" align="center">Calificación Nomenclatura Base de datos - Proyecto: "{{$proyecto->nombre}}" </h4>
+                                    <h4 class="modal-title" align="center"><b>Calificación Nomenclatura Base de datos - Proyecto: "{{$proyecto->nombre}}"</b> </h4>
+                                    
                                 </div>
                                 <div class="modal-body" >
+                                <a href="/proyectos/{{$proyecto->PK_id}}/basedatos"><button type="button"  class="btn green-jungle center-block">
+                                    <i class="fa fa-arrow-circle-right"></i>
+                                    Calificación Automatica
+                                </button></a> 
+                                <br>
                                 <?php
                                 $palabra_info = "";
                                 $palabra_infos = "";
@@ -34,6 +40,10 @@
                                 $palabras = "";
                                 $totalImpostantesBD ="";
                                 $totalEstandarBD ="";
+                                $palabrasAlone = "";
+                                $palabrasRepeat = "";
+                                $palabraAlone = "";
+                                $palabraRepeat = "";
                                 $mensajeEncontradas = "Palabras Encontradas: ";
                                 $mensajePropias = "Palabras Encontradas Propias del SQL: ";
                                 $mensajeLineas = "Las palabras estan en la linea: ";
@@ -60,6 +70,8 @@
                                     $palabra_infos .= "$repeticion,";
                                     $array = explode(",", $palabra_infos);
                                     $palabras .= "$i ($repeticion)<br>";
+                                    $palabrasAlone .= "<b>$i<br><br></b>";
+                                    $palabrasRepeat .= "<b>$repeticion<br><br></b>";
                             
                                     if(strpos($leerArchivo, $i)> -1)
                                     {
@@ -67,12 +79,6 @@
                                     }
 
                                 }
-
-                                echo rtrim($mensajePropias, ", ");
-
-                                echo "<br>",$palabras,"<br>"; 
-
-                                echo "Total Palabras Propias del SQL: ".$totalImpostantesBD, "<br>";
 
                                 foreach ($estandarBD as $k) 
                                 {
@@ -82,6 +88,8 @@
                                     $palabra_info .= "$repeticiones,"; 
                                     $array1 = explode(",", $palabra_info);
                                     $palabra .= "$k ($repeticiones)<br>"; 
+                                    $palabraAlone .= "<b>$k<br><br></b>"; 
+                                    $palabraRepeat .= "<b>$repeticiones<br><br></b>"; 
 
                                     if(strpos($leerArchivo, $k)> -1)
                                     {
@@ -89,34 +97,82 @@
                                     }
                                 }
 
-                                echo rtrim("<br>".$mensajeEncontradas, ", ");  
+                                ?>
 
-                                echo "<br>",$palabra; 
+                                <table class="table table-bordered">
+                                <thead>
+                                    <tr>
+                                    <th class="text-center"><b>Palabras Reservadas SQL</b></th>
+                                    <th class="text-center"><b>Total</b> </th>
+                                    <th class="text-center"><b>Palabras Encontradas</b></th>
+                                    <th class="text-center"><b>Total</b> </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                    <td align="center"><?php echo $palabrasAlone; 
+                                    echo "<br><b>Total Palabras Reservadas del SQL: </b><br>";?></td>
+                                    <td align="center"><?php echo $palabrasRepeat; 
+                                    echo "<br>"."<b>".$totalImpostantesBD."</b>";?></td>
+                                    <td align="center"><?php echo $palabraAlone; 
+                                    echo "<br><b>Total Palabras Encontradas del SQL: </b><br>";?></td>
+                                    <td align="center"><?php echo $palabraRepeat; 
+                                    echo "<br>"."<b>".$totalEstandarBD."</b>";?></td>
+                                    </tr>
+                    
+                                </tbody>
+                                </table>
+
+                                <legend></legend>
+                            
+                                <div class="col-md-12">
+                                <table class="table">
+                                    <thead>
+                                        <tr>
+                                        <th><b>Contenido Linea</b> </th>
+                                        <th class="text-right"><b>Linea N°</b> </th>
+                                        </tr>
+                                    </thead>
+
+                                <?php
+
+                                    $pos = 1;
+
+                                    foreach($rutalecturaArchivo as $linea)
+                                    {
+                                        for ( $x = 0; $x < count ( $importantesBD ); $x++ )
+                                        {
+                                            if (strstr($linea,$importantesBD[$x]))
+                                            {
+                                                        
+                                                echo  "<table class='table table-bordered'>
+                                                        <thead>
+                                                            <tr>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody>
+                                                            <tr>
+                                                            <td><b>$linea</b></td>
+                                                            <td align='right'><b>$pos</b></td>
+                                                            </tr>
+                                            
+                                                        </tbody>
+                                                        </table>";
+                                            }
+                                                $pos++;
+                                        }
+                                    }
+
+                                ?>
+                                </div>
 
                                 
-
-                                echo "<br>Total Palabras Estandar Encontradas: ".$totalEstandarBD, "<br>";
-
-                                /*$pos = 1;
-
-                                foreach($rutalecturaArchivo as $linea)
-                                {
-                                    for ( $x = 0; $x < count ( $importantesBD ); $x++ )
-                                    {
-                                        if (strstr($linea,$importantesBD[$x]))
-                                        {
-                                                    echo "<br> si esta la palabra $linea, está en la linea : ".$pos." <br>";
-                                        }
-                                            $pos++;
-                                    }
-                                }*/
-                                ?>
                                 </div>
                                 <div class="modal-footer">
                                     <a href="/proyectos/{{$proyecto->PK_id}}/basedatos"><button type="button"  class="btn green-jungle center-block">
-                                    <i class="fa fa-arrow-circle-right"></i>
-                                    Calificación Automatica
-                                </button></a> 
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                        Calificación Automatica
+                                    </button></a> 
                                 </div>
                                 </div>
 
@@ -139,6 +195,7 @@
                         
                                              
                     </div>
+
                 </div>
                 @include('partials.modal-help-calificar-bd')
             </div>                
