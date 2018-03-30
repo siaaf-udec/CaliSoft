@@ -28,10 +28,7 @@
                                     
                                 </div>
                                 <div class="modal-body" >
-                                <a href="/proyectos/{{$proyecto->PK_id}}/basedatos"><button type="button"  class="btn green-jungle center-block">
-                                    <i class="fa fa-arrow-circle-right"></i>
-                                    Calificación Automatica
-                                </button></a> 
+                                <button type="button" class="btn green-jungle center-block" data-toggle="modal" data-target="#ModalSeguro" data-dismiss="modal">Calificación Automática <i class="fa fa-arrow-circle-right"></i></button>
                                 <br>
                                 <?php
                                 $palabra_info = "";
@@ -165,14 +162,9 @@
 
                                 ?>
                                 </div>
-
-                                
                                 </div>
                                 <div class="modal-footer">
-                                    <a href="/proyectos/{{$proyecto->PK_id}}/basedatos"><button type="button"  class="btn green-jungle center-block">
-                                        <i class="fa fa-arrow-circle-right"></i>
-                                        Calificación Automatica
-                                    </button></a> 
+                                <button type="button" class="btn green-jungle center-block" data-toggle="modal" data-target="#ModalSeguro" data-dismiss="modal">Calificación Automática <i class="fa fa-arrow-circle-right"></i></button> 
                                 </div>
                                 </div>
 
@@ -192,8 +184,37 @@
                             <button type="submit"  class="btn green-jungle center-block">
                             <i class="fa fa-edit"></i> Aceptar Calificación</button>
                         </form>   
+
+                            
                         
                                              
+                    </div>
+
+                    <!-- Modal -->
+                    <div id="ModalSeguro" class="modal fade" data-backdrop="static" data-keyboard="false" role="dialog">
+                            <div class="modal-dialog modal-lg" >
+
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                <div class="modal-header bg-info">
+                                    <h4 class="modal-title" align="center"><b>¡Advertencia!</b> </h4>
+                                    
+                                </div>
+                                <div class="modal-body" >
+                                <h4 class="modal-title" align="center"> <b>¿Está seguro de calificar la nomenclatura SQL de la base de datos del proyecto: "{{$proyecto->nombre}}"</b></h4>
+                                </div>
+                                
+                                <div class="modal-footer">
+                                    <a href="/proyectos/{{$proyecto->PK_id}}/basedatos"><button type="button"  class="btn green-jungle center-block">
+                                        <i class="fa fa-arrow-circle-right"></i>
+                                        ¡Calificar!
+                                    </button></a> 
+
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>  
+                                </div>
+                            </div>
+
+                    </div>
                     </div>
 
                 </div>
