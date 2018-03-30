@@ -201,7 +201,7 @@
                                     
                                 </div>
                                 <div class="modal-body" >
-                                <h4 class="modal-title" align="center"> <b>¿Está seguro de calificar la nomenclatura SQL de la base de datos del proyecto: "{{$proyecto->nombre}}"</b></h4>
+                                <h4 class="modal-title" align="center"> <b>¿Está seguro de calificar la nomenclatura SQL de la base de datos del proyecto: "{{$proyecto->nombre}}"?</b></h4>
                                 </div>
                                 
                                 <div class="modal-footer">
