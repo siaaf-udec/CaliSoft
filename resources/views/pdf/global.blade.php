@@ -21,7 +21,7 @@
             </tr>
             <tr>
                 <th>Base de Datos</th>
-                <td></td>
+                <td>{{ $basedatos }}</td>
             </tr>
             <tr class="info">
                 <th>Total</th>

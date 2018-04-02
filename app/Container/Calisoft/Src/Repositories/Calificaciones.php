@@ -50,7 +50,12 @@ class Calificaciones
 
     public function basedatos()
     {
-        
+        $sql = $this->proyecto->sql->load('componentes');
+        $promedio = $sql->componentes->filter(function($componente, $index){
+            return $componente->pivot->total > 0;
+        })->avg("pivot.calificacion");
+
+        return round($promedio * 20);
     }
 
     public function codificacion()
@@ -76,7 +81,7 @@ class Calificaciones
         return $numerador/$denominador;
     }
 
-    public function total($modelacion, $plataforma, $codificacion)
+    public function total($modelacion, $plataforma, $codificacion, $basedatos)
     {
         $categoria = $this->proyecto
             ->categoria()
@@ -85,7 +90,8 @@ class Calificaciones
         $total = (
             $modelacion * $categoria->modelado +
             $plataforma * $categoria->plataforma +
-            $codificacion * $categoria->codificacion
+            $codificacion * $categoria->codificacion +
+            $basedatos * $categoria->base_datos
             ) / 100;
         return round($total);
     }
@@ -108,7 +114,8 @@ class Calificaciones
         $modelacion = $this->modelacion();
         $plataforma = $this->plataforma();
         $codificacion = round($this->codificacion() * 100);
-        $total = $this->total($modelacion, $plataforma, $codificacion);
-        return compact('modelacion', 'plataforma', 'codificacion', 'total');
+        $basedatos = $this->basedatos();
+        $total = $this->total($modelacion, $plataforma, $codificacion, $basedatos);
+        return compact('modelacion', 'plataforma', 'codificacion', 'total', 'basedatos');
     }
 }
